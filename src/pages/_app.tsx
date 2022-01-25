@@ -2,6 +2,7 @@ import '../styles/global.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Naviation from '../components/Navigation'
+import Meta from '../../public/img/Meta'
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
@@ -15,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     referrerPolicy="no-referrer"
                 />
             </Head>
+            <Meta />
             <Naviation />
             <Component {...pageProps} />
         </>
