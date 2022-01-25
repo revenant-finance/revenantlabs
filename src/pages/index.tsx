@@ -1,3 +1,6 @@
+import Footer from '../components/Footer'
+import RvntClaim from '../components/RvntClaim'
+
 export default function IndexPage() {
     return (
         <>
@@ -40,7 +43,7 @@ export default function IndexPage() {
                     </div>
                 </div>
 
-                <div className="container mx-auto space-y-3">
+                <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <a
                             href=""
@@ -66,6 +69,18 @@ export default function IndexPage() {
                             </div>
                         </a>
                     </div>
+
+                    <a
+                        href=""
+                        target="_blank"
+                        className="bg-purple-500 max-w-5xl mx-auto text-white rounded-2xl p-6 md:p-12 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                        // style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
+                    >
+                        <div className="md:max-w-sm space-y-2">
+                            <p className="font-montserrat text-3xl font-extrabold uppercase">Get Started</p>
+                            <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -116,16 +131,9 @@ export default function IndexPage() {
                 </div>
             </div>
 
-            <div className="bg-neutral-900 text-neutral-800">
-                <div className="max-w-7xl container mx-auto p-6">
-                    {/* <div className="grid gap-6 grid-cols-2 md:grid-cols-4">
-                        <div>
-                            <p>Creditum</p>
-                        </div>
-                    </div> */}
-                    <p className="font-montserrat font-extrabold uppercase">Revenant &copy; {new Date().getFullYear()}</p>
-                </div>
-            </div>
+            <RvntClaim />
+
+            <Footer />
         </>
     )
 }
