@@ -17,7 +17,7 @@ export default function RvntClaim() {
                         <div className="flex flex-1 gap-6">
                             <i className="text-3xl fas fa-exclamation-triangle"></i>
                             <div className="space-y-1">
-                                <p className="text-xl font-extrabold">Were affected by the StakeSteak exploit in late 2021?</p>
+                                <p className="text-xl font-extrabold">Affected by the StakeSteak exploit in late 2021?</p>
                                 <p>Users affected by the StakeSteak exploit are able to claim RVNT tokens now. RVNT tokens are ecosystem-wide redemption tokens, usable to claim allocations of Revenant Labs projects.</p>
                             </div>
                         </div>
