@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Portal from './Portal'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 
 export default function Naviation() {
     const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        const handle = () => setOpen(false)
+        window.addEventListener('scroll', handle)
+        return () => window.removeEventListener('scroll', handle)
+    }, [])
 
     return (
         <>
