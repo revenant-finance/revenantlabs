@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <div className="bg-neutral-900 text-neutral-700">
+        <div className="">
             <div className="max-w-7xl container mx-auto p-12 py-24 text-center ">
                 <div className="space-y-4">
                     <p className="max-w-md mx-auto text-lg font-serif">

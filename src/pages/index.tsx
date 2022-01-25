@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+import CallToAction from '../components/CallToAction'
 import Footer from '../components/Footer'
 import RvntClaim from '../components/RvntClaim'
 
@@ -104,8 +106,8 @@ export default function IndexPage() {
                             <p className="text-4xl md:text-7xl font-extrabold">Building with the community in mind.</p>
                             <div className="space-y-4">
                                 <p className="text-xl">
-                                    In officia veniam excepteur et dolore officia veniam nostrud ea deserunt commodo fugiat quis proident. Laborum laborum laborum qui irure laborum consequat qui tempor laboris sunt
-                                    nostrud ad non. Et esse minim dolor culpa cillum duis occaecat enim anim dolor.
+                                    Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important
+                                    part of our vision.
                                 </p>
                                 <p className="text-xl">
                                     Ipsum dolor nulla magna sit nisi veniam ut id nisi sint eiusmod amet occaecat laboris. Lorem magna amet eiusmod irure proident. Anim quis nisi sunt cupidatat. Et fugiat magna ut qui.
@@ -117,21 +119,19 @@ export default function IndexPage() {
                 </div>
             </div>
 
-            <div className="bg-blue-500 text-white">
-                <div className="max-w-7xl container mx-auto p-6 py-24 md:py-48">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-                        <div className="space-y-8">
-                            <p className="text-4xl md:text-6xl font-extrabold">Powered by the worlds fastest and most efficient blockchain.</p>
-                            <div className="space-y-4">
-                                <p className="text-xl">
-                                    Eiusmod ipsum veniam fugiat in duis voluptate excepteur sunt consequat veniam. Pariatur veniam quis do deserunt aute cillum cupidatat quis voluptate consequat ullamco anim. Velit nulla
-                                    do laboris nisi. Id non nostrud pariatur anim aliqua est occaecat excepteur fugiat cillum consequat quis. Sint laborum proident magna non enim et adipisicing. Sit ex dolor nulla veniam
-                                    pariatur.
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <img className="w-full" src="/img/ftm-logo.svg" alt="" />
+            {/* <CallToAction /> */}
+
+            <div className="bg-blue-900 text-blue-200">
+                <div className="max-w-3xl container mx-auto p-6 py-24 md:py-48 space-y-12">
+                    <motion.img animate={{ y: [0, -10, 0] }} transition={{ loop: Infinity, duration: 3 }} className="w-64 mx-auto" src="/img/ftm-logo.svg" alt="" />
+
+                    <div className="space-y-8">
+                        <p className="text-4xl md:text-6xl font-extrabold">Powered by the worlds fastest and most efficient blockchain.</p>
+                        <div className="space-y-4">
+                            <p className="text-xl">
+                                Our products are deployed on the Fantom Blockchain — known for nearly instant, cheap, and safe transactions. Avoid Ethereum's slow wait times and high gas fees, while utilizing your same
+                                assets. It's that simple.
+                            </p>
                         </div>
                     </div>
                 </div>
