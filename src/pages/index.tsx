@@ -48,7 +48,7 @@ export default function IndexPage() {
                         <a
                             href=""
                             target="_blank"
-                            className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                            className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                             style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
                         >
                             <div className="md:max-w-sm space-y-2">
@@ -60,7 +60,7 @@ export default function IndexPage() {
                         <a
                             href=""
                             target="_blank"
-                            className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                            className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                             style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}
                         >
                             <div className="md:max-w-sm space-y-2 ">
@@ -73,12 +73,18 @@ export default function IndexPage() {
                     <a
                         href=""
                         target="_blank"
-                        className="bg-purple-500 max-w-5xl mx-auto text-white rounded-2xl p-6 md:p-12 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                        className="bg-purple-500 max-w-5xl mx-auto text-white rounded-2xl p-6 md:p-12 bg-center bg-cover flex  shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                         // style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
                     >
-                        <div className="md:max-w-sm space-y-2">
-                            <p className="font-montserrat text-3xl font-extrabold uppercase">Get Started</p>
-                            <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
+                        <div className="flex-1">
+                            <div className="md:max-w-lg flex-1 space-y-2">
+                                <p className="font-montserrat text-3xl font-extrabold uppercase">Join the Community</p>
+                                <p className="text-xl">The easiest way to get started is with help. We invite you to join our community, where we're available to answer any questions you might have.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <i className="fab fa-discord text-7xl"></i>
                         </div>
                     </a>
                 </div>

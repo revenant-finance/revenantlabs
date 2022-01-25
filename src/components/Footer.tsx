@@ -4,7 +4,7 @@ export default function Footer() {
             <div className="max-w-7xl container mx-auto p-12 py-24 text-center ">
                 <div className="space-y-4">
                     <p className="max-w-md mx-auto text-lg font-serif">
-                        <b>Revenant</b> — early 19th century: French, literally ‘coming back’, present participle (used as a noun) of revenir .
+                        <b>Revenant</b> — early 19th century: French, literally ‘coming back’, present participle (used as a noun) of <i>revenir</i>.
                     </p>
 
                     <p className="font-montserrat font-extrabold uppercase">Revenant Labs &copy; {new Date().getFullYear()}</p>
