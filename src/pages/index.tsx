@@ -45,10 +45,10 @@ export default function IndexPage() {
                         <a
                             href=""
                             target="_blank"
-                            className="bg-orange-500 text-white rounded-2xl p-6 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                            className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
                             style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
                         >
-                            <div className="max-w-sm space-y-2 ">
+                            <div className="md:max-w-sm space-y-2">
                                 <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
                                 <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
                             </div>
@@ -57,10 +57,10 @@ export default function IndexPage() {
                         <a
                             href=""
                             target="_blank"
-                            className="bg-blue-500 text-white rounded-2xl p-6 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
+                            className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-4"
                             style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}
                         >
-                            <div className="max-w-sm space-y-2 ">
+                            <div className="md:max-w-sm space-y-2 ">
                                 <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
                                 <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
                             </div>
