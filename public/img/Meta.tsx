@@ -3,7 +3,7 @@ import Head from 'next/head'
 const Meta = () => {
     const title = 'Revenant Labs'
     const description = "DeFi builders on the world's fastest blockchain."
-    const url = 'https://revenantlabs.vercel.app/'
+    const url = 'https://revenantlabs.vercel.app'
 
     return (
         <Head>
