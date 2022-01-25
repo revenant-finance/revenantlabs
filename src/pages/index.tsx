@@ -121,7 +121,7 @@ export default function IndexPage() {
 
             {/* <CallToAction /> */}
 
-            <div className="bg-blue-900 text-blue-200">
+            <div className="bg-blue-900 text-blue-200 bg-center bg-cover" style={{ backgroundImage: `url("/img/blue-mesh-dark.jpg")` }}>
                 <div className="max-w-3xl container mx-auto p-6 py-24 md:py-48 space-y-12">
                     <motion.img animate={{ y: [0, -10, 0] }} transition={{ loop: Infinity, duration: 3 }} className="w-64 mx-auto" src="/img/ftm-logo.svg" alt="" />
 
