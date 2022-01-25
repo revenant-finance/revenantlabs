@@ -31,10 +31,10 @@ export default function Naviation() {
                         >
                             <div className="space-y-2">
                                 <a className="bg-orange-500 block text-center p-2 font-medium text-orange-900 rounded" href="">
-                                    Open Creditum
+                                    Open <b>Creditum</b>
                                 </a>
                                 <a className="bg-blue-500 block text-center p-2 font-medium text-blue-900 rounded" href="">
-                                    Open Creditum
+                                    Open <b>Singularity</b>
                                 </a>
                             </div>
 
