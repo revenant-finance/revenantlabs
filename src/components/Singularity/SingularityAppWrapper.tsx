@@ -8,6 +8,8 @@ import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
+// import { useQueryState } from 'next-usequerystate'
+// import url from 'url-parameters'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -16,14 +18,24 @@ export function SingularityAppWrapper({ children }) {
 
     const wallet = useWallet()
 
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState(0.0)
     const [toValue, _setToValue] = useState(0.0)
     const [fromToken, _setFromToken] = useState(TOKENS[250][0])
     const [toToken, _setToToken] = useState(TOKENS[250][1])
+
+    // URL params `from` and `to`. Matches a token id.
+    const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
+    const [toTokenUrlParam, setToTokenUrlParam] = useState()
+    useEffect(() => setFromTokenUrlParam(router.query.from), [router])
+    useEffect(() => setToTokenUrlParam(router.query.to), [router])
+
+    // Cache'd `from` and `to`. Matches a token id.
     const [fromTokenCache, setFromTokenCache] = useCookieState('singularity-from-token', fromToken.id)
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken.id)
+
     const [slippage, setSlippage] = useState(0.1)
     const [fromBalance, setFromBalance] = useState(0)
     const [toBalance, setToBalance] = useState(0)
@@ -46,12 +58,14 @@ export function SingularityAppWrapper({ children }) {
         _setFromToken(token)
         setFromTokenCache(token.id)
         setFromValue(0)
+        // router.push(`/singularity`, `/singularity?from=${token.id}&to=${toToken.id}`, { shallow: true })
     }
 
     const setToToken = (token: any) => {
         _setToToken(token)
         setToTokenCache(token.id)
         setToValue(0)
+        // router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${token.id}`, { shallow: true })
     }
 
     const swapTokens = () => {
@@ -111,6 +125,17 @@ export function SingularityAppWrapper({ children }) {
         return number < 1000 ? commaNumber(number) : shortNumber(number)
     }
 
+    useEffect(() => {
+        const findFromToken = TOKENS[250].find((token) => token.id === fromTokenUrlParam) || TOKENS[250].find((token) => token.id === fromTokenCache)
+        const findToToken = TOKENS[250].find((token) => token.id === toTokenUrlParam) || TOKENS[250].find((token) => token.id === toTokenCache)
+        if (findFromToken) setFromToken(findFromToken)
+        if (findToToken) setToToken(findToToken)
+    }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam])
+
+    useEffect(() => {
+        router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
+    }, [fromToken, toToken])
+
     // Load selected token balances.
     useEffect(() => {
         if (!wallet.account) return
@@ -131,32 +156,6 @@ export function SingularityAppWrapper({ children }) {
         getFromBalance()
         getToBalance()
     }, [wallet, fromToken, toToken])
-
-    // Use router to set tokens.
-    useEffect(() => {
-        if (!router || !router.query) return
-        const fromTokenQuery = TOKENS[250].find((token) => token.id === router.query.from)
-        if (fromTokenQuery) setFromToken(fromTokenQuery)
-        const toTokenQuery = TOKENS[250].find((token) => token.id === router.query.to)
-        if (toTokenQuery) setToToken(toTokenQuery)
-    }, [router])
-
-    // Use cache to set tokens.
-    useEffect(() => {
-        if (!router) return
-        if (!fromTokenCache || !toTokenCache) return
-        if (router.query.from || router.query.to) return
-
-        const fromTokenQuery = TOKENS[250].find((token) => token.id === fromTokenCache)
-        if (fromTokenQuery) setFromToken(fromTokenQuery)
-        const toTokenQuery = TOKENS[250].find((token) => token.id === toTokenCache)
-        if (toTokenQuery) setToToken(toTokenQuery)
-    }, [router])
-
-    // Shallow routing for shareable links.
-    useEffect(() => {
-        if (fromToken || toToken) router.push(`/singularity`, `/singularity?from=${fromToken ? fromToken.id : 'wftm'}&to=${toToken ? toToken.id : 'wftm'}`, { shallow: true })
-    }, [fromToken, toToken])
 
     return (
         <SingularityIndexPageContext.Provider

@@ -7565,6 +7565,11 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+location-bar@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/location-bar/-/location-bar-3.0.1.tgz#10cbeca7f9b0f1a0a6d900906a5cc250b812bd35"
+  integrity sha1-EMvsp/mw8aCm2QCQalzCULgSvTU=
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -10561,6 +10566,13 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+url-parameters@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/url-parameters/-/url-parameters-1.6.1.tgz#2365138fde08670ff8c3777559f3931ebf997c03"
+  integrity sha512-5lXgxbNeEIvtwp1w5OqvutMCt1dC+V4OsTKU4QWhFkFsZZ0jwX4ZWvb9c6r2OSd5SpzbD/pJwHxgvLFCRDjOlQ==
+  dependencies:
+    location-bar "3.0.1"
 
 url-parse-lax@^1.0.0:
   version "1.0.0"
