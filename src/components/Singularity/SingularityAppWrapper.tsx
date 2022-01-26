@@ -8,8 +8,6 @@ import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
-// import { useQueryState } from 'next-usequerystate'
-// import url from 'url-parameters'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -18,7 +16,6 @@ export function SingularityAppWrapper({ children }) {
 
     const wallet = useWallet()
 
-    const [initialLoadComplete, setInitialLoadComplete] = useState(false)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState(0.0)
@@ -58,14 +55,12 @@ export function SingularityAppWrapper({ children }) {
         _setFromToken(token)
         setFromTokenCache(token.id)
         setFromValue(0)
-        // router.push(`/singularity`, `/singularity?from=${token.id}&to=${toToken.id}`, { shallow: true })
     }
 
     const setToToken = (token: any) => {
         _setToToken(token)
         setToTokenCache(token.id)
         setToValue(0)
-        // router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${token.id}`, { shallow: true })
     }
 
     const swapTokens = () => {
@@ -80,9 +75,27 @@ export function SingularityAppWrapper({ children }) {
         return amountsOut[amountsOut.length - 1]
     }
 
+    // const doApprovalCheck = () => {}
+
+    const swap = async () => {
+        try {
+            const path = [fromToken.address, toToken.address]
+            const amountIn = fromValue
+            const amountOut = await getAmountsOut(amountIn, path)
+            const to = wallet.account
+            const timestamp = Date.now() + 1000 * 60 * 10
+            console.log(amountIn, amountOut, path, to, timestamp)
+            const gas = await routerContract.methods.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp).estimateGas({ from: wallet.account })
+            await routerContract.methods.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp).send({ from: wallet.account })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const setFromValue = async (balance) => {
         try {
             _setFromValue(balance)
+            if (!balance) _setToValue(0)
             if (!toToken || !fromToken || !balance) return
             const amountsOut = await getAmountsOut(balance, [fromToken.address, toToken.address])
             _setToValue(amountsOut)
@@ -95,6 +108,7 @@ export function SingularityAppWrapper({ children }) {
     const setToValue = async (balance) => {
         try {
             _setToValue(balance)
+            if (!balance) _setFromValue(0)
             if (!toToken || !fromToken || !balance) return
             const amountsOut = await getAmountsOut(balance, [toToken.address, fromToken.address])
             _setFromValue(amountsOut)
@@ -185,7 +199,8 @@ export function SingularityAppWrapper({ children }) {
                 inEth,
                 formatter,
                 totalFees,
-                minimumReceived
+                minimumReceived,
+                swap
             }}
         >
             {children}

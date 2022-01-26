@@ -6,8 +6,27 @@ import SwapperModal from './SwapperModal'
 
 export default function () {
     const wallet = useWallet()
-    const { openModal, fromToken, toToken, fromValue, setFromValue, toValue, setToValue, slippage, setSlippage, swapTokens, fromBalanceEth, toBalanceEth, maxFrom, maxTo, inEth, formatter, totalFees, minimumReceived } =
-        useSingularityData()
+    const {
+        openModal,
+        fromToken,
+        toToken,
+        fromValue,
+        setFromValue,
+        toValue,
+        setToValue,
+        slippage,
+        setSlippage,
+        swapTokens,
+        fromBalanceEth,
+        toBalanceEth,
+        maxFrom,
+        maxTo,
+        inEth,
+        formatter,
+        totalFees,
+        minimumReceived,
+        swap
+    } = useSingularityData()
 
     return (
         <>
@@ -131,7 +150,7 @@ export default function () {
                     )}
 
                     <div>
-                        <button onClick={() => wallet.connect()} className="bg-purple-900 text-purple-400 w-full px-2 py-2 rounded font-medium">
+                        <button onClick={wallet.account ? () => swap() : () => wallet.connect()} className="bg-purple-900 text-purple-400 w-full px-2 py-2 rounded font-medium">
                             {wallet.account ? 'Swap' : 'Connect Wallet'}
                         </button>
                     </div>
