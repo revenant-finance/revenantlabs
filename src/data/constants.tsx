@@ -10,7 +10,7 @@ export const TOKENS = {
         },
         {
             id: 'credit',
-            name: 'Credtium',
+            name: 'Creditum',
             symbol: 'CREDIT',
             address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',
             image: '/img/tokens/creditum.png',
