@@ -17,7 +17,7 @@ export default function Modal({ visible, onClose, children }) {
                             initial={{ translateY: '-20%' }}
                             animate={{ translateY: '0%' }}
                             exit={{ translateY: '-20%' }}
-                            className="bg-zinc-900 max-w-lg shadow-2xl w-full rounded p-6 overflow-auto"
+                            className="bg-zinc-900 max-w-lg w-full border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 overflow-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {children}

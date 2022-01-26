@@ -1,10 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import BN from 'bignumber.js'
+import commaNumber from 'comma-number'
+import { createContext, useContext, useEffect, useState } from 'react'
+import shortNumber from 'short-number'
 import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
-import BN from 'bignumber.js'
-import commaNumber from 'comma-number'
-import shortNumber from 'short-number'
 import { TOKENS } from '../../data/constants'
 
 export const SingularityIndexPageContext = createContext({})
