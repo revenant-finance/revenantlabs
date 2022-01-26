@@ -1,13 +1,13 @@
 import BN from 'bignumber.js'
 import commaNumber from 'comma-number'
 import { useRouter } from 'next/router'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import shortNumber from 'short-number'
+import { useCookieState } from 'use-cookie-state'
 import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
-import { useCookieState } from 'use-cookie-state'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -20,8 +20,10 @@ export function SingularityAppWrapper({ children }) {
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState(0.0)
     const [toValue, _setToValue] = useState(0.0)
-    const [fromToken, _setFromToken] = useCookieState('singularity-from-token', TOKENS[250][0])
-    const [toToken, _setToToken] = useCookieState('singularity-to-token', TOKENS[250][1])
+    const [fromToken, _setFromToken] = useState(TOKENS[250][0])
+    const [toToken, _setToToken] = useState(TOKENS[250][1])
+    const [fromTokenCache, setFromTokenCache] = useCookieState('singularity-from-token', fromToken.id)
+    const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken.id)
     const [slippage, setSlippage] = useState(0.1)
     const [fromBalance, setFromBalance] = useState(0)
     const [toBalance, setToBalance] = useState(0)
@@ -34,10 +36,6 @@ export function SingularityAppWrapper({ children }) {
     const totalFees = new BN(toValue).times(totalFeesBp).div(10000)
     const minimumReceived = new BN(toValue).minus(totalFees).toNumber()
 
-    useEffect(() => console.log('totalFeesBp', totalFeesBp), [totalFeesBp])
-    useEffect(() => console.log('toValue', toValue), [toValue])
-    useEffect(() => console.log('totalFees', totalFees.toNumber()), [totalFees])
-
     const fromBalanceEth = fromToken ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber() : 0
     const toBalanceEth = toToken ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber() : 0
 
@@ -46,11 +44,13 @@ export function SingularityAppWrapper({ children }) {
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
+        setFromTokenCache(token.id)
         setFromValue(0)
     }
 
     const setToToken = (token: any) => {
         _setToToken(token)
+        setToTokenCache(token.id)
         setToValue(0)
     }
 
@@ -66,29 +66,10 @@ export function SingularityAppWrapper({ children }) {
         return amountsOut[amountsOut.length - 1]
     }
 
-    // useEffect(() => {
-    //     if (!fromValue) return
-
-    //     const onLoad = async () => {
-    //         const amountsOut = await getAmountsOut(fromValue, [fromToken.address, toToken.address])
-    //         setToValue(amountsOut)
-    //     }
-    //     onLoad()
-    // }, [fromValue])
-
-    // useEffect(() => {
-    //     if (!toValue) return
-
-    //     const onLoad = async () => {
-    //         const amountsOut = await getAmountsOut(toValue, [toToken.address, fromToken.address])
-    //         setFromValue(amountsOut)
-    //     }
-    //     onLoad()
-    // }, [toValue])
-
     const setFromValue = async (balance) => {
         try {
             _setFromValue(balance)
+            if (!toToken || !fromToken || !balance) return
             const amountsOut = await getAmountsOut(balance, [fromToken.address, toToken.address])
             _setToValue(amountsOut)
         } catch (error) {
@@ -100,6 +81,7 @@ export function SingularityAppWrapper({ children }) {
     const setToValue = async (balance) => {
         try {
             _setToValue(balance)
+            if (!toToken || !fromToken || !balance) return
             const amountsOut = await getAmountsOut(balance, [toToken.address, fromToken.address])
             _setFromValue(amountsOut)
         } catch (error) {
@@ -144,7 +126,6 @@ export function SingularityAppWrapper({ children }) {
             if (!toToken) return
             const toTokenContract = new web3.eth.Contract(erc20, toToken.address)
             const toTokenBalance = await toTokenContract.methods.balanceOf(wallet.account).call()
-            console.log('toTokenBalance', toTokenBalance)
             setToBalance(toTokenBalance)
         }
         getFromBalance()
@@ -153,33 +134,29 @@ export function SingularityAppWrapper({ children }) {
 
     // Use router to set tokens.
     useEffect(() => {
-        if (!router.query) return
+        if (!router || !router.query) return
         const fromTokenQuery = TOKENS[250].find((token) => token.id === router.query.from)
         if (fromTokenQuery) setFromToken(fromTokenQuery)
         const toTokenQuery = TOKENS[250].find((token) => token.id === router.query.to)
         if (toTokenQuery) setToToken(toTokenQuery)
     }, [router])
 
+    // Use cache to set tokens.
+    useEffect(() => {
+        if (!router) return
+        if (!fromTokenCache || !toTokenCache) return
+        if (router.query.from || router.query.to) return
+
+        const fromTokenQuery = TOKENS[250].find((token) => token.id === fromTokenCache)
+        if (fromTokenQuery) setFromToken(fromTokenQuery)
+        const toTokenQuery = TOKENS[250].find((token) => token.id === toTokenCache)
+        if (toTokenQuery) setToToken(toTokenQuery)
+    }, [router])
+
     // Shallow routing for shareable links.
     useEffect(() => {
-        router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
+        if (fromToken || toToken) router.push(`/singularity`, `/singularity?from=${fromToken ? fromToken.id : 'wftm'}&to=${toToken ? toToken.id : 'wftm'}`, { shallow: true })
     }, [fromToken, toToken])
-
-    // Fix if broken.
-    useEffect(() => {
-        if (fromToken && !fromToken.id) setFromToken(TOKENS[250][0])
-    }, [fromToken])
-    useEffect(() => {
-        if (toToken && !toToken.id) setToToken(TOKENS[250][1])
-    }, [toToken])
-
-    // Updated `to` price with updated `from` price every 2 seconds.
-    // useEffect(() => {
-    //     const priceTimer = setInterval(() => {
-    //         setFromValue(fromValue)
-    //     }, 4000)
-    //     return () => clearInterval(priceTimer)
-    // }, [fromValue])
 
     return (
         <SingularityIndexPageContext.Provider

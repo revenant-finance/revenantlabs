@@ -38,11 +38,7 @@ export default function () {
                                             {/* <span>{fromToken.symbol}</span> */}
                                         </span>
                                     )}
-                                    {!fromToken && (
-                                        <span>
-                                            <i className="fas fa-box hover:animate-spin"></i>
-                                        </span>
-                                    )}
+                                    {!fromToken && <i className="fas fa-box hover:animate-spin"></i>}
                                 </div>
                             </button>
                         </div>
@@ -78,11 +74,7 @@ export default function () {
                                             {/* <span>{toToken.symbol}</span> */}
                                         </span>
                                     )}
-                                    {!toToken && (
-                                        <span>
-                                            <i className="fas fa-box hover:animate-spin"></i>
-                                        </span>
-                                    )}
+                                    {!toToken && <i className="fas fa-box hover:animate-spin"></i>}
                                 </div>
                             </button>
                         </div>
@@ -136,6 +128,12 @@ export default function () {
                                 </div>
                             </div>
                         </div>
+                    )}
+
+                    {fromToken && toToken && (
+                        <p className="text-xs text-center font-mono opacity-50">
+                            Swapping {formatter(inEth(fromValue || 0, fromToken.decimals))} {fromToken.symbol} to {formatter(inEth(toValue || 0, toToken.decimals))} {toToken.symbol}.
+                        </p>
                     )}
 
                     <div>

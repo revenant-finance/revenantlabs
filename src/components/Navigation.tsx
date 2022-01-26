@@ -49,7 +49,7 @@ export default function Naviation() {
                                 <Link href="/" passHref>
                                     <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Read Docs</a>
                                 </Link>
-                                <Link href="/" passHref>
+                                <Link href={'/singularity?from=wftm&to=credit'} passHref>
                                     <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Get Tokens</a>
                                 </Link>
                             </div>
