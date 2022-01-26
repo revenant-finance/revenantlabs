@@ -28,12 +28,10 @@ export default function SwapperModal() {
         <Portal>
             <Modal visible={showSelectTokenModal} onClose={() => setShowSelectTokenModal(false)}>
                 <div className="flex flex-col">
-                    <div className="p-6">
-                        <div className="bg-neutral-700 rounded-3xl w-full flex">
-                            <input value={filter} onChange={(e) => setFilter(e.target.value)} type="text" className="bg-transparent p-4 w-full" />
-                        </div>
+                    <div className="bg-neutral-700 rounded w-full flex">
+                        <input value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="outline-none bg-transparent p-2 w-full" />
                     </div>
-                    <div className="p-4 border-t border-neutral-700 max-h-full overflow-auto flex-1">
+                    <div className="max-h-full overflow-auto flex-1">
                         {tokenList.map((token) => (
                             <button onClick={() => setToken(token)} className="w-full text-left flex items-center space-x-4 hover:bg-neutral-900 p-2 px-4 rounded-xl">
                                 <img className="w8 h-8 rounded full" src={token.image} alt="" />

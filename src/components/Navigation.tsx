@@ -23,12 +23,13 @@ export default function Naviation() {
 
     return (
         <>
-            <div className="fixed top-0 right-0 p-2 md:p-6 z-30 pointer-events-none max-w-lg w-full flex flex-col items-end gap-2">
+            <div className="fixed top-0 right-0 p-6 z-30 pointer-events-none max-w-lg w-full flex flex-col items-end gap-2">
                 <div className="flex gap-2">
-                    <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-full px-4 py-2 shadow-2xlt text-xs font-medium')}>
-                        {wallet.account ? `${wallet.account.slice(0, 6)}...${wallet.account.slice(-6)}` : 'Connect Wallet'}
+                    <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xlt text-xs font-medium')}>
+                        {/* {<i className={classNames('fas fa-wallet', wallet.account && 'text-orange-500')} />} */}
+                        {wallet.account ? `${wallet.account.slice(0, 6)}...${wallet.account.slice(-6)}` : <i className="fas fa-wallet" />}
                     </button>
-                    <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-full px-4 py-2 shadow-2xl')}>
+                    <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xl')}>
                         <i className={classNames('fas fa-bars transition ease-in-out duration-75', open && 'rotate-90 text-orange-500')}></i>
                     </button>
                 </div>

@@ -30,3 +30,9 @@ body,
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+::placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
+    /* color: red !important; */
+}
