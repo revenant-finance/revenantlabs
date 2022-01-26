@@ -4,9 +4,16 @@ import Swapper from '../../components/Singularity/Swapper'
 import { Gradient } from '../../lib/gradient'
 
 export default function SingularityIndexPage() {
+    let gradient
+
     useEffect(() => {
-        const gradient = new Gradient()
-        gradient.initGradient('#gradient-canvas')
+        try {
+            if (gradient) return
+            gradient = new Gradient()
+            gradient.initGradient('#gradient-canvas')
+        } catch (error) {
+            console.log(error)
+        }
     }, [])
 
     return (

@@ -16,7 +16,7 @@ export default function () {
                 <div className="bg-zinc-900 border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-3">
                     <div className="relative rounded-2xl overflow-hidden border-2 border-zinc-800">
                         <div className="bg-zinc-700 w-full flex border-b-2 border-zinc-800 ">
-                            <div className="w-full">
+                            <div className="flex-1">
                                 <BigNumberInput
                                     renderInput={(props) => <input {...props} className={classNames('bg-transparent outline-none p-4 w-full', !!fromBalanceEth && 'pb-0')} />}
                                     decimals={fromToken ? fromToken.decimals : 18}
@@ -30,11 +30,18 @@ export default function () {
                                 )}
                             </div>
                             <button onClick={() => openModal('from')} type="button" className="flex items-center justify-center space-x-2 px-3">
-                                <div className="bg-purple-400 text-purple-900 px-3 py-1 rounded-xl whitespace-nowrap shadow">
-                                    <span>{fromToken ? fromToken.symbol : 'Token'} </span>
-                                    <span>
-                                        <i className="fas fa-angle-down hover:animate-spin"></i>
-                                    </span>
+                                <div className="bg-zinc-800 max-w-lg w-full border-2 border-zinc-900 rounded-2xl shadow-2xl px-3 py-2 whitespace-nowrap flex items-center space-x-2">
+                                    {fromToken && (
+                                        <span className="flex items-center space-x-2">
+                                            <img className="w-6" src={fromToken.image} alt="" />
+                                            <span>{fromToken.symbol}</span>
+                                        </span>
+                                    )}
+                                    {!fromToken && (
+                                        <span>
+                                            <i className="fas fa-box hover:animate-spin"></i>
+                                        </span>
+                                    )}
                                 </div>
                             </button>
                         </div>
@@ -46,7 +53,7 @@ export default function () {
                         </div>
 
                         <div className="bg-zinc-700 w-full flex">
-                            <div className="w-full">
+                            <div className="flex-1">
                                 <BigNumberInput
                                     renderInput={(props) => <input {...props} className={classNames('bg-transparent outline-none p-4 w-full', !!toBalanceEth && 'pb-0')} />}
                                     decimals={toToken ? toToken.decimals : 18}
@@ -59,12 +66,19 @@ export default function () {
                                     </button>
                                 )}
                             </div>
-                            <button onClick={() => openModal('to')} type="button" className="flex items-center justify-center space-x-2 px-3">
-                                <div className="bg-purple-400 text-purple-900 px-3 py-1 rounded-xl whitespace-nowrap shadow">
-                                    <span>{toToken ? toToken.symbol : 'Token'} </span>
-                                    <span>
-                                        <i className="fas fa-angle-down hover:animate-spin"></i>
-                                    </span>
+                            <button onClick={() => openModal('to')} type="button" className="flex items-center justify-center  px-3">
+                                <div className="bg-zinc-800 max-w-lg w-full border-2 border-zinc-900 rounded-2xl shadow-2xl px-3 py-2 whitespace-nowrap flex items-center space-x-2">
+                                    {toToken && (
+                                        <span className="flex items-center space-x-2">
+                                            <img className="w-6" src={toToken.image} alt="" />
+                                            <span>{toToken.symbol}</span>
+                                        </span>
+                                    )}
+                                    {!toToken && (
+                                        <span>
+                                            <i className="fas fa-box hover:animate-spin"></i>
+                                        </span>
+                                    )}
                                 </div>
                             </button>
                         </div>

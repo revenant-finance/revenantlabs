@@ -25,11 +25,11 @@ export const TOKENS = {
             decimals: 6
         },
         {
-            id: 'oxd',
-            name: 'OxDAO Token',
-            symbol: 'OXD',
-            address: '0xc165d941481e68696f43ee6e99bfb2b23e0e3114',
-            image: '/img/tokens/usdt.png',
+            id: 'credit',
+            name: 'Credtium',
+            symbol: 'CREDIT',
+            address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',
+            image: '/img/tokens/creditum.png',
             decimals: 18
         }
     ]

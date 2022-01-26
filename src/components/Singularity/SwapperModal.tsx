@@ -5,18 +5,23 @@ import Portal from '../Portal'
 import useSingularityData from './SingularityAppWrapper'
 
 export default function SwapperModal() {
-    const { setFromToken, setToToken, showSelectTokenModal, setShowSelectTokenModal, selectingToken, setSelectingToken } = useSingularityData()
+    const { fromToken, toToken, setFromToken, setToToken, showSelectTokenModal, setShowSelectTokenModal, selectingToken, setSelectingToken } = useSingularityData()
 
     const [filter, setFilter] = useState('')
 
-    const tokenList = TOKENS['250'].filter((token) => {
-        const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
-        const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
-        const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
+    const tokenList = TOKENS['250']
+        .filter((token) => {
+            // Don't show selected tokens, if selected.
+            return (fromToken ? token.id !== fromToken.id : true) && (toToken ? token.id !== toToken.id : true)
+        })
+        .filter((token) => {
+            const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
+            const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
+            const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
 
-        if (matchesName || matchesSymbol || matchesAddress) return true
-        return false
-    })
+            if (matchesName || matchesSymbol || matchesAddress) return true
+            return false
+        })
 
     const setToken = (token) => {
         if (selectingToken === 'from') setFromToken(token)
