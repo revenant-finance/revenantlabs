@@ -17,8 +17,8 @@ export default function SwapperModal() {
     const tokenList = TOKENS['250']
         .filter((token) => {
             // Don't show selected tokens, if selected.
-            // return (fromToken ? token.id !== fromToken.id : true) && (toToken ? token.id !== toToken.id : true)
-            return true
+            if (selectingToken === 'to') return fromToken ? token.id !== fromToken.id : true
+            if (selectingToken === 'from') return toToken ? token.id !== toToken.id : true
         })
         .filter((token) => {
             const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
