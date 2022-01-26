@@ -46,9 +46,11 @@ export default function Naviation() {
                                 <Link href="/" passHref>
                                     <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Go Home</a>
                                 </Link>
-                                <Link href="/" passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Read Docs</a>
-                                </Link>
+                                {/* <Link href="https://documentation.revenant.finance/creditum" passHref>
+                                    <a target="_blank" className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">
+                                        Read Docs
+                                    </a>
+                                </Link> */}
                                 <Link href={'/singularity?from=wftm&to=credit'} passHref>
                                     <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Get Tokens</a>
                                 </Link>
@@ -66,12 +68,14 @@ export default function Naviation() {
                             </div>
 
                             <div className="flex items-center">
-                                <div className="flex-1">
-                                    <a href="# " className="font-mono underline opacity-50 hover:opacity-100">
-                                        Support
-                                    </a>
-                                </div>
-                                <p className="text-center space-x-2">
+                                <p className="flex-1">
+                                    <Link href="https://documentation.revenant.finance/creditum" passHref>
+                                        <a className="opacity-50 hover:opacity-100 font-medium" target="_blank">
+                                            Docs
+                                        </a>
+                                    </Link>
+                                </p>
+                                <p className="space-x-2">
                                     <a href="/twitter" target="_blank" className="opacity-50 hover:opacity-100">
                                         <i className="fab fa-twitter" />
                                     </a>

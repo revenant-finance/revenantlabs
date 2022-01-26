@@ -9,6 +9,14 @@ export const TOKENS = {
             decimals: 18
         },
         {
+            id: 'credit',
+            name: 'Credtium',
+            symbol: 'CREDIT',
+            address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',
+            image: '/img/tokens/creditum.png',
+            decimals: 18
+        },
+        {
             id: 'dai',
             name: 'DAI Stablecoin',
             symbol: 'DAI',
@@ -30,14 +38,6 @@ export const TOKENS = {
             symbol: 'OXD',
             address: '0xc165d941481e68696f43ee6e99bfb2b23e0e3114',
             image: '/img/tokens/0xdao.png',
-            decimals: 18
-        },
-        {
-            id: 'credit',
-            name: 'Credtium',
-            symbol: 'CREDIT',
-            address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',
-            image: '/img/tokens/creditum.png',
             decimals: 18
         }
     ]

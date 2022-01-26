@@ -123,17 +123,11 @@ export default function () {
                                 <div className="flex items-center text-yellow-400">
                                     <p className="flex-1">Minimum Received</p>
                                     <p className="">
-                                        ~{inEth(minimumReceived, toToken.decimals)} {toToken.symbol}
+                                        ~{formatter(inEth(minimumReceived, toToken.decimals))} {toToken.symbol}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    )}
-
-                    {fromToken && toToken && (
-                        <p className="text-xs text-center font-mono opacity-50">
-                            Swapping {formatter(inEth(fromValue || 0, fromToken.decimals))} {fromToken.symbol} to {formatter(inEth(toValue || 0, toToken.decimals))} {toToken.symbol}.
-                        </p>
                     )}
 
                     <div>
@@ -141,6 +135,12 @@ export default function () {
                             {wallet.account ? 'Swap' : 'Connect Wallet'}
                         </button>
                     </div>
+
+                    {fromToken && toToken && (
+                        <p className="text-xs text-center font-mono opacity-50">
+                            Swapping {formatter(inEth(fromValue || 0, fromToken.decimals))} {fromToken.symbol} to {formatter(inEth(toValue || 0, toToken.decimals))} {toToken.symbol}.
+                        </p>
+                    )}
                 </div>
             </div>
         </>
