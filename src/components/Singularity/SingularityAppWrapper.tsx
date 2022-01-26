@@ -79,7 +79,13 @@ export function SingularityAppWrapper({ children }) {
         setSelectingToken(modalType)
     }
 
-    const inEth = (value: number, decimals: number) => Number(Number(new BN(value).div(new BN(10).pow(new BN(decimals))).toNumber()).toFixed(2))
+    const inEth = (value: number, decimals: number) =>
+        Number(
+            new BN(value)
+                .div(new BN(10).pow(new BN(decimals)))
+                .toNumber()
+                .toFixed(2)
+        )
 
     const formatter = (value: number) => {
         const number = Number(Number(value).toFixed(2))

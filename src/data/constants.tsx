@@ -29,7 +29,8 @@ export const TOKENS = {
             name: 'OxDAO Token',
             symbol: 'OXD',
             address: '0xc165d941481e68696f43ee6e99bfb2b23e0e3114',
-            image: '/img/tokens/usdt.png'
+            image: '/img/tokens/usdt.png',
+            decimals: 18
         }
     ]
 }
