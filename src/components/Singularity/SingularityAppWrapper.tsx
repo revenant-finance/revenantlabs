@@ -26,6 +26,18 @@ export function SingularityAppWrapper({ children }) {
     const [fromBalance, setFromBalance] = useState(0)
     const [toBalance, setToBalance] = useState(0)
 
+    const slippageBp = Number((slippage * 100).toFixed(0))
+    const priceImpactBp = 10
+    const feeBp = 300
+    const totalFeesBp = slippageBp + priceImpactBp + feeBp
+
+    const totalFees = new BN(toValue).times(totalFeesBp).div(10000)
+    const minimumReceived = new BN(toValue).minus(totalFees).toNumber()
+
+    useEffect(() => console.log('totalFeesBp', totalFeesBp), [totalFeesBp])
+    useEffect(() => console.log('toValue', toValue), [toValue])
+    useEffect(() => console.log('totalFees', totalFees.toNumber()), [totalFees])
+
     const fromBalanceEth = fromToken ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber() : 0
     const toBalanceEth = toToken ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber() : 0
 
@@ -43,8 +55,8 @@ export function SingularityAppWrapper({ children }) {
     }
 
     const swapTokens = () => {
-        setFromToken(toToken)
-        setToToken(fromToken)
+        _setFromToken(toToken)
+        _setToToken(fromToken)
         _setFromValue(toValue)
         _setToValue(fromValue)
     }
@@ -195,7 +207,9 @@ export function SingularityAppWrapper({ children }) {
                 maxFrom,
                 maxTo,
                 inEth,
-                formatter
+                formatter,
+                totalFees,
+                minimumReceived
             }}
         >
             {children}

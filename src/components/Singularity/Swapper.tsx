@@ -6,7 +6,8 @@ import SwapperModal from './SwapperModal'
 
 export default function () {
     const wallet = useWallet()
-    const { openModal, fromToken, toToken, fromValue, setFromValue, toValue, setToValue, slippage, setSlippage, swapTokens, fromBalanceEth, toBalanceEth, maxFrom, maxTo, inEth, formatter } = useSingularityData()
+    const { openModal, fromToken, toToken, fromValue, setFromValue, toValue, setToValue, slippage, setSlippage, swapTokens, fromBalanceEth, toBalanceEth, maxFrom, maxTo, inEth, formatter, totalFees, minimumReceived } =
+        useSingularityData()
 
     return (
         <>
@@ -34,7 +35,7 @@ export default function () {
                                     {fromToken && (
                                         <span className="flex items-center space-x-2">
                                             <img className="w-6" src={fromToken.image} alt="" />
-                                            <span>{fromToken.symbol}</span>
+                                            {/* <span>{fromToken.symbol}</span> */}
                                         </span>
                                     )}
                                     {!fromToken && (
@@ -74,7 +75,7 @@ export default function () {
                                     {toToken && (
                                         <span className="flex items-center space-x-2">
                                             <img className="w-6" src={toToken.image} alt="" />
-                                            <span>{toToken.symbol}</span>
+                                            {/* <span>{toToken.symbol}</span> */}
                                         </span>
                                     )}
                                     {!toToken && (
@@ -123,11 +124,15 @@ export default function () {
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Total Fees</p>
-                                    <p className="">~12.00 USDC</p>
+                                    <p className="">
+                                        ~{inEth(totalFees, toToken.decimals)} {toToken.symbol}
+                                    </p>
                                 </div>
                                 <div className="flex items-center text-yellow-400">
                                     <p className="flex-1">Minimum Receieved</p>
-                                    <p className="">~12.00 USDC</p>
+                                    <p className="">
+                                        ~{inEth(minimumReceived, toToken.decimals)} {toToken.symbol}
+                                    </p>
                                 </div>
                             </div>
                         </div>

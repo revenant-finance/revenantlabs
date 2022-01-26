@@ -44,13 +44,13 @@ export default function Naviation() {
                         >
                             <div className="flex flex-col gap-1">
                                 <Link href="/" passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold">Go Home</a>
+                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Go Home</a>
                                 </Link>
                                 <Link href="/" passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold">Read Docs</a>
+                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Read Docs</a>
                                 </Link>
                                 <Link href="/" passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold">Get Tokens</a>
+                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Get Tokens</a>
                                 </Link>
                             </div>
 
