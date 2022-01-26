@@ -1,23 +1,27 @@
 import BN from 'bignumber.js'
 import commaNumber from 'comma-number'
+import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import shortNumber from 'short-number'
 import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
+import { useCookieState } from 'use-cookie-state'
 
 export const SingularityIndexPageContext = createContext({})
 
 export function SingularityAppWrapper({ children }) {
+    const router = useRouter()
+
     const wallet = useWallet()
 
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState(0.0)
     const [toValue, _setToValue] = useState(0.0)
-    const [fromToken, setFromToken] = useState(TOKENS[250][0])
-    const [toToken, setToToken] = useState(TOKENS[250][1])
+    const [fromToken, setFromToken] = useCookieState('singularity-from-token', TOKENS[250][0])
+    const [toToken, setToToken] = useCookieState('singularity-to-token', TOKENS[250][1])
     const [slippage, setSlippage] = useState(0.1)
     const [fromBalance, setFromBalance] = useState(0)
     const [toBalance, setToBalance] = useState(0)
@@ -84,6 +88,13 @@ export function SingularityAppWrapper({ children }) {
     }
 
     useEffect(() => {
+        const priceTimer = setInterval(() => {
+            setFromValue(fromValue)
+        }, 4000)
+        return () => clearInterval(priceTimer)
+    }, [fromValue])
+
+    useEffect(() => {
         if (!wallet.account) return
 
         const getFromBalance = async () => {
@@ -103,6 +114,19 @@ export function SingularityAppWrapper({ children }) {
         getFromBalance()
         getToBalance()
     }, [wallet, fromToken, toToken])
+
+    useEffect(() => {
+        if (!router.query) return
+        const fromTokenQuery = TOKENS[250].find((token) => token.id === router.query.from)
+        if (fromTokenQuery) setFromToken(fromTokenQuery)
+
+        const toTokenQuery = TOKENS[250].find((token) => token.id === router.query.to)
+        if (toTokenQuery) setToToken(toTokenQuery)
+    }, [router])
+
+    useEffect(() => {
+        router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
+    }, [fromToken, toToken])
 
     return (
         <SingularityIndexPageContext.Provider

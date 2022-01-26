@@ -47,7 +47,10 @@ export default function () {
                         </div>
 
                         <div className="w-full relative z-10 pointer-events-none">
-                            <button onClick={swapTokens} className="pointer-events-auto block ml-6 md:mx-auto h-10 w-10 bg-neutral-700 border-2 border-neutral-800 -mt-5 -mb-5 rounded-full">
+                            <button
+                                onClick={swapTokens}
+                                className="pointer-events-auto block mr-6 ml-auto md:mx-auto h-8 w-8 md:h-10 md:w-10 bg-zinc-800 border-2 border-zinc-900 -mt-4 -mb-4 md:-mt-5 md:-mb-5 rounded-full"
+                            >
                                 <i className="fas fa-retweet" />
                             </button>
                         </div>
