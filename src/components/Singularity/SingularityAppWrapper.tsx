@@ -87,13 +87,7 @@ export function SingularityAppWrapper({ children }) {
         return number < 1000 ? commaNumber(number) : shortNumber(number)
     }
 
-    useEffect(() => {
-        const priceTimer = setInterval(() => {
-            setFromValue(fromValue)
-        }, 4000)
-        return () => clearInterval(priceTimer)
-    }, [fromValue])
-
+    // Load selected token balances.
     useEffect(() => {
         if (!wallet.account) return
 
@@ -115,18 +109,35 @@ export function SingularityAppWrapper({ children }) {
         getToBalance()
     }, [wallet, fromToken, toToken])
 
+    // Use router to set tokens.
     useEffect(() => {
         if (!router.query) return
         const fromTokenQuery = TOKENS[250].find((token) => token.id === router.query.from)
         if (fromTokenQuery) setFromToken(fromTokenQuery)
-
         const toTokenQuery = TOKENS[250].find((token) => token.id === router.query.to)
         if (toTokenQuery) setToToken(toTokenQuery)
     }, [router])
 
+    // Shallow routing for shareable links.
     useEffect(() => {
         router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
     }, [fromToken, toToken])
+
+    // Fix if broken.
+    useEffect(() => {
+        if (fromToken && !fromToken.id) setFromToken(TOKENS[250][0])
+    }, [fromToken])
+    useEffect(() => {
+        if (toToken && !toToken.id) setToToken(TOKENS[250][1])
+    }, [toToken])
+
+    // Updated `to` price with updated `from` price every 2 seconds.
+    useEffect(() => {
+        const priceTimer = setInterval(() => {
+            setFromValue(fromValue)
+        }, 4000)
+        return () => clearInterval(priceTimer)
+    }, [fromValue])
 
     return (
         <SingularityIndexPageContext.Provider
