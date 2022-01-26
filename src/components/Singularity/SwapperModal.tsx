@@ -29,7 +29,7 @@ export default function SwapperModal() {
             <Modal visible={showSelectTokenModal} onClose={() => setShowSelectTokenModal(false)}>
                 <div className="flex flex-col">
                     <div className="bg-neutral-700 rounded w-full flex">
-                        <input value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="outline-none bg-transparent p-2 w-full" />
+                        <input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="outline-none bg-transparent p-2 w-full" />
                     </div>
                     <div className="max-h-full overflow-auto flex-1">
                         {tokenList.map((token) => (

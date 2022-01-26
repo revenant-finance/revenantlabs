@@ -40,18 +40,16 @@ export function SingularityAppWrapper({ children }) {
         return amountsOut[amountsOut.length - 1]
     }
 
-    const setFromValue = useCallback(
-        async (balance) => {
-            try {
-                _setFromValue(balance)
-                const amountsOut = await getAmountsOut(balance, [fromToken.address, toToken.address])
-                _setToValue(amountsOut)
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        [fromValue, toValue]
-    )
+    const setFromValue = async (balance) => {
+        try {
+            _setFromValue(balance)
+            const amountsOut = await getAmountsOut(balance, [fromToken.address, toToken.address])
+            _setToValue(amountsOut)
+        } catch (error) {
+            _setToValue(0)
+            console.log(error)
+        }
+    }
 
     const setToValue = async (balance) => {
         try {
@@ -59,17 +57,10 @@ export function SingularityAppWrapper({ children }) {
             const amountsOut = await getAmountsOut(balance, [toToken.address, fromToken.address])
             _setFromValue(amountsOut)
         } catch (error) {
+            _setFromValue(0)
             console.log(error)
         }
     }
-
-    // useEffect(() => {
-    //     if (toInput) updateToField(toInput)
-    // }, [toToken])
-
-    // useEffect(() => {
-    //     setFromValue(fromValue)
-    // }, [fromValue])
 
     const maxFrom = () => setFromValue(fromBalance)
     const maxTo = () => setToValue(toBalance)
