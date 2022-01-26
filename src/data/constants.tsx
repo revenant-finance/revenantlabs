@@ -23,6 +23,13 @@ export const TOKENS = {
             address: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
             image: '/img/tokens/usdc.png',
             decimals: 6
+        },
+        {
+            id: 'oxd',
+            name: 'OxDAO Token',
+            symbol: 'OXD',
+            address: '0xc165d941481e68696f43ee6e99bfb2b23e0e3114',
+            image: '/img/tokens/usdt.png'
         }
     ]
 }
