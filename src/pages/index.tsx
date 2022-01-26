@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import Banner from '../components/Banner'
 import CallToAction from '../components/CallToAction'
 import Footer from '../components/Footer'
@@ -52,17 +53,17 @@ export default function IndexPage() {
                             </div>
                         </a>
 
-                        <a
-                            href=""
-                            target="_blank"
-                            className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
-                            style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}
-                        >
-                            <div className="md:max-w-sm space-y-2 ">
-                                <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
-                                <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
-                            </div>
-                        </a>
+                        <Link href="/singularity" passHref>
+                            <a
+                                className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
+                                style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}
+                            >
+                                <div className="md:max-w-sm space-y-2 ">
+                                    <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
+                                    <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
+                                </div>
+                            </a>
+                        </Link>
                     </div>
 
                     <a

@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Naviation from '../components/Navigation'
 import Meta from '../../public/img/Meta'
+import { UseWalletProvider } from 'use-wallet'
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
@@ -17,8 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 />
             </Head>
             <Meta />
-            <Naviation />
-            <Component {...pageProps} />
+            <UseWalletProvider>
+                <Naviation />
+                <Component {...pageProps} />
+            </UseWalletProvider>
         </>
     )
 }
