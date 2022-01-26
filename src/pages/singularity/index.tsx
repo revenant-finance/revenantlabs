@@ -7,8 +7,8 @@ export default function SingularityIndexPage() {
     return (
         <>
             <SingularityAppWrapper>
-                <NavBar />
-                <div className="w-full p-6 py-12 md:py-24">
+                <div className="w-full h-full bg-center bg-cover p-6 py-24" style={{ backgroundImage: `url("/img/singularity-background-2.png")` }}>
+                    <div className="bg-black absolute inset-0 bg-opacity-50"></div>
                     <Swapper />
                 </div>
             </SingularityAppWrapper>

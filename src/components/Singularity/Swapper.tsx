@@ -8,17 +8,17 @@ export default function () {
         <>
             <SwapperModal />
 
-            <div className="max-w-lg mx-auto w-full space-y-4">
-                <div className="flex items-center">
+            <div className="relative max-w-lg mx-auto w-full space-y-4">
+                {/* <div className="flex items-center">
                     <p className="font-mono flex-1">Swap Tokens</p>
                     <button>
                         <i className="fas fa-cog" />
                     </button>
-                </div>
-                <div className="bg-neutral-800 shadow-lg rounded-3xl p-6 space-y-6">
+                </div> */}
+                <div className="bg-zinc-900 border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-6">
                     <div className="relative">
                         <div className="bg-neutral-700 rounded-t-3xl w-full border-b-2 border-neutral-800 flex">
-                            <input type="text" className="bg-transparent p-4 w-full" />
+                            <input autoFocus type="text" className="bg-transparent outline-none p-4 w-full" />
                             <button onClick={() => openModal('from')} type="button" className="flex items-center justify-center space-x-2 px-3">
                                 <div className="bg-purple-400 text-purple-900 px-3 py-1 rounded-3xl whitespace-nowrap shadow">
                                     <span>{fromToken ? fromToken.symbol : 'Token'} </span>
@@ -36,7 +36,7 @@ export default function () {
                         </div>
 
                         <div className="bg-neutral-700 rounded-b-3xl w-full flex">
-                            <input type="text" className="bg-transparent p-4 w-full" />
+                            <input type="text" className="bg-transparent outline-none p-4 w-full" />
                             <button onClick={() => openModal('to')} type="button" className="flex items-center justify-center space-x-2 px-3">
                                 <div className="bg-purple-400 text-purple-900 px-3 py-1 rounded-3xl whitespace-nowrap shadow">
                                     <span>{toToken ? toToken.symbol : 'Token'} </span>
