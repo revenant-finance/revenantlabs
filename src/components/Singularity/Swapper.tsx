@@ -129,7 +129,7 @@ export default function () {
                                     </p>
                                 </div>
                                 <div className="flex items-center text-yellow-400">
-                                    <p className="flex-1">Minimum Receieved</p>
+                                    <p className="flex-1">Minimum Received</p>
                                     <p className="">
                                         ~{inEth(minimumReceived, toToken.decimals)} {toToken.symbol}
                                     </p>
