@@ -9,9 +9,9 @@ High-powered React-centric template for building high-powered apps.
 
 ### Creditum
 
-- `useCreditumData()`: Gets market data found on https://revenant.finance/creditum.
+- `useCreditumData()`: Gets market data found on https://revenant.finance/creditum. Requires wrapper.
 - `useCredtium()`: Market functionailty.
-- `useFarmData()`: Get farm objects array.
+- `useFarmData()`: Get farm objects array. Requires wrapper.
 - `useFarm()`: Interact with farms.
 - `usePool()`: Utiltiy hook used within `useFarmData()`.
 
