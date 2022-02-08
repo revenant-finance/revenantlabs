@@ -1,11 +1,9 @@
+import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { createContext } from 'react'
+import ReactTyped from 'react-typed'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
-import ReactTyped from 'react-typed'
-import { AnimatePresence, motion } from 'framer-motion'
-import classNames from 'classnames'
-import { useEffect, useState, createContext, useContext } from 'react'
-
-
 
 const CreditumContext = createContext({})
 
@@ -20,9 +18,7 @@ const DataPoint = ({ title, value }) => {
 }
 
 const MarketItemAccordion = ({ market }) => {
-    const { selectedMarket, setSelectedMarket } = useContext(CreditumContext)
-
-    // const [open, setOpen] = useState(false)
+    const { selectedMarket, setSelectedMarket } = useCreditumData()
     const open = selectedMarket?.id === market.id
 
     return (
@@ -44,7 +40,6 @@ const MarketItemAccordion = ({ market }) => {
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        key="content"
                         initial="collapsed"
                         animate="open"
                         exit="collapsed"
@@ -69,17 +64,11 @@ const MarketItemAccordion = ({ market }) => {
 }
 
 export default function CreditumMarkets() {
-    const [selectedMarket, setSelectedMarket] = useState(null)
-
-    const { creditumData} = useCreditumData()
+    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput } = useCreditumData()
     const { farmData } = useFarmData()
-    console.log(farmData)
     const markets = creditumData?.cusd
-    console.log(markets)
 
     return (
-        <CreditumContext.Provider value={{ selectedMarket, setSelectedMarket }}>
-
         <div className="w-full p-6 py-24 mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                 {!selectedMarket && (
@@ -94,14 +83,6 @@ export default function CreditumMarkets() {
                     <>
                         <div className="space-y-8">
                             <div className="space-y-4">
-                                {/* <div className="flex items-center space-x-4">
-                      <img className="w-16 h-16" src={`/img/tokens/${selectedMarket.asset}`} alt="" />
-                      <p className="text-2xl font-medium">{selectedMarket.symbol} Market</p>
-                  </div> */}
-                                {/* <div className="p-4 bg-yellow-500 text-neutral-900">
-                  <p className="text-sm font-medium">Your Position</p>
-                  <p>123</p>
-              </div> */}
                                 <div className="">
                                     <DataPoint title="Total Deposits" value="$123,123" />
                                     <DataPoint title="Total Minted" value="$123,123" />
@@ -127,14 +108,24 @@ export default function CreditumMarkets() {
                                     <div className="flex flex-col gap-2 md:flex-row">
                                         <div className="flex-1 space-y-1">
                                             <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to deposit.</p>
-                                            <input type="text" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            <input value={depositInput} onChange={(e) => setDepositInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
                                         </div>
                                         <div className="flex-1 space-y-1">
                                             <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                            <input type="text" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            <input value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
                                         </div>
                                     </div>
-                                    <button className="w-full p-2 text-white bg-green-800 rounded hover:bg-green-900">Deposit & Borrow</button>
+
+                                    {(!!depositInput || !!borrowInput) && (
+                                        <div className="p-4 bg-white bg-opacity-10 rounded">
+                                            <DataPoint title="Borrowed Amount" value="0.0" />
+                                            <DataPoint title="Liquidation Price" value="0.0" />
+                                            <DataPoint title="Health Factor" value="0.0" />
+                                        </div>
+                                    )}
+                                    <button disabled={!depositInput && !borrowInput} className={classNames('w-full p-2 text-white bg-green-800 rounded hover:bg-green-900', !depositInput && !borrowInput && 'opacity-50')}>
+                                        Deposit & Borrow
+                                    </button>
                                 </div>
                             </div>
                             <div className="space-y-4">
@@ -152,14 +143,25 @@ export default function CreditumMarkets() {
                                     <div className="flex flex-col gap-2 md:flex-row">
                                         <div className="flex-1 space-y-1">
                                             <p className="text-xs font-medium">Amount of cUSD to repay.</p>
-                                            <input type="text" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            <input value={repayInput} onChange={(e) => setRepayInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
                                         </div>
                                         <div className="flex-1 space-y-1">
                                             <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to withdraw.</p>
-                                            <input type="text" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            <input value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
                                         </div>
                                     </div>
-                                    <button className="w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900">Repay & Withdraw</button>
+
+                                    {(!!withdrawInput || !!repayInput) && (
+                                        <div className="p-4 bg-white bg-opacity-10 rounded">
+                                            <DataPoint title="Borrowed Amount" value="0.0" />
+                                            <DataPoint title="Liquidation Price" value="0.0" />
+                                            <DataPoint title="Health Factor" value="0.0" />
+                                        </div>
+                                    )}
+
+                                    <button disabled={!withdrawInput && !repayInput} className={classNames('w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900', !withdrawInput && !repayInput && 'opacity-50')}>
+                                        Repay & Withdraw
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -167,13 +169,6 @@ export default function CreditumMarkets() {
                 )}
 
                 <div className="space-y-8">
-                    {/* <div className="p-6 bg-yellow-500 text-neutral-900">
-          <DataPoint title="User Debt" value="0.00 cUSD" />
-          <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
-          <DataPoint title="Current Liquidation Price" value="$0" />
-          <DataPoint title="cUSD left to borrow" value="0 cUSD" />
-      </div> */}
-
                     {!markets && (
                         <div className="flex items-center justify-center border-4 border-dotted border-neutral-700">
                             <p className="p-6 py-24 font-mono opacity-50">
@@ -197,7 +192,5 @@ export default function CreditumMarkets() {
                 </div>
             </div>
         </div>
-        </CreditumContext.Provider>
-
     )
 }
