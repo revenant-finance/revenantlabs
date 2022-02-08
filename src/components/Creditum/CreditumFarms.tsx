@@ -26,9 +26,9 @@ const Farm = ({ farm, open }) => {
 
             <div>
                 <DataPoint title="APR" value="13%" />
-                <DataPoint title="Liquidity" value="$123,123" />
-                <DataPoint title="Your Deposits" value="$123,123" />
-                <DataPoint title="Your Earnings" value="$123,123" />
+                <DataPoint title="Liquidity" value="0" />
+                <DataPoint title="Your Deposits" value="0" />
+                <DataPoint title="Your Earnings" value="0" />
             </div>
 
             <div className="flex gap-2">
@@ -70,10 +70,10 @@ export default function CreditumFarms() {
                     </div>
 
                     <div>
-                        <DataPoint title="LP Token Balance" value="$123,123" />
-                        <DataPoint title="LP Token Deposit Balance" value="$123,123" />
-                        <DataPoint title="cUSD Amount" value="$123,123" />
-                        <DataPoint title="agEUR Amount" value="$123,123" />
+                        <DataPoint title="LP Token Balance" value="0" />
+                        <DataPoint title="LP Token Deposit Balance" value="0" />
+                        <DataPoint title="cUSD Amount" value="0" />
+                        <DataPoint title="agEUR Amount" value="0" />
                     </div>
 
                     <div className="space-y-2">
