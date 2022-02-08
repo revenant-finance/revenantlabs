@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createContext } from 'react'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import DataPoint from '../DataPoint'
@@ -61,7 +60,7 @@ export default function CreditumMarkets() {
     return (
         <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
             <InfoBanner
-                title="Stabalize your fortunes by mint cUSD."
+                title="Stabilize your fortunes by mint cUSD."
                 subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate."
             />
 

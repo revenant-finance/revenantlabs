@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createContext, useState } from 'react'
 import { CreditumDataWrapper } from '../../hooks/Creditum/useCreditumData'
 import Footer from '../Footer'
+import InfoBanner from '../InfoBanner'
 
 export function CreditumAppWrapper({ children }) {
     const [selectedMarket, setSelectedMarket] = useState(null)
@@ -9,7 +10,7 @@ export function CreditumAppWrapper({ children }) {
     return (
         <>
             <div className="bg-yellow-500 text-neutral-900 flex flex-col">
-                <div className="block h-20" />
+                {/* <div className="block h-20" /> */}
                 <div className="w-full max-w-7xl mx-auto p-6 md:p-12 space-y-6">
                     <div className="space-x-6 font-medium">
                         <Link href="/creditum" passHref>
@@ -55,6 +56,16 @@ export function CreditumAppWrapper({ children }) {
             </div>
 
             {children}
+
+            {/* <div className="bg-neutral-800 text-neutral-600">
+                <div className="w-full max-w-7xl mx-auto p-6 md:p-12 py-24 space-y-6">
+                    <div className="text-center space-y-4">
+                        <p className="text-3xl font-medium">Need help?</p>
+                        <p className="max-w-sm mx-auto text-xl">Veniam dolore veniam do consectetur consectetur in sit nulla tempor commo.</p>
+                        <p></p>
+                    </div>
+                </div>
+            </div> */}
         </>
     )
 }

@@ -1,7 +1,8 @@
+import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import Portal from './Portal'
 
-export default function Modal({ visible, onClose, children }) {
+export default function Modal({ visible, onClose, children, style }) {
     return (
         <Portal>
             <AnimatePresence>
@@ -17,7 +18,7 @@ export default function Modal({ visible, onClose, children }) {
                             initial={{ translateY: '-20%' }}
                             animate={{ translateY: '0%' }}
                             exit={{ translateY: '-20%' }}
-                            className="bg-zinc-900 max-w-lg w-full border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 overflow-auto"
+                            className={classNames('max-w-lg w-full p-6 shadow-2xl', style === 'creditum' ? 'bg-neutral-700' : 'bg-zinc-900  border-2 border-zinc-800 rounded-2xl  overflow-auto')}
                             onClick={(e) => e.stopPropagation()}
                         >
                             {children}
