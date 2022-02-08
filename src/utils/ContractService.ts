@@ -30,7 +30,7 @@ export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Pro
 
 export const getCrvContract = (address, provider?: ethers.Signer | ethers.providers.Provider) => getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
 
-export const fetchBalances = async (account: string, tokens: any, allowAddress: string) => {
+export const fetchBalances = async (account: string, tokens: any, allowAddress: string, provider) => {
     if (tokens) {
         const abi = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
         const walletBalanceCalls = tokens.map((token) => ({
@@ -48,7 +48,7 @@ export const fetchBalances = async (account: string, tokens: any, allowAddress: 
             name: 'totalSupply'
         }))
 
-        const [wallet, allow, totalSupply] = await Promise.all([multicall(abi, walletBalanceCalls), multicall(abi, allowanceCalls), multicall(abi, totalSupplyCalls)])
+        const [wallet, allow, totalSupply] = await Promise.all([multicall(abi, walletBalanceCalls, provider), multicall(abi, allowanceCalls, provider), multicall(abi, totalSupplyCalls, provider)])
         return tokens.map((token, index) => ({
             walletBalance: toEth(wallet[index][0], token.decimals),
             allowBalance: toEth(allow[index][0], token.decimals),

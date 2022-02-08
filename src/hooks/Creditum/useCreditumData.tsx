@@ -52,7 +52,7 @@ const formatCreditumData = (
     }
 }
 
-function useCreditumDataInternal() {
+export function useCreditumDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
     const [creditumData, setCreditumData] = useState({})
@@ -137,10 +137,10 @@ function useCreditumDataInternal() {
                         params: [account, collateral.address]
                     }))
 
-                    collateralBalances = await fetchBalances(account, assetCollaterals, assetData.mint.creditum)
-                    fTokenBalances = await fetchBalances(account, [assetData.mint], assetData.mint.creditum)
+                    collateralBalances = await fetchBalances(account, assetCollaterals, assetData.mint.creditum, provider)
+                    fTokenBalances = await fetchBalances(account, [assetData.mint], assetData.mint.creditum, provider)
                 } else {
-                    fTokenBalances = await fetchBalances(EMPTY_ADDRESS, [assetData.mint], assetData.mint.creditum)
+                    fTokenBalances = await fetchBalances(EMPTY_ADDRESS, [assetData.mint], assetData.mint.creditum, provider)
                 }
 
                 const [totalMinted, stabilizerDeposits, userData, collateralData, stabilizerData, priceUsd, positionData, liquidationPrice, utilizationRatio, contractBalance] = await Promise.all([

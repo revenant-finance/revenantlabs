@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { CreditumAppWrapper } from '../../components/Creditum/CreditumAppWrapper'
-import useCreditumData from '../../hooks/Creditum/useCreditumData'
+import useCreditumData, { useCreditumDataInternal } from '../../hooks/Creditum/useCreditumData'
 
 export default function Creditum() {
-    const data = useCreditumData()
+    const data = useCreditumDataInternal()
 
     useEffect(() => console.log(data), [])
 

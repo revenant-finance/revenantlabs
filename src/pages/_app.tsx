@@ -1,11 +1,9 @@
-import '../styles/global.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import Navigation from '../components/Navigation'
-import Meta from '../../public/img/Meta'
 import { UseWalletProvider } from 'use-wallet'
-import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
-import { FarmDataWrapper } from '../hooks/Creditum/useFarmData'
+import Meta from '../../public/img/Meta'
+import Navigation from '../components/Navigation'
+import '../styles/global.css'
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
