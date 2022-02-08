@@ -52,13 +52,11 @@ const formatCreditumData = (
     }
 }
 
-export function useCreditumDataInternal() {
+function useCreditumDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
     const [creditumData, setCreditumData] = useState({})
-    const { account, ethereum } = useWallet()
-
-    const provider = new ethers.providers.JsonRpcProvider(account ? ethereum : process.env.NEXT_PUBLIC_RPC)
+    const { account } = useWallet()
 
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
@@ -137,23 +135,23 @@ export function useCreditumDataInternal() {
                         params: [account, collateral.address]
                     }))
 
-                    collateralBalances = await fetchBalances(account, assetCollaterals, assetData.mint.creditum, provider)
-                    fTokenBalances = await fetchBalances(account, [assetData.mint], assetData.mint.creditum, provider)
+                    collateralBalances = await fetchBalances(account, assetCollaterals, assetData.mint.creditum)
+                    fTokenBalances = await fetchBalances(account, [assetData.mint], assetData.mint.creditum)
                 } else {
-                    fTokenBalances = await fetchBalances(EMPTY_ADDRESS, [assetData.mint], assetData.mint.creditum, provider)
+                    fTokenBalances = await fetchBalances(EMPTY_ADDRESS, [assetData.mint], assetData.mint.creditum)
                 }
 
                 const [totalMinted, stabilizerDeposits, userData, collateralData, stabilizerData, priceUsd, positionData, liquidationPrice, utilizationRatio, contractBalance] = await Promise.all([
-                    multicall(creditumABI, totalMintedCalls, provider),
-                    multicall(creditumABI, stabilizerDepositsCalls, provider),
-                    multicall(creditumABI, userDataCalls, provider),
-                    multicall(controllerABI, collateralDataCalls, provider),
-                    multicall(controllerABI, stabilizerDataCalls, provider),
-                    multicall(controllerABI, priceUsdCalls, provider),
-                    multicall(controllerABI, positionDataCalls, provider),
-                    multicall(controllerABI, liquidationPriceCalls, provider),
-                    multicall(controllerABI, utilizationRatioCalls, provider),
-                    multicall(erc20ABI, contractBalanceCalls, provider)
+                    multicall(creditumABI, totalMintedCalls),
+                    multicall(creditumABI, stabilizerDepositsCalls),
+                    multicall(creditumABI, userDataCalls),
+                    multicall(controllerABI, collateralDataCalls),
+                    multicall(controllerABI, stabilizerDataCalls),
+                    multicall(controllerABI, priceUsdCalls),
+                    multicall(controllerABI, positionDataCalls),
+                    multicall(controllerABI, liquidationPriceCalls),
+                    multicall(controllerABI, utilizationRatioCalls),
+                    multicall(erc20ABI, contractBalanceCalls)
                 ])
 
                 const formattedAssetData = []

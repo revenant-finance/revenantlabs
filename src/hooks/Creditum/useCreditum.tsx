@@ -3,13 +3,14 @@ import { getCreditumContract, getTokenContract } from '../../utils/ContractServi
 import { toWei, MAX_UINT256 } from '../../utils'
 import useCreditumData from './useCreditumData'
 import { useWallet } from 'use-wallet'
+import { ethers } from 'ethers'
 
 export default function useCreditum() {
     const [status, setStatus] = useState('idle')
     const {account, ethereum} = useWallet()
     const { update } = useCreditumData()
 
-    const provider = account ? ethereum : process.env.NEXT_PUBLIC_RPC
+    const provider = account ? new ethers.providers.JsonRpcProvider(ethereum).getSigner() : null
 
     const enter = async (market, depositAmount, borrowAmount) => {
         setStatus('loading')

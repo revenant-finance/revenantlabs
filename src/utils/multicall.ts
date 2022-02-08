@@ -13,7 +13,7 @@ interface MulticallOptions {
 
 const multicall = async (abi: any[], calls: Call[], provider?: ethers.Signer | ethers.providers.Provider) => {
     try {
-        if (!abi || !calls || !provider) return null
+        if (!abi || !calls) return null
 
         const multi = getMulticallContract(provider)
         const itf = new ethers.utils.Interface(abi)
@@ -25,6 +25,7 @@ const multicall = async (abi: any[], calls: Call[], provider?: ethers.Signer | e
 
         return res
     } catch (error) {
+        console.log(calls)
         throw new Error(error)
     }
 }

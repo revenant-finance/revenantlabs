@@ -3,7 +3,7 @@ import * as constants from '../data'
 import multicall from './multicall'
 import { toEth } from '.'
 
-export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_NETWORK_URL)
+export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC)
 
 export const getContract = (address: string, abi: any, signer?: ethers.Signer | ethers.providers.Provider) => {
     const signerOrProvider = signer ?? simpleRpcProvider
@@ -30,7 +30,7 @@ export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Pro
 
 export const getCrvContract = (address, provider?: ethers.Signer | ethers.providers.Provider) => getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
 
-export const fetchBalances = async (account: string, tokens: any, allowAddress: string, provider) => {
+export const fetchBalances = async (account: string, tokens: any, allowAddress: string) => {
     if (tokens) {
         const abi = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
         const walletBalanceCalls = tokens.map((token) => ({
@@ -48,7 +48,7 @@ export const fetchBalances = async (account: string, tokens: any, allowAddress: 
             name: 'totalSupply'
         }))
 
-        const [wallet, allow, totalSupply] = await Promise.all([multicall(abi, walletBalanceCalls, provider), multicall(abi, allowanceCalls, provider), multicall(abi, totalSupplyCalls, provider)])
+        const [wallet, allow, totalSupply] = await Promise.all([multicall(abi, walletBalanceCalls), multicall(abi, allowanceCalls), multicall(abi, totalSupplyCalls)])
         return tokens.map((token, index) => ({
             walletBalance: toEth(wallet[index][0], token.decimals),
             allowBalance: toEth(allow[index][0], token.decimals),
