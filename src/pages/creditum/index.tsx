@@ -115,10 +115,11 @@ export default function Creditum() {
                                         <div className="space-y-2">
                                             <div className="flex items-center space-x-4">
                                                 <p className="text-2xl font-medium">
-                                                    Deposit <span className="opacity-50">/ Borrow</span>
+                                                    Deposit {selectedMarket.symbol}, borrow cUSD
+                                                    {/* Deposit <span className="opacity-50">/ Borrow</span> */}
                                                 </p>
                                             </div>
-                                            <p className="opacity-50">Deposit your ${selectedMarket.symbol} to create a collateralized position.</p>
+                                            <p className="opacity-50">Deposit your ${selectedMarket.symbol} to create a collateralized position and mint cUSD against it, instantly.</p>
                                         </div>
                                         <div className="space-y-2">
                                             <div className="flex flex-col md:flex-row gap-2">
@@ -138,10 +139,11 @@ export default function Creditum() {
                                         <div className="space-y-2">
                                             <div className="flex items-center space-x-4">
                                                 <p className="text-2xl font-medium">
-                                                    Repay <span className="opacity-50">/ Withdraw</span>
+                                                    Repay cUSD, Withdraw {selectedMarket.symbol}
+                                                    {/* Repay <span className="opacity-50">/ Withdraw</span> */}
                                                 </p>
                                             </div>
-                                            <p className="opacity-50">Repay your loans and withdraw your {selectedMarket.symbol}.</p>
+                                            <p className="opacity-50">Repay your cUSD loans and withdraw your {selectedMarket.symbol} back into your wallet.</p>
                                         </div>
 
                                         <div className="space-y-2">
