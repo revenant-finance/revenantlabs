@@ -1,11 +1,17 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { UseWalletProvider } from 'use-wallet'
 import Meta from '../../public/img/Meta'
 import Navigation from '../components/Navigation'
 import '../styles/global.css'
+import smoothscroll from 'smoothscroll-polyfill'
 
 export default function App({ Component, pageProps }: AppProps) {
+    useEffect(() => {
+        smoothscroll.polyfill()
+    }, [])
+
     return (
         <>
             <Head>
