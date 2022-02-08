@@ -51,7 +51,7 @@ export default function CreditumStaking() {
                             </div> */}
                         </div>
 
-                        <button className={classNames('w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900')}>{stakingMode === 'staking' ? 'Stake' : 'Unstake'}</button>
+                        <button className={classNames('w-full p-2 text-neutral-900 bg-yellow-400 rounded hover:bg-yellow-500')}>{stakingMode === 'staking' ? 'Stake' : 'Unstake'}</button>
                     </div>
                 </div>
             </div>
