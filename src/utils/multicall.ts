@@ -12,23 +12,20 @@ interface MulticallOptions {
 }
 
 const multicall = async (abi: any[], calls: Call[], provider?: ethers.Signer | ethers.providers.Provider) => {
-    console.log('provider', provider)
-    if (abi && calls && provider) {
-        try {
-            const multi = getMulticallContract(provider)
-            const itf = new ethers.utils.Interface(abi)
+    try {
+        if (!abi || !calls || !provider) return null
 
-            const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-            const { returnData } = await multi.aggregate(calldata)
+        const multi = getMulticallContract(provider)
+        const itf = new ethers.utils.Interface(abi)
 
-            const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+        const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
+        const { returnData } = await multi.aggregate(calldata)
 
-            return res
-        } catch (error) {
-            throw new Error(error)
-        }
-    } else {
-        return null
+        const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+
+        return res
+    } catch (error) {
+        throw new Error(error)
     }
 }
 

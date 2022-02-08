@@ -41,17 +41,18 @@ export default function IndexPage() {
 
                 <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <a
-                            href=""
-                            target="_blank"
-                            className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
-                            style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
-                        >
-                            <div className="md:max-w-sm space-y-2">
-                                <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
-                                <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
-                            </div>
-                        </a>
+                        <Link href="/creditum" passHref>
+                            <a
+                                target="_blank"
+                                className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
+                                style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
+                            >
+                                <div className="md:max-w-sm space-y-2">
+                                    <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
+                                    <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
+                                </div>
+                            </a>
+                        </Link>
 
                         <Link href="/singularity" passHref>
                             <a

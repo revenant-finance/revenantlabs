@@ -57,9 +57,11 @@ export default function Navigation() {
                             </div>
 
                             <div className="space-y-2">
-                                <a className="block p-2 font-medium text-center text-orange-900 bg-orange-500 rounded" href="">
-                                    Open <b>Creditum</b>
-                                </a>
+                                <Link href="/creditum">
+                                    <a className="block p-2 font-medium text-center text-orange-900 bg-orange-500 rounded" href="">
+                                        Open <b>Creditum</b>
+                                    </a>
+                                </Link>
                                 <Link href="/singularity">
                                     <a className="block p-2 font-medium text-center text-blue-900 bg-blue-500 rounded" href="">
                                         Open <b>Singularity</b>
