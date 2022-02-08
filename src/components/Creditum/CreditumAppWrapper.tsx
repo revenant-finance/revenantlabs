@@ -46,7 +46,7 @@ export function CreditumAppWrapper({ children }) {
                     </div>
                 </div>
 
-                <div className="space-x-6 font-medium flex">
+                <div className="space-x-6 font-medium flex whitespace-nowrap no-scrollbar overflow-auto">
                     <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
                         Revenant
                     </HeaderLink>
