@@ -16,10 +16,7 @@ const MarketItemAccordion = ({ market }) => {
 
     return (
         <div>
-            <button
-                onClick={() => setSelectedMarket(market)}
-                className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', selectedMarket?.id === market.id ? 'bg-yellow-400 text-neutral-900' : 'hover:bg-neutral-800')}
-            >
+            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', open && 'bg-yellow-400')}>
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <p className="font-medium">{market.symbol}</p>
@@ -41,7 +38,7 @@ const MarketItemAccordion = ({ market }) => {
                             open: { height: 'auto' },
                             collapsed: { height: 0 }
                         }}
-                        className={classNames('border overflow-hidden border-neutral-800 border-b-0')}
+                        className={classNames('overflow-hidden', open && ' border-t border-neutral-900 text-neutral-900 bg-yellow-400')}
                     >
                         <div className="p-6 space-y-4">
                             <div>
@@ -138,7 +135,7 @@ export default function CreditumMarkets() {
 
                                     {(!!depositInput || !!borrowInput) && (
                                         <div className="p-4 bg-white bg-opacity-10 rounded">
-                                            <DataPoint title="Borrowed Amount" value="0.0" />
+                                            <DataPoint title="Borrowed Amount" value="0.0 => 0.1" />
                                             <DataPoint title="Liquidation Price" value="0.0" />
                                             <DataPoint title="Health Factor" value="0.0" />
                                         </div>
