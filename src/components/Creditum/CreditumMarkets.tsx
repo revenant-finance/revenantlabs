@@ -1,14 +1,11 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { createContext } from 'react'
-import ReactTyped from 'react-typed'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
-
-const CreditumContext = createContext({})
 
 const MarketItemAccordion = ({ market }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()

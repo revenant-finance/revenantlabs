@@ -18,7 +18,10 @@ export function CreditumAppWrapper({ children }) {
                         <Link href="/creditum/farms" passHref>
                             <a>Farms</a>
                         </Link>
-                        <a href="">cUSD Markets</a>
+                        <Link href="/creditum/staking" passHref>
+                            <a>Staking</a>
+                        </Link>
+                        {/* <a href="">cUSD Markets</a> */}
                     </div>
                     <div className="flex items-center overflow-auto whitespace-nowrap gap-6">
                         <div>
