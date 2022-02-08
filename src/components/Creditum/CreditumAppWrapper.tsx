@@ -2,12 +2,19 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const HeaderLink = ({ href, icon, children }) => {
+interface HeaderLink {
+    href: string
+    icon: string
+    children: any
+    className?: string
+}
+
+const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
     const router = useRouter()
     const isThisPage = router.asPath === href
     return (
         <Link href={href} passHref>
-            <a className={classNames('space-x-2', isThisPage && 'text-yellow-400')}>
+            <a className={classNames('space-x-2', isThisPage && 'text-yellow-400', className)}>
                 <i className={classNames('opacity-75', icon)} />
                 <span>{children}</span>
             </a>
@@ -40,6 +47,9 @@ export function CreditumAppWrapper({ children }) {
                 </div>
 
                 <div className="space-x-6 font-medium">
+                    <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
+                        Revenant
+                    </HeaderLink>
                     <HeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                         Market
                     </HeaderLink>
