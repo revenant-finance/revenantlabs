@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createContext, useState } from 'react'
 import { CreditumDataWrapper } from '../../hooks/Creditum/useCreditumData'
 import Footer from '../Footer'
@@ -11,8 +12,12 @@ export function CreditumAppWrapper({ children }) {
                 <div className="block h-20" />
                 <div className="w-full max-w-7xl mx-auto p-6 md:p-12 space-y-6">
                     <div className="space-x-6 font-medium">
-                        <a href="">Markets</a>
-                        <a href="">Farms</a>
+                        <Link href="/creditum" passHref>
+                            <a>Markets</a>
+                        </Link>
+                        <Link href="/creditum/farms" passHref>
+                            <a>Farms</a>
+                        </Link>
                         <a href="">cUSD Markets</a>
                     </div>
                     <div className="flex items-center overflow-auto whitespace-nowrap gap-6">

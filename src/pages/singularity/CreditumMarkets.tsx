@@ -4,11 +4,18 @@ import { createContext } from 'react'
 import ReactTyped from 'react-typed'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
-import DataPoint from '../DataPoint'
-import InfoBanner from '../InfoBanner'
-import LoadingBanner from '../LoadingBanner'
 
 const CreditumContext = createContext({})
+
+const DataPoint = ({ title, value }) => {
+    return (
+        <div className="flex items-center space-x-4 text-sm font-medium md:text-lg">
+            <p className="">{title}</p>
+            <div className="flex-1 h-0.5 md:h-1 bg-neutral-800"></div>
+            <p className="font-mono">{value}</p>
+        </div>
+    )
+}
 
 const MarketItemAccordion = ({ market }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
@@ -62,12 +69,7 @@ export default function CreditumMarkets() {
     const markets = creditumData?.cusd
 
     return (
-        <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
-            <InfoBanner
-                title="Stabalize your fortunes by mint cUSD."
-                subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate."
-            />
-
+        <div className="w-full p-6 py-24 mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                 {!selectedMarket && (
                     <div>
@@ -167,7 +169,13 @@ export default function CreditumMarkets() {
                 )}
 
                 <div className="space-y-8">
-                    {!markets && <LoadingBanner title="Markets are loading..." />}
+                    {!markets && (
+                        <div className="flex items-center justify-center border-4 border-dotted border-neutral-700">
+                            <p className="p-6 py-24 font-mono opacity-50">
+                                <ReactTyped strings={['Markets are loading...']} loop />
+                            </p>
+                        </div>
+                    )}
 
                     {markets && (
                         <>
