@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { formatter } from '../../utils'
 
 interface HeaderLink {
     href: string
@@ -31,17 +32,17 @@ export function CreditumAppWrapper({ children }) {
                         <img className="w-24 md:w-16" src="/img/creditum.png" alt="" />
                     </div>
                     <div className="opacity-50">
-                        <p className="text-sm font-medium">Total Value Locked (TVL)</p>
-                        <p className="md:text-2xl">$69,912,033</p>
+                        <p className="text-xs md:text-sm font-medium">Total Value Locked (TVL)</p>
+                        <p className="md:text-2xl">${formatter(69696969)}</p>
                     </div>
                     <div className="opacity-50">
-                        <p className="text-sm font-medium">Credit Price</p>
+                        <p className="text-xs md:text-sm font-medium">Credit Price</p>
                         <p className="md:text-2xl">$3.06</p>
                         {/* <p className="text-xs">xCREDIT Price: $3.23</p> */}
                     </div>
                     <div className="opacity-50">
-                        <p className="text-sm font-medium">Marketcap</p>
-                        <p className="md:text-2xl">$12,651,971</p>
+                        <p className="text-xs md:text-sm font-medium">Marketcap</p>
+                        <p className="md:text-2xl">${formatter(420000000)}</p>
                         {/* <p className="text-xs">xCREDIT Price: $3.23</p> */}
                     </div>
                 </div>

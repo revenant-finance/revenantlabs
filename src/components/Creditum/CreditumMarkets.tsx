@@ -1,7 +1,9 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
+import { formatter } from '../../utils'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
@@ -9,6 +11,8 @@ import LoadingBanner from '../LoadingBanner'
 const MarketItemAccordion = ({ market }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
     const open = selectedMarket?.id === market.id
+
+    useEffect(() => console.log(market), [market])
 
     return (
         <div>
@@ -82,7 +86,6 @@ export default function CreditumMarkets() {
                                         <MarketItemAccordion market={market} />
                                     ))}
                                 </div>
-                                <div></div>
                             </div>
                         </>
                     )}
@@ -101,14 +104,14 @@ export default function CreditumMarkets() {
                         <div className="space-y-8" id="market">
                             <div className="space-y-4">
                                 <div className="">
-                                    <DataPoint title="Total Deposits" value="$123,123" />
-                                    <DataPoint title="Total Minted" value="$123,123" />
+                                    <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
+                                    <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
                                     <DataPoint title="Borrowing Interest Rate" value="$123,123" />
-                                    <DataPoint title="LTV/Max Debt Ratio" value="$123,123" />
-                                    <DataPoint title="Mint Fee" value="$123,123" />
-                                    <DataPoint title="Liquidation Penalty" value="$123,123" />
-                                    <DataPoint title="Collateral Mint Limit" value="$123,123" />
-                                    <DataPoint title="Liquidation Threshold" value="$123,123" />
+                                    <DataPoint title="LTV/Max Debt Ratio" value={selectedMarket.collateralMaxDebtRatio} />
+                                    <DataPoint title="Mint Fee" value={`${selectedMarket.collateralMintFee}%`} />
+                                    <DataPoint title="Liquidation Penalty" value={`${selectedMarket.collateralLiquidationPenalty}%`} />
+                                    <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
+                                    <DataPoint title="Liquidation Threshold" value={`${selectedMarket.collateralLiquidationThreshold}`} />
                                 </div>
                             </div>
                             <div className="space-y-4">
