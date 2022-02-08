@@ -14,8 +14,8 @@ const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
     const isThisPage = router.asPath === href
     return (
         <Link href={href} passHref>
-            <a className={classNames('space-x-2', isThisPage && 'text-yellow-400', className)}>
-                <i className={classNames('opacity-75', icon)} />
+            <a className={classNames('flex items-center space-x-2', isThisPage && 'text-yellow-400', className)}>
+                <i className={classNames('opacity-75 text-xs', icon)} />
                 <span>{children}</span>
             </a>
         </Link>
@@ -46,7 +46,7 @@ export function CreditumAppWrapper({ children }) {
                     </div>
                 </div>
 
-                <div className="space-x-6 font-medium">
+                <div className="space-x-6 font-medium flex">
                     <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
                         Revenant
                     </HeaderLink>
