@@ -18,7 +18,7 @@ const HeaderLink = ({ href, icon, children }) => {
 export function CreditumAppWrapper({ children }) {
     return (
         <>
-            <div className="w-full max-w-7xl mx-auto p-6 md:py-12 pb-0 space-y-6">
+            <div className="w-full max-w-7xl mx-auto p-6 md:pt-12 pb-0 space-y-6">
                 <div className="flex flex-wrap items-center overflow-auto whitespace-nowrap gap-6">
                     <div className="w-full md:w-auto">
                         <img className="w-24 md:w-16" src="/img/creditum.png" alt="" />
