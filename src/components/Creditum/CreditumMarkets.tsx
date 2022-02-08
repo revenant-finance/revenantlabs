@@ -16,7 +16,7 @@ const MarketItemAccordion = ({ market }) => {
 
     return (
         <div>
-            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', open && 'bg-yellow-400')}>
+            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', open && 'bg-yellow-400 text-neutral-900')}>
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <p className="font-medium">{market.symbol}</p>
