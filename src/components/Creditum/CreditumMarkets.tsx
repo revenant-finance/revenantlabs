@@ -39,11 +39,17 @@ const MarketItemAccordion = ({ market }) => {
                         }}
                         className={classNames('border overflow-hidden border-neutral-800 border-b-0')}
                     >
-                        <div className="p-6">
-                            <DataPoint title="User Debt" value="0.00 cUSD" />
-                            <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
-                            <DataPoint title="Current Liquidation Price" value="$0" />
-                            <DataPoint title="cUSD left to borrow" value="0 cUSD" />
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <DataPoint title="User Debt" value="0.00 cUSD" />
+                                <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
+                                <DataPoint title="Current Liquidation Price" value="$0" />
+                                <DataPoint title="cUSD left to borrow" value="0 cUSD" />
+                            </div>
+
+                            <a href="#market" className="block md:hidden border  w-full border-neutral-800 text-xs font-medium px-4 py-2 rounded text-center">
+                                Interact with Market
+                            </a>
                         </div>
                     </motion.div>
                 )}
@@ -65,6 +71,23 @@ export default function CreditumMarkets() {
             />
 
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+                <div className="space-y-8">
+                    {!markets && <LoadingBanner title="Markets are loading..." />}
+
+                    {markets && (
+                        <>
+                            <div className="space-y-8">
+                                <div className="divide-y divide-neutral-800 border-y border-neutral-800">
+                                    {markets.map((market) => (
+                                        <MarketItemAccordion market={market} />
+                                    ))}
+                                </div>
+                                <div></div>
+                            </div>
+                        </>
+                    )}
+                </div>
+
                 {!selectedMarket && (
                     <div>
                         <div className="flex items-center justify-center border-4 border-dotted border-neutral-700">
@@ -75,7 +98,7 @@ export default function CreditumMarkets() {
 
                 {selectedMarket && (
                     <>
-                        <div className="space-y-8">
+                        <div className="space-y-8" id="market">
                             <div className="space-y-4">
                                 <div className="">
                                     <DataPoint title="Total Deposits" value="$123,123" />
@@ -161,23 +184,6 @@ export default function CreditumMarkets() {
                         </div>
                     </>
                 )}
-
-                <div className="space-y-8">
-                    {!markets && <LoadingBanner title="Markets are loading..." />}
-
-                    {markets && (
-                        <>
-                            <div className="space-y-8">
-                                <div className="divide-y divide-neutral-800 border-y border-neutral-800">
-                                    {markets.map((market) => (
-                                        <MarketItemAccordion market={market} />
-                                    ))}
-                                </div>
-                                <div></div>
-                            </div>
-                        </>
-                    )}
-                </div>
             </div>
         </div>
     )
