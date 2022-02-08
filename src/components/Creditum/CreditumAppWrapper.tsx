@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { formatter } from '../../utils'
+import InfoBanner from '../InfoBanner'
 
 interface HeaderLink {
     href: string
@@ -29,7 +30,11 @@ export function CreditumAppWrapper({ children }) {
             <div className="w-full max-w-7xl mx-auto p-6 md:pt-12 pb-0 space-y-6">
                 <div className="flex flex-wrap items-center overflow-auto whitespace-nowrap gap-6">
                     <div className="w-full md:w-auto">
-                        <img className="w-24 md:w-16" src="/img/creditum.png" alt="" />
+                        <Link href="/creditum" passHref>
+                            <a>
+                                <img className="w-24 md:w-20" src="/img/creditum.png" alt="" />
+                            </a>
+                        </Link>
                     </div>
                     <div className="opacity-50">
                         <p className="text-xs md:text-sm font-medium">Total Value Locked (TVL)</p>
@@ -64,6 +69,10 @@ export function CreditumAppWrapper({ children }) {
             </div>
 
             {children}
+
+            {/* <div className="w-full max-w-7xl mx-auto p-6 md:pb-12 pt-0 space-y-6">
+                <InfoBanner title="Need help?" subtitle="Est esse non in nisi nulla laboris enim sit exercitation cupidata." />
+            </div> */}
         </>
     )
 }

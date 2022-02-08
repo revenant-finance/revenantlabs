@@ -5,9 +5,7 @@ import { FarmDataWrapper } from '../../hooks/Creditum/useFarmData'
 export default function Creditum() {
     return (
         <CreditumAppWrapper>
-            <FarmDataWrapper>
-                <CreditumFarms />
-            </FarmDataWrapper>
+            <CreditumFarms />
         </CreditumAppWrapper>
     )
 }

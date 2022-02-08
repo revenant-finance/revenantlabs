@@ -6,6 +6,7 @@ import { fetchBalances } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
 import { ethers } from 'ethers'
+import { FarmDataWrapper } from './useFarmData'
 
 const formatCreditumData = (
     _assetCollateralData,
@@ -206,11 +207,13 @@ export function CreditumDataWrapper({ children }: any) {
 
     return (
         <>
-            <CreditumContext.Provider
-                value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput }}
-            >
-                <>{children}</>
-            </CreditumContext.Provider>
+            <FarmDataWrapper>
+                <CreditumContext.Provider
+                    value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput }}
+                >
+                    <>{children}</>
+                </CreditumContext.Provider>
+            </FarmDataWrapper>
         </>
     )
 }

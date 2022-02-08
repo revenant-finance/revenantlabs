@@ -6,6 +6,7 @@ import Meta from '../../public/img/Meta'
 import Navigation from '../components/Navigation'
 import '../styles/global.css'
 import smoothscroll from 'smoothscroll-polyfill'
+import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
 
 export default function App({ Component, pageProps }: AppProps) {
     useEffect(() => {
@@ -25,8 +26,10 @@ export default function App({ Component, pageProps }: AppProps) {
             </Head>
             <Meta />
             <UseWalletProvider>
-                <Navigation />
-                <Component {...pageProps} />
+                <CreditumDataWrapper>
+                    <Navigation />
+                    <Component {...pageProps} />
+                </CreditumDataWrapper>
             </UseWalletProvider>
         </>
     )
