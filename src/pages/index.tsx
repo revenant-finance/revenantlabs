@@ -43,7 +43,6 @@ export default function IndexPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Link href="/creditum" passHref>
                             <a
-                                target="_blank"
                                 className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                                 style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
                             >
