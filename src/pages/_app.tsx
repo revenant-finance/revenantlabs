@@ -1,9 +1,11 @@
 import '../styles/global.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import Naviation from '../components/Navigation'
+import Navigation from '../components/Navigation'
 import Meta from '../../public/img/Meta'
 import { UseWalletProvider } from 'use-wallet'
+import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
+import { FarmDataWrapper } from '../hooks/Creditum/useFarmData'
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
@@ -19,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </Head>
             <Meta />
             <UseWalletProvider>
-                <Naviation />
+                <Navigation />
                 <Component {...pageProps} />
             </UseWalletProvider>
         </>

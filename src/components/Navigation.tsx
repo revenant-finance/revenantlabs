@@ -5,7 +5,7 @@ import Router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
 
-export default function Naviation() {
+export default function Navigation() {
     const wallet = useWallet()
     const [open, setOpen] = useState(false)
 
@@ -23,7 +23,7 @@ export default function Naviation() {
 
     return (
         <>
-            <div className="fixed top-0 right-0 p-6 z-30 pointer-events-none max-w-lg w-full flex flex-col items-end gap-2">
+            <div className="fixed top-0 right-0 z-30 flex flex-col items-end w-full max-w-lg gap-2 p-6 pointer-events-none">
                 <div className="flex gap-2">
                     <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xlt text-xs font-medium')}>
                         {/* {<i className={classNames('fas fa-wallet', wallet.account && 'text-orange-500')} />} */}
@@ -40,28 +40,28 @@ export default function Naviation() {
                             initial={{ x: '120%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '120%' }}
-                            className="bg-zinc-900 border-2 border-zinc-800 rounded-2xl shadow-2xl max-w-xs w-full p-6 pointer-events-auto space-y-4"
+                            className="w-full max-w-xs p-6 space-y-4 border-2 shadow-2xl pointer-events-auto bg-zinc-900 border-zinc-800 rounded-2xl"
                         >
                             <div className="flex flex-col gap-1">
                                 <Link href="/" passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Go Home</a>
+                                    <a className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">Go Home</a>
                                 </Link>
                                 {/* <Link href="https://documentation.revenant.finance/creditum" passHref>
-                                    <a target="_blank" className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">
+                                    <a target="_blank" className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">
                                         Read Docs
                                     </a>
                                 </Link> */}
                                 <Link href={'/singularity?from=wftm&to=credit'} passHref>
-                                    <a className="text-3xl uppercase font-montserrat font-extrabold opacity-75 hover:opacity-100 transition ease-in-out">Get Tokens</a>
+                                    <a className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">Get Tokens</a>
                                 </Link>
                             </div>
 
                             <div className="space-y-2">
-                                <a className="bg-orange-500 block text-center p-2 font-medium text-orange-900 rounded" href="">
+                                <a className="block p-2 font-medium text-center text-orange-900 bg-orange-500 rounded" href="">
                                     Open <b>Creditum</b>
                                 </a>
                                 <Link href="/singularity">
-                                    <a className="bg-blue-500 block text-center p-2 font-medium text-blue-900 rounded" href="">
+                                    <a className="block p-2 font-medium text-center text-blue-900 bg-blue-500 rounded" href="">
                                         Open <b>Singularity</b>
                                     </a>
                                 </Link>
@@ -70,7 +70,7 @@ export default function Naviation() {
                             <div className="flex items-center">
                                 <p className="flex-1">
                                     <Link href="https://documentation.revenant.finance/creditum" passHref>
-                                        <a className="opacity-50 hover:opacity-100 font-medium" target="_blank">
+                                        <a className="font-medium opacity-50 hover:opacity-100" target="_blank">
                                             Docs
                                         </a>
                                     </Link>

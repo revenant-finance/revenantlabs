@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
 import { getFarmsContract, getCrvContract, getTokenContract } from '../../utils/ContractService'
-import { useActiveWeb3React } from '..'
 import usePrice from '../usePrice'
 import { toEth, SECONDS_PER_YEAR } from '../../utils'
-import * as constants from '../../constants'
+import * as constants from '../../data'
+import { useWallet } from 'use-wallet'
+
 
 export default function usePool() {
-    const { library } = useActiveWeb3React()
+    const { ethereum } = useWallet()
     const { getPrice } = usePrice()
     const [earnTokenPrices, setEarnTokenPrices] = useState([])
 
     const earnTokens = constants.CONTRACT_CREDITUM_FARMS[250].earnTokens
 
-    const farmContract = getFarmsContract(library)
+    const farmContract = getFarmsContract(ethereum)
 
     const handleEarnTokenPrices = async () => {
         const earnTokenCalls = earnTokens.map((earnToken) => {
@@ -39,7 +40,7 @@ export default function usePool() {
     }
 
     const calculateCrv = async (farmData) => {
-        const crvContract = getCrvContract(farmData.depositToken, library)
+        const crvContract = getCrvContract(farmData.depositToken, ethereum)
 
         // Get the share of lpContract that masterChefContract owns
         const [farmBalanceData, lpPriceData, totalSupplyData, token0SupplyData, token1SupplyData] = await Promise.all([
@@ -80,9 +81,9 @@ export default function usePool() {
     }
 
     const calculateUni = async (farmData) => {
-        const token0Contract = getTokenContract(farmData.uniLpTokenAddresses.token0, library)
-        const token1Contract = getTokenContract(farmData.uniLpTokenAddresses.token1, library)
-        const lpContract = getTokenContract(farmData.depositToken, library)
+        const token0Contract = getTokenContract(farmData.uniLpTokenAddresses.token0, ethereum)
+        const token1Contract = getTokenContract(farmData.uniLpTokenAddresses.token1, ethereum)
+        const lpContract = getTokenContract(farmData.depositToken, ethereum)
 
         const [lpContractToken0BalData, farmLpBalData, lpTotalSupplyData, lpContractToken1BalData, token1Price] = await Promise.all([
             token0Contract.balanceOf(lpContract.address),

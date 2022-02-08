@@ -1,21 +1,23 @@
 import { useState } from 'react'
 import { getCreditumContract, getTokenContract } from '../../utils/ContractService'
-import { useActiveWeb3React } from '../'
 import { toWei, MAX_UINT256 } from '../../utils'
 import useCreditumData from './useCreditumData'
+import { useWallet } from 'use-wallet'
 
 export default function useCreditum() {
     const [status, setStatus] = useState('idle')
-    const { account, library } = useActiveWeb3React()
+    const {account, ethereum} = useWallet()
     const { update } = useCreditumData()
+
+    const provider = account ? ethereum : process.env.NEXT_PUBLIC_RPC
 
     const enter = async (market, depositAmount, borrowAmount) => {
         setStatus('loading')
         if (account) {
             let tx = null
             const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, library?.getSigner())
-            const tokenContract = getTokenContract(market?.address, library?.getSigner())
+            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const tokenContract = getTokenContract(market?.address, provider)
             try {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract?.address, MAX_UINT256)
@@ -36,8 +38,8 @@ export default function useCreditum() {
         if (account) {
             let tx = null
             const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, library?.getSigner())
-            const fTokenContract = getTokenContract(fToken?.address, library?.getSigner())
+            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const fTokenContract = getTokenContract(fToken?.address, provider)
             try {
                 if (Number(fToken.allowBalance) < Number(repayAmount)) {
                     tx = await fTokenContract.approve(creditumContract.address, MAX_UINT256)
@@ -58,8 +60,8 @@ export default function useCreditum() {
         if (account) {
             let tx = null
             const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, library?.getSigner())
-            const tokenContract = getTokenContract(market?.address, library?.getSigner())
+            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const tokenContract = getTokenContract(market?.address, provider)
             try {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
@@ -81,8 +83,8 @@ export default function useCreditum() {
         if (account) {
             let tx = null
             const fToken = underlying?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, library?.getSigner())
-            const fTokenContract = getTokenContract(fToken?.address, library?.getSigner())
+            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const fTokenContract = getTokenContract(fToken?.address, provider)
             try {
                 if (Number(fToken?.allowBalance) < Number(burnAmount)) {
                     tx = await fTokenContract.approve(creditumContract.address, MAX_UINT256)

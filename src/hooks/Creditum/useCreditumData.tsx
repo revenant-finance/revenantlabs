@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useWallet } from 'use-wallet'
+import * as constants from '../../data'
+import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances } from '../../utils/ContractService'
-import * as constants from '../../constants'
 import multicall from '../../utils/multicall'
-import { toEth, EMPTY_ADDRESS } from '../../utils'
 import useRefresh from '../useRefresh'
-import { useActiveWeb3React } from '../'
+
 
 const formatCreditumData = (
     _assetCollateralData,
@@ -55,7 +56,9 @@ function useCreditumDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
     const [creditumData, setCreditumData] = useState({})
-    const { account } = useActiveWeb3React()
+    const {account, ethereum} = useWallet()
+
+    const provider = account ? ethereum : process.env.NEXT_PUBLIC_RPC
 
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
@@ -141,16 +144,16 @@ function useCreditumDataInternal() {
                 }
 
                 const [totalMinted, stabilizerDeposits, userData, collateralData, stabilizerData, priceUsd, positionData, liquidationPrice, utilizationRatio, contractBalance] = await Promise.all([
-                    multicall(creditumABI, totalMintedCalls),
-                    multicall(creditumABI, stabilizerDepositsCalls),
-                    multicall(creditumABI, userDataCalls),
-                    multicall(controllerABI, collateralDataCalls),
-                    multicall(controllerABI, stabilizerDataCalls),
-                    multicall(controllerABI, priceUsdCalls),
-                    multicall(controllerABI, positionDataCalls),
-                    multicall(controllerABI, liquidationPriceCalls),
-                    multicall(controllerABI, utilizationRatioCalls),
-                    multicall(erc20ABI, contractBalanceCalls)
+                    multicall(creditumABI, totalMintedCalls, provider),
+                    multicall(creditumABI, stabilizerDepositsCalls, provider),
+                    multicall(creditumABI, userDataCalls, provider),
+                    multicall(controllerABI, collateralDataCalls, provider),
+                    multicall(controllerABI, stabilizerDataCalls, provider),
+                    multicall(controllerABI, priceUsdCalls, provider),
+                    multicall(controllerABI, positionDataCalls, provider),
+                    multicall(controllerABI, liquidationPriceCalls, provider),
+                    multicall(controllerABI, utilizationRatioCalls, provider),
+                    multicall(erc20ABI, contractBalanceCalls, provider)
                 ])
 
                 const formattedAssetData = []

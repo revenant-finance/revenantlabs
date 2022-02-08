@@ -15,6 +15,7 @@ export function SingularityAppWrapper({ children }) {
     const router = useRouter()
 
     const wallet = useWallet()
+    console.log(wallet)
 
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)

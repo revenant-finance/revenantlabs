@@ -1,11 +1,10 @@
-import { useToasts } from '@geist-ui/react'
 import { useEffect, useState } from 'react'
-import { useActiveWeb3React } from '..'
-import { CONTRACT_REVENANT } from '../../constants'
-import merkle from '../../constants/data/merkle.json'
+import { CONTRACT_REVENANT } from '../../data'
+import merkle from '../../data/Revenant/merkle.json'
 import { toEth, toWei } from '../../utils'
 import { fetchBalances, getMerkleContract, getRevenantContract } from '../../utils/ContractService'
 import useRefresh from '../useRefresh'
+import { useWallet } from 'use-wallet'
 
 export default function useRevenant() {
     const [status, setStatus] = useState(true)
@@ -13,24 +12,24 @@ export default function useRevenant() {
     const [walletRVNT, setWalletRVNT] = useState('0')
     const [merkleData, setMerkleData] = useState(null)
 
-    const { account, library } = useActiveWeb3React()
+    const { account, ethereum } = useWallet()
     const { slowRefresh } = useRefresh()
-    const [, setToast] = useToasts()
+    // const [, setToast] = useToasts()
 
     const rvnt = CONTRACT_REVENANT[250].token
     const mrk = CONTRACT_REVENANT[250].merkle
 
-    const revenantContract = getRevenantContract(rvnt.address, library?.getSigner())
-    const merkleContract = getMerkleContract(mrk, library?.getSigner())
+    const revenantContract = getRevenantContract(rvnt.address, ethereum)
+    const merkleContract = getMerkleContract(mrk, ethereum)
 
     const claim = async () => {
         if (!account) {
-            setToast({ text: 'No account connected', type: 'error' })
+            // setToast({ text: 'No account connected', type: 'error' })
             return
         }
 
         if (Number(claimRVNT) <= 0) {
-            setToast({ text: 'No RVNT available to claim', type: 'error' })
+            // setToast({ text: 'No RVNT available to claim', type: 'error' })
             return
         }
         try {
@@ -45,7 +44,7 @@ export default function useRevenant() {
 
     const burn = async (amount) => {
         if (!account) {
-            setToast({ text: 'No account connected', type: 'error' })
+            // setToast({ text: 'No account connected', type: 'error' })
             return
         }
 

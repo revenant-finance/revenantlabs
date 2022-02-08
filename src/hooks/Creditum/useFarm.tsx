@@ -1,12 +1,15 @@
 import { getFarmsContract, getTokenContract } from '../../utils/ContractService'
-import { useActiveWeb3React } from '..'
-import farms from '../../constants/data/farms.json'
 import { toEth, toWei, MAX_UINT256 } from '../../utils'
 import useFarmData from './useFarmData'
+import * as constants from '../../data'
+import { useWallet } from 'use-wallet'
+
+const farms = constants.CONTRACT_CREDITUM_FARMS[250].tokens
 
 export default function useFarm() {
-    const { account, library } = useActiveWeb3React()
-    const farmContract = getFarmsContract(library?.getSigner())
+    const { account, ethereum } = useWallet()
+    const farmContract = getFarmsContract(ethereum)
+
     
     const { update } = useFarmData()
 
@@ -14,7 +17,7 @@ export default function useFarm() {
         if (!account) return
         try {
             const farmData = farms.filter((farm) => farm.pid === pid)[0]
-            const tokenContract = getTokenContract(farmData.lpAddress, library.getSigner())
+            const tokenContract = getTokenContract(farmData.depositToken, ethereum)
             let tx
             const allowance = await tokenContract.allowance(account, farmContract.address)
             if (Number(amount) > Number(toEth(allowance))) {
@@ -67,10 +70,6 @@ export default function useFarm() {
         if (!account) return
         try {
             let withdrawAmount = toWei(amount)
-            // const deposited = await getDeposited(pid)
-            // if (Number(toEth(amount)) > Number(deposited)) {
-            //     withdrawAmount = deposited
-            // }
             let tx = await farmContract.withdraw(pid, withdrawAmount)
             await tx.wait(1)
             console.log(tx)
