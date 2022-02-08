@@ -18,18 +18,21 @@ const HeaderLink = ({ href, icon, children }) => {
 export function CreditumAppWrapper({ children }) {
     return (
         <>
-            <div className="w-full max-w-7xl mx-auto p-6 py-12 pb-0 space-y-6">
-                <div className="flex flex-wrap items-center overflow-auto whitespace-nowrap gap-6 opacity-50">
-                    <div>
+            <div className="w-full max-w-7xl mx-auto p-6 md:py-12 pb-0 space-y-6">
+                <div className="flex flex-wrap items-center overflow-auto whitespace-nowrap gap-6">
+                    <div className="w-full md:w-auto">
+                        <img className="w-24 md:w-16" src="/img/creditum.png" alt="" />
+                    </div>
+                    <div className="opacity-50">
                         <p className="text-sm font-medium">Total Value Locked (TVL)</p>
                         <p className="text-2xl">$69,912,033</p>
                     </div>
-                    <div>
+                    <div className="opacity-50">
                         <p className="text-sm font-medium">Credit Price</p>
                         <p className="text-2xl">$3.06</p>
                         {/* <p className="text-xs">xCREDIT Price: $3.23</p> */}
                     </div>
-                    <div>
+                    <div className="opacity-50">
                         <p className="text-sm font-medium">Marketcap</p>
                         <p className="text-2xl">$12,651,971</p>
                         {/* <p className="text-xs">xCREDIT Price: $3.23</p> */}
