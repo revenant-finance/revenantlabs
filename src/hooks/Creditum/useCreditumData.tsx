@@ -5,7 +5,7 @@ import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
-
+import { ethers } from 'ethers'
 
 const formatCreditumData = (
     _assetCollateralData,
@@ -56,9 +56,9 @@ function useCreditumDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
     const [creditumData, setCreditumData] = useState({})
-    const {account, ethereum} = useWallet()
+    const { account, ethereum } = useWallet()
 
-    const provider = account ? ethereum : process.env.NEXT_PUBLIC_RPC
+    const provider = new ethers.providers.JsonRpcProvider(account ? ethereum : process.env.NEXT_PUBLIC_RPC)
 
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
