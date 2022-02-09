@@ -148,7 +148,7 @@ export function SingularityAppWrapper({ children }) {
     }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam])
 
     useEffect(() => {
-        router.push(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
+        router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
     }, [fromToken, toToken])
 
     // Load selected token balances.

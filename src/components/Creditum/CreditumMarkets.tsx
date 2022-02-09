@@ -70,17 +70,19 @@ export default function CreditumMarkets() {
                 <div className="space-y-8">
                     {!markets && <LoadingBanner title="Markets are loading..." />}
 
-                    {markets && (
-                        <>
-                            <div className="space-y-8">
-                                <div className="">
-                                    {markets.map((market, index) => (
-                                        <MarketItemAccordion market={market} invert={!(index % 2 === 0)} />
-                                    ))}
+                    <AnimatePresence>
+                        {markets && (
+                            <SlideOpen>
+                                <div className="space-y-8">
+                                    <div className="">
+                                        {markets.map((market, index) => (
+                                            <MarketItemAccordion market={market} invert={!(index % 2 === 0)} />
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        </>
-                    )}
+                            </SlideOpen>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {!selectedMarket && (
@@ -122,7 +124,7 @@ export default function CreditumMarkets() {
                                 </Button>
                             </div>
                             <div className="space-y-4">
-                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-2 text-left  hover:opacity-100 transition ease-in-out', showDepositTool ? 'opacity-100' : 'opacity-75')} onClick={() => setShowDepositTool((_) => !_)}>
+                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-1 text-left  hover:opacity-100 transition ease-in-out', showDepositTool ? 'opacity-100' : 'opacity-75')} onClick={() => setShowDepositTool((_) => !_)}>
                                     <div className="flex items-center space-x-4">
                                         <p className="text-2xl font-medium">
                                             Deposit {selectedMarket.symbol}, borrow cUSD
@@ -160,7 +162,7 @@ export default function CreditumMarkets() {
                                 </AnimatePresence>
                             </div>
                             <div className="space-y-4">
-                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-2 text-left  hover:opacity-100 transition ease-in-out', showRepayTool ? 'opacity-100' : 'opacity-75')} onClick={() => setShowRepayTool((_) => !_)}>
+                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-1 text-left  hover:opacity-100 transition ease-in-out', showRepayTool ? 'opacity-100' : 'opacity-75')} onClick={() => setShowRepayTool((_) => !_)}>
                                     <div className="flex items-center space-x-4">
                                         <p className="text-2xl font-medium">
                                             Repay cUSD, Withdraw {selectedMarket.symbol}

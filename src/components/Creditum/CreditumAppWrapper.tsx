@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -27,6 +28,10 @@ const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
 export function CreditumAppWrapper({ children }) {
     return (
         <>
+            <Head>
+                <title>Creditum — Revenant Labs</title>
+            </Head>
+
             <div className="w-full max-w-7xl mx-auto p-6 md:pt-12 pb-0 space-y-6">
                 {/* <div className="flex flex-wrap items-center overflow-auto whitespace-nowrap gap-6">
                     <div className="w-full md:w-auto">
@@ -51,17 +56,16 @@ export function CreditumAppWrapper({ children }) {
                 </div> */}
 
                 <div className="flex flex-col md:flex-row gap-4">
-                    <div className="flex-1">
-                        <Link href="/creditum" passHref>
-                            <a>
-                                <img className="w-16" src="/img/creditum.png" alt="" />
-                            </a>
-                        </Link>
-                    </div>
+                    <Link href="/creditum" passHref>
+                        <a>
+                            <img className="w-16" src="/img/creditum.png" alt="" />
+                        </a>
+                    </Link>
+                    <div className="flex-1" />
                     <div className="space-x-6 font-medium flex whitespace-nowrap no-scrollbar overflow-auto">
-                        <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
+                        {/* <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
                             Home
-                        </HeaderLink>
+                        </HeaderLink> */}
                         <HeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                             Market
                         </HeaderLink>
