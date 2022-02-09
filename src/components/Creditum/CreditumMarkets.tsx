@@ -117,7 +117,7 @@ export default function CreditumMarkets() {
                                     </AnimatePresence>
                                 </div>
 
-                                <Button className="border rounded border-neutral-800 w-full text-xs" onClick={() => setShowMoreInfo((_) => !_)}>
+                                <Button className={classNames('border rounded border-neutral-800 w-full text-xs', !showMoreInfo && 'bg-yellow-400 text-neutral-900')} onClick={() => setShowMoreInfo((_) => !_)}>
                                     {showMoreInfo ? 'Less Info' : 'More Info'}
                                 </Button>
                             </div>

@@ -5,6 +5,7 @@ interface Button {
     children: any
     className?: string
     disabled?: boolean
+    onClick?: (any) => any
 }
 
 export default function Button(props: Button) {
