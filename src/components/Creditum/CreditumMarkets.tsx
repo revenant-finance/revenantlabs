@@ -8,7 +8,7 @@ import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
 
-const MarketItemAccordion = ({ market }) => {
+const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
     const open = selectedMarket?.id === market.id
 
@@ -16,7 +16,10 @@ const MarketItemAccordion = ({ market }) => {
 
     return (
         <div>
-            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', open && 'bg-yellow-400 text-neutral-900')}>
+            <button
+                onClick={() => setSelectedMarket(market)}
+                className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', open ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}
+            >
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <p className="font-medium">{market.symbol}</p>
@@ -82,6 +85,7 @@ export default function CreditumMarkets() {
             </div> */}
 
             <InfoBanner
+                header="Markets"
                 title="Stabilize your fortunes by mint cUSD."
                 subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate."
             />
@@ -93,9 +97,9 @@ export default function CreditumMarkets() {
                     {markets && (
                         <>
                             <div className="space-y-8">
-                                <div className="divide-y divide-neutral-800 border-y border-neutral-800">
-                                    {markets.map((market) => (
-                                        <MarketItemAccordion market={market} />
+                                <div className="">
+                                    {markets.map((market, index) => (
+                                        <MarketItemAccordion market={market} invert={!(index % 2 === 0)} />
                                     ))}
                                 </div>
                             </div>

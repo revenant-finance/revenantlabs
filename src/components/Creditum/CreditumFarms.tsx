@@ -95,6 +95,7 @@ export default function CreditumFarms() {
 
             <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
                 <InfoBanner
+                    header="Farming"
                     title="Deposit your tokens to start farming."
                     subtitle="Nulla eiusmod tempor id esse. Ut et magna consequat magna anim non ut irure enim magna ullamco est fugiat commodo. Veniam velit anim sint esse veniam id. Proident pariatur qui adipisicing elit irure consectetur fugi."
                 />
