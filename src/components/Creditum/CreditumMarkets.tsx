@@ -22,7 +22,10 @@ const MarketItemAccordion = ({ market, invert }) => {
             >
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
-                    <p className="font-medium">{market.symbol}</p>
+                    <div className="flex items-center space-x-2">
+                        <p className="font-medium text-xl">{market.symbol}</p>
+                        <p className="opacity-50">${formatter(market.priceUsd)}</p>
+                    </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
                     <p className="">$123,231</p>
@@ -121,6 +124,7 @@ export default function CreditumMarkets() {
                             <div className="space-y-4">
                                 <div className="">
                                     <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
+                                    <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
                                     <DataPoint title="Borrowing Interest Rate" value="$123,123" />
                                     <DataPoint title="LTV/Max Debt Ratio" value={selectedMarket.collateralMaxDebtRatio} />
