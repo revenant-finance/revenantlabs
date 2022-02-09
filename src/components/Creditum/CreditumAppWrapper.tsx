@@ -16,7 +16,7 @@ const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
         <div className="flex items-center">
             <Link href={href} passHref>
                 <a className={classNames('flex items-center space-x-2', isThisPage && 'bg-yellow-400 text-neutral-900 px-4 py-2', className)}>
-                    <i className={classNames('opacity-50 text-xs', icon)} />
+                    <i className={classNames('text-xs', isThisPage ? 'opacity-100' : 'opacity-25', icon)} />
                     <span>{children}</span>
                 </a>
             </Link>
