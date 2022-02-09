@@ -1,7 +1,5 @@
 import classNames from 'classnames'
-import { AnimatePresence, motion } from 'framer-motion'
-import { format } from 'path/posix'
-import { useEffect, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import { formatter } from '../../utils'
@@ -9,19 +7,19 @@ import Button from '../Button'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
+import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
 
 const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
-    const open = selectedMarket?.id === market.id
 
-    useEffect(() => console.log(market), [market])
-
+    const isOpen = selectedMarket?.id === market.id
     const amountBorrowable = market.collateralMintLimit - market.totalMinted
 
+    // useEffect(() => console.log(market), [market])
     return (
         <div>
-            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', open ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
+            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', isOpen ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">
@@ -30,19 +28,19 @@ const MarketItemAccordion = ({ market, invert }) => {
                     </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
-                    <p className={classNames(!open && amountBorrowable <= 10 && 'text-red-400', !open && amountBorrowable <= 1000 && 'text-yellow-400')}>{formatter(amountBorrowable)} cUSD</p>
+                    <p className={classNames(!isOpen && amountBorrowable <= 10 && 'text-red-400', !isOpen && amountBorrowable <= 1000 && 'text-yellow-400')}>{formatter(amountBorrowable)} cUSD</p>
                     <p className="">Borrowable</p>
                 </div>
             </button>
 
             <AnimatePresence>
-                {open && (
-                    <SlideOpen className={classNames('overflow-hidden', open && ' border-t-2 border-neutral-900 text-neutral-900 bg-yellow-400')}>
+                {isOpen && (
+                    <SlideOpen className={classNames('overflow-hidden', isOpen && ' border-t-2 border-neutral-900 text-neutral-900 bg-yellow-400')}>
                         <div className="p-6 space-y-4">
                             <div>
-                                <DataPoint title="User Debt" value="0.00 cUSD" />
+                                <DataPoint title="User Debt" value={`${formatter(market.userDebt)} cUSD`} />
                                 <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
-                                <DataPoint title="Current Liquidation Price" value="$0" />
+                                <DataPoint title="Current Liquidation Price" value={`${formatter(market.liquidationPrice)}`} />
                                 <DataPoint title="cUSD left to borrow" value="0 cUSD" />
                             </div>
 
@@ -65,6 +63,8 @@ export default function CreditumMarkets() {
     return (
         <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
             <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
+
+            <MarketTicker />
 
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                 <div className="space-y-8">

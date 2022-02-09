@@ -113,6 +113,7 @@ export const currencyFormatter = (labelValue) => {
 }
 
 export const formatter = (value, decimals = 2, suffixStr = '') => {
+    if (!value) return 0
     let suffix = ''
     let unit = 1
     if (isNaN(parseFloat(value))) {
