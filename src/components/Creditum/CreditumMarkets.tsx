@@ -61,7 +61,7 @@ export default function CreditumMarkets() {
     const markets = creditumData?.cusd
 
     return (
-        <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
+        <div className="w-full p-6 mx-auto max-w-7xl space-y-12">
             <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
 
             <MarketTicker />

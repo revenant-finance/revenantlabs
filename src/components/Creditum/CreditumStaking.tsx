@@ -7,13 +7,9 @@ export default function CreditumStaking() {
     const [stakingMode, setStakingMode] = useState<'staking' | 'unstaking'>('staking')
 
     return (
-        <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
+        <div className="w-full p-6 mx-auto max-w-7xl space-y-12">
             {/* <p className="text-2xl opacity-50 font-medium">Creditum</p> */}
-            <InfoBanner
-                header="Staking"
-                title="Staking your Credit and earn passive yield."
-                subtitle="Deposit your Credit tokens with no lock-up time and received xCredit, a yield-bearing derivative and goverenance token that powers Creditum. Veniam in cupidatat deserunt et dolore reprehenderit cillum enim minim."
-            />
+            <InfoBanner header="Staking" title="Staking your Credit and earn passive yield." subtitle="Deposit your Credit tokens with no lock-up time and received xCredit, a yield-bearing derivative and goverenance token that powers Creditum. Veniam in cupidatat deserunt et dolore reprehenderit cillum enim minim." />
 
             <div className="bg-neutral-700 p-6 py-24">
                 <div className="sm:max-w-md w-full mx-auto space-y-6">
