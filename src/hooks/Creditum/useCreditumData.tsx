@@ -8,22 +8,7 @@ import useRefresh from '../useRefresh'
 import { ethers } from 'ethers'
 import { FarmDataWrapper } from './useFarmData'
 
-const formatCreditumData = (
-    _assetCollateralData,
-    _totalMinted,
-    _stabilizerDeposits,
-    _userData,
-    _collateralData,
-    _stabilizerData,
-    _priceUsd,
-    _positionData,
-    _liquidationPrice,
-    _utilizationRatio,
-    _balances,
-    _fTokenData,
-    _fTokenBalances,
-    _contractBalance
-) => {
+const formatCreditumData = (_assetCollateralData, _totalMinted, _stabilizerDeposits, _userData, _collateralData, _stabilizerData, _priceUsd, _positionData, _liquidationPrice, _utilizationRatio, _balances, _fTokenData, _fTokenBalances, _contractBalance) => {
     return {
         ..._assetCollateralData,
         totalMinted: toEth(_totalMinted),
@@ -198,6 +183,9 @@ export const CreditumContext = createContext({})
 export function CreditumDataWrapper({ children }: any) {
     const creditumData = useCreditumDataInternal()
 
+    const [showDepositTool, setShowDepositTool] = useState(false)
+    const [showRepayTool, setShowRepayTool] = useState(false)
+
     const [selectedMarket, setSelectedMarket] = useState(null)
 
     const [depositInput, setDepositInput] = useState(0)
@@ -208,9 +196,7 @@ export function CreditumDataWrapper({ children }: any) {
     return (
         <>
             <FarmDataWrapper>
-                <CreditumContext.Provider
-                    value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput }}
-                >
+                <CreditumContext.Provider value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool }}>
                     <>{children}</>
                 </CreditumContext.Provider>
             </FarmDataWrapper>

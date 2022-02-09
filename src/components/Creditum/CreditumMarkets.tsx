@@ -55,12 +55,9 @@ const MarketItemAccordion = ({ market, invert }) => {
 }
 
 export default function CreditumMarkets() {
-    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput } = useCreditumData()
+    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
     const { farmData } = useFarmData()
     const markets = creditumData?.cusd
-
-    const [showDepositTool, setShowDepositTool] = useState(false)
-    const [showRepayTool, setShowRepayTool] = useState(false)
 
     return (
         <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">

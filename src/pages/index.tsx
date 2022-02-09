@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Banner from '../components/Banner'
 import CallToAction from '../components/CallToAction'
 import Footer from '../components/Footer'
+import MeshBackground from '../components/MeshBackground'
 import RvntClaim from '../components/RvntClaim'
 
 export default function IndexPage() {
@@ -19,8 +20,7 @@ export default function IndexPage() {
                                 <span className="text-orange-500">Labs</span>
                             </p>
                             <p className="text-2xl md:text-4xl font-light max-w-lg">
-                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-orange-500 text-neutral-900 whitespace-nowrap">sovereign cash</span> on
-                                the worlds fastest blockchain.
+                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-orange-500 text-neutral-900 whitespace-nowrap">sovereign cash</span> on the worlds fastest blockchain.
                             </p>
                         </div>
                         <div>
@@ -42,11 +42,9 @@ export default function IndexPage() {
                 <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Link href="/creditum" passHref>
-                            <a
-                                className="bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
-                                style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
-                            >
-                                <div className="md:max-w-sm space-y-2">
+                            <a className="relative bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden" style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}>
+                                {/* <MeshBackground id="creditum-gradient-colors" /> */}
+                                <div className="relative md:max-w-sm space-y-2">
                                     <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
                                     <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
                                 </div>
@@ -54,11 +52,10 @@ export default function IndexPage() {
                         </Link>
 
                         <Link href="/singularity" passHref>
-                            <a
-                                className="bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
-                                style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}
-                            >
-                                <div className="md:max-w-sm space-y-2 ">
+                            <a className="relative bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden" style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}>
+                                {/* <MeshBackground id="singularity-gradient-colors" /> */}
+
+                                <div className="relative md:max-w-sm space-y-2 ">
                                     <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
                                     <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
                                 </div>
@@ -99,14 +96,8 @@ export default function IndexPage() {
                         <div className="space-y-8">
                             <p className="text-4xl md:text-7xl font-extrabold">Building with the community in mind.</p>
                             <div className="space-y-4">
-                                <p className="text-xl">
-                                    Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important
-                                    part of our vision.
-                                </p>
-                                <p className="text-xl">
-                                    Ipsum dolor nulla magna sit nisi veniam ut id nisi sint eiusmod amet occaecat laboris. Lorem magna amet eiusmod irure proident. Anim quis nisi sunt cupidatat. Et fugiat magna ut qui.
-                                    Fugiat consectetur aliqua pariatur anim ipsum esse irure incididunt qui deserunt nostrud. Velit ut ut exercitation cupidatat culpa minim pariatur.
-                                </p>
+                                <p className="text-xl">Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important part of our vision.</p>
+                                <p className="text-xl">Ipsum dolor nulla magna sit nisi veniam ut id nisi sint eiusmod amet occaecat laboris. Lorem magna amet eiusmod irure proident. Anim quis nisi sunt cupidatat. Et fugiat magna ut qui. Fugiat consectetur aliqua pariatur anim ipsum esse irure incididunt qui deserunt nostrud. Velit ut ut exercitation cupidatat culpa minim pariatur.</p>
                             </div>
                         </div>
                     </div>
@@ -122,10 +113,7 @@ export default function IndexPage() {
                     <div className="space-y-8">
                         <p className="text-4xl md:text-6xl font-extrabold">Powered by the worlds fastest and most efficient blockchain.</p>
                         <div className="space-y-4">
-                            <p className="text-xl">
-                                Our products are deployed on the Fantom Blockchain — known for nearly instant, cheap, and safe transactions. Avoid Ethereum's slow wait times and high gas fees, while utilizing your same
-                                assets. It's that simple.
-                            </p>
+                            <p className="text-xl">Our products are deployed on the Fantom Blockchain — known for nearly instant, cheap, and safe transactions. Avoid Ethereum's slow wait times and high gas fees, while utilizing your same assets. It's that simple.</p>
                         </div>
                     </div>
                 </div>

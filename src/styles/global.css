@@ -38,11 +38,15 @@ body,
     /* color: red !important; */
 }
 
-#gradient-canvas {
-    width: 100%;
-    height: 100%;
+#singularity-gradient-colors {
     --gradient-color-1: #000000;
     --gradient-color-2: #002d47;
     --gradient-color-3: #000114;
     --gradient-color-4: #270047;
+}
+#creditum-gradient-colors {
+    --gradient-color-1: #b69322;
+    --gradient-color-2: #c79800;
+    --gradient-color-3: #fff562;
+    --gradient-color-4: #c58115;
 }
