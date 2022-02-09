@@ -62,21 +62,6 @@ export default function CreditumMarkets() {
 
     return (
         <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
-            {/* <div className="py-6 md:py-12 w-full flex flex-wrap items-center justify-center gap-6 md:gap-12 text-center">
-                <div className="">
-                    <p className="text-3xl">$123,123,123</p>
-                    <p className="opacity-50 text-sm font-medium">Total Collateral Amount</p>
-                </div>
-                <div className="">
-                    <p className="text-3xl">$123,123,123</p>
-                    <p className="opacity-50 text-sm font-medium">Total Amount Minted</p>
-                </div>
-                <div className="">
-                    <p className="text-3xl">86%</p>
-                    <p className="opacity-50 text-sm font-medium">Utilization Ration</p>
-                </div>
-            </div> */}
-
             <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
 
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -164,9 +149,9 @@ export default function CreditumMarkets() {
                                                     <DataPoint title="Health Factor" value="0.0" />
                                                 </div>
                                             )}
-                                            <button disabled={!depositInput && !borrowInput} className={classNames('w-full p-2 text-white bg-green-800 rounded hover:bg-green-900', !depositInput && !borrowInput && 'opacity-50')}>
+                                            <Button disabled={!depositInput && !borrowInput} className="text-white bg-green-800 rounded hover:bg-green-900">
                                                 Deposit & Borrow
-                                            </button>
+                                            </Button>
                                         </SlideOpen>
                                     )}
                                 </AnimatePresence>
