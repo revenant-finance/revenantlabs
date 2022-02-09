@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 import { format } from 'path/posix'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import { formatter } from '../../utils'
@@ -13,14 +13,11 @@ const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
     const open = selectedMarket?.id === market.id
 
-    useEffect(() => console.log(market), [market])
+    // useEffect(() => console.log(market), [market])
 
     return (
         <div>
-            <button
-                onClick={() => setSelectedMarket(market)}
-                className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', open ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}
-            >
+            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', open ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">
@@ -71,6 +68,9 @@ export default function CreditumMarkets() {
     const { farmData } = useFarmData()
     const markets = creditumData?.cusd
 
+    const [openDeposit, setOpenDeposit] = useState(false)
+    const [openRepay, setOpenRepay] = useState(false)
+
     return (
         <div className="w-full p-6 py-24 mx-auto max-w-7xl space-y-12">
             {/* <div className="py-6 md:py-12 w-full flex flex-wrap items-center justify-center gap-6 md:gap-12 text-center">
@@ -88,11 +88,7 @@ export default function CreditumMarkets() {
                 </div>
             </div> */}
 
-            <InfoBanner
-                header="Markets"
-                title="Stabilize your fortunes by mint cUSD."
-                subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate."
-            />
+            <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
 
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                 <div className="space-y-8">
@@ -136,7 +132,7 @@ export default function CreditumMarkets() {
                                 </div>
                             </div>
                             <div className="space-y-4">
-                                <div className="space-y-2">
+                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-2 text-left  hover:opacity-100 transition ease-in-out', openDeposit ? 'opacity-100' : 'opacity-75')} onClick={() => setOpenDeposit((_) => !_)}>
                                     <div className="flex items-center space-x-4">
                                         <p className="text-2xl font-medium">
                                             Deposit {selectedMarket.symbol}, borrow cUSD
@@ -144,33 +140,35 @@ export default function CreditumMarkets() {
                                         </p>
                                     </div>
                                     <p className="opacity-50">Deposit your ${selectedMarket.symbol} to create a collateralized position and mint cUSD against it, instantly.</p>
-                                </div>
-                                <div className="space-y-2">
-                                    <div className="flex flex-col gap-2 md:flex-row">
-                                        <div className="flex-1 space-y-1">
-                                            <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to deposit.</p>
-                                            <input value={depositInput} onChange={(e) => setDepositInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                </button>
+                                {openDeposit && (
+                                    <div className="space-y-2">
+                                        <div className="flex flex-col gap-2 md:flex-row">
+                                            <div className="flex-1 space-y-1">
+                                                <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to deposit.</p>
+                                                <input value={depositInput} onChange={(e) => setDepositInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            </div>
+                                            <div className="flex-1 space-y-1">
+                                                <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
+                                                <input value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            </div>
                                         </div>
-                                        <div className="flex-1 space-y-1">
-                                            <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                            <input value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
-                                        </div>
-                                    </div>
 
-                                    {(!!depositInput || !!borrowInput) && (
-                                        <div className="p-4 bg-white bg-opacity-10 rounded">
-                                            <DataPoint title="Borrowed Amount" value="0.0 => 0.1" />
-                                            <DataPoint title="Liquidation Price" value="0.0" />
-                                            <DataPoint title="Health Factor" value="0.0" />
-                                        </div>
-                                    )}
-                                    <button disabled={!depositInput && !borrowInput} className={classNames('w-full p-2 text-white bg-green-800 rounded hover:bg-green-900', !depositInput && !borrowInput && 'opacity-50')}>
-                                        Deposit & Borrow
-                                    </button>
-                                </div>
+                                        {(!!depositInput || !!borrowInput) && (
+                                            <div className="p-4 bg-white bg-opacity-10 rounded">
+                                                <DataPoint title="Borrowed Amount" value="0.0 => 0.1" />
+                                                <DataPoint title="Liquidation Price" value="0.0" />
+                                                <DataPoint title="Health Factor" value="0.0" />
+                                            </div>
+                                        )}
+                                        <button disabled={!depositInput && !borrowInput} className={classNames('w-full p-2 text-white bg-green-800 rounded hover:bg-green-900', !depositInput && !borrowInput && 'opacity-50')}>
+                                            Deposit & Borrow
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             <div className="space-y-4">
-                                <div className="space-y-2">
+                                <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-2 text-left  hover:opacity-100 transition ease-in-out', openRepay ? 'opacity-100' : 'opacity-75')} onClick={() => setOpenRepay((_) => !_)}>
                                     <div className="flex items-center space-x-4">
                                         <p className="text-2xl font-medium">
                                             Repay cUSD, Withdraw {selectedMarket.symbol}
@@ -178,32 +176,34 @@ export default function CreditumMarkets() {
                                         </p>
                                     </div>
                                     <p className="opacity-50">Repay your cUSD loans and withdraw your {selectedMarket.symbol} back into your wallet.</p>
-                                </div>
+                                </button>
 
-                                <div className="space-y-2">
-                                    <div className="flex flex-col gap-2 md:flex-row">
-                                        <div className="flex-1 space-y-1">
-                                            <p className="text-xs font-medium">Amount of cUSD to repay.</p>
-                                            <input value={repayInput} onChange={(e) => setRepayInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                {openRepay && (
+                                    <div className="space-y-2">
+                                        <div className="flex flex-col gap-2 md:flex-row">
+                                            <div className="flex-1 space-y-1">
+                                                <p className="text-xs font-medium">Amount of cUSD to repay.</p>
+                                                <input value={repayInput} onChange={(e) => setRepayInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            </div>
+                                            <div className="flex-1 space-y-1">
+                                                <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to withdraw.</p>
+                                                <input value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                            </div>
                                         </div>
-                                        <div className="flex-1 space-y-1">
-                                            <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to withdraw.</p>
-                                            <input value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
-                                        </div>
+
+                                        {(!!withdrawInput || !!repayInput) && (
+                                            <div className="p-4 bg-white bg-opacity-10 rounded">
+                                                <DataPoint title="Borrowed Amount" value="0.0" />
+                                                <DataPoint title="Liquidation Price" value="0.0" />
+                                                <DataPoint title="Health Factor" value="0.0" />
+                                            </div>
+                                        )}
+
+                                        <button disabled={!withdrawInput && !repayInput} className={classNames('w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900', !withdrawInput && !repayInput && 'opacity-50')}>
+                                            Repay & Withdraw
+                                        </button>
                                     </div>
-
-                                    {(!!withdrawInput || !!repayInput) && (
-                                        <div className="p-4 bg-white bg-opacity-10 rounded">
-                                            <DataPoint title="Borrowed Amount" value="0.0" />
-                                            <DataPoint title="Liquidation Price" value="0.0" />
-                                            <DataPoint title="Health Factor" value="0.0" />
-                                        </div>
-                                    )}
-
-                                    <button disabled={!withdrawInput && !repayInput} className={classNames('w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900', !withdrawInput && !repayInput && 'opacity-50')}>
-                                        Repay & Withdraw
-                                    </button>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </>
