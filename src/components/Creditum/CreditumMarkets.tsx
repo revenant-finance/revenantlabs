@@ -30,7 +30,7 @@ const MarketItemAccordion = ({ market, invert }) => {
                     </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
-                    <p className={classNames(amountBorrowable <= 10 && 'text-red-400', amountBorrowable <= 1000 && 'text-yellow-400')}>{formatter(amountBorrowable)} cUSD</p>
+                    <p className={classNames(!open && amountBorrowable <= 10 && 'text-red-400', !open && amountBorrowable <= 1000 && 'text-yellow-400')}>{formatter(amountBorrowable)} cUSD</p>
                     <p className="">Borrowable</p>
                 </div>
             </button>
