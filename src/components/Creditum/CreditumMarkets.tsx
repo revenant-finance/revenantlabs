@@ -57,7 +57,6 @@ const MarketItemAccordion = ({ market, invert }) => {
 
 export default function CreditumMarkets() {
     const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
-    const { farmData } = useFarmData()
     const markets = creditumData?.cusd?.collaterals
 
     return (

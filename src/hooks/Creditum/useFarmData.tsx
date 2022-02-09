@@ -51,11 +51,13 @@ function useFarmDataInternal() {
             earnings.push(poolRewards)
         }
         const farmStats = await Promise.all(farmStatCalls)
+        let tvl = 0
         const formattedFarmData = _farms.map((farm, i) => {
             const _farmStats = farmStats[i]
+            tvl += _farmStats.tvl
             return { ..._farmStats, ...farm, earnings: earnings[i] }
         })
-        return formattedFarmData
+        return {farms: formattedFarmData, tvl}
     }
 
     useEffect(() => {
@@ -84,12 +86,13 @@ function useFarmDataInternal() {
 
             let formattedFarmData = []
             for (let i = 0; i < farms.length; i++) {
-                formattedFarmData.push(formatFarmData(farms[i], userInfo[i] ? userInfo[i] : null, depositTokenBalance[i] ? depositTokenBalance[i] : BigNumber.from(0), allowance[i] ? allowance[i] : BigNumber.from(0)))
+                const farm = formatFarmData(farms[i], userInfo[i] ? userInfo[i] : null, depositTokenBalance[i] ? depositTokenBalance[i] : BigNumber.from(0), allowance[i] ? allowance[i] : BigNumber.from(0))
+                formattedFarmData.push(farm)
             }
 
             formattedFarmData = await handleTokenCalls(formattedFarmData)
 
-            console.log('refreshing collaterals result ===== ')
+            console.log('refreshing farm result ===== ')
             setFarmData(formattedFarmData)
             setRefreshing(false)
         }
