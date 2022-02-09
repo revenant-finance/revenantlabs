@@ -183,6 +183,7 @@ export const CreditumContext = createContext({})
 export function CreditumDataWrapper({ children }: any) {
     const creditumData = useCreditumDataInternal()
 
+    const [showMoreInfo, setShowMoreInfo] = useState(false)
     const [showDepositTool, setShowDepositTool] = useState(false)
     const [showRepayTool, setShowRepayTool] = useState(false)
 
@@ -196,7 +197,7 @@ export function CreditumDataWrapper({ children }: any) {
     return (
         <>
             <FarmDataWrapper>
-                <CreditumContext.Provider value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool }}>
+                <CreditumContext.Provider value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool }}>
                     <>{children}</>
                 </CreditumContext.Provider>
             </FarmDataWrapper>

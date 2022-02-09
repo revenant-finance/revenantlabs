@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import { formatter } from '../../utils'
+import Button from '../Button'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
@@ -55,7 +56,7 @@ const MarketItemAccordion = ({ market, invert }) => {
 }
 
 export default function CreditumMarkets() {
-    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
+    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
     const { farmData } = useFarmData()
     const markets = creditumData?.cusd
 
@@ -111,13 +112,26 @@ export default function CreditumMarkets() {
                                     <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
-                                    <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
-                                    <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
-                                    <DataPoint title="LTV/Max Debt Ratio" value={`${formatter(selectedMarket.collateralMaxDebtRatio * 100)}%`} />
-                                    <DataPoint title="Mint Fee" value={`${formatter(selectedMarket.collateralMintFee * 100)}%`} />
-                                    <DataPoint title="Liquidation Penalty" value={`${formatter(selectedMarket.collateralLiquidationPenalty * 100)}%`} />
-                                    <DataPoint title="Liquidation Threshold" value={`${formatter(selectedMarket.collateralLiquidationThreshold * 100)}%`} />
+
+                                    <AnimatePresence>
+                                        {showMoreInfo && (
+                                            <SlideOpen>
+                                                <div>
+                                                    <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
+                                                    <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
+                                                    <DataPoint title="LTV/Max Debt Ratio" value={`${formatter(selectedMarket.collateralMaxDebtRatio * 100)}%`} />
+                                                    <DataPoint title="Mint Fee" value={`${formatter(selectedMarket.collateralMintFee * 100)}%`} />
+                                                    <DataPoint title="Liquidation Penalty" value={`${formatter(selectedMarket.collateralLiquidationPenalty * 100)}%`} />
+                                                    <DataPoint title="Liquidation Threshold" value={`${formatter(selectedMarket.collateralLiquidationThreshold * 100)}%`} />
+                                                </div>
+                                            </SlideOpen>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
+
+                                <Button className="border rounded border-neutral-800 w-full text-xs" onClick={() => setShowMoreInfo((_) => !_)}>
+                                    {showMoreInfo ? 'Less Info' : 'More Info'}
+                                </Button>
                             </div>
                             <div className="space-y-4">
                                 <button className={classNames('border w-full border-neutral-800 p-4 rounded space-y-2 text-left  hover:opacity-100 transition ease-in-out', showDepositTool ? 'opacity-100' : 'opacity-75')} onClick={() => setShowDepositTool((_) => !_)}>
