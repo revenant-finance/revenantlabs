@@ -1,6 +1,5 @@
 import Ticker from 'react-ticker'
 import { formatter } from '../utils'
-import r from 'random'
 
 const MarketTickerItem = ({ title, value }) => {
     return (
@@ -18,13 +17,13 @@ export default function MarketTicker() {
                 {({ index }) => (
                     <>
                         <div className="flex items-center space-x-4 mr-4">
-                            <MarketTickerItem title="Market Cap" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="$CREDIT Price" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="$xCREDIT Price" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="Total Value Locked (TVL)" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="Total Collateral Amount" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="Total Amount Minted" value={formatter(r.int(1000, 100000))} />
-                            <MarketTickerItem title="Market Utilization Ratio" value={formatter(r.int(1000, 100000))} />
+                            <MarketTickerItem title="Market Cap" value={formatter(999999999)} />
+                            <MarketTickerItem title="$CREDIT Price" value={formatter(999999999)} />
+                            <MarketTickerItem title="$xCREDIT Price" value={formatter(999999999)} />
+                            <MarketTickerItem title="Total Value Locked (TVL)" value={formatter(999999999)} />
+                            <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} />
+                            <MarketTickerItem title="Total Amount Minted" value={formatter(999999999)} />
+                            <MarketTickerItem title="Market Utilization Ratio" value={formatter(999999999)} />
                         </div>
                     </>
                 )}
