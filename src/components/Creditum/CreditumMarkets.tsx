@@ -17,6 +17,8 @@ const MarketItemAccordion = ({ market, invert }) => {
 
     useEffect(() => console.log(market), [market])
 
+    const amountBorrowable = market.collateralMintLimit - market.totalMinted
+
     return (
         <div>
             <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', open ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
@@ -28,9 +30,7 @@ const MarketItemAccordion = ({ market, invert }) => {
                     </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
-                    <p className="">
-                        {formatter(market.collateralMintLimit - market.totalMinted)} {market.symbol}
-                    </p>
+                    <p className={classNames(amountBorrowable <= 10 && 'text-red-400', amountBorrowable <= 1000 && 'text-yellow-400')}>{formatter(amountBorrowable)} cUSD</p>
                     <p className="">Borrowable</p>
                 </div>
             </button>
