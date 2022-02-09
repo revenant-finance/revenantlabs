@@ -15,7 +15,7 @@ const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
     const open = selectedMarket?.id === market.id
 
-    // useEffect(() => console.log(market), [market])
+    useEffect(() => console.log(market), [market])
 
     return (
         <div>
@@ -28,7 +28,9 @@ const MarketItemAccordion = ({ market, invert }) => {
                     </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
-                    <p className="">$123,231</p>
+                    <p className="">
+                        {formatter(market.collateralMintLimit - market.totalMinted)} {market.symbol}
+                    </p>
                     <p className="">Borrowable</p>
                 </div>
             </button>
@@ -102,6 +104,7 @@ export default function CreditumMarkets() {
                                         {showMoreInfo && (
                                             <SlideOpen>
                                                 <div>
+                                                    <DataPoint title={`${selectedMarket.symbol} Price`} value={`$${formatter(selectedMarket.priceUsd)} USD`} />
                                                     <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
                                                     <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
                                                     <DataPoint title="LTV/Max Debt Ratio" value={`${formatter(selectedMarket.collateralMaxDebtRatio * 100)}%`} />
@@ -189,9 +192,9 @@ export default function CreditumMarkets() {
                                                 </div>
                                             )}
 
-                                            <button disabled={!withdrawInput && !repayInput} className={classNames('w-full p-2 text-white bg-blue-800 rounded hover:bg-blue-900', !withdrawInput && !repayInput && 'opacity-50')}>
+                                            <Button disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
                                                 Repay & Withdraw
-                                            </button>
+                                            </Button>
                                         </SlideOpen>
                                     )}
                                 </AnimatePresence>
