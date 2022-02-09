@@ -97,7 +97,7 @@ export default function CreditumMarkets() {
                             <div className="space-y-4">
                                 <div className="">
                                     <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
-                                    <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} ${selectedMarket.symbol}`} />
+                                    <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} USD`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
 
                                     <AnimatePresence>
