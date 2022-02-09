@@ -53,9 +53,7 @@ export function CreditumAppWrapper({ children }) {
                 </div>
 
                 <div className="space-x-6 font-medium flex whitespace-nowrap no-scrollbar overflow-auto">
-                    <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
-                        Revenant
-                    </HeaderLink>
+                    <HeaderLink href="/" icon="fas fa-home" className="opacity-50" />
                     <HeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                         Market
                     </HeaderLink>
@@ -70,9 +68,16 @@ export function CreditumAppWrapper({ children }) {
 
             {children}
 
-            {/* <div className="w-full max-w-7xl mx-auto p-6 md:pb-12 pt-0 space-y-6">
-                <InfoBanner title="Need help?" subtitle="Est esse non in nisi nulla laboris enim sit exercitation cupidata." />
-            </div> */}
+            <div className="w-full max-w-7xl mx-auto p-6 pb-24 pt-0 space-y-12">
+                <div className="max-w-sm w-full mx-auto space-y-1">
+                    <p className="font-medium">Creditum</p>
+                    <p className="text-2xl opacity-50">
+                        Creditum enables its users to mint cUSD — a safe and powerful stablecoin — by depositing a variety of assets that earn yield passively, and farm rewards against them.
+                    </p>
+                </div>
+
+                <div className="text-center uppercase text-xs font-medium">Revenant Labs — Creditum &copy; {new Date().getFullYear()} </div>
+            </div>
         </>
     )
 }

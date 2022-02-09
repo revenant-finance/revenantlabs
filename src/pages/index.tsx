@@ -19,8 +19,8 @@ export default function IndexPage() {
                                 <span className="text-orange-500">Labs</span>
                             </p>
                             <p className="text-2xl md:text-4xl font-light max-w-lg">
-                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-orange-500 text-neutral-900 whitespace-nowrap">soverign cash</span> on the
-                                worlds fastest blockchain.
+                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-orange-500 text-neutral-900 whitespace-nowrap">sovereign cash</span> on
+                                the worlds fastest blockchain.
                             </p>
                         </div>
                         <div>
