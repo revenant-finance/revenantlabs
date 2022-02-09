@@ -7,7 +7,7 @@ import { ethers } from 'ethers'
 
 export default function useCreditum() {
     const [status, setStatus] = useState('idle')
-    const {account, ethereum} = useWallet()
+    const { account, ethereum } = useWallet()
     const { update } = useCreditumData()
 
     const provider = account ? new ethers.providers.JsonRpcProvider(ethereum).getSigner() : null
@@ -16,8 +16,8 @@ export default function useCreditum() {
         setStatus('loading')
         if (account) {
             let tx = null
-            const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const cToken = market?.cToken
+            const creditumContract = getCreditumContract(cToken?.creditum, provider)
             const tokenContract = getTokenContract(market?.address, provider)
             try {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
@@ -38,12 +38,12 @@ export default function useCreditum() {
         setStatus('loading')
         if (account) {
             let tx = null
-            const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, provider)
-            const fTokenContract = getTokenContract(fToken?.address, provider)
+            const cToken = market?.cToken
+            const creditumContract = getCreditumContract(cToken?.creditum, provider)
+            const cTokenContract = getTokenContract(cToken?.address, provider)
             try {
-                if (Number(fToken.allowBalance) < Number(repayAmount)) {
-                    tx = await fTokenContract.approve(creditumContract.address, MAX_UINT256)
+                if (Number(cToken.allowBalance) < Number(repayAmount)) {
+                    tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
                     tx = await creditumContract.exit(market?.address, toWei(withdrawAmount, market.decimals), toWei(repayAmount))
                 }
@@ -60,8 +60,8 @@ export default function useCreditum() {
         setStatus('loading')
         if (account) {
             let tx = null
-            const fToken = market?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, provider)
+            const cToken = market?.cToken
+            const creditumContract = getCreditumContract(cToken?.creditum, provider)
             const tokenContract = getTokenContract(market?.address, provider)
             try {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
@@ -83,12 +83,12 @@ export default function useCreditum() {
         console.log(toWei(burnAmount, underlying.decimals).toString())
         if (account) {
             let tx = null
-            const fToken = underlying?.fToken
-            const creditumContract = getCreditumContract(fToken?.creditum, provider)
-            const fTokenContract = getTokenContract(fToken?.address, provider)
+            const cToken = underlying?.cToken
+            const creditumContract = getCreditumContract(cToken?.creditum, provider)
+            const cTokenContract = getTokenContract(cToken?.address, provider)
             try {
-                if (Number(fToken?.allowBalance) < Number(burnAmount)) {
-                    tx = await fTokenContract.approve(creditumContract.address, MAX_UINT256)
+                if (Number(cToken?.allowBalance) < Number(burnAmount)) {
+                    tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
                     tx = await creditumContract.stabilizerRedeem(underlying?.address, toWei(burnAmount))
                 }

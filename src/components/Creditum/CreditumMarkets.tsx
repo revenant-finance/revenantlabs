@@ -23,7 +23,7 @@ const MarketItemAccordion = ({ market, invert }) => {
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">
-                        <p className="font-medium text-xl">{market.symbol}</p>
+                        <p className="text-xl font-medium">{market.symbol}</p>
                         <p className="opacity-50">${formatter(market.priceUsd)}</p>
                     </div>
                 </div>
@@ -44,7 +44,7 @@ const MarketItemAccordion = ({ market, invert }) => {
                                 <DataPoint title="cUSD left to borrow" value="0 cUSD" />
                             </div>
 
-                            <a href="#market" className="block md:hidden border  w-full border-neutral-800 text-xs font-medium px-4 py-2 rounded text-center">
+                            <a href="#market" className="block w-full px-4 py-2 text-xs font-medium text-center border rounded md:hidden border-neutral-800">
                                 Interact with Market
                             </a>
                         </div>
@@ -58,10 +58,10 @@ const MarketItemAccordion = ({ market, invert }) => {
 export default function CreditumMarkets() {
     const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
     const { farmData } = useFarmData()
-    const markets = creditumData?.cusd
+    const markets = creditumData?.cusd?.collaterals
 
     return (
-        <div className="w-full p-6 mx-auto max-w-7xl space-y-12">
+        <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
             <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
 
             <MarketTicker />
@@ -148,7 +148,7 @@ export default function CreditumMarkets() {
                                             </div>
 
                                             {(!!depositInput || !!borrowInput) && (
-                                                <div className="p-4 bg-white bg-opacity-10 rounded">
+                                                <div className="p-4 bg-white rounded bg-opacity-10">
                                                     <DataPoint title="Borrowed Amount" value="0.0 => 0.1" />
                                                     <DataPoint title="Liquidation Price" value="0.0" />
                                                     <DataPoint title="Health Factor" value="0.0" />
@@ -187,7 +187,7 @@ export default function CreditumMarkets() {
                                             </div>
 
                                             {(!!withdrawInput || !!repayInput) && (
-                                                <div className="p-4 bg-white bg-opacity-10 rounded">
+                                                <div className="p-4 bg-white rounded bg-opacity-10">
                                                     <DataPoint title="Borrowed Amount" value="0.0" />
                                                     <DataPoint title="Liquidation Price" value="0.0" />
                                                     <DataPoint title="Health Factor" value="0.0" />

@@ -1,7 +1,7 @@
 export default {
     1: {},
     250: {
-        FTOKEN: {
+        cToken: {
             cusd: {
                 mint: '0xE3a486C1903Ea794eED5d5Fa0C9473c7D7708f40',
                 unitroller: '0x07F961C532290594FA1A08929EB5557346a7BB9C',
