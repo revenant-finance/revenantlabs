@@ -63,5 +63,14 @@ export default function useGeneralData() {
         setMarketCap(_marketCap)
     }
 
-    return { tvl, marketCap, supply }
+    return {
+        tvl,
+        marketCap,
+        supply,
+        creditPrice: 0,
+        xCreditPrice: 0,
+        totalCollateralAmount: 0,
+        totalAmountMinted: 0,
+        marketUtilizationRatio: 0
+    }
 }
