@@ -35,7 +35,7 @@ const MarketItemAccordion = ({ market, invert }) => {
 
             <AnimatePresence>
                 {open && (
-                    <SlideOpen className={classNames('overflow-hidden', open && ' border-t border-neutral-900 text-neutral-900 bg-yellow-400')}>
+                    <SlideOpen className={classNames('overflow-hidden', open && ' border-t-2 border-neutral-900 text-neutral-900 bg-yellow-400')}>
                         <div className="p-6 space-y-4">
                             <div>
                                 <DataPoint title="User Debt" value="0.00 cUSD" />
