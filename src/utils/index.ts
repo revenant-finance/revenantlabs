@@ -61,8 +61,8 @@ export function toWei(ether: string, decimals = 18): BigNumber {
 export function toEth(ether: ethers.BigNumberish | string, decimals = 18): string {
     if (ether) {
         const tempAmount = utils.formatUnits(ether, decimals)
-        if (tempAmount.substr(tempAmount.indexOf(".") + 1) === '0') {
-            return tempAmount.slice(0, tempAmount.indexOf("."))
+        if (tempAmount.substr(tempAmount.indexOf('.') + 1) === '0') {
+            return tempAmount.slice(0, tempAmount.indexOf('.'))
         }
         return tempAmount
     }
@@ -134,7 +134,7 @@ export const formatter = (value, decimals = 2, suffixStr = '') => {
         unit = 1.0e3
     }
 
-    return `${format(Math.floor((abs / unit) * Math.pow(10, decimals)) / Math.pow(10, decimals))}${suffix} ${suffixStr || ''}`
+    return `${format(Math.floor((abs / unit) * Math.pow(10, decimals)) / Math.pow(10, decimals))}${suffix}${suffixStr && ` ${suffixStr}`}`
 }
 
 export const sumOfArray = (array) => {

@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
+import { format } from 'path/posix'
 import { useEffect } from 'react'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useFarmData from '../../hooks/Creditum/useFarmData'
@@ -126,12 +127,12 @@ export default function CreditumMarkets() {
                                     <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
-                                    <DataPoint title="Borrowing Interest Rate" value="$123,123" />
-                                    <DataPoint title="LTV/Max Debt Ratio" value={selectedMarket.collateralMaxDebtRatio} />
-                                    <DataPoint title="Mint Fee" value={`${selectedMarket.collateralMintFee}%`} />
-                                    <DataPoint title="Liquidation Penalty" value={`${selectedMarket.collateralLiquidationPenalty}%`} />
                                     <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
-                                    <DataPoint title="Liquidation Threshold" value={`${selectedMarket.collateralLiquidationThreshold}`} />
+                                    <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
+                                    <DataPoint title="LTV/Max Debt Ratio" value={`${formatter(selectedMarket.collateralMaxDebtRatio * 100)}%`} />
+                                    <DataPoint title="Mint Fee" value={`${formatter(selectedMarket.collateralMintFee * 100)}%`} />
+                                    <DataPoint title="Liquidation Penalty" value={`${formatter(selectedMarket.collateralLiquidationPenalty * 100)}%`} />
+                                    <DataPoint title="Liquidation Threshold" value={`${formatter(selectedMarket.collateralLiquidationThreshold * 100)}%`} />
                                 </div>
                             </div>
                             <div className="space-y-4">
