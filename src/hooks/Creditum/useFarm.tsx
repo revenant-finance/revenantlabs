@@ -13,8 +13,20 @@ export default function useFarm() {
 
     const farmContract = getFarmsContract(provider)
 
-    
     const { update } = useFarmData()
+
+    const approve = async (pid) => {
+        if (!account) return
+        try {
+            const farmData = farms.filter((farm) => farm.pid === pid)[0]
+            const tokenContract = getTokenContract(farmData.depositToken, provider)
+            const tx = await tokenContract.approve(farmContract.address, MAX_UINT256)
+            await tx.wait(1)
+            update()
+        } catch (ex) {
+            console.error(ex)
+        }
+    }
 
     const deposit = async (pid, amount) => {
         if (!account) return
@@ -83,8 +95,9 @@ export default function useFarm() {
     }
 
     return {
+        approve,
         deposit,
         withdraw,
-        claim,
+        claim
     }
 }
