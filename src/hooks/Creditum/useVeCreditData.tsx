@@ -29,13 +29,12 @@ export default function useVeCreditData() {
             console.log(veCreditContract)
             console.log(await veCreditContract.supply())
             if (account) {
-                const [allow, tokenBal, xtokenBal, xtokenShare, lockEnd, veCreditBal, veCreditTotalSupply, creditLocked] = await Promise.all([
+                const [allow, tokenBal, xtokenBal, xtokenShare, veCreditBal, veCreditTotalSupply, creditLocked] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
                     xCreditContract.getShareValue(),
-                    veCreditContract.locked__end(account),
-                    veCreditContract.balanceOf(account),
+                    veCreditContract['balanceOf(address)'](account),
                     veCreditContract.supply(),
                     //unknown parameter
                     veCreditContract.locked(account)
@@ -46,7 +45,6 @@ export default function useVeCreditData() {
                     tokenBal: toEth(tokenBal),
                     xtokenBal: toEth(xtokenBal),
                     xtokenShare: toEth(xtokenShare),
-                    lockEnd,
                     veCreditBal: toEth(veCreditBal),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     creditLocked: toEth(creditLocked)
