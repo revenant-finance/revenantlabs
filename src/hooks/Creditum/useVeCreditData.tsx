@@ -26,10 +26,8 @@ export default function useVeCreditData() {
 
     const fetchData = async () => {
         try {
-            console.log(veCreditContract)
-            console.log(await veCreditContract.supply())
             if (account) {
-                const [allow, tokenBal, xtokenBal, xtokenShare, veCreditBal, veCreditTotalSupply, creditLocked] = await Promise.all([
+                const [allow, tokenBal, xtokenBal, xtokenShare, veCreditBal, veCreditTotalSupply, locked] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
@@ -47,7 +45,8 @@ export default function useVeCreditData() {
                     xtokenShare: toEth(xtokenShare),
                     veCreditBal: toEth(veCreditBal),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
-                    creditLocked: toEth(creditLocked)
+                    creditLocked: toEth(locked.amount),
+                    lockEnd: locked.toNumber()
                 }
             } else {
                 const [xtokenShare, veCreditTotalSupply] = await Promise.all([xCreditContract.getShareValue(), veCreditContract.supply()])
