@@ -10,7 +10,7 @@ import useAlerts from '../../hooks/useAlerts'
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
     return (
-        <Button className={classNames(stakingTime === value ? 'bg-neutral-800' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
+        <Button className={classNames(stakingTime === value ? 'bg-yellow-500' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
             {children}
         </Button>
     )
@@ -45,7 +45,7 @@ export default function CreditumStaking() {
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
             if (veCreditData.creditLocked.amount) increaseAmount(value)
-            else await withdraw(value)
+            else await withdraw()
             setStatus('idle')
         } catch (error) {
             newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
@@ -79,12 +79,14 @@ export default function CreditumStaking() {
                 <div className="w-full mx-auto space-y-6 sm:max-w-md">
                     <div className="space-y-1">
                         <div className="flex space-x-2 text-2xl font-medium">
-                            <button onClick={() => setStakingMode('staking')} className={classNames(stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
-                                Stake
+                            <button onClick={() => setStakingMode('staking')} className={classNames('space-x-2', stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
+                                <i className="fas fa-lock"></i>
+                                <span>Lock</span>
                             </button>
                             <div className="flex-1" />
-                            <button onClick={() => setStakingMode('unstaking')} className={classNames(stakingMode === 'unstaking' ? 'opacity-100' : 'opacity-25')}>
-                                Unstake
+                            <button onClick={() => setStakingMode('unstaking')} className={classNames('space-x-2', stakingMode === 'unstaking' ? 'opacity-100' : 'opacity-25')}>
+                                <i className="fas fa-unlock"></i>
+                                <span>Unlock</span>
                             </button>
                         </div>
 
@@ -105,7 +107,7 @@ export default function CreditumStaking() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of CREDIT to {stakingMode === 'staking' ? 'stake' : 'unstake'}.</p>
-                                <input value={value} onChange={(e) => setValue(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                {stakingMode === 'staking' && <input value={value} onChange={(e) => setValue(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />}
                             </div>
                             {/* <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
