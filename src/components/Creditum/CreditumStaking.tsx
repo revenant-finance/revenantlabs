@@ -2,19 +2,22 @@ import { useState } from 'react'
 import InfoBanner from '../InfoBanner'
 import classNames from 'classnames'
 import DataPoint from '../DataPoint'
+import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 
 export default function CreditumStaking() {
     const [stakingMode, setStakingMode] = useState<'staking' | 'unstaking'>('staking')
+    const { veCreditData } = useVeCreditData()
+    console.log(veCreditData)
 
     return (
-        <div className="w-full p-6 mx-auto max-w-7xl space-y-12">
-            {/* <p className="text-2xl opacity-50 font-medium">Creditum</p> */}
+        <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
+            {/* <p className="text-2xl font-medium opacity-50">Creditum</p> */}
             <InfoBanner header="Staking" title="Staking your Credit and earn passive yield." subtitle="Deposit your Credit tokens with no lock-up time and received xCredit, a yield-bearing derivative and goverenance token that powers Creditum. Veniam in cupidatat deserunt et dolore reprehenderit cillum enim minim." />
 
-            <div className="bg-neutral-700 p-6 py-24">
-                <div className="sm:max-w-md w-full mx-auto space-y-6">
+            <div className="p-6 py-24 bg-neutral-700">
+                <div className="w-full mx-auto space-y-6 sm:max-w-md">
                     <div className="space-y-1">
-                        <div className="flex text-2xl font-medium space-x-2">
+                        <div className="flex space-x-2 text-2xl font-medium">
                             <button onClick={() => setStakingMode('staking')} className={classNames(stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
                                 Stake
                             </button>
