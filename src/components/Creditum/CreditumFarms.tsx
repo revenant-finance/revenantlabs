@@ -5,11 +5,32 @@ import DataPoint from '../DataPoint'
 import LoadingBanner from '../LoadingBanner'
 import Modal from '../Modal'
 import classNames from 'classnames'
+import { CONTRACT_CREDITUM_FARMS } from '../../data/'
 import { formatter } from '../../utils'
+import useFarm from '../../hooks/Creditum/useFarm'
+import Button from '../Button'
+import useAlerts from '../../hooks/useAlerts'
+import ConnectWalletButton from '../ConnectWalletButton'
 
 const Farm = ({ farm, open }) => {
+    const { claim } = useFarm()
+    const { newAlert } = useAlerts()
+    const [status, setStatus] = useState('idle')
+
+    const onClaim = async () => {
+        try {
+            newAlert({ title: 'Claiming...', subtitle: 'Claiming your rewards. Please complete the transaction on your wallet.', mood: 'negative' })
+            setStatus('loading')
+            await claim(farm.pid)
+            setStatus('idle')
+        } catch (error) {
+            newAlert({ title: 'Claim Failed', subtitle: 'Failed to claim your rewards. Please try again.', mood: 'negative' })
+        }
+    }
+
+    const hasEarnings = farm.earnings.some((earning) => earning !== '0')
+
     return (
-        // <div className="p-6 space-y-6 text-left transition ease-in-out transform bg-neutral-700 hover:-translate-y-1">
         <div className="p-6 space-y-6 text-left bg-neutral-700">
             <div className="flex">
                 <div className="flex-1 space-y-1">
@@ -25,27 +46,39 @@ const Farm = ({ farm, open }) => {
                 <img className="w-24 h-24" src={farm.icon} alt="" />
             </div>
 
-            {/* {JSON.stringify(farm, null, 4)} */}
-
             <div>
-                {/* {farm.apy
+                {farm.apy
                     .filter((apy) => apy !== 0)
-                    .map((apy) => (
-                        <DataPoint title="APR" value={`${formatter(apy)}%`} />
-                    ))} */}
-                <DataPoint title="APR" value={`${farm.apy.filter((apy) => apy !== 0).map((apy) => formatter(apy))}%`} />
-                <DataPoint title="Liquidity" value="0" />
-                <DataPoint title="Your Deposits" value="0" />
-                <DataPoint title="Your Earnings" value="0" />
+                    .map((apy, index) => (
+                        <DataPoint title="APR" value={`${formatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
+                    ))}
+                <DataPoint title="Liquidity" value={`$${formatter(farm.tvl)}`} />
+                {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${formatter(farm.deposited)}`} />}
+
+                {farm.earnings
+                    .filter((earnings) => earnings !== '0')
+                    .map((earnings, index) => (
+                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`$${formatter(earnings)}`} />
+                    ))}
             </div>
 
-            <div className="flex gap-2">
-                <button onClick={() => open('deposit')} className="flex-1 px-4 py-2 font-medium rounded bg-neutral-800 hover:bg-neutral-900">
-                    Deposit
-                </button>
-                <button onClick={() => open('withdraw')} className="flex-1 px-4 py-2 font-medium rounded bg-neutral-800 hover:bg-neutral-900">
-                    Withdraw
-                </button>
+            <div className="space-y-2">
+                <div className="flex gap-2">
+                    <button onClick={() => open('deposit')} className="flex-1 px-4 py-2 font-medium rounded bg-neutral-800 hover:bg-neutral-900">
+                        Deposit
+                    </button>
+                    <button onClick={() => open('withdraw')} className="flex-1 px-4 py-2 font-medium rounded bg-neutral-800 hover:bg-neutral-900">
+                        Withdraw
+                    </button>
+                </div>
+
+                {hasEarnings && (
+                    <ConnectWalletButton>
+                        <Button onClick={() => onClaim()} loading={status === 'loading'} className="bg-yellow-500 text-neutral-700">
+                            Claim Rewards
+                        </Button>
+                    </ConnectWalletButton>
+                )}
             </div>
         </div>
     )
@@ -53,15 +86,17 @@ const Farm = ({ farm, open }) => {
 
 export default function CreditumFarms() {
     const { farmData } = useFarmData()
+    const { deposit, withdraw, claim } = useFarm()
+    const { newAlert, clearAlert } = useAlerts()
 
     const farms = farmData?.farms
 
+    const [status, setStatus] = useState('loading')
+    const [value, setValue] = useState('')
     const [selectedFarm, setSelectedFarm] = useState()
     const [mode, setMode] = useState<'deposit' | 'withdraw' | null>(null)
 
     const isDeposit = mode === 'deposit'
-    const isWithdraw = mode === 'withdraw'
-
     const showModal = mode && selectedFarm
 
     const openModal = (farm, mode) => {
@@ -70,6 +105,27 @@ export default function CreditumFarms() {
     }
     const closeModal = () => setMode(null)
 
+    useEffect(() => {
+        setValue('')
+    }, [mode])
+
+    const onDeposit = () => {
+        try {
+            newAlert({ title: 'Depositing...', subtitle: 'Please wait...' })
+            deposit(selectedFarm.pid, value)
+        } catch (error) {
+            newAlert({ title: 'Deposit Failed', subtitle: 'Failed to deposit. Please try again.', mood: 'negative' })
+        }
+    }
+
+    const onWithdraw = () => {
+        try {
+            newAlert({ title: 'Depositing...', subtitle: 'Please wait...' })
+            withdraw(selectedFarm.pid, value)
+        } catch (error) {
+            newAlert({ title: 'Deposit Failed', subtitle: 'Failed to deposit. Please try again.', mood: 'negative' })
+        }
+    }
     return (
         <>
             <Modal style="creditum" visible={showModal} onClose={closeModal}>
@@ -80,25 +136,27 @@ export default function CreditumFarms() {
                     </div>
 
                     <div>
-                        <DataPoint title="LP Token Balance" value="0" />
-                        <DataPoint title="LP Token Deposit Balance" value="0" />
-                        <DataPoint title="cUSD Amount" value="0" />
-                        <DataPoint title="agEUR Amount" value="0" />
+                        <DataPoint title="LP Token Balance" value={`${formatter(selectedFarm?.depositTokenBalance)}`} />
+                        <DataPoint title="LP Token Staked" value={`${formatter(selectedFarm?.deposited)}`} />
+
+                        {selectedFarm?.userTokens.map((token) => (
+                            <DataPoint title={`${token.token} Amount`} value={`${formatter(token.amount)} ${token.token}`} />
+                        ))}
                     </div>
 
                     <div className="space-y-2">
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of CREDIT to {isDeposit ? 'deposit' : 'withdraw'}.</p>
-                                <input type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                <input value={value} onChange={(e) => setValue(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
                             </div>
-                            {/* <div className="flex-1 space-y-1">
-                                <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                <input type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
-                            </div> */}
                         </div>
 
-                        <button className={classNames('w-full p-2 text-white bg-green-800 hover:bg-green-900 rounded')}>{isDeposit ? 'Deposit' : 'Withdraw'}</button>
+                        <ConnectWalletButton>
+                            <Button disabled={!value} onClick={isDeposit ? () => onDeposit() : () => onWithdraw()} className={classNames('text-neutral-700', isDeposit ? 'bg-green-500' : 'bg-red-500')}>
+                                {isDeposit ? 'Deposit' : 'Withdraw'}
+                            </Button>
+                        </ConnectWalletButton>
                     </div>
                 </div>
             </Modal>

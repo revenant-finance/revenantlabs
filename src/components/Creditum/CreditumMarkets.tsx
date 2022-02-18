@@ -6,27 +6,12 @@ import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../hooks/useAlerts'
 import { formatter } from '../../utils'
 import Button from '../Button'
+import ConnectWalletButton from '../ConnectWalletButton'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import LoadingBanner from '../LoadingBanner'
 import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
-
-const ConnectWalletButton = ({ children }) => {
-    const wallet = useWallet()
-
-    return (
-        <>
-            {!wallet.acccount && (
-                <Button onClick={() => wallet.connect()} className="bg-yellow-500 text-neutral-900 rounded hover:bg-yellow-600 text-xs">
-                    Connect Wallet
-                </Button>
-            )}
-
-            {wallet.account && children}
-        </>
-    )
-}
 
 const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
