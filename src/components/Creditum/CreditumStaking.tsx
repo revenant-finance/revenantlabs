@@ -10,7 +10,7 @@ import useAlerts from '../../hooks/useAlerts'
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
     return (
-        <Button className={classNames(stakingTime === value ? 'bg-yellow-500' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
+        <Button className={classNames(stakingTime === value ? 'bg-yellow-500 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
             {children}
         </Button>
     )
