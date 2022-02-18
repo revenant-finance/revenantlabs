@@ -23,7 +23,7 @@ export default function CallToAction() {
                             </div>
                         </div>
                         <div>
-                            <button onClick={() => setShowModal((_) => !_)} className="bg-yellow-900 text-yellow-500 font-extrabold whitespace-nowrap uppercase rounded px-4 py-2">
+                            <button onClick={() => setShowModal((_) => !_)} className="bg-yellow-900 text-yellow-400 font-extrabold whitespace-nowrap uppercase rounded px-4 py-2">
                                 Claim Tokens
                             </button>
                         </div>

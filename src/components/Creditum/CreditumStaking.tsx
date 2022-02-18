@@ -10,7 +10,7 @@ import useAlerts from '../../hooks/useAlerts'
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
     return (
-        <Button className={classNames(stakingTime === value ? 'bg-yellow-500 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
+        <Button className={classNames(stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
             {children}
         </Button>
     )
@@ -66,7 +66,7 @@ export default function CreditumStaking() {
                         </div>
                         <div>
                             <ConnectWalletButton>
-                                <Button onClick={() => unstakeXCredit()} className="bg-yellow-500 text-neutral-700 whitespace-nowrap">
+                                <Button onClick={() => unstakeXCredit()} className="bg-yellow-400 text-neutral-700 whitespace-nowrap">
                                     Withdraw {xTokenBalance} xCREDIT
                                 </Button>
                             </ConnectWalletButton>

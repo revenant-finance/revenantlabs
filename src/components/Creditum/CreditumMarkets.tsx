@@ -23,7 +23,7 @@ const MarketItemAccordion = ({ market, invert }) => {
 
     return (
         <div>
-            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', isOpen ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
+            <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', isOpen ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50', invert && !isOpen && 'bg-neutral-800')}>
                 <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-8 h-8" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">

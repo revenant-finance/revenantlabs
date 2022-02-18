@@ -74,7 +74,7 @@ const Farm = ({ farm, open }) => {
 
                 {hasEarnings && (
                     <ConnectWalletButton>
-                        <Button onClick={() => onClaim()} loading={status === 'loading'} className="bg-yellow-500 text-neutral-700">
+                        <Button onClick={() => onClaim()} loading={status === 'loading'} className="bg-yellow-400 text-neutral-700">
                             Claim Rewards
                         </Button>
                     </ConnectWalletButton>
