@@ -53,7 +53,7 @@ export default function useVeCreditData() {
                 const [xtokenShare, veCreditTotalSupply] = await Promise.all([xCreditContract.getShareValue(), veCreditContract.supply()])
                 return {
                     xtokenShare: toEth(xtokenShare),
-                    veCreditTotalSupply: toEth(veCreditTotalSupply),
+                    veCreditTotalSupply: toEth(veCreditTotalSupply)
                 }
             }
         } catch (e) {

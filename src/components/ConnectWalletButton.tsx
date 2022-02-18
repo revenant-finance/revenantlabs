@@ -7,7 +7,7 @@ const ConnectWalletButton = ({ children }) => {
     return (
         <>
             {!wallet.account && (
-                <Button onClick={() => wallet.connect()} className="bg-yellow-500 text-neutral-900">
+                <Button onClick={() => wallet.connect()} className="bg-yellow-500 text-neutral-900 whitespace-nowrap">
                     Connect Wallet
                 </Button>
             )}
