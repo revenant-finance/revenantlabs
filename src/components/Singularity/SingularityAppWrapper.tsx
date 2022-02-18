@@ -4,20 +4,17 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import shortNumber from 'short-number'
 import { useCookieState } from 'use-cookie-state'
-import { useWallet } from 'use-wallet'
-import Web3 from 'web3'
-import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
-import Modal from '../Modal'
+import { useActiveWeb3React } from '../../hooks'
 import NotReadyModal from '../NotReadyModal'
+import { getRouterContract, getTokenContract } from '../../utils/ContractService'
 
 export const SingularityIndexPageContext = createContext({})
 
 export function SingularityAppWrapper({ children }) {
     const router = useRouter()
 
-    const wallet = useWallet()
-    console.log(wallet)
+    const { account, library} = useActiveWeb3React()
 
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
@@ -51,8 +48,7 @@ export function SingularityAppWrapper({ children }) {
     const fromBalanceEth = fromToken ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber() : 0
     const toBalanceEth = toToken ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber() : 0
 
-    const web3 = new Web3(wallet.account ? wallet.ethereum : process.env.NEXT_PUBLIC_RPC)
-    const routerContract = new web3.eth.Contract(routerAbi as any, process.env.NEXT_PUBLIC_ROUTER_CONTRACT)
+    const routerContract = getRouterContract(library.getSigner())
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
@@ -74,7 +70,7 @@ export function SingularityAppWrapper({ children }) {
     }
 
     const getAmountsOut = async (value, path) => {
-        const amountsOut = await routerContract.methods.getAmountsOut(value, path).call()
+        const amountsOut = await routerContract.getAmountsOut(value, path)
         return amountsOut[amountsOut.length - 1]
     }
 
@@ -85,11 +81,10 @@ export function SingularityAppWrapper({ children }) {
             const path = [fromToken.address, toToken.address]
             const amountIn = fromValue
             const amountOut = await getAmountsOut(amountIn, path)
-            const to = wallet.account
+            const to = account
             const timestamp = Date.now() + 1000 * 60 * 10
             console.log(amountIn, amountOut, path, to, timestamp)
-            const gas = await routerContract.methods.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp).estimateGas({ from: wallet.account })
-            await routerContract.methods.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp).send({ from: wallet.account })
+            await routerContract.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp)
         } catch (error) {
             console.log(error)
         }
@@ -155,24 +150,24 @@ export function SingularityAppWrapper({ children }) {
 
     // Load selected token balances.
     useEffect(() => {
-        if (!wallet.account) return
+        if (!account) return
 
         const getFromBalance = async () => {
             if (!fromToken) return
-            const fromTokenContract = new web3.eth.Contract(erc20, fromToken.address)
-            const fromTokenBalance = await fromTokenContract.methods.balanceOf(wallet.account).call()
+            const fromTokenContract = getTokenContract(fromToken.address)
+            const fromTokenBalance = await fromTokenContract.balanceOf(account)
             setFromBalance(fromTokenBalance)
         }
 
         const getToBalance = async () => {
             if (!toToken) return
-            const toTokenContract = new web3.eth.Contract(erc20, toToken.address)
-            const toTokenBalance = await toTokenContract.methods.balanceOf(wallet.account).call()
+            const toTokenContract = getTokenContract(toToken.address)
+            const toTokenBalance = await toTokenContract.balanceOf(account)
             setToBalance(toTokenBalance)
         }
         getFromBalance()
         getToBalance()
-    }, [wallet, fromToken, toToken])
+    }, [account, fromToken, toToken])
 
     return (
         <SingularityIndexPageContext.Provider

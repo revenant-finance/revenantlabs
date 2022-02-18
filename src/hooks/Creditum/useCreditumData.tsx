@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
 import * as constants from '../../data'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getTokenContract } from '../../utils/ContractService'
@@ -7,6 +6,7 @@ import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
 import { FarmDataWrapper } from './useFarmData'
 import usePrice from '../usePrice'
+import { useActiveWeb3React } from '..'
 
 const creditumABI = JSON.parse(constants.CONTRACT_CREDITUM_ABI)
 const controllerABI = JSON.parse(constants.CONTRACT_CONTROLLER_ABI)
@@ -55,7 +55,7 @@ function useCreditumDataInternal() {
     const [refreshing, setRefreshing] = useState(false)
     const [creditumData, setCreditumData] = useState({})
     const [govTokenData, setGovTokenData] = useState({})
-    const { account } = useWallet()
+    const { account } = useActiveWeb3React()
     const { getPrice } = usePrice()
 
     const [refresh, setRefresh] = useState(0)

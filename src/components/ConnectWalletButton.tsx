@@ -1,18 +1,18 @@
-import { useWallet } from 'use-wallet'
 import Button from './Button'
+import { useActiveWeb3React } from '../hooks'
 
 const ConnectWalletButton = ({ children }) => {
-    const wallet = useWallet()
+    const { account, library} = useActiveWeb3React()
 
     return (
         <>
-            {!wallet.account && (
+            {!account && (
                 <Button onClick={() => wallet.connect()} className="bg-yellow-400 text-neutral-900 whitespace-nowrap">
                     Connect Wallet
                 </Button>
             )}
 
-            {wallet.account && children}
+            {account && children}
         </>
     )
 }

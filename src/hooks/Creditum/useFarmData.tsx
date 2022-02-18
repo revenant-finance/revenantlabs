@@ -1,12 +1,12 @@
 import { BigNumber } from 'ethers'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
 import * as constants from '../../data'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { getFarmsContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
 import usePool from './usePool'
+import { useActiveWeb3React } from '..'
 
 const farmABI = JSON.parse(constants.CONTRACT_FARMS_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
@@ -25,7 +25,7 @@ function useFarmDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
     const [farmData, setFarmData] = useState()
-    const { account } = useWallet()
+    const { account } = useActiveWeb3React()
     const { calculateUni, calculateCrv } = usePool()
     const farmsContract = getFarmsContract()
 

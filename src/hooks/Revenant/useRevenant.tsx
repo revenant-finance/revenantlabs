@@ -4,7 +4,7 @@ import merkle from '../../data/Revenant/merkle.json'
 import { toEth, toWei } from '../../utils'
 import { fetchBalances, getMerkleContract, getRevenantContract } from '../../utils/ContractService'
 import useRefresh from '../useRefresh'
-import { useWallet } from 'use-wallet'
+import { useActiveWeb3React } from '..'
 
 export default function useRevenant() {
     const [status, setStatus] = useState(true)
@@ -12,15 +12,16 @@ export default function useRevenant() {
     const [walletRVNT, setWalletRVNT] = useState('0')
     const [merkleData, setMerkleData] = useState(null)
 
-    const { account, ethereum } = useWallet()
+    const { account, library } = useActiveWeb3React()
+    console.log(account)
     const { slowRefresh } = useRefresh()
     // const [, setToast] = useToasts()
 
     const rvnt = CONTRACT_REVENANT[250].token
     const mrk = CONTRACT_REVENANT[250].merkle
 
-    const revenantContract = getRevenantContract(rvnt.address, ethereum)
-    const merkleContract = getMerkleContract(mrk, ethereum)
+    const revenantContract = getRevenantContract(rvnt.address, library.getSigner())
+    const merkleContract = getMerkleContract(mrk)
 
     const claim = async () => {
         if (!account) {
@@ -71,7 +72,7 @@ export default function useRevenant() {
         if (!claimed) {
             amountClaim = userData.Amount
         }
-        return {userData, amountClaim}
+        return { userData, amountClaim }
     }
 
     useEffect(() => {

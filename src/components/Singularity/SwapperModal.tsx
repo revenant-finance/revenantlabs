@@ -1,15 +1,10 @@
 import { useState } from 'react'
-import { useWallet } from 'use-wallet'
-import Web3 from 'web3'
-import { erc20 } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
 import Modal from '../Modal'
 import Portal from '../Portal'
 import useSingularityData from './SingularityAppWrapper'
 
 export default function SwapperModal() {
-    const wallet = useWallet()
-
     const { fromToken, toToken, setFromToken, setToToken, showSelectTokenModal, setShowSelectTokenModal, selectingToken, inEth, setSelectingToken } = useSingularityData()
 
     const [filter, setFilter] = useState('')
@@ -39,19 +34,19 @@ export default function SwapperModal() {
         <Portal>
             <Modal visible={showSelectTokenModal} onClose={() => setShowSelectTokenModal(false)}>
                 <div className="flex flex-col">
-                    <div className="bg-neutral-700 rounded w-full flex">
-                        <input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="outline-none bg-transparent p-2 w-full" />
+                    <div className="flex w-full rounded bg-neutral-700">
+                        <input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="w-full p-2 bg-transparent outline-none" />
                     </div>
-                    <div className="max-h-full overflow-auto flex-1">
+                    <div className="flex-1 max-h-full overflow-auto">
                         {tokenList.map((token) => {
                             return (
-                                <button key={token.id} onClick={() => setToken(token)} className="w-full text-left flex items-center space-x-4 hover:bg-neutral-900 p-2 px-4 rounded-xl">
-                                    <img className="w8 h-8 rounded full" src={token.image} alt="" />
-                                    <div className="overflow-hidden flex-1">
+                                <button key={token.id} onClick={() => setToken(token)} className="flex items-center w-full p-2 px-4 space-x-4 text-left hover:bg-neutral-900 rounded-xl">
+                                    <img className="h-8 rounded w8 full" src={token.image} alt="" />
+                                    <div className="flex-1 overflow-hidden">
                                         <p>{token.name}</p>
-                                        <p className="font-mono text-xs space-x-1">
+                                        <p className="space-x-1 font-mono text-xs">
                                             <span>{token.symbol}</span>
-                                            <a href={`https://ftmscan.com/address/${token.address}`} target="_blank" className="opacity-50 truncate underline hover:no-underline">
+                                            <a href={`https://ftmscan.com/address/${token.address}`} target="_blank" className="underline truncate opacity-50 hover:no-underline">
                                                 {token.address.slice(0, 6)}...{token.address.slice(-6)}
                                             </a>
                                         </p>

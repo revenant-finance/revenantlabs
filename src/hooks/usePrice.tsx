@@ -1,12 +1,10 @@
 import axios from 'axios'
-import { useWallet } from 'use-wallet'
 import { getRouterContract } from '../utils/ContractService'
-import { ethers } from 'ethers'
+import { useActiveWeb3React } from '.'
 
 export default function usePrice() {
-    const { account, ethereum } = useWallet()
-    const provider = account ? new ethers.providers.JsonRpcProvider(ethereum).getSigner() : null
-    const routerContract = getRouterContract(provider)
+    const { library } = useActiveWeb3React()
+    const routerContract = getRouterContract(library)
     const wftmAddress = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
     const usdcAddress = '0x04068da6c83afcfa0e13ba15a6696662335d5b75'
 

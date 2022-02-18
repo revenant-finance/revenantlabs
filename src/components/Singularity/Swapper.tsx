@@ -1,11 +1,11 @@
 import { BigNumberInput } from 'big-number-input'
 import classNames from 'classnames'
-import { useWallet } from 'use-wallet'
 import useSingularityData from './SingularityAppWrapper'
 import SwapperModal from './SwapperModal'
+import { useActiveWeb3React } from '../../hooks'
 
 export default function () {
-    const wallet = useWallet()
+    const {account, library} = useActiveWeb3React()
     const {
         openModal,
         fromToken,
@@ -32,10 +32,10 @@ export default function () {
         <>
             <SwapperModal />
 
-            <div className="relative max-w-md mx-auto w-full space-y-4">
-                <div className="bg-zinc-900 border-2 border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-3">
-                    <div className="relative rounded-2xl overflow-hidden border-2 border-zinc-800">
-                        <div className="bg-zinc-700 w-full flex border-b-2 border-zinc-800 ">
+            <div className="relative w-full max-w-md mx-auto space-y-4">
+                <div className="p-6 space-y-3 border-2 shadow-2xl bg-zinc-900 border-zinc-800 rounded-2xl">
+                    <div className="relative overflow-hidden border-2 rounded-2xl border-zinc-800">
+                        <div className="flex w-full border-b-2 bg-zinc-700 border-zinc-800 ">
                             <div className="flex-1">
                                 <BigNumberInput
                                     renderInput={(props) => <input {...props} className={classNames('bg-transparent outline-none p-4 w-full', !!fromBalanceEth && 'pb-0')} />}
@@ -44,13 +44,13 @@ export default function () {
                                     onChange={(value) => setFromValue(value)}
                                 />
                                 {!!fromBalanceEth && (
-                                    <button onClick={maxFrom} className="px-4 text-xs pb-2">
+                                    <button onClick={maxFrom} className="px-4 pb-2 text-xs">
                                         Max: {formatter(fromBalanceEth)} {fromToken.symbol}
                                     </button>
                                 )}
                             </div>
-                            <button onClick={() => openModal('from')} type="button" className="flex items-center justify-center space-x-2 px-3">
-                                <div className="bg-zinc-800 max-w-lg w-full border-2 border-zinc-900 rounded-2xl shadow-2xl px-3 py-2 whitespace-nowrap flex items-center space-x-2">
+                            <button onClick={() => openModal('from')} type="button" className="flex items-center justify-center px-3 space-x-2">
+                                <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-zinc-800 border-zinc-900 rounded-2xl whitespace-nowrap">
                                     {fromToken && (
                                         <span className="flex items-center space-x-2">
                                             <img className="w-6" src={fromToken.image} alt="" />
@@ -62,16 +62,16 @@ export default function () {
                             </button>
                         </div>
 
-                        <div className="w-full relative z-10 pointer-events-none">
+                        <div className="relative z-10 w-full pointer-events-none">
                             <button
                                 onClick={swapTokens}
-                                className="pointer-events-auto block mr-6 ml-auto md:mx-auto h-8 w-8 md:h-10 md:w-10 bg-zinc-800 border-2 border-zinc-900 -mt-4 -mb-4 md:-mt-5 md:-mb-5 rounded-full"
+                                className="block w-8 h-8 ml-auto mr-6 -mt-4 -mb-4 border-2 rounded-full pointer-events-auto md:mx-auto md:h-10 md:w-10 bg-zinc-800 border-zinc-900 md:-mt-5 md:-mb-5"
                             >
                                 <i className="fas fa-retweet" />
                             </button>
                         </div>
 
-                        <div className="bg-zinc-700 w-full flex">
+                        <div className="flex w-full bg-zinc-700">
                             <div className="flex-1">
                                 <BigNumberInput
                                     renderInput={(props) => <input {...props} className={classNames('bg-transparent outline-none p-4 w-full', !!toBalanceEth && 'pb-0')} />}
@@ -80,13 +80,13 @@ export default function () {
                                     onChange={(value) => setToValue(value)}
                                 />
                                 {!!toBalanceEth && (
-                                    <button onClick={maxTo} className="px-4 text-xs pb-2">
+                                    <button onClick={maxTo} className="px-4 pb-2 text-xs">
                                         Max: {formatter(toBalanceEth)} {toToken.symbol}
                                     </button>
                                 )}
                             </div>
-                            <button onClick={() => openModal('to')} type="button" className="flex items-center justify-center  px-3">
-                                <div className="bg-zinc-800 max-w-lg w-full border-2 border-zinc-900 rounded-2xl shadow-2xl px-3 py-2 whitespace-nowrap flex items-center space-x-2">
+                            <button onClick={() => openModal('to')} type="button" className="flex items-center justify-center px-3">
+                                <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-zinc-800 border-zinc-900 rounded-2xl whitespace-nowrap">
                                     {toToken && (
                                         <span className="flex items-center space-x-2">
                                             <img className="w-6" src={toToken.image} alt="" />
@@ -100,10 +100,10 @@ export default function () {
                     </div>
 
                     {!!fromToken && !!toToken && !!fromValue && !!toValue && (
-                        <div className="border-2 border-zinc-800 bg-zinc-700 rounded-2xl font-mono p-4 space-y-2">
+                        <div className="p-4 space-y-2 font-mono border-2 border-zinc-800 bg-zinc-700 rounded-2xl">
                             <p className="text-xs font-extrabold">Operation Receipt</p>
 
-                            <div className="flex space-x-4 p-2 bg-zinc-800 rounded">
+                            <div className="flex p-2 space-x-4 rounded bg-zinc-800">
                                 <div className="whitespace-nowrap">
                                     <p className="text-xs opacity-50">From</p>
                                     <p className="">
@@ -111,7 +111,7 @@ export default function () {
                                     </p>
                                 </div>
 
-                                <div className="flex-1 flex items-center justify-center">
+                                <div className="flex items-center justify-center flex-1">
                                     <i className="fas fa-circle-arrow-right"></i>
                                 </div>
                                 <div className=" whitespace-nowrap">
@@ -126,7 +126,7 @@ export default function () {
                             <div className="space-y-1">
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Slippage</p>
-                                    <input value={slippage} onChange={(e) => setSlippage(e.target.value)} type="number" className="bg-transparent text-right outline-none" />
+                                    <input value={slippage} onChange={(e) => setSlippage(e.target.value)} type="number" className="text-right bg-transparent outline-none" />
                                     {/* <p className="">0.1%</p> */}
                                 </div>
                                 <div className="flex items-center text-xs">
@@ -150,13 +150,13 @@ export default function () {
                     )}
 
                     <div>
-                        <button onClick={wallet.account ? () => swap() : () => wallet.connect()} className="bg-purple-900 text-purple-400 w-full px-2 py-2 rounded font-medium">
-                            {wallet.account ? 'Swap' : 'Connect Wallet'}
-                        </button>
+                        {/* <button onClick={account ? () => swap() : () => wallet.connect()} className="w-full px-2 py-2 font-medium text-purple-400 bg-purple-900 rounded">
+                            {account ? 'Swap' : 'Connect Wallet'}
+                        </button> */}
                     </div>
 
                     {fromToken && toToken && (
-                        <p className="text-xs text-center font-mono opacity-50">
+                        <p className="font-mono text-xs text-center opacity-50">
                             Swapping {formatter(inEth(fromValue || 0, fromToken.decimals))} {fromToken.symbol} to {formatter(inEth(toValue || 0, toToken.decimals))} {toToken.symbol}.
                         </p>
                     )}

@@ -1,20 +1,19 @@
-import { ethers } from 'ethers'
-import { useWallet } from 'use-wallet'
+import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
 import { getTokenContract, getVeTokenContract, getXTokenContract } from '../../utils/ContractService'
+
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
 
 export default function useVeCredit() {
-    const { account, ethereum } = useWallet()
-    const provider = account ? new ethers.providers.JsonRpcProvider(ethereum).getSigner() : null
+    const { account, library } = useActiveWeb3React()
 
-    const veCreditContract = getVeTokenContract(veCreditAddress, provider)
-    const xCreditContract = getXTokenContract(xCreditAddress, provider)
-    const creditContract = getTokenContract(creditAddress, provider)
+    const veCreditContract = getVeTokenContract(veCreditAddress, library.getSigner())
+    const xCreditContract = getXTokenContract(xCreditAddress, library.getSigner())
+    const creditContract = getTokenContract(creditAddress, library.getSigner())
 
     const approve = async () => {
         if (!account) return

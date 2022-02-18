@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getXTokenContract, getTokenContract, getVeTokenContract } from '../../utils/ContractService'
 import { toEth } from '../../utils'
-import { useWallet } from 'use-wallet'
 import * as constants from '../../data'
-import { ethers } from 'ethers'
 import useRefresh from '../useRefresh'
+import { useActiveWeb3React } from '..'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
@@ -16,11 +15,10 @@ export default function useVeCreditData() {
     //veCREDIT: lockEnd, veCreditBal, veCreditTotalSupply, creditLocked
     const [veCreditData, setVeCreditData] = useState({})
     const { slowRefresh } = useRefresh()
-    const { account, ethereum } = useWallet()
-    const provider = account ? new ethers.providers.JsonRpcProvider(ethereum).getSigner() : null
-    const veCreditContract = getVeTokenContract(veCreditAddress, provider)
-    const xCreditContract = getXTokenContract(xCreditAddress, provider)
-    const creditContract = getTokenContract(creditAddress, provider)
+    const { account } = useActiveWeb3React()
+    const veCreditContract = getVeTokenContract(veCreditAddress)
+    const xCreditContract = getXTokenContract(xCreditAddress)
+    const creditContract = getTokenContract(creditAddress)
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
 
