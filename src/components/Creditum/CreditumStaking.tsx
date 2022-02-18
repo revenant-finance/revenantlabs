@@ -7,6 +7,7 @@ import Button from '../Button'
 import ConnectWalletButton from '../ConnectWalletButton'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useAlerts from '../../hooks/useAlerts'
+import { formatter } from '../../utils'
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
     return (
@@ -31,7 +32,7 @@ export default function CreditumStaking() {
         try {
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData.creditLocked.amount) increaseAmount(value)
+            if (veCreditData.creditLocked) increaseAmount(value)
             else await initialDeposit(value, stakingTime)
             setStatus('idle')
         } catch (error) {
@@ -44,7 +45,7 @@ export default function CreditumStaking() {
         try {
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData.creditLocked.amount) increaseAmount(value)
+            if (veCreditData.creditLocked) increaseAmount(value)
             else await withdraw()
             setStatus('idle')
         } catch (error) {
@@ -80,12 +81,12 @@ export default function CreditumStaking() {
                     <div className="space-y-1">
                         <div className="flex space-x-2 text-2xl font-medium">
                             <button onClick={() => setStakingMode('staking')} className={classNames('space-x-2', stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
-                                <i className="fas fa-lock"></i>
+                                <i className="fas fa-lock text-base" />
                                 <span>Lock</span>
                             </button>
                             <div className="flex-1" />
                             <button onClick={() => setStakingMode('unstaking')} className={classNames('space-x-2', stakingMode === 'unstaking' ? 'opacity-100' : 'opacity-25')}>
-                                <i className="fas fa-unlock"></i>
+                                <i className="fas fa-unlock text-base"></i>
                                 <span>Unlock</span>
                             </button>
                         </div>
@@ -97,10 +98,10 @@ export default function CreditumStaking() {
                     </div>
 
                     <div>
-                        <DataPoint title="Credit Balance" value="22 xCREDIT" />
-                        <DataPoint title="Total Locked" value="22 xCREDIT" />
-                        <DataPoint title="User Amount Locked" value="22 xCREDIT" />
-                        <DataPoint title="Time Remaining" value="22 xCREDIT" />
+                        <DataPoint title="Credit Balance" value={`${formatter(veCreditData.tokenBal)}`} />
+                        <DataPoint title="Total Locked" value={`${formatter(veCreditData.veCreditTotalSupply)}`} />
+                        <DataPoint title="User Amount Locked" value={`${formatter(veCreditData.creditLocked)}`} />
+                        <DataPoint title="Time Remaining" value={`${formatter(veCreditData.lockEnd)}`} />
                     </div>
 
                     <div className="space-y-2">

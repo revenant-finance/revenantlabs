@@ -15,6 +15,7 @@
         "classnames": "^2.3.1",
         "comma-number": "^2.1.0",
         "cookie": "^0.4.1",
+        "dayjs": "^1.10.7",
         "ethers": "^5.5.4",
         "framer-motion": "^6.2.4",
         "nanoid": "^3.2.0",
