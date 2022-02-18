@@ -5,6 +5,7 @@ import DataPoint from '../DataPoint'
 import LoadingBanner from '../LoadingBanner'
 import Modal from '../Modal'
 import classNames from 'classnames'
+import { formatter } from '../../utils'
 
 const Farm = ({ farm, open }) => {
     return (
@@ -24,8 +25,15 @@ const Farm = ({ farm, open }) => {
                 <img className="w-24 h-24" src={farm.icon} alt="" />
             </div>
 
+            {/* {JSON.stringify(farm, null, 4)} */}
+
             <div>
-                <DataPoint title="APR" value="13%" />
+                {/* {farm.apy
+                    .filter((apy) => apy !== 0)
+                    .map((apy) => (
+                        <DataPoint title="APR" value={`${formatter(apy)}%`} />
+                    ))} */}
+                <DataPoint title="APR" value={`${farm.apy.filter((apy) => apy !== 0).map((apy) => formatter(apy))}%`} />
                 <DataPoint title="Liquidity" value="0" />
                 <DataPoint title="Your Deposits" value="0" />
                 <DataPoint title="Your Earnings" value="0" />
@@ -45,7 +53,7 @@ const Farm = ({ farm, open }) => {
 
 export default function CreditumFarms() {
     const { farmData } = useFarmData()
-    
+
     const farms = farmData?.farms
 
     const [selectedFarm, setSelectedFarm] = useState()

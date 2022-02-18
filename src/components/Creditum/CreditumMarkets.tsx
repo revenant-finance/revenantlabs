@@ -1,7 +1,9 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
+import { useWallet } from 'use-wallet'
+import useCreditum from '../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
-import useFarmData from '../../hooks/Creditum/useFarmData'
+import useAlerts from '../../hooks/useAlerts'
 import { formatter } from '../../utils'
 import Button from '../Button'
 import DataPoint from '../DataPoint'
@@ -10,6 +12,22 @@ import LoadingBanner from '../LoadingBanner'
 import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
 
+const ConnectWalletButton = ({ children }) => {
+    const wallet = useWallet()
+
+    return (
+        <>
+            {!wallet.acccount && (
+                <Button onClick={() => wallet.connect()} className="bg-yellow-500 text-neutral-900 rounded hover:bg-yellow-600 text-xs">
+                    Connect Wallet
+                </Button>
+            )}
+
+            {wallet.account && children}
+        </>
+    )
+}
+
 const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
 
@@ -17,6 +35,7 @@ const MarketItemAccordion = ({ market, invert }) => {
     const amountBorrowable = market.collateralMintLimit - market.totalMinted
 
     // useEffect(() => console.log(market), [market])
+
     return (
         <div>
             <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', invert && 'bg-neutral-800', isOpen ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50')}>
@@ -57,7 +76,30 @@ const MarketItemAccordion = ({ market, invert }) => {
 
 export default function CreditumMarkets() {
     const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
+
+    const { enter, exit, stabilizerMint, stabilizerRedeem, status } = useCreditum()
+
+    const { newAlert, clearAlert } = useAlerts()
+
     const markets = creditumData?.cusd?.collaterals
+
+    const onDeposit = () => {
+        try {
+            newAlert({ title: 'Depositing...', subtitle: `Depositing ${selectedMarket.symbol}... please complete the process with your wallet.`, type: 'info' })
+            enter(selectedMarket, depositInput, borrowInput)
+        } catch (error) {
+            newAlert({ title: 'Deposit Failed', subtitle: 'Please try again.', mood: 'negative' })
+        }
+    }
+
+    const onRepay = () => {
+        try {
+            newAlert({ title: 'Repaying...', subtitle: `Repaying cUSD please complete the process with your wallet.`, type: 'info' })
+            exit(selectedMarket, depositInput, borrowInput)
+        } catch (error) {
+            newAlert({ title: 'Repayment Failed', subtitle: 'Please try again.', mood: 'negative' })
+        }
+    }
 
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
@@ -153,9 +195,12 @@ export default function CreditumMarkets() {
                                                     <DataPoint title="Health Factor" value="0.0" />
                                                 </div>
                                             )}
-                                            <Button disabled={!depositInput && !borrowInput} className="text-white bg-green-800 rounded hover:bg-green-900">
-                                                Deposit & Borrow
-                                            </Button>
+
+                                            <ConnectWalletButton>
+                                                <Button onClick={() => onDeposit()} disabled={!depositInput && !borrowInput} className="text-white bg-green-800 rounded hover:bg-green-900">
+                                                    Deposit & Borrow
+                                                </Button>
+                                            </ConnectWalletButton>
                                         </SlideOpen>
                                     )}
                                 </AnimatePresence>
@@ -193,9 +238,11 @@ export default function CreditumMarkets() {
                                                 </div>
                                             )}
 
-                                            <Button disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
-                                                Repay & Withdraw
-                                            </Button>
+                                            <ConnectWalletButton>
+                                                <Button onClick={() => onRepay()} disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
+                                                    Repay & Withdraw
+                                                </Button>
+                                            </ConnectWalletButton>
                                         </SlideOpen>
                                     )}
                                 </AnimatePresence>

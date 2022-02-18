@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Banner from '../components/Banner'
-import CallToAction from '../components/CallToAction'
 import Footer from '../components/Footer'
-import MeshBackground from '../components/MeshBackground'
 import RvntClaim from '../components/RvntClaim'
 
 export default function IndexPage() {
@@ -15,16 +13,18 @@ export default function IndexPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="space-y-2 flex-1">
+                            <img className="block md:hidden w-32" src="/img/revenant-full.png" alt="" />
+
                             <p className="text-3xl md:text-7xl font-montserrat uppercase">
-                                <span className="text-blue-500 font-extrabold">Revenant</span>
-                                <span className="text-orange-500">Labs</span>
+                                <span className="text-purp font-extrabold">Revenant</span>
+                                <span className="text-salmon">Labs</span>
                             </p>
                             <p className="text-2xl md:text-4xl font-light max-w-lg">
-                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-orange-500 text-neutral-900 whitespace-nowrap">sovereign cash</span> on the worlds fastest blockchain.
+                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-salmon text-neutral-900 whitespace-nowrap">sovereign cash</span> on the worlds fastest blockchain.
                             </p>
                         </div>
-                        <div>
-                            <p className="text-2xl space-x-2">
+                        <div className="flex flex-col">
+                            <p className="text-2xl space-x-2 flex-1">
                                 <a href="/twitter" target="_blank">
                                     <i className="fab fa-twitter" />
                                 </a>
@@ -35,6 +35,7 @@ export default function IndexPage() {
                                     <i className="fab fa-github" />
                                 </a>
                             </p>
+                            <img className="hidden md:block w-32" src="/img/revenant-full.png" alt="" />
                         </div>
                     </div>
                 </div>
@@ -42,7 +43,7 @@ export default function IndexPage() {
                 <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Link href="/creditum" passHref>
-                            <a className="relative bg-orange-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden" style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}>
+                            <a className="relative bg-yellow-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden">
                                 {/* <MeshBackground id="creditum-gradient-colors" /> */}
                                 <div className="relative md:max-w-sm space-y-2">
                                     <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
@@ -51,16 +52,22 @@ export default function IndexPage() {
                             </a>
                         </Link>
 
-                        <Link href="/singularity" passHref>
-                            <a className="relative bg-blue-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden" style={{ backgroundImage: `url("/img/blue-banner.jpg")` }}>
-                                {/* <MeshBackground id="singularity-gradient-colors" /> */}
+                        {/* <Link href="/singularity" passHref> */}
+                        <a className="relative bg-green-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden group">
+                            <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-neutral-900 bg-opacity-90 z-10 transition ease-in-out flex items-center justify-center p-6">
+                                <p className="font-extended uppercase opacity-50 space-x-2">
+                                    <i className="fas fa-lock"></i>
+                                    <span>Coming soon.</span>
+                                </p>
+                            </div>
+                            {/* <MeshBackground id="singularity-gradient-colors" /> */}
 
-                                <div className="relative md:max-w-sm space-y-2 ">
-                                    <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
-                                    <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
-                                </div>
-                            </a>
-                        </Link>
+                            <div className="relative md:max-w-sm space-y-2 ">
+                                <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
+                                <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
+                            </div>
+                        </a>
+                        {/* </Link> */}
                     </div>
 
                     <a

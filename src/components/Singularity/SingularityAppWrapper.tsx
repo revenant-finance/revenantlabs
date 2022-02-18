@@ -8,6 +8,8 @@ import { useWallet } from 'use-wallet'
 import Web3 from 'web3'
 import { erc20, routerAbi } from '../../data/abis'
 import { TOKENS } from '../../data/constants'
+import Modal from '../Modal'
+import NotReadyModal from '../NotReadyModal'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -204,6 +206,7 @@ export function SingularityAppWrapper({ children }) {
                 swap
             }}
         >
+            <NotReadyModal />
             {children}
         </SingularityIndexPageContext.Provider>
     )

@@ -1,14 +1,49 @@
 import { useState } from 'react'
 import Button from './Button'
 import Modal from './Modal'
+import useRevenant from '../hooks/Revenant/useRevenant'
 
 export default function RvntClaim() {
     const [showModal, setShowModal] = useState(false)
 
+    const [burnAmount, setBurnAmount] = useState(0)
+    const { claimRVNT, walletRVNT, claim, burn } = useRevenant()
+
     return (
         <>
             <Modal visible={showModal} onClose={() => setShowModal(false)}>
-                <Button>test</Button>
+                <div className="space-y-8">
+                    <div className="space-y-4">
+                        <p className="text-xs text-center font-medium">Claim Tokens</p>
+                        <div className="grid grid-cols-2 text-center">
+                            <div>
+                                <p className="font-medium">{claimRVNT} $RVNT</p>
+                                <p className="text-xs">Claimabale</p>
+                            </div>
+                            <div>
+                                <p className="font-medium">{walletRVNT} $RVNT</p>
+                                <p className="text-xs">In Wallet</p>
+                            </div>
+                        </div>
+                        <Button className="bg-blue-500 text-neutral-900">Claim Tokens</Button>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                        <div className="h-1 w-full bg-neutral-800"></div>
+                        <p className="text-neutral-800 font-medium uppercase text-xs">Or</p>
+                        <div className="h-1 w-full bg-neutral-800"></div>
+                    </div>
+
+                    <div className="space-y-4">
+                        <p className="text-xs text-center font-medium">Burn Tokens</p>
+                        <p className="opacity-50 text-sm font-medium">Burn your RVNT to get CREDIT. You will receive 10 CREDIT for every RVNT burnt. Disclaimer: Burned RVNT are lost forever and will miss out on future tokens.</p>
+                        <input value={burnAmount} onChange={(e) => setBurnAmount(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+
+                        <Button className="bg-red-500 text-neutral-900">
+                            Burn {burnAmount} RVNT for {burnAmount * 10} CREDIT.
+                        </Button>
+                    </div>
+                </div>
             </Modal>
 
             <div className="bg-yellow-500 text-yellow-800">

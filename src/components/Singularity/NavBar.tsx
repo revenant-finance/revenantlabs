@@ -1,4 +1,3 @@
-import ConnectWalletButton from '../ConnectWalletButton'
 import Link from 'next/link'
 
 export default function () {

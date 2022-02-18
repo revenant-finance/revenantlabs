@@ -1,62 +1,34 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import nanoid from 'nanoid'
-import { AnimatePresence } from 'framer-motion'
-import LoaderModal from '../components/LoaderModal'
-import useCreditumData from './Creditum/useCreditumData'
+import classNames from 'classnames'
+import { AnimatePresence, motion } from 'framer-motion'
+import { nanoid } from 'nanoid'
+import { createContext, useContext, useState } from 'react'
 
 const AlertsContext = createContext({})
 
 export function UseAlertsWrapper({ children }) {
-    const [transactions, setTransactions] = useState([])
-    const { refreshing } = useCreditumData()
+    const [alerts, setAlerts] = useState([])
 
-    useEffect(() => {
-        if (refreshing) {
-            console.log('market refreshing ================================')
-        }
-    }, [refreshing])
-    
-    const triggerTransactionAlert = (tx) => {
-        const newTransaction = {
-            tx
-        }
-
-        setTransactions((currentTransactions) => [...currentTransactions, newTransaction])
+    const clearAlert = (id) => {
+        setAlerts((_) => _.filter((alert) => alert.id !== id))
     }
 
-    const completeTransactionAlert = (tx) => {
-        const find = transactions.find((transaction) => transaction.tx === tx)
-        if (!find) return
-
-        find.complete = true
-        const filtered = transactions.filter((transaction) => transaction.tx !== tx)
-
-        setTransactions([...filtered, find])
+    const newAlert = (props) => {
+        const id = nanoid()
+        const newAlertItem = { id, ...props }
+        setAlerts((_) => [..._, newAlertItem])
+        setTimeout(() => clearAlert(id), 3000)
+        return id
     }
-    const deleteTransactionAlert = (tx) => {
-        completeTransactionAlert(tx)
-
-        // setTimeout(() => {
-        const filtered = transactions.filter((transaction) => transaction.tx !== tx)
-        setTransactions(filtered)
-        // }, 2000)
-    }
-
     return (
-        <AlertsContext.Provider
-            value={{
-                transactions,
-                setTransactions,
-                triggerTransactionAlert,
-                deleteTransactionAlert,
-                completeTransactionAlert
-            }}
-        >
+        <AlertsContext.Provider value={{ newAlert, clearAlert }}>
             <>
                 <AnimatePresence>
                     <div className="fixed z-50 w-full max-w-xs space-y-2 bottom-6 right-6">
-                        {transactions.map((transaction, index) => (
-                            <LoaderModal tx={transaction.tx} complete={transaction.complete} key={index} />
+                        {alerts.map((alert) => (
+                            <motion.div className="bg-neutral-700 p-4 shadow-2xl rounded" initial={{ x: '100%' }} animate={{ x: '0' }} exit={{ x: '100%' }}>
+                                <p className={classNames('font-medium', alert.mood === 'negative' && 'text-red-500')}>{alert.title}</p>
+                                <p className="text-xs">{alert.subtitle}</p>
+                            </motion.div>
                         ))}
                     </div>
                 </AnimatePresence>
