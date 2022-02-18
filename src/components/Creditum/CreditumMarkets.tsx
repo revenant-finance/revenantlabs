@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
-import useFarmData from '../../hooks/Creditum/useFarmData'
 import { formatter } from '../../utils'
 import Button from '../Button'
 import DataPoint from '../DataPoint'
