@@ -92,7 +92,7 @@ export default function CreditumFarms() {
 
     const farms = farmData?.farms
 
-    const [status, setStatus] = useState('loading')
+    const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')
     const [selectedFarm, setSelectedFarm] = useState()
     const [mode, setMode] = useState<'deposit' | 'withdraw' | null>(null)
@@ -110,11 +110,11 @@ export default function CreditumFarms() {
         setValue('')
     }, [mode])
 
-    const onDeposit = () => {
+    const onDeposit = async () => {
         try {
             setStatus('loading')
             newAlert({ title: 'Depositing...', subtitle: 'Please wait...' })
-            deposit(selectedFarm.pid, value)
+            await deposit(selectedFarm.pid, value)
             newAlert({ title: 'Deposit Complete', subtitle: 'Your deposit has been completed.' })
             setStatus('idle')
         } catch (error) {
@@ -123,11 +123,11 @@ export default function CreditumFarms() {
         }
     }
 
-    const onWithdraw = () => {
+    const onWithdraw = async () => {
         try {
             setStatus('loading')
             newAlert({ title: 'Withdraw...', subtitle: 'Please wait...' })
-            withdraw(selectedFarm.pid, value)
+            await withdraw(selectedFarm.pid, value)
             newAlert({ title: 'Withdraw Complete', subtitle: 'Your withdraw has been completed.' })
             setStatus('idle')
         } catch (error) {
