@@ -29,7 +29,6 @@ export default function Navigation() {
                         {<i className={classNames('fas fa-wallet', wallet.account && 'text-orange-500')} />}
                         {/* {wallet.account ? `${wallet.account.slice(0, 6)}...${wallet.account.slice(-6)}` : <i className="fas fa-wallet" />} */}
 
-                    
                     <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xl')}>
                         <i className={classNames('fas fa-bars transition ease-in-out duration-75', open && 'rotate-90 text-salmon')}></i>
                     </button>
@@ -49,12 +48,12 @@ export default function Navigation() {
 
                             <div className="space-y-2">
                                 <Link href="/creditum">
-                                    <a className="block p-2 font-medium text-center text-yellow-900 bg-yellow-400 rounded" href="">
+                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-salmon rounded" href="">
                                         Open <b>Creditum</b>
                                     </a>
                                 </Link>
                                 <Link href="/singularity">
-                                    <a className="block p-2 font-medium text-center text-green-900 bg-green-500 rounded" href="">
+                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-purp rounded" href="">
                                         Open <b>Singularity</b>
                                     </a>
                                 </Link>
