@@ -25,15 +25,17 @@ export default function useVeCreditData() {
     const fetchData = async () => {
         try {
             if (account) {
-                const [allow, tokenBal, xTokenBalance, xtokenShare, veCreditBal, veCreditTotalSupply, locked] = await Promise.all([
+                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
                     xCreditContract.getShareValue(),
+                    creditContract.balanceOf(xCreditAddress),
                     veCreditContract['balanceOf(address)'](account),
                     veCreditContract.supply(),
                     //unknown parameter
-                    veCreditContract.locked(account)
+                    veCreditContract.locked(account),
+                    creditContract.balanceOf(veCreditAddress)
                 ])
 
                 return {
@@ -41,15 +43,19 @@ export default function useVeCreditData() {
                     tokenBal: toEth(tokenBal),
                     xTokenBalance: toEth(xTokenBalance),
                     xtokenShare: toEth(xtokenShare),
+                    xTokenValue: toEth(xTokenValue),
                     veCreditBal: toEth(veCreditBal),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     creditLocked: toEth(locked.amount),
-                    lockEnd: locked.toNumber()
+                    lockEnd: locked.end.toNumber(),
+                    veTokenValue: toEth(veTokenValue),
                 }
             } else {
-                const [xtokenShare, veCreditTotalSupply] = await Promise.all([xCreditContract.getShareValue(), veCreditContract.supply()])
+                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue] = await Promise.all([xCreditContract.getShareValue(), creditContract.balanceOf(xCreditAddress), veCreditContract.supply(), creditContract.balanceOf(veCreditAddress)])
                 return {
                     xtokenShare: toEth(xtokenShare),
+                    xTokenValue: toEth(xTokenValue),
+                    veTokenValue: toEth(veTokenValue),
                     veCreditTotalSupply: toEth(veCreditTotalSupply)
                 }
             }

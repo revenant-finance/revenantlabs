@@ -24,7 +24,7 @@ const formatFarmData = (_farmInfo, _userInfo, _depositTokenBalance, _allowance) 
 function useFarmDataInternal() {
     const { slowRefresh } = useRefresh()
     const [refreshing, setRefreshing] = useState(false)
-    const [farmData, setFarmData] = useState()
+    const [farmData, setFarmData] = useState({})
     const { account } = useActiveWeb3React()
     const { calculateUni, calculateCrv } = usePool()
     const farmsContract = getFarmsContract()

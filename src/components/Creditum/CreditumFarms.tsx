@@ -59,7 +59,7 @@ const Farm = ({ farm, open }) => {
                 {farm.earnings
                     .filter((earnings) => earnings !== '0')
                     .map((earnings, index) => (
-                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`$${formatter(earnings)}`} />
+                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`${formatter(earnings)}`} />
                     ))}
             </div>
 
@@ -172,7 +172,7 @@ export default function CreditumFarms() {
             </Modal>
 
             <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-                <InfoBanner header="Farming" title="Deposit your tokens to start farming." subtitle="Nulla eiusmod tempor id esse. Ut et magna consequat magna anim non ut irure enim magna ullamco est fugiat commodo. Veniam velit anim sint esse veniam id. Proident pariatur qui adipisicing elit irure consectetur fugi." />
+                <InfoBanner header="Farming" title="Deposit your tokens to start farming." subtitle="Our farms use a modified version of the MasterChef contract that allows for multiple tokens to be rewarded per farming token. You can checkout the contract here: 0xe0c43105235C1f18EA15fdb60Bb6d54814299938" />
 
                 {!farms && <LoadingBanner title="Farms are loading..." />}
 

@@ -20,8 +20,6 @@ const MarketItemAccordion = ({ market, invert }) => {
     const isOpen = selectedMarket?.id === market.id
     const amountBorrowable = market.collateralMintLimit - market.totalMinted
 
-    // useEffect(() => console.log(market), [market])
-
     return (
         <div>
             <button onClick={() => setSelectedMarket(market)} className={classNames('w-full  px-4 py-2 flex items-center  transition ease-in-out', isOpen ? 'bg-yellow-400 text-neutral-900' : ' bg-opacity-50', invert && !isOpen && 'bg-neutral-800')}>
@@ -45,7 +43,7 @@ const MarketItemAccordion = ({ market, invert }) => {
                             <div>
                                 <DataPoint title="User Debt" value={`${formatter(market.userDebt)} cUSD`} />
                                 <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
-                                <DataPoint title="Current Liquidation Price" value={`${formatter(market.liquidationPrice)}`} />
+                                <DataPoint title="Current Liquidation Price" value={`${Number(market.liquidationPrice) > 9000000 ? 'None' : formatter(market.liquidationPrice) }`} />
                                 <DataPoint title="cUSD left to borrow" value="0 cUSD" />
                             </div>
 
@@ -63,6 +61,8 @@ const MarketItemAccordion = ({ market, invert }) => {
 export default function CreditumMarkets() {
     const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
 
+    
+    
     const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
 
     const { newAlert, clearAlert } = useAlerts()
@@ -100,7 +100,7 @@ export default function CreditumMarkets() {
 
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-            <InfoBanner header="Markets" title="Stabilize your fortunes by mint cUSD." subtitle="Dolore velit proident ex reprehenderit et. Cillum esse duis duis consequat anim commodo quis nulla sunt tempor. Quis et est officia dolor incididunt nisi nulla. Commodo ipsum esse eiusmod voluptate." />
+            <InfoBanner header="Markets" title="Stabilize your fortunes by minting cUSD." subtitle="Users can deposit crypto assets as collateral to mint cUSD, a stablecoin pegged to USD. Interest rates are fixed so no need to worry about market fluctuation. cUSD and CREDIT can be used for various farming rewards." />
 
             <MarketTicker />
 

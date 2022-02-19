@@ -25,7 +25,7 @@ export default function CreditumStaking() {
     const [value, setValue] = useState(0)
 
     const { newAlert } = useAlerts()
-    const { veCreditData, xTokenBalance } = useVeCreditData()
+    const { veCreditData } = useVeCreditData()
 
     const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit } = useVeCredit()
 
@@ -33,7 +33,7 @@ export default function CreditumStaking() {
         try {
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData.creditLocked) await increaseAmount(value)
+            if (veCreditData?.creditLocked) await increaseAmount(value)
             else await initialDeposit(value, stakingTime)
             setStatus('idle')
         } catch (error) {
@@ -46,7 +46,7 @@ export default function CreditumStaking() {
         try {
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData.creditLocked) await increaseAmount(value)
+            if (veCreditData?.creditLocked) await increaseAmount(value)
             else await withdraw()
             setStatus('idle')
         } catch (error) {
@@ -57,19 +57,19 @@ export default function CreditumStaking() {
 
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-            <InfoBanner header="Staking" title="Staking your Credit and earn passive yield." subtitle="Deposit your Credit tokens with no lock-up time and received xCredit, a yield-bearing derivative and goverenance token that powers Creditum. Veniam in cupidatat deserunt et dolore reprehenderit cillum enim minim." />
+            <InfoBanner header="Locking" title="Lock your CREDIT tokens" subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury." />
 
-            {xTokenBalance && (
-                <div className="p-6  bg-neutral-700">
-                    <div className="flex flex-col md:flex-row items-end gap-6">
+            {veCreditData?.xTokenBalance && (
+                <div className="p-6 bg-neutral-700">
+                    <div className="flex flex-col items-end gap-6 md:flex-row">
                         <div>
                             <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>
                             <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and recieve veCREDIT on our newest protocol update.</p>
                         </div>
                         <div>
                             <ConnectWalletFirstButton>
-                                <Button onClick={() => unstakeXCredit()} className="bg-yellow-400 text-neutral-700 whitespace-nowrap">
-                                    Withdraw {xTokenBalance} xCREDIT
+                                <Button onClick={() => unstakeXCredit(veCreditData?.xTokenBalance)} className="bg-yellow-400 text-neutral-700 whitespace-nowrap">
+                                    Withdraw {veCreditData?.xTokenBalance} xCREDIT
                                 </Button>
                             </ConnectWalletFirstButton>
                         </div>
@@ -82,12 +82,12 @@ export default function CreditumStaking() {
                     <div className="space-y-1">
                         <div className="flex space-x-2 text-2xl font-medium">
                             <button onClick={() => setStakingMode('staking')} className={classNames('space-x-2', stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
-                                <i className="fas fa-lock text-base" />
+                                <i className="text-base fas fa-lock" />
                                 <span>Lock</span>
                             </button>
                             <div className="flex-1" />
                             <button onClick={() => setStakingMode('unstaking')} className={classNames('space-x-2', stakingMode === 'unstaking' ? 'opacity-100' : 'opacity-25')}>
-                                <i className="fas fa-unlock text-base"></i>
+                                <i className="text-base fas fa-unlock"></i>
                                 <span>Unlock</span>
                             </button>
                         </div>
@@ -108,7 +108,7 @@ export default function CreditumStaking() {
                     <div className="space-y-2">
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
-                                <p className="text-xs font-medium">Amount of CREDIT to {stakingMode === 'staking' ? 'stake' : 'unstake'}.</p>
+                                <p className="text-xs font-medium">Amount of CREDIT to {stakingMode === 'staking' ? 'lock' : 'unlock'}.</p>
                                 {stakingMode === 'staking' && <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(100)} />}
                             </div>
                         </div>

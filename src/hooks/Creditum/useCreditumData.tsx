@@ -214,6 +214,11 @@ export function CreditumDataWrapper({ children }: any) {
     const [repayInput, setRepayInput] = useState(0)
     const [withdrawInput, setWithdrawInput] = useState(0)
 
+    const [liquidationPrice, setLiquidationPrice] = useState(0)
+    const [health, setHealth] = useState(0)
+    const [borrowPercent, setBorrowPercent] = useState(0)
+    const [newBorrowPercent, setNewBorrowPercent] = useState(0)
+
     return (
         <>
             <FarmDataWrapper>
