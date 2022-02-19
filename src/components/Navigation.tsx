@@ -22,7 +22,7 @@ export default function Navigation() {
 
     return (
         <>
-            <div className="fixed top-0 right-0 z-30 flex flex-col items-end w-full max-w-lg gap-2 p-6 pointer-events-none">
+            <div className="fixed top-0 right-0 z-50 flex flex-col items-end w-full max-w-lg gap-2 p-6 pointer-events-none">
                 <div className="flex gap-2">
                     <ConnectWalletButton />
                     {/* <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xlt text-xs font-medium')}>
@@ -48,7 +48,7 @@ export default function Navigation() {
 
                             <div className="space-y-2">
                                 <Link href="/creditum">
-                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-salmon rounded" href="">
+                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-bluey rounded" href="">
                                         Open <b>Creditum</b>
                                     </a>
                                 </Link>
