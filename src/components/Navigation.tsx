@@ -48,12 +48,12 @@ export default function Navigation() {
 
                             <div className="space-y-2">
                                 <Link href="/creditum">
-                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-bluey rounded" href="">
+                                    <a className="block p-2 font-medium text-center rounded text-neutral-900 bg-bluey" href="">
                                         Open <b>Creditum</b>
                                     </a>
                                 </Link>
                                 <Link href="/singularity">
-                                    <a className="block p-2 font-medium text-center text-neutral-900 bg-purp rounded" href="">
+                                    <a className="block p-2 font-medium text-center rounded text-neutral-900 bg-purp" href="">
                                         Open <b>Singularity</b>
                                     </a>
                                 </Link>
@@ -61,7 +61,7 @@ export default function Navigation() {
 
                             <div className="flex items-center">
                                 <p className="flex-1">
-                                    <Link href="https://documentation.revenant.finance/creditum" passHref>
+                                    <Link href="/docs" passHref>
                                         <a className="font-medium opacity-50 hover:opacity-100" target="_blank">
                                             Docs
                                         </a>
@@ -71,11 +71,14 @@ export default function Navigation() {
                                     <a href="/twitter" target="_blank" className="opacity-50 hover:opacity-100">
                                         <i className="fab fa-twitter" />
                                     </a>
-                                    <a href="/twitter" target="_blank" className="opacity-50 hover:opacity-100">
+                                    <a href="/discord" target="_blank" className="opacity-50 hover:opacity-100">
                                         <i className="fab fa-discord" />
                                     </a>
-                                    <a href="/twitter" target="_blank" className="opacity-50 hover:opacity-100">
+                                    <a href="/github" target="_blank" className="opacity-50 hover:opacity-100">
                                         <i className="fab fa-github" />
+                                    </a>
+                                    <a href="/medium" target="_blank" className="opacity-50 hover:opacity-100">
+                                        <i className="fab fa-medium" />
                                     </a>
                                 </p>
                             </div>

@@ -15,6 +15,16 @@ module.exports = {
                 source: '/github',
                 destination: 'https://github.com/revenant-finance',
                 permanent: true
+            },
+            {
+                source: '/medium',
+                destination: 'https://medium.com/@revenant-finance',
+                permanent: true
+            },
+            {
+                source: '/docs',
+                destination: 'https://documentation.revenant.finance/stak/',
+                permanent: true
             }
         ]
     },
