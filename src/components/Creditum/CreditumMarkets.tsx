@@ -101,7 +101,7 @@ export default function CreditumMarkets() {
                                 <div className="space-y-8">
                                     <div className="">
                                         {markets.map((market, index) => (
-                                            <MarketItemAccordion market={market} invert={!(index % 2 === 0)} />
+                                            <MarketItemAccordion key={index} market={market} invert={!(index % 2 === 0)} />
                                         ))}
                                     </div>
                                 </div>

@@ -46,7 +46,7 @@ export default function RvntClaim() {
                 </div>
             </Modal>
 
-            <div className="bg-yellow-400 text-yellow-800">
+            <div className="bg-neutral-700 border-neutral-900 border-t-2">
                 <div className="max-w-5xl container mx-auto p-6 py-12">
                     <div className="flex flex-col items-center sm:flex-row gap-12">
                         <div className="flex flex-1 gap-6">
@@ -57,7 +57,7 @@ export default function RvntClaim() {
                             </div>
                         </div>
                         <div>
-                            <button onClick={() => setShowModal((_) => !_)} className="bg-yellow-900 text-yellow-400 font-extrabold whitespace-nowrap uppercase rounded px-4 py-2">
+                            <button onClick={() => setShowModal((_) => !_)} className="bg-neutral-900 text-neutral-400 font-extrabold whitespace-nowrap uppercase rounded px-4 py-2">
                                 Claim Tokens
                             </button>
                         </div>

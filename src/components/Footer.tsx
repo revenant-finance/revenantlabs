@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <div className="">
+        <>
             <div className="max-w-7xl container mx-auto p-12 py-24 text-center ">
                 <div className="space-y-4">
                     <p className="max-w-md mx-auto text-lg font-serif">
@@ -21,6 +21,17 @@ export default function Footer() {
                     </p>
                 </div>
             </div>
-        </div>
+
+            <div className="flex">
+                <div className="bg-purp h-2 flex-1" />
+                <div className="bg-salmon h-2 flex-1" />
+                <div className="bg-bluey h-2 flex-1" />
+                <div className="bg-greeny h-2 flex-1" />
+                <div className="bg-purp h-2 flex-1" />
+                <div className="bg-salmon h-2 flex-1" />
+                <div className="bg-bluey h-2 flex-1" />
+                <div className="bg-greeny h-2 flex-1" />
+            </div>
+        </>
     )
 }
