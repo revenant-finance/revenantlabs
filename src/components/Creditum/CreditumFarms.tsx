@@ -10,7 +10,7 @@ import { formatter } from '../../utils'
 import useFarm from '../../hooks/Creditum/useFarm'
 import Button from '../Button'
 import useAlerts from '../../hooks/useAlerts'
-import ConnectWalletButton from '../ConnectWalletButton'
+import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 
 const Farm = ({ farm, open }) => {
     const { claim } = useFarm()
@@ -73,11 +73,11 @@ const Farm = ({ farm, open }) => {
                 </div>
 
                 {hasEarnings && (
-                    <ConnectWalletButton>
+                    <ConnectWalletFirstButton>
                         <Button onClick={() => onClaim()} loading={status === 'loading'} className="bg-yellow-400 text-neutral-700">
                             Claim Rewards
                         </Button>
-                    </ConnectWalletButton>
+                    </ConnectWalletFirstButton>
                 )}
             </div>
         </div>

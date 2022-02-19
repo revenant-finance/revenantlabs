@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import DataPoint from '../DataPoint'
 import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import Button from '../Button'
-import ConnectWalletButton from '../ConnectWalletButton'
+import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useAlerts from '../../hooks/useAlerts'
 import { formatter } from '../../utils'
@@ -66,11 +66,11 @@ export default function CreditumStaking() {
                             <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and recieve veCREDIT on our newest protocol update.</p>
                         </div>
                         <div>
-                            <ConnectWalletButton>
+                            <ConnectWalletFirstButton>
                                 <Button onClick={() => unstakeXCredit()} className="bg-yellow-400 text-neutral-700 whitespace-nowrap">
                                     Withdraw {xTokenBalance} xCREDIT
                                 </Button>
-                            </ConnectWalletButton>
+                            </ConnectWalletFirstButton>
                         </div>
                     </div>
                 </div>
