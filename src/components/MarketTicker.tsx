@@ -18,6 +18,12 @@ export default function MarketTicker() {
     const {} = useVeCreditData()
     const {} = useFarmData()
 
+    const tvl = () => {
+        let number = 100
+        number = number + 20
+        return number
+    }
+
     return (
         <div className="bg-yellow-400 text-neutral-900 p-2">
             <Ticker>
@@ -26,8 +32,7 @@ export default function MarketTicker() {
                         <div className="flex items-center space-x-4 mr-4">
                             <MarketTickerItem title="Market Cap" value={formatter(999999999)} />
                             <MarketTickerItem title="$CREDIT Price" value={formatter(999999999)} />
-                            <MarketTickerItem title="$xCREDIT Price" value={formatter(999999999)} />
-                            <MarketTickerItem title="Total Value Locked (TVL)" value={formatter(999999999)} />
+                            <MarketTickerItem title="Total Value Locked (TVL)" value={`$${formatter(tvl())}`} />
                             <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} />
                             <MarketTickerItem title="Total Amount Minted" value={formatter(999999999)} />
                             <MarketTickerItem title="Market Utilization Ratio" value={formatter(999999999)} />
