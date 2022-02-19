@@ -139,8 +139,8 @@ export const CONTRACT_CREDITUM_FARMS = {
                     token1: '0x8866414733f22295b7563f9c5299715d2d76caf4'
                 },
                 name: 'cUSD2Pool',
-                token0Symbol: 'cusd',
-                token1Symbol: '2pool',
+                token0Symbol: 'cUSD',
+                token1Symbol: 'CRV2pool',
                 poolWeight: [0.36, 0, 0, 0, 0],
                 icon: '/img/tokens/cusd2pool.png',
                 buyLink: 'https://ftm.curve.fi/factory/54/deposit',
@@ -154,8 +154,8 @@ export const CONTRACT_CREDITUM_FARMS = {
                     token1: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
                 },
                 name: 'CREDIT-FTM',
-                token0Symbol: 'credit',
-                token1Symbol: 'wftm',
+                token0Symbol: 'CREDIT',
+                token1Symbol: 'wFTM',
                 poolWeight: [0.55, 0, 0, 0, 0],
                 icon: '/img/tokens/creditum.png',
                 buyLink: 'https://spookyswap.finance/add/0x77128DFdD0ac859B33F44050c6fa272F34872B5E/FTM',

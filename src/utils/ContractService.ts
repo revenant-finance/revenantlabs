@@ -3,7 +3,7 @@ import * as constants from '../data'
 import multicall from './multicall'
 import { toEth } from '.'
 
-export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC)
+export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_NETWORK_URL)
 
 export const getContract = (address: string, abi: any, signer?: ethers.Signer | ethers.providers.Provider) => {
     const signerOrProvider = signer ?? simpleRpcProvider

@@ -4,9 +4,8 @@ import config from './config'
 
 
 export default function ConnectModal({ open, login, onDismiss = () => null }) {
-    console.log(login)
     return (
-        <Modal open={open} onClose={onDismiss}>
+        <Modal visible={open} onClose={onDismiss}>
             <Modal.Title>Connect Wallet</Modal.Title>
             <Modal.Content>
                 <div className="space-y-2">

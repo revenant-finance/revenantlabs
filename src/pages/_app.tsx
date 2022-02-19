@@ -13,12 +13,13 @@ import getLibrary from '../utils/getLibrary'
 import { GeistProvider } from '@geist-ui/react'
 import Web3ReactManager from '../components/Web3ReactManager'
 
+const Web3ReactProviderDefault = dynamic(() => import('../components/Provider'), { ssr: false })
+
 export default function App({ Component, pageProps }: AppProps) {
     useEffect(() => {
         smoothscroll.polyfill()
     }, [])
 
-    const Web3ReactProviderDefault = dynamic(() => import('../components/Provider'), { ssr: false })
 
     return (
         <>

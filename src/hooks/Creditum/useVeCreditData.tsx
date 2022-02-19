@@ -25,7 +25,7 @@ export default function useVeCreditData() {
     const fetchData = async () => {
         try {
             if (account) {
-                const [allow, tokenBal, xtokenBal, xtokenShare, veCreditBal, veCreditTotalSupply, locked] = await Promise.all([
+                const [allow, tokenBal, xTokenBalance, xtokenShare, veCreditBal, veCreditTotalSupply, locked] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
@@ -39,7 +39,7 @@ export default function useVeCreditData() {
                 return {
                     allowance: toEth(allow),
                     tokenBal: toEth(tokenBal),
-                    xtokenBal: toEth(xtokenBal),
+                    xTokenBalance: toEth(xTokenBalance),
                     xtokenShare: toEth(xtokenShare),
                     veCreditBal: toEth(veCreditBal),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),

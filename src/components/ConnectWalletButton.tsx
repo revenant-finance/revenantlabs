@@ -6,11 +6,11 @@ const ConnectWalletButton = ({ children }) => {
 
     return (
         <>
-            {!account && (
+            {/* {!account && (
                 <Button onClick={() => wallet.connect()} className="bg-yellow-400 text-neutral-900 whitespace-nowrap">
                     Connect Wallet
                 </Button>
-            )}
+            )} */}
 
             {account && children}
         </>

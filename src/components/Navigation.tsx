@@ -28,7 +28,6 @@ export default function Navigation() {
                     {/* <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xlt text-xs font-medium')}>
                         {<i className={classNames('fas fa-wallet', wallet.account && 'text-orange-500')} />}
                         {/* {wallet.account ? `${wallet.account.slice(0, 6)}...${wallet.account.slice(-6)}` : <i className="fas fa-wallet" />} */}
-                      */}
 
                     
                     <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xl')}>

@@ -16,17 +16,5 @@ export default function AccountModal({ open, account, logout, onClose }) {
                 </a>
             </div>
         </Modal>
-        // <Modal open={open} onClose={onDismiss}>
-        //     <Modal.Title>Account</Modal.Title>
-        //     <Modal.Subtitle>{account}</Modal.Subtitle>
-        //     <Modal.Content style={{textAlign: 'center'}}>
-        //         <Link href={`https://ftmscan.com/address/${account}`} target='_blank'>View on Ftmscan.</Link>
-        //     </Modal.Content>
-        //     <Modal.Action onClick={() => {
-        //         logout();
-        //         window.localStorage.removeItem(connectorLocalStorageKey);
-        //         onDismiss();
-        //     }}>Logout</Modal.Action>
-        // </Modal>
     )
 }

@@ -12,6 +12,7 @@ export default function useAuth() {
 
     const login = useCallback((connectorID: ConnectorNames) => {
         const connector = connectorsByName[connectorID]
+
         if (connector) {
             activate(connector, async (error: Error) => {
                 window.localStorage.removeItem(connectorLocalStorageKey)
