@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TOKENS } from '../../data/constants'
+import Input from '../Input'
 import Modal from '../Modal'
 import Portal from '../Portal'
 import useSingularityData from './SingularityAppWrapper'
@@ -35,7 +36,7 @@ export default function SwapperModal() {
             <Modal visible={showSelectTokenModal} onClose={() => setShowSelectTokenModal(false)}>
                 <div className="flex flex-col">
                     <div className="flex w-full rounded bg-neutral-700">
-                        <input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} type="text" placeholder="Name, Symbol, or Contract Address" className="w-full p-2 bg-transparent outline-none" />
+                        <Input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Name, Symbol, or Contract Address" />
                     </div>
                     <div className="flex-1 max-h-full overflow-auto">
                         {tokenList.map((token) => {

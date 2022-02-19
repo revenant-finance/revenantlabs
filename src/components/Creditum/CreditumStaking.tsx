@@ -8,6 +8,7 @@ import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useAlerts from '../../hooks/useAlerts'
 import { formatter } from '../../utils'
+import Input from '../Input'
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
     return (
@@ -108,12 +109,8 @@ export default function CreditumStaking() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of CREDIT to {stakingMode === 'staking' ? 'stake' : 'unstake'}.</p>
-                                {stakingMode === 'staking' && <input value={value} onChange={(e) => setValue(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />}
+                                {stakingMode === 'staking' && <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(100)} />}
                             </div>
-                            {/* <div className="flex-1 space-y-1">
-                                <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                <input type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
-                            </div> */}
                         </div>
 
                         {stakingMode === 'staking' && !veCreditData?.creditLocked?.amount && (

@@ -11,6 +11,7 @@ import useFarm from '../../hooks/Creditum/useFarm'
 import Button from '../Button'
 import useAlerts from '../../hooks/useAlerts'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
+import Input from '../Input'
 
 const Farm = ({ farm, open }) => {
     const { claim } = useFarm()
@@ -148,7 +149,7 @@ export default function CreditumFarms() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of CREDIT to {isDeposit ? 'deposit' : 'withdraw'}.</p>
-                                <input value={value} onChange={(e) => setValue(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(150)} />
                             </div>
                         </div>
 

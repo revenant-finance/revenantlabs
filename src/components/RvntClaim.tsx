@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Button from './Button'
 import Modal from './Modal'
 import useRevenant from '../hooks/Revenant/useRevenant'
+import Input from './Input'
 
 export default function RvntClaim() {
     const [showModal, setShowModal] = useState(false)
@@ -37,7 +38,7 @@ export default function RvntClaim() {
                     <div className="space-y-4">
                         <p className="text-xs text-center font-medium">Burn Tokens</p>
                         <p className="opacity-50 text-sm font-medium">Burn your RVNT to get CREDIT. You will receive 10 CREDIT for every RVNT burnt. Disclaimer: Burned RVNT are lost forever and will miss out on future tokens.</p>
-                        <input value={burnAmount} onChange={(e) => setBurnAmount(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                        <Input type="number" value={burnAmount} onChange={(e) => setBurnAmount(e.target.value)} onMax={() => setBurnAmount(100)} />
 
                         <Button className="bg-red-500 text-neutral-900">
                             Burn {burnAmount} RVNT for {burnAmount * 10} CREDIT.

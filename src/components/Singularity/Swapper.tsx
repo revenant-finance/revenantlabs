@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import useSingularityData from './SingularityAppWrapper'
 import SwapperModal from './SwapperModal'
 import { useActiveWeb3React } from '../../hooks'
+import Input from '../Input'
 
 export default function () {
     const { account, library } = useActiveWeb3React()
@@ -93,7 +94,7 @@ export default function () {
                             <div className="space-y-1">
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Slippage</p>
-                                    <input value={slippage} onChange={(e) => setSlippage(e.target.value)} type="number" className="text-right bg-transparent outline-none" />
+                                    <Input type="number" value={slippage} onChange={(e) => setSlippage(e.target.value)} onMax={() => setSlippage(100)} />
                                     {/* <p className="">0.1%</p> */}
                                 </div>
                                 <div className="flex items-center text-xs">

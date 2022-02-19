@@ -8,6 +8,7 @@ import Button from '../Button'
 import ConnectWalletButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
+import Input from '../Input'
 import LoadingBanner from '../LoadingBanner'
 import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
@@ -164,11 +165,11 @@ export default function CreditumMarkets() {
                                             <div className="flex flex-col gap-2 md:flex-row">
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to deposit.</p>
-                                                    <input value={depositInput} onChange={(e) => setDepositInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                                    <Input type="number" value={depositInput} onChange={(e) => setDepositInput(e.target.value)} onMax={() => setDepositInput(100)} />
                                                 </div>
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                                    <input value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                                    <Input type="number" value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} onMax={() => setBorrowInput(200)} />
                                                 </div>
                                             </div>
 
@@ -206,11 +207,11 @@ export default function CreditumMarkets() {
                                             <div className="flex flex-col gap-2 md:flex-row">
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of cUSD to repay.</p>
-                                                    <input value={repayInput} onChange={(e) => setRepayInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                                    <Input type="number" value={repayInput} onChange={(e) => setRepayInput(e.target.value)} onMax={() => setRepayInput(100)} />
                                                 </div>
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to withdraw.</p>
-                                                    <input value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} type="number" className="w-full px-4 py-2 bg-white rounded outline-none bg-opacity-10" />
+                                                    <Input type="number" value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} onMax={() => setRepayInput(400)} />
                                                 </div>
                                             </div>
 
