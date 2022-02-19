@@ -44,7 +44,7 @@ export default function IndexPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Link href="/creditum" passHref>
                             <a className="relative bg-bluey text-neutral-900 rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden">
-                                {/* <MeshBackground id="creditum-gradient-colors" /> */}
+                                <img className="absolute right-6 top-6 md:right-12 md:top-12 w-16 opacity-50" src="/img/creditum-black.png" alt="" />
                                 <div className="relative md:max-w-sm space-y-2">
                                     <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
                                     <p className="text-xl">Creditum is Est fugiat velit eiusmod irure amet ad exercitation pariatur. Labore sunt amet ex eu incididunt occaecat id adipis.</p>
@@ -61,6 +61,7 @@ export default function IndexPage() {
                                 </p>
                             </div>
                             {/* <MeshBackground id="singularity-gradient-colors" /> */}
+                            <img className="absolute right-6 top-6 md:right-12 md:top-12 w-16 opacity-50" src="/img/singularity-black.png" alt="" />
 
                             <div className="relative md:max-w-sm space-y-2 ">
                                 <p className="font-montserrat text-3xl font-extrabold uppercase">Singularity</p>
