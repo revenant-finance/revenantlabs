@@ -13,7 +13,7 @@ export default function IndexPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="space-y-2 flex-1">
-                            <motion.img animate={{ rotate: ['0%', '100%', '0%'] }} transition={{ duration: 12 }} className="w-32" src="/img/revenant-coin.png" alt="" />
+                            <motion.img animate={{ rotate: ['0%', '100%', '0%'] }} transition={{ duration: 12, loop: Infinity }} className="w-32" src="/img/revenant-coin.png" alt="" />
 
                             <p className="text-3xl md:text-7xl font-montserrat uppercase">
                                 <span className="text-purp font-extrabold">Revenant</span>
@@ -96,10 +96,10 @@ export default function IndexPage() {
                 <div className="max-w-7xl container mx-auto p-6 py-24 md:py-48">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div>
-                            <img className="w-full" src="/img/online-payment.svg" alt="" />
+                            <img className="w-full" src="/img/peggy/peggy-standing.png" alt="" />
                         </div>
                         <div className="space-y-8">
-                            <p className="text-4xl md:text-7xl font-extrabold">Building with the community in mind.</p>
+                            <p className="text-4xl md:text-7xl font-extrabold">Peggy is building with the community in mind.</p>
                             <div className="space-y-4">
                                 <p className="text-xl">Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important part of our vision.</p>
                                 <p className="text-xl">Ipsum dolor nulla magna sit nisi veniam ut id nisi sint eiusmod amet occaecat laboris. Lorem magna amet eiusmod irure proident. Anim quis nisi sunt cupidatat. Et fugiat magna ut qui. Fugiat consectetur aliqua pariatur anim ipsum esse irure incididunt qui deserunt nostrud. Velit ut ut exercitation cupidatat culpa minim pariatur.</p>

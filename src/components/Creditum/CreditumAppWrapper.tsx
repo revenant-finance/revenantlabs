@@ -89,6 +89,17 @@ export function CreditumAppWrapper({ children }) {
 
                 <div className="text-center uppercase text-xs font-medium">Revenant Labs — Creditum &copy; {new Date().getFullYear()} </div>
             </div>
+
+            <div className="flex">
+                <div className="bg-purp h-2 flex-1" />
+                <div className="bg-salmon h-2 flex-1" />
+                <div className="bg-bluey h-2 flex-1" />
+                <div className="bg-greeny h-2 flex-1" />
+                <div className="bg-purp h-2 flex-1" />
+                <div className="bg-salmon h-2 flex-1" />
+                <div className="bg-bluey h-2 flex-1" />
+                <div className="bg-greeny h-2 flex-1" />
+            </div>
         </>
     )
 }
