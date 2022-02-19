@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
-import ConnectModal from './ConnectModal'
+import ConnectWalletModal from './ConnectWalletModal'
 
 export default function ConnectWalletButton(props) {
     const { account } = useActiveWeb3React()
@@ -15,7 +15,7 @@ export default function ConnectWalletButton(props) {
                 <i className={classNames('fas fa-wallet transition ease-in-out duration-75', account && 'text-salmon')}></i>
             </button>
 
-            <ConnectModal open={connectModalOpen} login={login} onDismiss={() => setConnectModalOpen(false)} />
+            <ConnectWalletModal open={connectModalOpen} login={login} onDismiss={() => setConnectModalOpen(false)} />
         </>
     )
 }

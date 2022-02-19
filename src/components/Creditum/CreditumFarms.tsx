@@ -152,11 +152,11 @@ export default function CreditumFarms() {
                             </div>
                         </div>
 
-                        <ConnectWalletButton>
+                        <ConnectWalletFirstButton>
                             <Button disabled={!value} onClick={isDeposit ? () => onDeposit() : () => onWithdraw()} className={classNames('text-neutral-700', isDeposit ? 'bg-green-500' : 'bg-red-500')}>
                                 {isDeposit ? 'Deposit' : 'Withdraw'}
                             </Button>
-                        </ConnectWalletButton>
+                        </ConnectWalletFirstButton>
                     </div>
                 </div>
             </Modal>
