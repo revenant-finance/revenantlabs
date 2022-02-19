@@ -19,7 +19,9 @@ export default function IndexPage() {
                                 <span className="text-purp font-extrabold">Revenant</span>
                                 <span className="text-salmon">Labs</span>
                             </p>
-                            <p className="text-2xl md:text-4xl font-light max-w-lg">Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower sovereign cash on the worlds fastest blockchain.</p>
+                            <p className="text-2xl md:text-4xl font-light max-w-lg">
+                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-salmon text-neutral-900">sovereign cash</span> on the worlds fastest blockchain.
+                            </p>
                         </div>
                         <div className="flex flex-col">
                             <p className="text-2xl space-x-2 flex-1">
@@ -71,7 +73,7 @@ export default function IndexPage() {
                     <a
                         href="https://discord.gg/aDmKM7E7SY"
                         target="_blank"
-                        className="bg-neutral-600 max-w-5xl mx-auto text-white rounded-2xl p-6 md:p-12 bg-center bg-cover flex   shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
+                        className="bg-neutral-600 max-w-5xl mx-auto rounded-2xl p-6 md:p-12 bg-center bg-cover flex   shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                         // style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
                     >
                         <div className="flex-1">
@@ -99,7 +101,7 @@ export default function IndexPage() {
                             <img className="w-full" src="/img/peggy/peggy-standing.png" alt="" />
                         </div>
                         <div className="space-y-8">
-                            <p className="text-4xl md:text-7xl font-extrabold">Peggy is building with the community in mind.</p>
+                            <p className="text-4xl md:text-7xl font-extrabold">Peggy isuilding with the community in mind.</p>
                             <div className="space-y-4">
                                 <p className="text-xl">Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important part of our vision.</p>
                                 <p className="text-xl">Ipsum dolor nulla magna sit nisi veniam ut id nisi sint eiusmod amet occaecat laboris. Lorem magna amet eiusmod irure proident. Anim quis nisi sunt cupidatat. Et fugiat magna ut qui. Fugiat consectetur aliqua pariatur anim ipsum esse irure incididunt qui deserunt nostrud. Velit ut ut exercitation cupidatat culpa minim pariatur.</p>
