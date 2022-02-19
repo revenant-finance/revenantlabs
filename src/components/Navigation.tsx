@@ -32,7 +32,7 @@ export default function Navigation() {
 
                     
                     <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-zinc-900 border-2 border-zinc-800 rounded-2xl px-4 py-2 shadow-2xl')}>
-                        <i className={classNames('fas fa-bars transition ease-in-out duration-75', open && 'rotate-90 text-orange-500')}></i>
+                        <i className={classNames('fas fa-bars transition ease-in-out duration-75', open && 'rotate-90 text-salmon')}></i>
                     </button>
                 </div>
 
@@ -43,14 +43,9 @@ export default function Navigation() {
                                 <Link href="/" passHref>
                                     <a className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">Go Home</a>
                                 </Link>
-                                {/* <Link href="https://documentation.revenant.finance/creditum" passHref>
-                                    <a target="_blank" className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">
-                                        Read Docs
-                                    </a>
-                                </Link> */}
-                                <Link href={'/singularity?from=wftm&to=credit'} passHref>
+                                {/* <Link href={'/singularity?from=wftm&to=credit'} passHref>
                                     <a className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">Get Tokens</a>
-                                </Link>
+                                </Link> */}
                             </div>
 
                             <div className="space-y-2">
