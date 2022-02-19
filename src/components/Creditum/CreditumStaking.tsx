@@ -111,7 +111,7 @@ export default function CreditumStaking() {
                         {stakingMode === 'staking' && (
                             <>
                                 <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(100)} />
-                                <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" />
+                                <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365)} />
                             </>
                         )}
 
