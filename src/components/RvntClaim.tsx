@@ -3,12 +3,36 @@ import Button from './Button'
 import Modal from './Modal'
 import useRevenant from '../hooks/Revenant/useRevenant'
 import Input from './Input'
+import { formatter } from '../utils'
 
 export default function RvntClaim() {
     const [showModal, setShowModal] = useState(false)
 
+    const [burnStatus, setBurnStatus] = useState('')
+    const [claimStatus, setClaimStatus] = useState('')
+
     const [burnAmount, setBurnAmount] = useState(0)
     const { claimRVNT, walletRVNT, claim, burn } = useRevenant()
+
+    const onBurn = async (amount) => {
+        try {
+            setBurnStatus('loading')
+            await burn(amount)
+            setBurnStatus('idle')
+        } catch (error) {
+            setBurnStatus('error')
+        }
+    }
+
+    const onClaim = async () => {
+        try {
+            setClaimStatus('loading')
+            await claim()
+            setClaimStatus('idle')
+        } catch (error) {
+            setClaimStatus('error')
+        }
+    }
 
     return (
         <>
@@ -18,15 +42,17 @@ export default function RvntClaim() {
                         <p className="text-xs text-center font-medium">Claim Tokens</p>
                         <div className="grid grid-cols-2 text-center">
                             <div>
-                                <p className="font-medium">{claimRVNT} $RVNT</p>
+                                <p className="font-medium">{formatter(claimRVNT)} $RVNT</p>
                                 <p className="text-xs">Claimabale</p>
                             </div>
                             <div>
-                                <p className="font-medium">{walletRVNT} $RVNT</p>
+                                <p className="font-medium">{formatter(walletRVNT)} $RVNT</p>
                                 <p className="text-xs">In Wallet</p>
                             </div>
                         </div>
-                        <Button className="bg-blue-500 text-neutral-900">Claim Tokens</Button>
+                        <Button loading={claimStatus === 'loading'} onClick={() => onClaim()} disabled={claimRVNT === '0'} className="bg-salmon text-neutral-900">
+                            {claimRVNT === '0' ? 'Nothing to Claim' : 'Claim Tokens'}
+                        </Button>
                     </div>
 
                     <div className="flex items-center space-x-4">
@@ -38,10 +64,10 @@ export default function RvntClaim() {
                     <div className="space-y-4">
                         <p className="text-xs text-center font-medium">Burn Tokens</p>
                         <p className="opacity-50 text-sm font-medium">Burn your RVNT to get CREDIT. You will receive 10 CREDIT for every RVNT burnt. Disclaimer: Burned RVNT are lost forever and will miss out on future tokens.</p>
-                        <Input type="number" value={burnAmount} onChange={(e) => setBurnAmount(e.target.value)} onMax={() => setBurnAmount(100)} />
+                        <Input type="number" value={burnAmount} onChange={(e) => setBurnAmount(e.target.value)} onMax={() => setBurnAmount(walletRVNT)} />
 
-                        <Button className="bg-red-500 text-neutral-900">
-                            Burn {burnAmount} RVNT for {burnAmount * 10} CREDIT.
+                        <Button loading={burnStatus === 'loading'} disabled={!burnAmount} onClick={() => onBurn(burnAmount)} className="bg-purp text-neutral-900">
+                            Burn {formatter(burnAmount)} RVNT for {formatter(burnAmount * 10)} CREDIT.
                         </Button>
                     </div>
                 </div>

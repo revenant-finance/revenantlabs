@@ -9,8 +9,8 @@ interface Button {
 }
 
 export default function Button(props: Button) {
-    const { children, loading, className, disabled: disbaledFromProps } = props
-    const disabled = loading || disbaledFromProps
+    const { children, loading, className, disabled: disabledFromProps } = props
+    const disabled = disabledFromProps
     return (
         <button {...props} className={classNames(className, 'w-full relative px-4 py-2 font-medium rounded', disabled && 'cursor-not-allowed opacity-50')}>
             {loading && (
