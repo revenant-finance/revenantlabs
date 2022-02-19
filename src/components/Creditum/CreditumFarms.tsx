@@ -1,17 +1,17 @@
-import useFarmData from '../../hooks/Creditum/useFarmData'
-import InfoBanner from '../InfoBanner'
+import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { CONTRACT_CREDITUM_FARMS } from '../../data/'
+import useFarm from '../../hooks/Creditum/useFarm'
+import useFarmData from '../../hooks/Creditum/useFarmData'
+import useAlerts from '../../hooks/useAlerts'
+import { formatter } from '../../utils'
+import Button from '../Button'
+import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
+import InfoBanner from '../InfoBanner'
+import Input from '../Input'
 import LoadingBanner from '../LoadingBanner'
 import Modal from '../Modal'
-import classNames from 'classnames'
-import { CONTRACT_CREDITUM_FARMS } from '../../data/'
-import { formatter } from '../../utils'
-import useFarm from '../../hooks/Creditum/useFarm'
-import Button from '../Button'
-import useAlerts from '../../hooks/useAlerts'
-import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
-import Input from '../Input'
 
 const Farm = ({ farm, open }) => {
     const { claim } = useFarm()
@@ -112,21 +112,30 @@ export default function CreditumFarms() {
 
     const onDeposit = () => {
         try {
+            setStatus('loading')
             newAlert({ title: 'Depositing...', subtitle: 'Please wait...' })
             deposit(selectedFarm.pid, value)
+            newAlert({ title: 'Deposit Complete', subtitle: 'Your deposit has been completed.' })
+            setStatus('idle')
         } catch (error) {
+            setStatus('error')
             newAlert({ title: 'Deposit Failed', subtitle: 'Failed to deposit. Please try again.', mood: 'negative' })
         }
     }
 
     const onWithdraw = () => {
         try {
-            newAlert({ title: 'Depositing...', subtitle: 'Please wait...' })
+            setStatus('loading')
+            newAlert({ title: 'Withdraw...', subtitle: 'Please wait...' })
             withdraw(selectedFarm.pid, value)
+            newAlert({ title: 'Withdraw Complete', subtitle: 'Your withdraw has been completed.' })
+            setStatus('idle')
         } catch (error) {
-            newAlert({ title: 'Deposit Failed', subtitle: 'Failed to deposit. Please try again.', mood: 'negative' })
+            setStatus('error')
+            newAlert({ title: 'Withdraw Failed', subtitle: 'Failed to withdraw. Please try again.', mood: 'negative' })
         }
     }
+
     return (
         <>
             <Modal style="creditum" visible={showModal} onClose={closeModal}>
@@ -154,7 +163,7 @@ export default function CreditumFarms() {
                         </div>
 
                         <ConnectWalletFirstButton>
-                            <Button disabled={!value} onClick={isDeposit ? () => onDeposit() : () => onWithdraw()} className={classNames('text-neutral-700', isDeposit ? 'bg-green-500' : 'bg-red-500')}>
+                            <Button disabled={!value} loading={status === 'loading'} onClick={isDeposit ? () => onDeposit() : () => onWithdraw()} className={classNames('text-neutral-700', isDeposit ? 'bg-green-500' : 'bg-red-500')}>
                                 {isDeposit ? 'Deposit' : 'Withdraw'}
                             </Button>
                         </ConnectWalletFirstButton>

@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import useCreditum from '../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../hooks/useAlerts'
@@ -62,26 +63,37 @@ const MarketItemAccordion = ({ market, invert }) => {
 export default function CreditumMarkets() {
     const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
 
-    const { enter, exit, stabilizerMint, stabilizerRedeem, status } = useCreditum()
+    const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
 
     const { newAlert, clearAlert } = useAlerts()
 
     const markets = creditumData?.cusd?.collaterals
 
+    const [depositStatus, setDepositStatus] = useState('idle')
+    const [withdrawStatus, setWithdrawStatus] = useState('idle')
+
     const onDeposit = () => {
         try {
+            setDepositStatus('loading')
             newAlert({ title: 'Depositing...', subtitle: `Depositing ${selectedMarket.symbol}... please complete the process with your wallet.`, type: 'info' })
             enter(selectedMarket, depositInput, borrowInput)
+            newAlert({ title: 'Transaction Complete', subtitle: `Deposit complete.`, type: 'info' })
+            setDepositStatus('idle')
         } catch (error) {
+            setDepositStatus('error')
             newAlert({ title: 'Deposit Failed', subtitle: 'Please try again.', mood: 'negative' })
         }
     }
 
     const onRepay = () => {
         try {
-            newAlert({ title: 'Repaying...', subtitle: `Repaying cUSD please complete the process with your wallet.`, type: 'info' })
+            setWithdrawStatus('loading')
+            newAlert({ title: 'Repaying...', subtitle: `Repaying cUSD. Please complete the process with your wallet.`, type: 'info' })
             exit(selectedMarket, depositInput, borrowInput)
+            newAlert({ title: 'Transaction Complete', subtitle: `Repayment complete.`, type: 'info' })
+            setWithdrawStatus('idle')
         } catch (error) {
+            setWithdrawStatus('error')
             newAlert({ title: 'Repayment Failed', subtitle: 'Please try again.', mood: 'negative' })
         }
     }
@@ -182,7 +194,7 @@ export default function CreditumMarkets() {
                                             )}
 
                                             <ConnectWalletButton>
-                                                <Button onClick={() => onDeposit()} disabled={!depositInput && !borrowInput} className="text-white bg-green-800 rounded hover:bg-green-900">
+                                                <Button loading={depositStatus === 'loading'} onClick={() => onDeposit()} disabled={!depositInput && !borrowInput} className="text-white bg-green-800 rounded hover:bg-green-900">
                                                     Deposit & Borrow
                                                 </Button>
                                             </ConnectWalletButton>
@@ -224,7 +236,7 @@ export default function CreditumMarkets() {
                                             )}
 
                                             <ConnectWalletButton>
-                                                <Button onClick={() => onRepay()} disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
+                                                <Button loading={withdrawStatus === 'loading'} onClick={() => onRepay()} disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
                                                     Repay & Withdraw
                                                 </Button>
                                             </ConnectWalletButton>

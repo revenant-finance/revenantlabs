@@ -5,12 +5,10 @@ import useCreditumData from './useCreditumData'
 import { useActiveWeb3React } from '..'
 
 export default function useCreditum() {
-    const [status, setStatus] = useState('idle')
     const { account, library } = useActiveWeb3React()
     const { update } = useCreditumData()
 
     const enter = async (market, depositAmount, borrowAmount) => {
-        setStatus('loading')
         if (account) {
             let tx = null
             const cToken = market?.cToken
@@ -28,11 +26,9 @@ export default function useCreditum() {
                 console.log(error)
             }
         }
-        setStatus('idle')
     }
 
     const exit = async (market, withdrawAmount, repayAmount) => {
-        setStatus('loading')
         if (account) {
             let tx = null
             const cToken = market?.cToken
@@ -50,11 +46,9 @@ export default function useCreditum() {
                 console.log(error)
             }
         }
-        setStatus('idle')
     }
 
     const stabilizerMint = async (market, depositAmount) => {
-        setStatus('loading')
         if (account) {
             let tx = null
             const cToken = market?.cToken
@@ -72,11 +66,9 @@ export default function useCreditum() {
                 console.log(error)
             }
         }
-        setStatus('idle')
     }
 
     const stabilizerRedeem = async (underlying, burnAmount) => {
-        setStatus('loading')
         console.log(toWei(burnAmount, underlying.decimals).toString())
         if (account) {
             let tx = null
@@ -95,7 +87,6 @@ export default function useCreditum() {
                 console.log(error)
             }
         }
-        setStatus('idle')
     }
 
     return {
