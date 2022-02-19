@@ -43,7 +43,7 @@ export default function IndexPage() {
                 <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Link href="/creditum" passHref>
-                            <a className="relative bg-yellow-400 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden">
+                            <a className="relative bg-yellow-400 text-neutral-900 rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden">
                                 {/* <MeshBackground id="creditum-gradient-colors" /> */}
                                 <div className="relative md:max-w-sm space-y-2">
                                     <p className="font-montserrat text-3xl font-extrabold uppercase">Creditum</p>
@@ -53,9 +53,9 @@ export default function IndexPage() {
                         </Link>
 
                         {/* <Link href="/singularity" passHref> */}
-                        <a className="relative bg-green-500 text-white rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden group">
+                        <a className="relative bg-green-500 text-neutral-900 rounded-2xl p-6 md:p-12 h-96 bg-center bg-cover flex flex-col justify-end shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2 overflow-hidden group">
                             <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-neutral-900 bg-opacity-90 z-10 transition ease-in-out flex items-center justify-center p-6">
-                                <p className="font-extended uppercase opacity-50 space-x-2">
+                                <p className="font-extended uppercase opacity-50 space-x-2 text-white">
                                     <i className="fas fa-lock"></i>
                                     <span>Coming soon.</span>
                                 </p>
@@ -71,7 +71,7 @@ export default function IndexPage() {
                     </div>
 
                     <a
-                        href=""
+                        href="https://discord.gg/aDmKM7E7SY"
                         target="_blank"
                         className="bg-purple-500 max-w-5xl mx-auto text-white rounded-2xl p-6 md:p-12 bg-center bg-cover flex  shadow-2xl hover ease-in-out duration-300 hover:-translate-y-2"
                         // style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
