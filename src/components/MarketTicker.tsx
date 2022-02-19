@@ -1,4 +1,7 @@
 import Ticker from 'react-ticker'
+import useCreditumData from '../hooks/Creditum/useCreditumData'
+import useFarmData from '../hooks/Creditum/useFarmData'
+import useVeCreditData from '../hooks/Creditum/useVeCreditData'
 import { formatter } from '../utils'
 
 const MarketTickerItem = ({ title, value }) => {
@@ -11,6 +14,10 @@ const MarketTickerItem = ({ title, value }) => {
 }
 
 export default function MarketTicker() {
+    const {} = useCreditumData()
+    const {} = useVeCreditData()
+    const {} = useFarmData()
+
     return (
         <div className="bg-yellow-400 text-neutral-900 p-2">
             <Ticker>
