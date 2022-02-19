@@ -3,7 +3,6 @@ import * as constants from '../../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
 import { getTokenContract, getVeTokenContract, getXTokenContract } from '../../utils/ContractService'
 
-
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
