@@ -154,24 +154,7 @@ export default function CreditumStaking() {
                             </>
                         )}
 
-                        {/* {stakingMode === 'staking' && !veCreditData?.creditLocked?.amount && (
-                            <div className="flex gap-2">
-                                <TimeStakeButton value={60 * 60 * 24 * 7} {...{ stakingTime, setStakingTime }}>
-                                    1wk
-                                </TimeStakeButton>
-                                <TimeStakeButton value={60 * 60 * 24 * 30} {...{ stakingTime, setStakingTime }}>
-                                    1mo
-                                </TimeStakeButton>
-                                <TimeStakeButton value={60 * 60 * 24 * 180} {...{ stakingTime, setStakingTime }}>
-                                    6mo
-                                </TimeStakeButton>
-                                <TimeStakeButton value={60 * 60 * 24 * 365} {...{ stakingTime, setStakingTime }}>
-                                    1yr
-                                </TimeStakeButton>
-                            </div>
-                        )} */}
-
-                        <Button loading={status === 'loading'} onClick={stakingMode === 'staking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
+                        <Button loading={status === 'loading'} disabled={!value && !stakingTime} onClick={stakingMode === 'staking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
                             {stakingMode === 'staking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
                         </Button>
                     </div>
