@@ -41,8 +41,13 @@ export default function CreditumStaking() {
             }
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData?.creditLocked !== '0') await increaseAmount(value)
-            else await initialDeposit(value, stakingTimeInSeconds)
+            if (veCreditData?.creditLocked !== '0') {
+                await increaseAmount(value)
+                await increaseLockTime(stakingTimeInSeconds)
+            } 
+            else {
+                await initialDeposit(value, stakingTimeInSeconds)
+            }
             setStatus('idle')
         } catch (error) {
             newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
