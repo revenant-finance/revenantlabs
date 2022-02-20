@@ -21,33 +21,33 @@ const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
 export default function CreditumStaking() {
     const [status, setStatus] = useState('idle')
     const [stakingMode, setStakingMode] = useState<'staking' | 'unstaking'>('staking')
+    const [updateMode, setUpdateMode] = useState<'amount' | 'time' | null>(null)
     const [stakingTime, setStakingTime] = useState(7)
     const [value, setValue] = useState('')
-
-    const stakingTimeInSeconds = (stakingTime * 24 * 60 * 60) + 360
-
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
-    const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit } = useVeCredit()
+    const stakingTimeInSeconds = stakingTime * 24 * 60 * 60 + 360
+    const hasExistingLock = veCreditData?.creditLocked !== '0'
 
+    const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit } = useVeCredit()
 
     //add feature to increase lock time
     const onLock = async () => {
         try {
-            if (stakingTimeInSeconds <= 60 * 60 * 24 * 7 ) {
+            if (stakingTimeInSeconds <= 60 * 60 * 24 * 7) {
                 newAlert({ title: 'Locking Failed', subtitle: 'You cannot lock less than 7 days.', mood: 'negative' })
                 return
             }
             setStatus('loading')
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
-            if (veCreditData?.creditLocked !== '0') {
-                await increaseAmount(value)
-                await increaseLockTime(stakingTimeInSeconds)
-            } 
-            else {
+            if (hasExistingLock) {
+                if (updateMode === 'amount') await increaseAmount(value)
+                if (updateMode === 'time') await increaseLockTime(stakingTimeInSeconds)
+            } else {
                 await initialDeposit(value, stakingTimeInSeconds)
             }
+            newAlert({ title: 'Locking Complete', subtitle: 'Process complete. Your tokens have been locked.' })
             setStatus('idle')
         } catch (error) {
             newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
@@ -58,9 +58,10 @@ export default function CreditumStaking() {
     const onUnlock = async () => {
         try {
             setStatus('loading')
-            newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
+            newAlert({ title: 'Unlocking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
             await withdraw()
             setStatus('idle')
+            newAlert({ title: 'Unlocking Complete', subtitle: 'Process complete. Your tokens have been unlocked.' })
         } catch (error) {
             newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
             setStatus('error')
@@ -113,15 +114,37 @@ export default function CreditumStaking() {
                     <div>
                         <DataPoint title="Credit Balance" value={`${formatter(veCreditData.tokenBal)}`} />
                         <DataPoint title="Total Locked" value={`${formatter(veCreditData.veCreditTotalSupply)}`} />
-                        <DataPoint title="User Amount Locked" value={`${formatter(veCreditData.creditLocked)}`} />
-                        <DataPoint title="Time Until Unlock" value={`${formatter((veCreditData.lockEnd - (+new Date()/ 1000 )) / (60 * 60))} hours`} />
+                        <DataPoint title="User Amount Locked" value={`${formatter(veCreditData.creditLocked)} CREDIT`} />
+                        <DataPoint title="Time Until Unlock" value={`${formatter((veCreditData.lockEnd - +new Date() / 1000) / (60 * 60))} hours`} />
                     </div>
 
                     <div className="space-y-2">
                         {stakingMode === 'staking' && (
                             <>
-                                <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
-                                <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 2)} />
+                                {!hasExistingLock && (
+                                    <>
+                                        <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
+                                        <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 2)} />
+                                    </>
+                                )}
+
+                                {hasExistingLock && (
+                                    <div className="flex gap-2">
+                                        <Button className="bg-neutral-800" onClick={() => setUpdateMode('amount')}>
+                                            Increase Amount
+                                        </Button>
+                                        <Button className="bg-neutral-800" onClick={() => setUpdateMode('time')}>
+                                            Increase Time
+                                        </Button>
+                                    </div>
+                                )}
+
+                                {hasExistingLock && updateMode && (
+                                    <>
+                                        {updateMode === 'amount' && <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
+                                        {updateMode === 'time' && <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 2)} />}
+                                    </>
+                                )}
                             </>
                         )}
 
