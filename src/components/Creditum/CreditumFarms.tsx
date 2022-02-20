@@ -172,7 +172,7 @@ export default function CreditumFarms() {
             </Modal>
 
             <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-                <InfoBanner header="Farming" title="Deposit your tokens to start farming." subtitle="Our farms use a modified version of the MasterChef contract that allows for multiple tokens to be rewarded per farming token. You can checkout the contract here: 0xe0c43105235C1f18EA15fdb60Bb6d54814299938" />
+                <InfoBanner header="Farming" title="Deposit your tokens to start farming." subtitle="Our farms use a modified version of the MasterChef contract that allows for multiple tokens to be rewarded per farming token. Currently, possible reward tokens are being given out in CREDIT and ANGLE" />
 
                 {!farms && <LoadingBanner title="Farms are loading..." />}
 
