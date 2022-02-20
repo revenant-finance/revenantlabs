@@ -51,7 +51,7 @@ export default function useVeCredit() {
         let tx = null
         try {
             //may need allowance
-            tx = await veCreditContract.increase_amount(amount)
+            tx = await veCreditContract.increase_amount(toWei(amount))
             await tx.wait(1)
             // update()
             console.log(tx)
