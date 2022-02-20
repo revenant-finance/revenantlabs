@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { getCreditumContract, getTokenContract } from '../../utils/ContractService'
 import { toWei, MAX_UINT256 } from '../../utils'
 import useCreditumData from './useCreditumData'
@@ -6,19 +5,22 @@ import { useActiveWeb3React } from '..'
 
 export default function useCreditum() {
     const { account, library } = useActiveWeb3React()
-    const { update } = useCreditumData()
+    const { update, creditumData } = useCreditumData()
+
 
     const enter = async (market, depositAmount, borrowAmount) => {
         if (account) {
+            console.log(market, depositAmount, borrowAmount)
             let tx = null
-            const cToken = market?.cToken
-            const creditumContract = getCreditumContract(cToken?.creditum, library.getSigner())
-            const tokenContract = getTokenContract(market?.address, library.getSigner())
+            const cToken = creditumData.cusd.mintToken
+            const creditumContract = getCreditumContract(cToken.creditum, library.getSigner())
+            const tokenContract = getTokenContract(market.address, library.getSigner())
             try {
-                if (Number(market?.allowBalance) < Number(depositAmount)) {
-                    tx = await tokenContract.approve(creditumContract?.address, MAX_UINT256)
+                if (Number(market.allowBalance) < Number(depositAmount)) {
+                    tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    tx = await creditumContract.enter(market?.address, toWei(depositAmount, market.decimals), toWei(borrowAmount))
+                    console.log(toWei(depositAmount, market.decimals).toString(), toWei(borrowAmount).toString())
+                    tx = await creditumContract.enter(market.address, toWei(depositAmount, market.decimals), toWei(borrowAmount))
                 }
                 await tx.wait(1)
                 update()
@@ -31,9 +33,9 @@ export default function useCreditum() {
     const exit = async (market, withdrawAmount, repayAmount) => {
         if (account) {
             let tx = null
-            const cToken = market?.cToken
-            const creditumContract = getCreditumContract(cToken?.creditum, library.getSigner())
-            const cTokenContract = getTokenContract(cToken?.address, library.getSigner())
+            const cToken = creditumData.cusd.mintToken
+            const creditumContract = getCreditumContract(cToken.creditum, library.getSigner())
+            const cTokenContract = getTokenContract(cToken.address, library.getSigner())
             try {
                 if (Number(cToken.allowBalance) < Number(repayAmount)) {
                     tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
@@ -51,9 +53,9 @@ export default function useCreditum() {
     const stabilizerMint = async (market, depositAmount) => {
         if (account) {
             let tx = null
-            const cToken = market?.cToken
-            const creditumContract = getCreditumContract(cToken?.creditum, library.getSigner())
-            const tokenContract = getTokenContract(market?.address, library.getSigner())
+            const cToken = creditumData.cusd.mintToken
+            const creditumContract = getCreditumContract(cToken.creditum, library.getSigner())
+            const tokenContract = getTokenContract(market.address, library.getSigner())
             try {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
@@ -69,12 +71,11 @@ export default function useCreditum() {
     }
 
     const stabilizerRedeem = async (underlying, burnAmount) => {
-        console.log(toWei(burnAmount, underlying.decimals).toString())
         if (account) {
             let tx = null
-            const cToken = underlying?.cToken
-            const creditumContract = getCreditumContract(cToken?.creditum, library.getSigner())
-            const cTokenContract = getTokenContract(cToken?.address, library.getSigner())
+            const cToken = creditumData.cusd.mintToken
+            const creditumContract = getCreditumContract(cToken.creditum, library.getSigner())
+            const cTokenContract = getTokenContract(cToken.address, library.getSigner())
             try {
                 if (Number(cToken?.allowBalance) < Number(burnAmount)) {
                     tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
@@ -94,6 +95,5 @@ export default function useCreditum() {
         exit,
         stabilizerMint,
         stabilizerRedeem,
-        status
     }
 }

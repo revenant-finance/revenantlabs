@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useCreditum from '../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../hooks/useAlerts'
@@ -13,10 +13,10 @@ import Input from '../Input'
 import LoadingBanner from '../LoadingBanner'
 import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
+import BigNumber from 'bignumber.js'
 
 const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
-
     const isOpen = selectedMarket?.id === market.id
     const amountBorrowable = market.collateralMintLimit - market.totalMinted
 
@@ -42,9 +42,9 @@ const MarketItemAccordion = ({ market, invert }) => {
                         <div className="p-6 space-y-4">
                             <div>
                                 <DataPoint title="User Debt" value={`${formatter(market.userDebt)} cUSD`} />
-                                <DataPoint title="User Deposits" value="0.00 ETH / $0.00" />
-                                <DataPoint title="Current Liquidation Price" value={`${Number(market.liquidationPrice) > 9000000 ? 'None' : formatter(market.liquidationPrice) }`} />
-                                <DataPoint title="cUSD left to borrow" value="0 cUSD" />
+                                <DataPoint title="User Deposits" value={`${formatter(market.userDeposits)} ${market.symbol} / $${formatter(market.userDeposits * market.priceUsd)}`} />
+                                <DataPoint title="Current Liquidation Price" value={`${Number(market.liquidationPrice) > 9000000 ? 'None' : formatter(market.liquidationPrice)}`} />
+                                <DataPoint title="cUSD left to borrow" value={`${formatter(market.positionLiquidity)}`} />
                             </div>
 
                             <a href="#market" className="block w-full px-4 py-2 text-xs font-medium text-center border rounded md:hidden border-neutral-800">
@@ -59,10 +59,182 @@ const MarketItemAccordion = ({ market, invert }) => {
 }
 
 export default function CreditumMarkets() {
-    const { creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool } = useCreditumData()
+    const {
+        creditumData,
+        selectedMarket,
+        setSelectedMarket,
+        depositInput,
+        setDepositInput,
+        borrowInput,
+        setBorrowInput,
+        repayInput,
+        setRepayInput,
+        withdrawInput,
+        setWithdrawInput,
+        showMoreInfo,
+        setShowMoreInfo,
+        showDepositTool,
+        setShowDepositTool,
+        showRepayTool,
+        setShowRepayTool,
+        liquidationPriceDeposit,
+        setLiquidationPriceDeposit,
+        healthDeposit,
+        setHealthDeposit,
+        borrowPercent,
+        setBorrowPercent,
+        newBorrowPercentDeposit,
+        setNewBorrowPercentDeposit,
+        liquidationPriceRepay,
+        setLiquidationPriceRepay,
+        healthRepay,
+        setHealthRepay,
+        newBorrowPercentRepay,
+        setNewBorrowPercentRepay
+    } = useCreditumData()
 
-    
-    
+    useEffect(() => {
+        if (!Object.values(creditumData).length) return
+        calculateDepositData()
+    }, [selectedMarket])
+
+    const calculateDepositData = () => {
+        if (selectedMarket?.positionCollateralValue !== '0') {
+            const _currentCollateralValue = Number(selectedMarket.positionCollateralValue)
+            const _currentDebtValue = Number(selectedMarket.positionDebtValue)
+            const _borrowPercent = (_currentDebtValue * 100) / (_currentCollateralValue * selectedMarket.collateralMaxDebtRatio)
+            setBorrowPercent(_borrowPercent)
+        }
+    }
+
+    const calculateBorrowLimit = () => {
+        const additionalLiquidity = new BigNumber(depositInput)
+            .times(selectedMarket.collateralMaxDebtRatio * 100)
+            .times(new BigNumber(selectedMarket.priceUsd))
+            .div(100)
+
+        const borrowLimit = new BigNumber(selectedMarket.positionLiquidity).plus(additionalLiquidity).toString()
+
+        return borrowLimit
+    }
+
+    const calculateWithdrawLimit = () => {
+        const withdrawLimit = new BigNumber(selectedMarket.positionLiquidity).plus(new BigNumber(repayInput)).div(selectedMarket.collateralMaxDebtRatio).div(selectedMarket.priceUsd)
+        return withdrawLimit
+    }
+
+    const onChangeAmountBorrow = (e) => {
+        const _amount = e.target.value
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) + Number(depositInput) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) + Number(_amount)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceDeposit(_liquidationPrice)
+        setHealthDeposit(_health)
+        setNewBorrowPercentDeposit(_newBorrowPercent)
+        setBorrowInput(String(_amount))
+    }
+
+    const onChangeAmountDeposit = (e) => {
+        const _amount = e.target.value
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) + Number(_amount) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) + Number(borrowInput)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceDeposit(_liquidationPrice)
+        setHealthDeposit(_health)
+        setNewBorrowPercentDeposit(_newBorrowPercent)
+        setDepositInput(_amount)
+    }
+
+    const onChangeAmountWithdraw = (e) => {
+        const _amount = e.target.value
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) - Number(_amount) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) - Number(repayInput)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceRepay(_liquidationPrice)
+        setHealthRepay(_health)
+        setNewBorrowPercentRepay(_newBorrowPercent)
+        setWithdrawInput(String(_amount))
+    }
+
+    const onChangeAmountRepay = (e) => {
+        const _amount = e.target.value
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) - Number(withdrawInput) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) - Number(_amount)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceRepay(_liquidationPrice)
+        setHealthRepay(_health)
+        setNewBorrowPercentRepay(_newBorrowPercent)
+        setRepayInput(String(_amount))
+    }
+
+    const handleMaxDeposit = () => {
+        const _amount = selectedMarket.walletBalance
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) + Number(_amount) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) + Number(borrowInput)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceDeposit(_liquidationPrice)
+        setHealthDeposit(_health)
+        setNewBorrowPercentDeposit(_newBorrowPercent)
+        setDepositInput(String(_amount))
+    }
+
+    const handleMaxBorrow = () => {
+        const _amount = calculateBorrowLimit()
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) + Number(depositInput) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) + Number(_amount)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceDeposit(_liquidationPrice)
+        setHealthDeposit(_health)
+        setNewBorrowPercentDeposit(_newBorrowPercent)
+        setBorrowInput(String(_amount))
+    }
+
+    const handleMaxRepay = () => {
+        const _amount = Number(creditumData.cusd.mintToken.walletBalance) > Number(selectedMarket.userDebt) ? selectedMarket.userDebt : creditumData.cusd.mintToken.walletBalance
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) - Number(withdrawInput) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) - Number(_amount)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceRepay(_liquidationPrice)
+        setHealthRepay(_health)
+        setNewBorrowPercentRepay(_newBorrowPercent)
+        setRepayInput(String(_amount))
+    }
+
+    const handleMaxWithdraw = () => {
+        const _amount = calculateWithdrawLimit()
+        const _newCollateralValue = Number(selectedMarket.positionCollateralValue) - Number(withdrawInput) * selectedMarket.priceUsd
+        const _newDebtValue = Number(selectedMarket.positionDebtValue) - Number(repayInput)
+        const _newBorrowPercent = (_newDebtValue * 100) / (_newCollateralValue * selectedMarket.collateralMaxDebtRatio)
+        const _liquidationPrice = (_newDebtValue * selectedMarket.priceUsd) / (_newCollateralValue * selectedMarket.collateralLiquidationThreshold)
+        const _health = (_newCollateralValue * selectedMarket.collateralLiquidationThreshold) / _newDebtValue
+
+        setLiquidationPriceRepay(_liquidationPrice)
+        setHealthRepay(_health)
+        setNewBorrowPercentRepay(_newBorrowPercent)
+        setWithdrawInput(String(_amount))
+    }
+
     const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
 
     const { newAlert, clearAlert } = useAlerts()
@@ -76,7 +248,7 @@ export default function CreditumMarkets() {
         try {
             setDepositStatus('loading')
             newAlert({ title: 'Depositing...', subtitle: `Depositing ${selectedMarket.symbol}... please complete the process with your wallet.`, type: 'info' })
-            enter(selectedMarket, depositInput, borrowInput)
+            enter(selectedMarket, depositInput ? depositInput : '0', borrowInput ? borrowInput : '0')
             newAlert({ title: 'Transaction Complete', subtitle: `Deposit complete.`, type: 'info' })
             setDepositStatus('idle')
         } catch (error) {
@@ -89,7 +261,7 @@ export default function CreditumMarkets() {
         try {
             setWithdrawStatus('loading')
             newAlert({ title: 'Repaying...', subtitle: `Repaying cUSD. Please complete the process with your wallet.`, type: 'info' })
-            exit(selectedMarket, depositInput, borrowInput)
+            exit(selectedMarket, withdrawInput ? withdrawInput : '0', repayInput ? repayInput : '0')
             newAlert({ title: 'Transaction Complete', subtitle: `Repayment complete.`, type: 'info' })
             setWithdrawStatus('idle')
         } catch (error) {
@@ -177,19 +349,19 @@ export default function CreditumMarkets() {
                                             <div className="flex flex-col gap-2 md:flex-row">
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to deposit.</p>
-                                                    <Input type="number" value={depositInput} onChange={(e) => setDepositInput(e.target.value)} onMax={() => setDepositInput(100)} />
+                                                    <Input type="number" value={depositInput} onChange={onChangeAmountDeposit} onMax={handleMaxDeposit} />
                                                 </div>
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of cUSD to borrow.</p>
-                                                    <Input type="number" value={borrowInput} onChange={(e) => setBorrowInput(e.target.value)} onMax={() => setBorrowInput(200)} />
+                                                    <Input type="number" value={borrowInput} onChange={onChangeAmountBorrow} onMax={handleMaxBorrow} />
                                                 </div>
                                             </div>
 
                                             {(!!depositInput || !!borrowInput) && (
                                                 <div className="p-4 bg-white rounded bg-opacity-10">
-                                                    <DataPoint title="Borrowed Amount" value="0.0 => 0.1" />
-                                                    <DataPoint title="Liquidation Price" value="0.0" />
-                                                    <DataPoint title="Health Factor" value="0.0" />
+                                                    <DataPoint title="Borrowed Percent" value={`${borrowPercent ? borrowPercent.toFixed(2) : '0'}% => ${newBorrowPercentDeposit && newBorrowPercentDeposit < 9000000 ? `${newBorrowPercentDeposit.toFixed(2)}%` : 'None'}`} />
+                                                    <DataPoint title="Liquidation Price" value={liquidationPriceDeposit < 900000 && liquidationPriceDeposit ? liquidationPriceDeposit.toFixed(2) : 'None'} />
+                                                    <DataPoint title="Health Factor" value={healthDeposit < 900000 && healthDeposit ? healthDeposit.toFixed(2) : 'None'} />
                                                 </div>
                                             )}
 
@@ -219,19 +391,19 @@ export default function CreditumMarkets() {
                                             <div className="flex flex-col gap-2 md:flex-row">
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of cUSD to repay.</p>
-                                                    <Input type="number" value={repayInput} onChange={(e) => setRepayInput(e.target.value)} onMax={() => setRepayInput(100)} />
+                                                    <Input type="number" value={repayInput} onChange={onChangeAmountRepay} onMax={handleMaxRepay} />
                                                 </div>
                                                 <div className="flex-1 space-y-1">
                                                     <p className="text-xs font-medium">Amount of {selectedMarket.symbol} to withdraw.</p>
-                                                    <Input type="number" value={withdrawInput} onChange={(e) => setWithdrawInput(e.target.value)} onMax={() => setRepayInput(400)} />
+                                                    <Input type="number" value={withdrawInput} onChange={onChangeAmountWithdraw} onMax={handleMaxWithdraw} />
                                                 </div>
                                             </div>
 
                                             {(!!withdrawInput || !!repayInput) && (
                                                 <div className="p-4 bg-white rounded bg-opacity-10">
-                                                    <DataPoint title="Borrowed Amount" value="0.0" />
-                                                    <DataPoint title="Liquidation Price" value="0.0" />
-                                                    <DataPoint title="Health Factor" value="0.0" />
+                                                    <DataPoint title="Borrowed Percent" value={`${borrowPercent ? borrowPercent.toFixed(2) : '0'}% => ${newBorrowPercentRepay && newBorrowPercentRepay > 0 ? `${newBorrowPercentRepay.toFixed(2)}%` : 'None'}`} />
+                                                    <DataPoint title="Liquidation Price" value={liquidationPriceRepay > 0 && liquidationPriceRepay ? liquidationPriceRepay.toFixed(2) : 'None'} />
+                                                    <DataPoint title="Health Factor" value={healthRepay > 0 && liquidationPriceRepay ? healthRepay.toFixed(2) : 'None'} />
                                                 </div>
                                             )}
 

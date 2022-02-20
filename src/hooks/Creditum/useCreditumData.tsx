@@ -131,7 +131,7 @@ function useCreditumDataInternal() {
                         params: [account, collateral.address]
                     }))
 
-                    const [collateralBalanceData, cTokenBalanceData] = await Promise.all([fetchBalances(account, [assetData.mint], assetData.mint.creditum), fetchBalances(account, assetCollaterals, assetData.mint.creditum)])
+                    const [collateralBalanceData, cTokenBalanceData] = await Promise.all([fetchBalances(account, assetCollaterals, assetData.mint.creditum), fetchBalances(account, [assetData.mint], assetData.mint.creditum)])
 
                     collateralBalances = collateralBalanceData
                     cTokenBalances = cTokenBalanceData
@@ -149,7 +149,7 @@ function useCreditumDataInternal() {
                     multicall(controllerABI, positionDataCalls),
                     multicall(controllerABI, liquidationPriceCalls),
                     multicall(controllerABI, utilizationRatioCalls),
-                    multicall(erc20ABI, contractBalanceCalls),
+                    multicall(erc20ABI, contractBalanceCalls)
                 ])
 
                 const formattedAssetData = []
@@ -209,20 +209,58 @@ export function CreditumDataWrapper({ children }: any) {
 
     const [selectedMarket, setSelectedMarket] = useState(null)
 
-    const [depositInput, setDepositInput] = useState(0)
-    const [borrowInput, setBorrowInput] = useState(0)
-    const [repayInput, setRepayInput] = useState(0)
-    const [withdrawInput, setWithdrawInput] = useState(0)
+    const [depositInput, setDepositInput] = useState('')
+    const [borrowInput, setBorrowInput] = useState('')
+    const [repayInput, setRepayInput] = useState('')
+    const [withdrawInput, setWithdrawInput] = useState('')
 
-    const [liquidationPrice, setLiquidationPrice] = useState(0)
-    const [health, setHealth] = useState(0)
+    const [liquidationPriceDeposit, setLiquidationPriceDeposit] = useState(0)
+    const [healthDeposit, setHealthDeposit] = useState(0)
     const [borrowPercent, setBorrowPercent] = useState(0)
-    const [newBorrowPercent, setNewBorrowPercent] = useState(0)
+    const [newBorrowPercentDeposit, setNewBorrowPercentDeposit] = useState(0)
+
+    const [liquidationPriceRepay, setLiquidationPriceRepay] = useState(0)
+    const [healthRepay, setHealthRepay] = useState(0)
+    const [newBorrowPercentRepay, setNewBorrowPercentRepay] = useState(0)
 
     return (
         <>
             <FarmDataWrapper>
-                <CreditumContext.Provider value={{ ...creditumData, selectedMarket, setSelectedMarket, depositInput, setDepositInput, borrowInput, setBorrowInput, repayInput, setRepayInput, withdrawInput, setWithdrawInput, showMoreInfo, setShowMoreInfo, showDepositTool, setShowDepositTool, showRepayTool, setShowRepayTool }}>
+                <CreditumContext.Provider
+                    value={{
+                        ...creditumData,
+                        selectedMarket,
+                        setSelectedMarket,
+                        depositInput,
+                        setDepositInput,
+                        borrowInput,
+                        setBorrowInput,
+                        repayInput,
+                        setRepayInput,
+                        withdrawInput,
+                        setWithdrawInput,
+                        showMoreInfo,
+                        setShowMoreInfo,
+                        showDepositTool,
+                        setShowDepositTool,
+                        showRepayTool,
+                        setShowRepayTool,
+                        liquidationPriceDeposit,
+                        setLiquidationPriceDeposit,
+                        healthDeposit,
+                        setHealthDeposit,
+                        borrowPercent,
+                        setBorrowPercent,
+                        newBorrowPercentDeposit,
+                        setNewBorrowPercentDeposit,
+                        liquidationPriceRepay,
+                        setLiquidationPriceRepay,
+                        healthRepay,
+                        setHealthRepay,
+                        newBorrowPercentRepay,
+                        setNewBorrowPercentRepay
+                    }}
+                >
                     <>{children}</>
                 </CreditumContext.Provider>
             </FarmDataWrapper>
