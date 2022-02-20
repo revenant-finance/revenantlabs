@@ -142,7 +142,7 @@ export default function CreditumFarms() {
                 <div className="space-y-6">
                     <div className="space-y-1">
                         <p className="text-2xl font-medium">{isDeposit ? 'Deposit' : 'Withdraw'}</p>
-                        <p>Deposit {selectedFarm.name} to earn farming Rewards</p>
+                        <p>Deposit {selectedFarm?.name} to earn farming Rewards</p>
                     </div>
 
                     <div>
