@@ -43,7 +43,13 @@ export default function CreditumStaking() {
             newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
             if (hasExistingLock) {
                 if (updateMode === 'amount') await increaseAmount(value)
-                if (updateMode === 'time') await increaseLockTime(stakingTimeInSeconds)
+                if (updateMode === 'time') {
+                    if (stakingTimeInSeconds < veCreditData.lockEnd - parseInt(+new Date() / 1000)) {
+                        newAlert({ title: 'Locking Failed', subtitle: 'You can only lock an amount of time greater than previous lock' })
+                        return
+                    }
+                    await increaseLockTime(stakingTimeInSeconds)
+                }
             } else {
                 await initialDeposit(value, stakingTimeInSeconds)
             }
@@ -123,8 +129,8 @@ export default function CreditumStaking() {
                             <>
                                 {!hasExistingLock && (
                                     <>
-                                        <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
-                                        <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 2)} />
+                                        <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
+                                        <Input label="Lock Time (In Days): Max Lock 4 years" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 4)} />
                                     </>
                                 )}
 
@@ -141,8 +147,8 @@ export default function CreditumStaking() {
 
                                 {hasExistingLock && updateMode && (
                                     <>
-                                        {updateMode === 'amount' && <Input label={`Amount of CREDIT to ${stakingMode === 'staking' ? 'Lock' : 'Unlock'}`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
-                                        {updateMode === 'time' && <Input label="Lock Time (In Days)" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 2)} />}
+                                        {updateMode === 'amount' && <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
+                                        {updateMode === 'time' && <Input label="Change Lock Time (In Days): Max Lock 4 years" value={stakingTime} onChange={(e) => setStakingTime(e.target.value)} type="number" onMax={() => setStakingTime(365 * 4)} />}
                                     </>
                                 )}
                             </>
@@ -165,7 +171,7 @@ export default function CreditumStaking() {
                             </div>
                         )} */}
 
-                        <Button loading={status === 'loading'} disabled={!value} onClick={stakingMode === 'staking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
+                        <Button loading={status === 'loading'} onClick={stakingMode === 'staking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
                             {stakingMode === 'staking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
                         </Button>
                     </div>

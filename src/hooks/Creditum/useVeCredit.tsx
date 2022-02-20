@@ -2,6 +2,7 @@ import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
 import { getTokenContract, getVeTokenContract, getXTokenContract } from '../../utils/ContractService'
+import useVeCreditData from './useVeCreditData'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
@@ -9,6 +10,7 @@ const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
 
 export default function useVeCredit() {
     const { account, library } = useActiveWeb3React()
+    const { update } = useVeCreditData()
 
     const veCreditContract = getVeTokenContract(veCreditAddress, library.getSigner())
     const xCreditContract = getXTokenContract(xCreditAddress, library.getSigner())
@@ -38,7 +40,7 @@ export default function useVeCredit() {
                 tx = await veCreditContract.create_lock(toWei(amount), parseInt(+new Date() / 1000) + time)
             }
             await tx.wait(1)
-            // update()
+            update()
             console.log(tx)
         } catch (error) {
             console.log(error)
@@ -53,7 +55,7 @@ export default function useVeCredit() {
             //may need allowance
             tx = await veCreditContract.increase_amount(toWei(amount))
             await tx.wait(1)
-            // update()
+            update()
             console.log(tx)
         } catch (error) {
             console.log(error)
@@ -65,9 +67,9 @@ export default function useVeCredit() {
         if (!account || time === '0') return
         let tx = null
         try {
-            tx = await veCreditContract.increase_unlock_time(time)
+            tx = await veCreditContract.increase_unlock_time(parseInt(+new Date() / 1000) + time)
             await tx.wait(1)
-            // update()
+            update()
             console.log(tx)
         } catch (error) {
             console.log(error)
@@ -82,7 +84,7 @@ export default function useVeCredit() {
             tx = await veCreditContract.withdraw()
             await tx.wait(1)
             console.log(tx)
-            // update()
+            update()
         } catch (error) {
             console.log(error)
         }
@@ -96,7 +98,7 @@ export default function useVeCredit() {
             tx = await xCreditContract.withdraw(toWei(amount))
             await tx.wait(1)
             console.log(tx)
-            // update()
+            update()
         } catch (error) {
             console.log(error)
         }
