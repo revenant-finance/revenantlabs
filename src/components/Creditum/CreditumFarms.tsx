@@ -158,7 +158,7 @@ export default function CreditumFarms() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">Amount of CREDIT to {isDeposit ? 'deposit' : 'withdraw'}.</p>
-                                <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(150)} />
+                                <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(isDeposit ? selectedFarm?.depositTokenBalance : selectedFarm?.deposited)} />
                             </div>
                         </div>
 
