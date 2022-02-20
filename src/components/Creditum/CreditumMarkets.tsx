@@ -232,7 +232,7 @@ export default function CreditumMarkets() {
         setLiquidationPriceRepay(_liquidationPrice)
         setHealthRepay(_health)
         setNewBorrowPercentRepay(_newBorrowPercent)
-        setWithdrawInput(String(_amount))
+        setWithdrawInput(((Number(_amount) * .99).toFixed(2)))
     }
 
     const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
