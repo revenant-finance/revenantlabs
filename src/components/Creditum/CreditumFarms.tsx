@@ -54,7 +54,7 @@ const Farm = ({ farm, open }) => {
                         <DataPoint title="APR" value={`${formatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
                     ))}
                 <DataPoint title="Liquidity" value={`$${formatter(farm.tvl)}`} />
-                {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${formatter(farm.deposited)}`} />}
+                {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${formatter(farm.userLpValue)}`} />}
 
                 {farm.earnings
                     .filter((earnings) => earnings !== '0')
@@ -91,6 +91,7 @@ export default function CreditumFarms() {
     const { newAlert, clearAlert } = useAlerts()
 
     const farms = farmData?.farms
+    console.log(farms)
 
     const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')
