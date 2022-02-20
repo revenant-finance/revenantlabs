@@ -30,12 +30,13 @@ export default function useVeCredit() {
         if (!account || amount === '0') return
         let tx = null
         try {
-            const allowance = await creditContract.allowance(account, veCreditContract)
+            const allowance = await creditContract.allowance(account, veCreditContract.address)
             if (Number(toEth(allowance)) < Number(amount)) {
                 tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
                 await tx.wait(1)
             } else {
-                tx = await veCreditContract.create_lock(toWei(amount), time)
+                console.log(time)
+                tx = await veCreditContract.create_lock(toWei(amount), parseInt(+new Date() / 1000) + time)
             }
             await tx.wait(1)
             // update()
@@ -93,7 +94,7 @@ export default function useVeCredit() {
         if (!account) return
         let tx = null
         try {
-            tx = await xCreditContract.unstake(toWei(amount))
+            tx = await xCreditContract.withdraw(toWei(amount))
             await tx.wait(1)
             console.log(tx)
             // update()

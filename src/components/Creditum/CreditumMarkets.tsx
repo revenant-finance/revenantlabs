@@ -99,7 +99,7 @@ export default function CreditumMarkets() {
     }, [selectedMarket])
 
     const calculateDepositData = () => {
-        if (selectedMarket?.positionCollateralValue !== '0') {
+        if (selectedMarket) {
             const _currentCollateralValue = Number(selectedMarket.positionCollateralValue)
             const _currentDebtValue = Number(selectedMarket.positionDebtValue)
             const _borrowPercent = (_currentDebtValue * 100) / (_currentCollateralValue * selectedMarket.collateralMaxDebtRatio)
@@ -311,6 +311,8 @@ export default function CreditumMarkets() {
                                     <DataPoint title="Total Deposits" value={`${formatter(selectedMarket.contractBalance)} ${selectedMarket.symbol}`} />
                                     <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} USD`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
+                                    <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
+
 
                                     <AnimatePresence>
                                         {showMoreInfo && (
@@ -318,7 +320,6 @@ export default function CreditumMarkets() {
                                                 <div>
                                                     <DataPoint title={`${selectedMarket.symbol} Price`} value={`$${formatter(selectedMarket.priceUsd)} USD`} />
                                                     <DataPoint title="Collateral Mint Limit" value={`${formatter(selectedMarket.collateralMintLimit)}`} />
-                                                    <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
                                                     <DataPoint title="LTV/Max Debt Ratio" value={`${formatter(selectedMarket.collateralMaxDebtRatio * 100)}%`} />
                                                     <DataPoint title="Mint Fee" value={`${formatter(selectedMarket.collateralMintFee * 100)}%`} />
                                                     <DataPoint title="Liquidation Penalty" value={`${formatter(selectedMarket.collateralLiquidationPenalty * 100)}%`} />
