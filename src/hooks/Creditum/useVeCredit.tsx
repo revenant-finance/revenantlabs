@@ -35,7 +35,6 @@ export default function useVeCredit() {
                 tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
                 await tx.wait(1)
             } else {
-                console.log(time)
                 tx = await veCreditContract.create_lock(toWei(amount), parseInt(+new Date() / 1000) + time)
             }
             await tx.wait(1)

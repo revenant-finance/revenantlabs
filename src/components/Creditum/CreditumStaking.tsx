@@ -24,7 +24,7 @@ export default function CreditumStaking() {
     const [stakingTime, setStakingTime] = useState(7)
     const [value, setValue] = useState('')
 
-    const stakingTimeInSeconds = stakingTime * 24 * 60 * 60 + 360
+    const stakingTimeInSeconds = (stakingTime * 24 * 60 * 60) + 360
 
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
