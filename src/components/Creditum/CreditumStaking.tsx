@@ -121,6 +121,7 @@ export default function CreditumStaking() {
                         <DataPoint title="Credit Balance" value={`${formatter(veCreditData.tokenBal)}`} />
                         <DataPoint title="Total Locked" value={`${formatter(veCreditData.veCreditTotalSupply)}`} />
                         <DataPoint title="User Amount Locked" value={`${formatter(veCreditData.creditLocked)} CREDIT`} />
+                        <DataPoint title="User veCREDIT Balance" value={`${formatter(veCreditData.veCreditBal)} veCREDIT`} />
                         <DataPoint title="Time Until Unlock" value={`${formatter((veCreditData.lockEnd - +new Date() / 1000) / (60 * 60) > 0 ? (veCreditData.lockEnd - +new Date() / 1000) / (60 * 60) : 0)} hours`} />
                     </div>
 
