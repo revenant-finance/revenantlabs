@@ -7,6 +7,7 @@ import useVeCreditData from './useVeCreditData'
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
+const secondsWeek = 60 * 60 * 24 * 7
 
 export default function useVeCredit() {
     const { account, library } = useActiveWeb3React()
@@ -37,7 +38,8 @@ export default function useVeCredit() {
                 tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
                 await tx.wait(1)
             } else {
-                tx = await veCreditContract.create_lock(toWei(amount), parseInt(+new Date() / 1000) + time)
+                //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week 
+                tx = await veCreditContract.create_lock(toWei(amount), time)
             }
             await tx.wait(1)
             update()
@@ -67,7 +69,7 @@ export default function useVeCredit() {
         if (!account || time === '0') return
         let tx = null
         try {
-            tx = await veCreditContract.increase_unlock_time(parseInt(+new Date() / 1000) + time)
+            tx = await veCreditContract.increase_unlock_time(time)
             await tx.wait(1)
             update()
             console.log(tx)
