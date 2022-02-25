@@ -13,14 +13,7 @@ import Countdown from '../CountDown'
 
 const secondsWeek = 60 * 60 * 24 * 7
 const currentEpoch = parseInt(+new Date()) / 1000
-
-const TimeStakeButton = ({ children, value, stakingTime, setStakingTime }) => {
-    return (
-        <Button className={classNames(stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)}>
-            {children}
-        </Button>
-    )
-}
+const fourYearsSeconds = 60 * 60 * 24 * 365 * 4
 
 const calculateUnlockEpoch = (time, date) => {
     const lockDate = date + time
@@ -32,6 +25,18 @@ const epochToDate = (epoch) => {
     return new Date(epoch * 1000).toLocaleDateString('en-gb', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd }) => {
+    let disabled = false
+    if (lockEnd) {
+        disabled = (value + lockEnd) > (currentEpoch + fourYearsSeconds)
+    } 
+    
+    return (
+        <Button className={classNames(stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)} disabled={disabled}>
+            {children}
+        </Button>
+    )
+}
 
 export default function CreditumStaking() {
     const [status, setStatus] = useState('idle')
@@ -54,8 +59,8 @@ export default function CreditumStaking() {
             if (hasExistingLock) {
                 if (updateMode === 'amount') await increaseAmount(value)
                 if (updateMode === 'time') {
-                    if (stakingTimeInSeconds < veCreditData.lockEnd - parseInt(+new Date() / 1000)) {
-                        newAlert({ title: 'Locking Failed', subtitle: 'You can only lock an amount of time greater than previous lock' })
+                    if (calculateUnlockEpoch(fourYearsSeconds, currentEpoch) <= veCreditData.lockEnd) {
+                        newAlert({ title: 'Locking Failed', subtitle: 'Can only increase locking duration' })
                         return
                     }
                     await increaseLockTime(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))
@@ -191,29 +196,29 @@ export default function CreditumStaking() {
                                         {updateMode === 'amount' && <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
                                         {updateMode === 'time' && (
                                             <div className="space-y-2">
-                                                <Input label="Lock Until:" value={epochToDate(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))} disabled="true" />
+                                                <Input label="Lock Until:" value={epochToDate(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))} disabled={true} onMax={() => setStakingTime(currentEpoch + fourYearsSeconds - veCreditData?.lockEnd)}/>
                                                 <div className="flex gap-2">
-                                                    <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         2wk
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 30} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 30} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         1mo
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 90} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 90} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         3mo
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 180} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 180} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         6mo
                                                     </TimeStakeButton>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 365} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         1yr
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 2} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 2} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         2yr
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 4} {...{ stakingTime, setStakingTime }}>
+                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 4} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         4yr
                                                     </TimeStakeButton>
                                                 </div>

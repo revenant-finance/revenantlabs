@@ -7,7 +7,6 @@ import useVeCreditData from './useVeCreditData'
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
-const secondsWeek = 60 * 60 * 24 * 7
 
 export default function useVeCredit() {
     const { account, library } = useActiveWeb3React()
