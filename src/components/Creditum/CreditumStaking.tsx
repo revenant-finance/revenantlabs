@@ -47,7 +47,6 @@ export default function CreditumStaking() {
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
-    const stakingTimeInSeconds = stakingTime * 24 * 60 * 60
     const hasExistingLock = veCreditData?.creditLocked !== '0'
 
     const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit } = useVeCredit()
