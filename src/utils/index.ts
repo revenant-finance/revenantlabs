@@ -138,6 +138,10 @@ export const formatter = (value, decimals = 2, suffixStr = '') => {
     return `${format(Math.floor((abs / unit) * Math.pow(10, decimals)) / Math.pow(10, decimals))}${suffix}${suffixStr && ` ${suffixStr}`}`
 }
 
+export const commaFormatter = (value, decimals = 2) => {
+    return commaNumber(Number(value).toFixed(decimals))
+}
+
 export const sumOfArray = (array) => {
     return array.reduce((pv, cv) => pv + cv, 0)
 }

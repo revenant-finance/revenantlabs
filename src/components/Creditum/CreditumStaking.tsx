@@ -7,7 +7,7 @@ import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useAlerts from '../../hooks/useAlerts'
-import { formatter } from '../../utils'
+import { formatter, commaFormatter } from '../../utils'
 import Input from '../Input'
 import Countdown from '../CountDown'
 
@@ -127,10 +127,10 @@ export default function CreditumStaking() {
                         </p>
                     </div>
                     <div>
-                        <DataPoint title="Credit Balance" value={`${formatter(veCreditData.tokenBal)}`} />
-                        <DataPoint title="Total Locked" value={`${formatter(veCreditData.veCreditTotalSupply)}`} />
-                        <DataPoint title="User Amount Locked" value={`${formatter(veCreditData.creditLocked)} CREDIT`} />
-                        <DataPoint title="User veCREDIT Balance" value={`${formatter(veCreditData.veCreditBal)} veCREDIT`} />
+                        <DataPoint title="Credit Balance" value={`${commaFormatter(veCreditData.tokenBal)}`} />
+                        <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veCreditTotalSupply)}`} />
+                        <DataPoint title="User Amount Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
+                        <DataPoint title="User veCREDIT Balance" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
                     </div>
                     <div className="">
                         <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 0}`} />
