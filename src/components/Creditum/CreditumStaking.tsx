@@ -7,7 +7,7 @@ import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useAlerts from '../../hooks/useAlerts'
-import { formatter, commaFormatter } from '../../utils'
+import { commaFormatter } from '../../utils'
 import Input from '../Input'
 import Countdown from '../CountDown'
 
