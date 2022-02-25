@@ -4,7 +4,7 @@ import { CONTRACT_CREDITUM_FARMS } from '../../data/'
 import useFarm from '../../hooks/Creditum/useFarm'
 import useFarmData from '../../hooks/Creditum/useFarmData'
 import useAlerts from '../../hooks/useAlerts'
-import { formatter } from '../../utils'
+import { formatter, commaFormatter } from '../../utils'
 import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
@@ -51,15 +51,15 @@ const Farm = ({ farm, open }) => {
                 {farm.apy
                     .filter((apy) => apy !== 0)
                     .map((apy, index) => (
-                        <DataPoint title="APR" value={`${formatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
+                        <DataPoint title="APR" value={`${commaFormatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
                     ))}
-                <DataPoint title="Liquidity" value={`$${formatter(farm.tvl)}`} />
-                {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${formatter(farm.userLpValue)}`} />}
+                <DataPoint title="Liquidity" value={`$${commaFormatter(farm.tvl, 0)}`} />
+                {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${commaFormatter(farm.userLpValue)}`} />}
 
                 {farm.earnings
                     .filter((earnings) => earnings !== '0')
                     .map((earnings, index) => (
-                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`${formatter(earnings)}`} />
+                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`${commaFormatter(earnings)}`} />
                     ))}
             </div>
 
@@ -91,7 +91,6 @@ export default function CreditumFarms() {
     const { newAlert, clearAlert } = useAlerts()
 
     const farms = farmData?.farms
-    console.log(farms)
 
     const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')
@@ -147,11 +146,11 @@ export default function CreditumFarms() {
                     </div>
 
                     <div>
-                        <DataPoint title="LP Token Balance" value={`${formatter(selectedFarm?.depositTokenBalance)}`} />
-                        <DataPoint title="LP Token Staked" value={`${formatter(selectedFarm?.deposited)}`} />
+                        <DataPoint title="LP Token Balance" value={`${commaFormatter(selectedFarm?.depositTokenBalance)}`} />
+                        <DataPoint title="LP Token Staked" value={`${commaFormatter(selectedFarm?.deposited)}`} />
 
                         {selectedFarm?.userTokens.map((token) => (
-                            <DataPoint title={`${token.token} Amount`} value={`${formatter(token.amount)} ${token.token}`} />
+                            <DataPoint title={`${token.token} Amount`} value={`${commaFormatter(token.amount)} ${token.token}`} />
                         ))}
                     </div>
 

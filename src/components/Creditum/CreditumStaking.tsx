@@ -129,8 +129,8 @@ export default function CreditumStaking() {
                     <div>
                         <DataPoint title="Credit Balance" value={`${commaFormatter(veCreditData.tokenBal)}`} />
                         <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veCreditTotalSupply)}`} />
-                        <DataPoint title="User Amount Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
-                        <DataPoint title="User veCREDIT Balance" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
+                        <DataPoint title="User Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
+                        <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
                     </div>
                     <div className="">
                         <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 0}`} />
@@ -145,7 +145,7 @@ export default function CreditumStaking() {
                                     <>
                                         <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
                                         <div className="space-y-2">
-                                            <Input label="Lock Until:" disabled="true" value={epochToDate(calculateUnlockEpoch(stakingTime, currentEpoch))} />
+                                            <Input label="Lock Until:" disabled={true} value={epochToDate(calculateUnlockEpoch(stakingTime, currentEpoch))} />
                                             <div className="flex gap-2">
                                                 <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime }}>
                                                     2wk

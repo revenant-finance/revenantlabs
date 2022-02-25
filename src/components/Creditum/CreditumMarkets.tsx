@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import useCreditum from '../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../hooks/useAlerts'
-import { formatter } from '../../utils'
+import { formatter, commaFormatter } from '../../utils'
 import Button from '../Button'
 import ConnectWalletButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
@@ -41,10 +41,10 @@ const MarketItemAccordion = ({ market, invert }) => {
                     <SlideOpen className={classNames('overflow-hidden', isOpen && ' border-t-2 border-neutral-900 text-neutral-900 bg-yellow-400')}>
                         <div className="p-6 space-y-4">
                             <div>
-                                <DataPoint title="User Debt" value={`${formatter(market.userDebt)} cUSD`} />
-                                <DataPoint title="User Deposits" value={`${formatter(market.userDeposits)} ${market.symbol} / $${formatter(market.userDeposits * market.priceUsd)}`} />
-                                <DataPoint title="Current Liquidation Price" value={`${Number(market.liquidationPrice) > 9000000 ? 'None' : formatter(market.liquidationPrice)}`} />
-                                <DataPoint title="cUSD left to borrow" value={`${formatter(market.positionLiquidity)}`} />
+                                <DataPoint title="User Debt" value={`${commaFormatter(market.userDebt)} cUSD`} />
+                                <DataPoint title="User Deposits" value={`${commaFormatter(market.userDeposits)} ${market.symbol} / $${formatter(market.userDeposits * market.priceUsd)}`} />
+                                <DataPoint title="Current Liquidation Price" value={`${Number(market.liquidationPrice) > 9000000 ? 'None' : commaFormatter(market.liquidationPrice)}`} />
+                                <DataPoint title="cUSD left to borrow" value={`${commaFormatter(market.positionLiquidity)}`} />
                             </div>
 
                             <a href="#market" className="block w-full px-4 py-2 text-xs font-medium text-center border rounded md:hidden border-neutral-800">
