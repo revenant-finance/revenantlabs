@@ -91,6 +91,7 @@ export default function CreditumFarms() {
     const { newAlert, clearAlert } = useAlerts()
 
     const farms = farmData?.farms
+    console.log(farms)
 
     const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')
@@ -174,9 +175,9 @@ export default function CreditumFarms() {
             <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
                 <InfoBanner header="Farming" title="Deposit your tokens to start farming." subtitle="Our farms use a modified version of the MasterChef contract that allows for multiple tokens to be rewarded per farming token. Currently, possible reward tokens are being given out in CREDIT and ANGLE" />
 
-                {!farms && <LoadingBanner title="Farms are loading..." />}
+                {!farms?.length && <LoadingBanner title="Farms are loading..." />}
 
-                {farms && (
+                {farms?.length && (
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         {farms.map((farm) => (
                             <Farm farm={farm} key={farm.id} open={(mode) => openModal(farm, mode)} />

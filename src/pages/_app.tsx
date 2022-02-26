@@ -9,7 +9,6 @@ import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
-import { GeistProvider } from '@geist-ui/react'
 import Web3ReactManager from '../components/Web3ReactManager'
 
 const Web3ReactProviderDefault = dynamic(() => import('../components/Provider'), { ssr: false })
@@ -22,7 +21,6 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Meta />
-            <GeistProvider>
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Web3ReactProviderDefault getLibrary={getLibrary}>
                         <Web3ReactManager>
@@ -35,7 +33,6 @@ export default function App({ Component, pageProps }: AppProps) {
                         </Web3ReactManager>
                     </Web3ReactProviderDefault>
                 </Web3ReactProvider>
-            </GeistProvider>
         </>
     )
 }
