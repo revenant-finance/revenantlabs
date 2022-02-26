@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfoBanner from '../InfoBanner'
 import classNames from 'classnames'
 import DataPoint from '../DataPoint'
@@ -28,9 +28,9 @@ const epochToDate = (epoch) => {
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd }) => {
     let disabled = false
     if (lockEnd) {
-        disabled = (value + lockEnd) > (currentEpoch + fourYearsSeconds)
-    } 
-    
+        disabled = value + lockEnd > currentEpoch + fourYearsSeconds
+    }
+
     return (
         <Button className={classNames(stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)} disabled={disabled}>
             {children}
@@ -40,12 +40,19 @@ const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd
 
 export default function CreditumStaking() {
     const [status, setStatus] = useState('idle')
-    const [stakingMode, setStakingMode] = useState<'staking' | 'unstaking'>('staking')
+    const [lockingMode, setLockingMode] = useState<'locking' | 'unlocking'>('locking')
     const [updateMode, setUpdateMode] = useState<'amount' | 'time' | null>(null)
     const [stakingTime, setStakingTime] = useState(0)
     const [value, setValue] = useState('')
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
+
+    useEffect(() => {
+        if (veCreditData?.lockEnd === 0) return
+        if (veCreditData?.lockEnd < currentEpoch) {
+            setLockingMode('unlocking')
+        }
+    }, [veCreditData])
 
     const hasExistingLock = veCreditData?.creditLocked !== '0'
 
@@ -113,21 +120,24 @@ export default function CreditumStaking() {
             <div className="p-6 py-24 bg-neutral-700">
                 <div className="w-full mx-auto space-y-6 sm:max-w-md">
                     <div className="space-y-1">
-                        <div className="flex space-x-2 text-2xl font-medium">
-                            <button onClick={() => setStakingMode('staking')} className={classNames('space-x-2', stakingMode === 'staking' ? 'opacity-100' : 'opacity-50')}>
-                                <i className="text-base fas fa-lock" />
-                                <span>Lock</span>
-                            </button>
-                            <div className="flex-1" />
-                            <button onClick={() => setStakingMode('unstaking')} className={classNames('space-x-2', stakingMode === 'unstaking' ? 'opacity-100' : 'opacity-25')}>
-                                <i className="text-base fas fa-unlock"></i>
-                                <span>Unlock</span>
-                            </button>
+                        <div className="text-2xl font-medium">
+                            {lockingMode === 'locking' && (
+                                <div className="space-x-2">
+                                    <i className="text-base fas fa-lock" />
+                                    <span>Lock</span>
+                                </div>
+                            )}
+                            {lockingMode === 'unlocking' && (
+                                <div className="space-x-2">
+                                    <i className="text-base fas fa-unlock"></i>
+                                    <span>Unlock</span>
+                                </div>
+                            )}
                         </div>
 
                         <p>
-                            {stakingMode === 'staking' && 'Lock your CREDIT tokens to recieve veCREDIT.'}
-                            {stakingMode === 'unstaking' && 'Unlock your veCREDIT for CREDIT.'}
+                            {lockingMode === 'locking' && 'Lock your CREDIT tokens to recieve veCREDIT.'}
+                            {lockingMode === 'unlocking' && 'Your Lock duration has been completed. Please withdraw all CREDIT'}
                         </p>
                     </div>
                     <div>
@@ -137,13 +147,13 @@ export default function CreditumStaking() {
                         <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
                     </div>
                     <div className="">
-                        <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 0}`} />
+                        <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 'None'}`} />
                         {/* <Countdown epochTime={veCreditData?.lockEnd} /> */}
                         {/* <DataPoint title="Time Until Unlock" value={`${formatter(veCreditData.lockEnd - +new Date() / 1000 > 0 ? (veCreditData.lockEnd - +new Date() / 1000) / (60 * 60) : 0)} hours`} /> */}
                     </div>
 
                     <div className="space-y-2">
-                        {stakingMode === 'staking' && (
+                        {lockingMode === 'locking' && (
                             <>
                                 {!hasExistingLock && (
                                     <>
@@ -195,7 +205,7 @@ export default function CreditumStaking() {
                                         {updateMode === 'amount' && <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
                                         {updateMode === 'time' && (
                                             <div className="space-y-2">
-                                                <Input label="Lock Until:" value={epochToDate(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))} disabled={true} onMax={() => setStakingTime(currentEpoch + fourYearsSeconds - veCreditData?.lockEnd)}/>
+                                                <Input label="Lock Until:" value={epochToDate(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))} disabled={true} onMax={() => setStakingTime(currentEpoch + fourYearsSeconds - veCreditData?.lockEnd)} />
                                                 <div className="flex gap-2">
                                                     <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
                                                         2wk
@@ -228,8 +238,8 @@ export default function CreditumStaking() {
                             </>
                         )}
 
-                        <Button loading={status === 'loading'} disabled={!value && !stakingTime} onClick={stakingMode === 'staking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
-                            {stakingMode === 'staking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
+                        <Button loading={status === 'loading'} disabled={!value && !stakingTime && lockingMode !== 'unlocking'} onClick={lockingMode === 'locking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
+                            {lockingMode === 'locking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
                         </Button>
                     </div>
                 </div>

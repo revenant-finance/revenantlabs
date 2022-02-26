@@ -139,7 +139,7 @@ export const formatter = (value, decimals = 2, suffixStr = '') => {
 }
 
 export const commaFormatter = (value, decimals = 2) => {
-    if (!value) return '0'
+    if (!value) return Number(0).toFixed(decimals)
     return commaNumber(Number(value).toFixed(decimals))
 }
 

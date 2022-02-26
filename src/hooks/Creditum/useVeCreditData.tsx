@@ -10,9 +10,6 @@ const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
 
 export default function useVeCreditData() {
-    //CREDIT: tokenBal
-    //xCREDIT: xtokenBal, xtokenShare
-    //veCREDIT: lockEnd, veCreditBal, veCreditTotalSupply, creditLocked
     const [veCreditData, setVeCreditData] = useState({})
     const { slowRefresh } = useRefresh()
     const { account } = useActiveWeb3React()
