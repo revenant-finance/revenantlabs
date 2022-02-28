@@ -1,7 +1,7 @@
 import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
-import { getTokenContract, getVeTokenContract, getXTokenContract } from '../../utils/ContractService'
+import { getTokenContract, getVeTokenContract, getXTokenContract, getVeTokenFeesContract } from '../../utils/ContractService'
 import useVeCreditData from './useVeCreditData'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
@@ -15,6 +15,7 @@ export default function useVeCredit() {
     const veCreditContract = getVeTokenContract(veCreditAddress, library.getSigner())
     const xCreditContract = getXTokenContract(xCreditAddress, library.getSigner())
     const creditContract = getTokenContract(creditAddress, library.getSigner())
+    const feesContract = getVeTokenFeesContract(library.getSigner())
 
     const approve = async () => {
         if (!account) return

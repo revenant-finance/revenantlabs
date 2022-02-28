@@ -29,7 +29,8 @@ export default {
             credit: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',
             xcredit: '0xd9e28749e80D867d5d14217416BFf0e668C10645',
             farms: '0xe0c43105235C1f18EA15fdb60Bb6d54814299938',
-            vecredit: '0xdB49A1190778623A872254ECca3a7bFD997223cb'
+            vecredit: '0xdB49A1190778623A872254ECca3a7bFD997223cb',
+            vecreditfees: '0xbC191aad2b6ECF8FCa2185318725aC1653C13465'
         }
     }
 }

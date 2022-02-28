@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getXTokenContract, getTokenContract, getVeTokenContract } from '../../utils/ContractService'
+import { getXTokenContract, getTokenContract, getVeTokenContract, getVeTokenFeesContract } from '../../utils/ContractService'
 import { toEth } from '../../utils'
 import * as constants from '../../data'
 import useRefresh from '../useRefresh'
@@ -16,6 +16,7 @@ export default function useVeCreditData() {
     const veCreditContract = getVeTokenContract(veCreditAddress)
     const xCreditContract = getXTokenContract(xCreditAddress)
     const creditContract = getTokenContract(creditAddress)
+    const feesContract = getVeTokenFeesContract()
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
 

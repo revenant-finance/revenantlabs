@@ -122,7 +122,8 @@ export const CONTRACT_CREDITUM = {
             asset: 'creditum.png',
             decimals: 18,
             xtoken: creditumAddress[250].CONTRACT.xcredit,
-            vetoken: creditumAddress[250].CONTRACT.vecredit
+            vetoken: creditumAddress[250].CONTRACT.vecredit,
+            vecreditfees: creditumAddress[250].CONTRACT.vecreditfees
         }
     }
 }

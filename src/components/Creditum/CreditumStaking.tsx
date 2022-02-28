@@ -25,7 +25,7 @@ const epochToDate = (epoch) => {
     return new Date(epoch * 1000).toLocaleDateString('en-gb', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd }) => {
+const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd = 0 }) => {
     let disabled = false
     if (lockEnd) {
         disabled = value + lockEnd > currentEpoch + fourYearsSeconds
@@ -46,6 +46,8 @@ export default function CreditumStaking() {
     const [value, setValue] = useState('')
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
+
+    console.log(status === "loading")
 
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return
@@ -108,7 +110,7 @@ export default function CreditumStaking() {
                         </div>
                         <div>
                             <ConnectWalletFirstButton>
-                                <Button onClick={() => unstakeXCredit(veCreditData?.xTokenBalance)} className="bg-yellow-400 text-neutral-700 whitespace-nowrap">
+                                <Button onClick={() => unstakeXCredit(veCreditData?.xTokenBalance)} className="bg-yellow-400 text-neutral-700 whitespace-nowrap" loading={false}>
                                     Withdraw {veCreditData?.xTokenBalance} xCREDIT
                                 </Button>
                             </ConnectWalletFirstButton>

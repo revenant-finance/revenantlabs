@@ -51,7 +51,7 @@ const Farm = ({ farm, open }) => {
                 {farm.apy
                     .filter((apy) => apy !== 0)
                     .map((apy, index) => (
-                        <DataPoint title="APR" value={`${commaFormatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
+                        <DataPoint title="APR" key={apy} value={`${commaFormatter(apy)}% ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} />
                     ))}
                 <DataPoint title="Liquidity" value={`$${commaFormatter(farm.tvl, 0)}`} />
                 {farm.deposited !== '0' && <DataPoint title="Your Deposits" value={`$${commaFormatter(farm.userLpValue)}`} />}
@@ -59,7 +59,7 @@ const Farm = ({ farm, open }) => {
                 {farm.earnings
                     .filter((earnings) => earnings !== '0')
                     .map((earnings, index) => (
-                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} value={`${commaFormatter(earnings)}`} />
+                        <DataPoint title={`Your Earnings in ${CONTRACT_CREDITUM_FARMS[250].earnTokens[index].name}`} key={earnings} value={`${commaFormatter(earnings)}`} />
                     ))}
             </div>
 
@@ -91,7 +91,6 @@ export default function CreditumFarms() {
     const { newAlert, clearAlert } = useAlerts()
 
     const farms = farmData?.farms
-    console.log(farms)
 
     const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')
@@ -151,7 +150,7 @@ export default function CreditumFarms() {
                         <DataPoint title="LP Token Staked" value={`${commaFormatter(selectedFarm?.deposited)}`} />
 
                         {selectedFarm?.userTokens.map((token) => (
-                            <DataPoint title={`${token.token} Amount`} value={`${commaFormatter(token.amount)} ${token.token}`} />
+                            <DataPoint title={`${token.token} Amount`} key={token.token} value={`${commaFormatter(token.amount)} ${token.token}`} />
                         ))}
                     </div>
 
@@ -179,8 +178,8 @@ export default function CreditumFarms() {
 
                 {farms?.length && (
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {farms.map((farm) => (
-                            <Farm farm={farm} key={farm.id} open={(mode) => openModal(farm, mode)} />
+                        {farms.map((farm, index) => (
+                            <Farm farm={farm} key={farm.pid} open={(mode) => openModal(farm, mode)} />
                         ))}
                     </div>
                 )}
