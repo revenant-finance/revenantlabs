@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import MarketTicker from '../MarketTicker'
 
 interface HeaderLink {
     href: string
@@ -79,6 +80,7 @@ export function CreditumAppWrapper({ children }) {
                             </HeaderLink>
                         </div>
                     </div>
+                    <MarketTicker />
                 </div>
                 {children}
                 <div className="w-full p-6 py-24 mx-auto space-y-12 max-w-7xl">

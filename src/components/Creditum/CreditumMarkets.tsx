@@ -272,8 +272,6 @@ export default function CreditumMarkets() {
 
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-            <MarketTicker />
-
             <InfoBanner header="Markets" title="Stabilize your fortunes by minting cUSD." subtitle="Users can deposit crypto assets as collateral to mint cUSD, a stablecoin pegged to USD. Interest rates are fixed so no need to worry about market fluctuation. cUSD and CREDIT can be used for various farming rewards." />
 
             <div className="grid grid-cols-1 gap-12 md:grid-cols-2">

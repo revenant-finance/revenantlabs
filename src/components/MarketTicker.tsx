@@ -9,6 +9,7 @@ import { getTokenContract } from '../utils/ContractService'
 import { toEth } from '../utils'
 import { CONTRACT_CREDITUM } from '../data'
 import { useActiveWeb3React } from '../hooks'
+import ReactTyped from 'react-typed'
 
 const creditum = CONTRACT_CREDITUM[250].token
 
@@ -69,8 +70,13 @@ export default function MarketTicker() {
     }
 
     return (
-        <div className="p-2 bg-yellow-400 text-neutral-900">
-            {marketCap && (
+        <div className="p-2 bg-yellow-400 text-neutral-900 rounded-2xl">
+            {!marketCap && (
+                <p className="text-center opacity-50 font-medium">
+                    <ReactTyped strings={['Loading...']} loop />
+                </p>
+            )}
+            {!!marketCap && (
                 <Ticker>
                     {({ index }) => (
                         <>
