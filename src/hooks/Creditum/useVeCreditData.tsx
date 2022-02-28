@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { getXTokenContract, getTokenContract, getVeTokenContract, getVeTokenFeesContract } from '../../utils/ContractService'
 import { toEth } from '../../utils'
 import * as constants from '../../data'
@@ -9,7 +9,7 @@ const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
 const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
 
-export default function useVeCreditData() {
+export function useVeCreditDataInternal() {
     const [veCreditData, setVeCreditData] = useState({})
     const { slowRefresh } = useRefresh()
     const { account } = useActiveWeb3React()
@@ -46,7 +46,7 @@ export default function useVeCreditData() {
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     creditLocked: toEth(locked.amount),
                     lockEnd: locked.end.toNumber(),
-                    veTokenValue: toEth(veTokenValue),
+                    veTokenValue: toEth(veTokenValue)
                 }
             } else {
                 const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue] = await Promise.all([xCreditContract.getShareValue(), creditContract.balanceOf(xCreditAddress), veCreditContract.supply(), creditContract.balanceOf(veCreditAddress)])
@@ -72,4 +72,15 @@ export default function useVeCreditData() {
         veCreditData,
         update
     }
+}
+
+const VeCreditDataContext = createContext({})
+
+export const VeCreditDataWrapper = ({ children }) => {
+    const veCredit = useVeCreditDataInternal()
+    return <VeCreditDataContext.Provider value={{ ...veCredit }}>{children}</VeCreditDataContext.Provider>
+}
+
+export default function useVeCreditData() {
+    return useContext(VeCreditDataContext) as any
 }

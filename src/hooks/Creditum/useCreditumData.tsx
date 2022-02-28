@@ -7,6 +7,7 @@ import useRefresh from '../useRefresh'
 import { FarmDataWrapper } from './useFarmData'
 import usePrice from '../usePrice'
 import { useActiveWeb3React } from '..'
+import { VeCreditDataWrapper } from './useVeCreditData'
 
 const creditumABI = JSON.parse(constants.CONTRACT_CREDITUM_ABI)
 const controllerABI = JSON.parse(constants.CONTRACT_CONTROLLER_ABI)
@@ -225,45 +226,47 @@ export function CreditumDataWrapper({ children }: any) {
 
     return (
         <>
-            <FarmDataWrapper>
-                <CreditumContext.Provider
-                    value={{
-                        ...creditumData,
-                        selectedMarket,
-                        setSelectedMarket,
-                        depositInput,
-                        setDepositInput,
-                        borrowInput,
-                        setBorrowInput,
-                        repayInput,
-                        setRepayInput,
-                        withdrawInput,
-                        setWithdrawInput,
-                        showMoreInfo,
-                        setShowMoreInfo,
-                        showDepositTool,
-                        setShowDepositTool,
-                        showRepayTool,
-                        setShowRepayTool,
-                        liquidationPriceDeposit,
-                        setLiquidationPriceDeposit,
-                        healthDeposit,
-                        setHealthDeposit,
-                        borrowPercent,
-                        setBorrowPercent,
-                        newBorrowPercentDeposit,
-                        setNewBorrowPercentDeposit,
-                        liquidationPriceRepay,
-                        setLiquidationPriceRepay,
-                        healthRepay,
-                        setHealthRepay,
-                        newBorrowPercentRepay,
-                        setNewBorrowPercentRepay
-                    }}
-                >
-                    <>{children}</>
-                </CreditumContext.Provider>
-            </FarmDataWrapper>
+            <VeCreditDataWrapper>
+                <FarmDataWrapper>
+                    <CreditumContext.Provider
+                        value={{
+                            ...creditumData,
+                            selectedMarket,
+                            setSelectedMarket,
+                            depositInput,
+                            setDepositInput,
+                            borrowInput,
+                            setBorrowInput,
+                            repayInput,
+                            setRepayInput,
+                            withdrawInput,
+                            setWithdrawInput,
+                            showMoreInfo,
+                            setShowMoreInfo,
+                            showDepositTool,
+                            setShowDepositTool,
+                            showRepayTool,
+                            setShowRepayTool,
+                            liquidationPriceDeposit,
+                            setLiquidationPriceDeposit,
+                            healthDeposit,
+                            setHealthDeposit,
+                            borrowPercent,
+                            setBorrowPercent,
+                            newBorrowPercentDeposit,
+                            setNewBorrowPercentDeposit,
+                            liquidationPriceRepay,
+                            setLiquidationPriceRepay,
+                            healthRepay,
+                            setHealthRepay,
+                            newBorrowPercentRepay,
+                            setNewBorrowPercentRepay
+                        }}
+                    >
+                        <>{children}</>
+                    </CreditumContext.Provider>
+                </FarmDataWrapper>
+            </VeCreditDataWrapper>
         </>
     )
 }

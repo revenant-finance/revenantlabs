@@ -37,27 +37,6 @@ export function CreditumAppWrapper({ children }) {
 
             <div className="relative z-10">
                 <div className="w-full p-6 pb-0 mx-auto space-y-6 max-w-7xl md:pt-12">
-                    {/* <div className="flex flex-wrap items-center gap-6 overflow-auto whitespace-nowrap">
-                        <div className="w-full md:w-auto">
-                            <Link href="/creditum" passHref>
-                                <a>
-                                    <img className="w-24 md:w-20" src="/img/creditum.png" alt="" />
-                                </a>
-                            </Link>
-                        </div>
-                        <div className="opacity-50">
-                            <p className="text-xs font-medium md:text-sm">Total Value Locked (TVL)</p>
-                            <p className="md:text-2xl">${formatter(69696969)}</p>
-                        </div>
-                        <div className="opacity-50">
-                            <p className="text-xs font-medium md:text-sm">Credit Price</p>
-                            <p className="md:text-2xl">$3.06</p>
-                        </div>
-                        <div className="opacity-50">
-                            <p className="text-xs font-medium md:text-sm">Marketcap</p>
-                            <p className="md:text-2xl">${formatter(420000000)}</p>
-                        </div>
-                    </div> */}
                     <div className="flex flex-col gap-4 md:flex-row">
                         <Link href="/creditum" passHref>
                             <a>
@@ -66,9 +45,6 @@ export function CreditumAppWrapper({ children }) {
                         </Link>
                         <div className="flex-1" />
                         <div className="flex space-x-6 overflow-auto font-medium whitespace-nowrap no-scrollbar">
-                            {/* <HeaderLink href="/" icon="fas fa-home" className="opacity-50">
-                                Home
-                            </HeaderLink> */}
                             <HeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                                 Market
                             </HeaderLink>
