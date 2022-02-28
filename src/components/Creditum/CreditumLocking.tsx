@@ -119,7 +119,7 @@ export default function CreditumStaking() {
                 </div>
             )}
 
-            <div className="p-6 py-24 space-y-6 shadow-2xl bg-neutral-900 border-2 border-neutral-800 rounded-2xl">
+            <div className="p-6 py-24 space-y-6 shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl">
                 <div className="w-full mx-auto space-y-6 sm:max-w-md">
                     <div className="space-y-1">
                         <div className="text-2xl font-medium">
