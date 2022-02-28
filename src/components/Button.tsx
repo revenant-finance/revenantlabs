@@ -9,11 +9,10 @@ interface Button {
 }
 
 export default function Button(props: Button) {
-    const { children, loading, className, disabled: disabledFromProps } = props
-    console.log(loading, className)
-    const disabled = disabledFromProps
+    const { children, loading, className, disabled } = props
+
     return (
-        <button {...props} className={classNames(className, 'w-full relative px-4 py-2 font-medium rounded', disabled && 'cursor-not-allowed opacity-50')}>
+        <button disabled={disabled} type="button" className={classNames(className, 'w-full relative px-4 py-2 font-medium rounded', disabled && 'cursor-not-allowed opacity-50')}>
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center w-full h-full text-0">
                     <i className="fas fa-circle-notch fa-spin" />

@@ -14,7 +14,7 @@ export const SingularityIndexPageContext = createContext({})
 export function SingularityAppWrapper({ children }) {
     const router = useRouter()
 
-    const { account, library} = useActiveWeb3React()
+    const { account, library } = useActiveWeb3React()
 
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
@@ -201,7 +201,7 @@ export function SingularityAppWrapper({ children }) {
                 swap
             }}
         >
-            <NotReadyModal />
+            {/* <NotReadyModal /> */}
             {children}
         </SingularityIndexPageContext.Provider>
     )

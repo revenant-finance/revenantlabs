@@ -25,10 +25,6 @@ export default function Navigation() {
             <div className="fixed top-0 right-0 z-50 flex flex-col items-end w-full max-w-lg gap-2 p-6 pointer-events-none">
                 <div className="flex gap-2">
                     <ConnectWalletButton />
-                    {/* <button onClick={() => wallet.connect()} className={classNames('pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xlt text-xs font-medium')}>
-                        {<i className={classNames('fas fa-wallet', wallet.account && 'text-orange-500')} />}
-                        {/* {wallet.account ? `${wallet.account.slice(0, 6)}...${wallet.account.slice(-6)}` : <i className="fas fa-wallet" />} */}
-
                     <button onClick={() => setOpen((_) => !_)} className={classNames('pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xl')}>
                         <i className={classNames('fas fa-bars transition ease-in-out duration-75', open && 'rotate-90 text-salmon')}></i>
                     </button>

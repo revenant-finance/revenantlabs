@@ -232,7 +232,7 @@ export default function CreditumMarkets() {
         setLiquidationPriceRepay(_liquidationPrice)
         setHealthRepay(_health)
         setNewBorrowPercentRepay(_newBorrowPercent)
-        setWithdrawInput(((Number(_amount) * .99).toFixed(2)))
+        setWithdrawInput((Number(_amount) * 0.99).toFixed(2))
     }
 
     const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
@@ -312,7 +312,6 @@ export default function CreditumMarkets() {
                                     <DataPoint title="Total Deposits (USD)" value={`$${formatter(selectedMarket.contractBalance * selectedMarket.priceUsd)} USD`} />
                                     <DataPoint title="Total Minted" value={`${formatter(selectedMarket.totalMinted)} cUSD`} />
                                     <DataPoint title="Borrowing Interest Rate" value={`${formatter(selectedMarket.collateralStabilityFee * 100)}%`} />
-
 
                                     <AnimatePresence>
                                         {showMoreInfo && (

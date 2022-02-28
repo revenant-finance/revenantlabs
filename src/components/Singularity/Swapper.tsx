@@ -118,7 +118,7 @@ export default function () {
                     )}
 
                     <div>
-                        {/* <button onClick={account ? () => swap() : () => wallet.connect()} className="w-full px-2 py-2 font-medium text-purple-400 bg-purple-900 rounded">
+                        {/* <button onClick={account ? () => swap() : () => wallet.connect()} className="w-full px-2 py-2 font-medium text-yellow-400 bg-yellow-900 rounded">
                             {account ? 'Swap' : 'Connect Wallet'}
                         </button> */}
                     </div>

@@ -47,7 +47,7 @@ export default function CreditumStaking() {
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
-    console.log(status === "loading")
+    console.log(status === 'loading')
 
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return

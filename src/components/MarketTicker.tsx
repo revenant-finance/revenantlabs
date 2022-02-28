@@ -70,21 +70,23 @@ export default function MarketTicker() {
 
     return (
         <div className="p-2 bg-yellow-400 text-neutral-900">
-            {marketCap && <Ticker>
-                {({ index }) => (
-                    <>
-                        <div className="flex items-center mr-4 space-x-4">
-                            <MarketTickerItem title="Market Cap" value={formatter(marketCap)} />
-                            <MarketTickerItem title="CREDIT Circulating Supply" value={formatter(supply)} />
-                            <MarketTickerItem title="$CREDIT Price" value={`$${formatter(tokenPrice)}`} />
-                            <MarketTickerItem title="Total Value Locked (TVL)" value={`$${formatter(tvl)}`} />
-                            {/* <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} /> */}
-                            {/* <MarketTickerItem title="Total cUSD Minted" value={Object.keys(creditumData).length ? formatter(creditumData?.cusd.assetOverview.totalMinted) : 'loading'} /> */}
-                            {/* <MarketTickerItem title="Market Utilization Ratio" value={formatter(999999999)} /> */}
-                        </div>
-                    </>
-                )}
-            </Ticker>}
+            {marketCap && (
+                <Ticker>
+                    {({ index }) => (
+                        <>
+                            <div className="flex items-center mr-4 space-x-4">
+                                <MarketTickerItem title="Market Cap" value={formatter(marketCap)} />
+                                <MarketTickerItem title="CREDIT Circulating Supply" value={formatter(supply)} />
+                                <MarketTickerItem title="$CREDIT Price" value={`$${formatter(tokenPrice)}`} />
+                                <MarketTickerItem title="Total Value Locked (TVL)" value={`$${formatter(tvl)}`} />
+                                {/* <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} /> */}
+                                {/* <MarketTickerItem title="Total cUSD Minted" value={Object.keys(creditumData).length ? formatter(creditumData?.cusd.assetOverview.totalMinted) : 'loading'} /> */}
+                                {/* <MarketTickerItem title="Market Utilization Ratio" value={formatter(999999999)} /> */}
+                            </div>
+                        </>
+                    )}
+                </Ticker>
+            )}
         </div>
     )
 }
