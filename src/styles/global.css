@@ -10,7 +10,7 @@ body,
 #__next {
     height: 100%;
     scroll-behavior: smooth;
-    @apply bg-neutral-900 text-neutral-400;
+    @apply bg-neutral-900 text-neutral-200;
 }
 
 .font-montserrat {

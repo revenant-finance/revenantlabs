@@ -4,8 +4,8 @@ import Footer from '../components/Footer'
 export default function Index() {
     return (
         <>
-            <div className="h-full relative flex items-center justify-center text-yellow-100">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-900 to-blue-800 opacity-30" />
+            <div className="h-full relative flex items-center justify-center text-purple-100">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-900 to-blue-800 opacity-30" />
 
                 <div className="max-w-7xl mx-auto p-12 py-24">
                     <div className="text-center space-y-8">
@@ -56,9 +56,9 @@ export default function Index() {
             </div>
 
             {/* <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-900 to-blue-800 opacity-30" />
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-900 to-blue-800 opacity-30" />
 
-                <div className="relative max-w-7xl mx-auto p-12 py-24 text-yellow-100">
+                <div className="relative max-w-7xl mx-auto p-12 py-24 text-purple-100">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4 ">
                             <p className="text-3xl uppercase md:text-5xl font-montserrat font-extrabold">Creditum</p>
@@ -70,7 +70,7 @@ export default function Index() {
                     </div>
                 </div>
 
-                <div className="relative max-w-7xl mx-auto p-12 py-24 text-yellow-100">
+                <div className="relative max-w-7xl mx-auto p-12 py-24 text-purple-100">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="flex">
                             <img className="w-20 h-20" src="/img/creditum-white.png" alt="" />

@@ -32,7 +32,7 @@ const Farm = ({ farm, open }) => {
     const hasEarnings = farm.earnings.some((earning) => earning !== '0')
 
     return (
-        <div className="p-6 space-y-6 text-left bg-neutral-700">
+        <div className="p-6 space-y-6 shadow-2xl bg-neutral-900 border-2 border-neutral-800 rounded-2xl">
             <div className="flex">
                 <div className="flex-1 space-y-1">
                     <p className="text-2xl font-medium">{farm.name}</p>

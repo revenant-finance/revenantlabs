@@ -32,9 +32,9 @@ export function CreditumAppWrapper({ children }) {
                 <title>Creditum — Revenant Labs</title>
             </Head>
 
-            <div className="fixed inset-0 bg-gradient-to-tl from-yellow-500 to-neutral-500 opacity-20" />
+            <div className="fixed inset-0 bg-gradient-to-tl from-blue-900 to-yellow-400 opacity-40" />
 
-            <div className="relative z-10 text-yellow-100">
+            <div className="relative z-10">
                 <div className="w-full p-6 pb-0 mx-auto space-y-6 max-w-7xl md:pt-12">
                     {/* <div className="flex flex-wrap items-center gap-6 overflow-auto whitespace-nowrap">
                         <div className="w-full md:w-auto">
