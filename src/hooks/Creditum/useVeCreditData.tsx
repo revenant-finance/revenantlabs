@@ -4,6 +4,7 @@ import { toEth } from '../../utils'
 import * as constants from '../../data'
 import useRefresh from '../useRefresh'
 import { useActiveWeb3React } from '..'
+import BN from 'bignumber.js'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
@@ -23,7 +24,7 @@ export function useVeCreditDataInternal() {
     const fetchData = async () => {
         try {
             if (account) {
-                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue, rewardTime, rewardAmount] = await Promise.all([
+                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue, rewardTime, totalRewardAmount, userRewardAmount] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
@@ -34,7 +35,8 @@ export function useVeCreditDataInternal() {
                     veCreditContract.locked(account),
                     creditContract.balanceOf(veCreditAddress),
                     feesContract.time_cursor(),
-                    feesContract.token_last_balance()
+                    feesContract.token_last_balance(),
+                    feesContract.callStatic['claim(address)'](account)
                 ])
 
                 return {
@@ -49,17 +51,28 @@ export function useVeCreditDataInternal() {
                     lockEnd: locked.end.toNumber(),
                     veTokenValue: toEth(veTokenValue),
                     rewardTime: Number(rewardTime),
-                    rewardAmount: toEth(rewardAmount)
+                    totalRewardAmount: toEth(totalRewardAmount),
+                    userRewardAmount: toEth(userRewardAmount)
                 }
             } else {
-                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, rewardAmount] = await Promise.all([xCreditContract.getShareValue(), creditContract.balanceOf(xCreditAddress), veCreditContract.supply(), creditContract.balanceOf(veCreditAddress), feesContract.time_cursor(), feesContract.token_last_balance()])
+                feesContract.callStatic['claim(address)'](account)
+                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, totalRewardAmount, userRewardAmount] = await Promise.all([
+                    xCreditContract.getShareValue(),
+                    creditContract.balanceOf(xCreditAddress),
+                    veCreditContract.supply(),
+                    creditContract.balanceOf(veCreditAddress),
+                    feesContract.time_cursor(),
+                    feesContract.token_last_balance(),
+                    feesContract.callStatic['claim(address)'](account)
+                ])
                 return {
                     xtokenShare: toEth(xtokenShare),
                     xTokenValue: toEth(xTokenValue),
                     veTokenValue: toEth(veTokenValue),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     rewardTime: Number(rewardTime),
-                    rewardAmount: toEth(rewardAmount)
+                    totalRewardAmount: toEth(totalRewardAmount),
+                    userRewardAmount: toEth(userRewardAmount)
                 }
             }
         } catch (e) {

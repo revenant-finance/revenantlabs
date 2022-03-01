@@ -1,46 +1,108 @@
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import Footer from '../components/Footer'
+import RvntClaim from '../components/RvntClaim'
 
-export default function Index() {
+export default function IndexPage() {
     return (
         <>
-            <div className="h-full relative flex items-center justify-center text-yellow-100">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-purple-800 opacity-30" />
+            {/* <Banner /> */}
 
-                <div className="max-w-7xl mx-auto p-12 py-24">
-                    <div className="text-center space-y-8">
-                        <motion.img animate={{ rotate: ['0deg', '360deg', '0deg'] }} transition={{ duration: 32, loop: Infinity }} className="w-32 mx-auto" src="/img/revenant-coin.png" alt="" />
+            <div className="relative z-10 p-6 pt-12 pb-0 -mb-24 space-y-12 md:pt-24 md:-mb-48 md:space-y-24">
+                <div className="mx-auto max-w-7xl">
+                    <div className="flex flex-col gap-6 md:flex-row">
+                        <div className="flex-1 space-y-2">
+                            <motion.img animate={{ rotate: ['0%', '100%', '0%'] }} transition={{ duration: 12, loop: Infinity }} className="w-32" src="/img/revenant-coin.png" alt="" />
 
-                        <p className="text-3xl uppercase md:text-7xl font-montserrat">
-                            <span className="font-extrabold text-purp">Revenant</span>
-                            <span className="text-salmon">Labs</span>
-                        </p>
-                        <p className="mx-auto max-w-xl text-2xl font-light md:text-4xl">
-                            Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-salmon text-neutral-900">sovereign cash</span> on the worlds fastest blockchain.
-                        </p>
-
-                        <p className="flex-1 space-x-2 text-2xl">
-                            <a className="opacity-50 hover:opacity-100" href="/twitter" target="_blank">
-                                <i className="fab fa-twitter" />
-                            </a>
-                            <a className="opacity-50 hover:opacity-100" href="/discord" target="_blank">
-                                <i className="fab fa-discord" />
-                            </a>
-                            <a className="opacity-50 hover:opacity-100" href="/github" target="_blank">
-                                <i className="fab fa-github" />
-                            </a>
-                            <a className="opacity-50 hover:opacity-100" href="/medium" target="_blank">
-                                <i className="fab fa-medium" />
-                            </a>
-                        </p>
+                            <p className="text-3xl uppercase md:text-7xl font-montserrat">
+                                <span className="font-extrabold text-purp">Revenant</span>
+                                <span className="text-salmon">Labs</span>
+                            </p>
+                            <p className="max-w-lg text-2xl font-light md:text-4xl">
+                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-salmon text-neutral-900">sovereign cash</span> on the worlds fastest blockchain.
+                            </p>
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="flex-1 space-x-2 text-2xl">
+                                <a href="/docs" target="_blank" className="underline">
+                                    Docs
+                                </a>
+                                <a href="/twitter" target="_blank">
+                                    <i className="fab fa-twitter" />
+                                </a>
+                                <a href="/discord" target="_blank">
+                                    <i className="fab fa-discord" />
+                                </a>
+                                <a href="/github" target="_blank">
+                                    <i className="fab fa-github" />
+                                </a>
+                                <a href="/medium" target="_blank">
+                                    <i className="fab fa-medium" />
+                                </a>
+                            </p>
+                            {/* <img className="hidden w-32 md:block" src="/img/revenant-full.png" alt="" /> */}
+                        </div>
                     </div>
+                </div>
+
+                <div className="container mx-auto space-y-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <Link href="/creditum" passHref>
+                            <a className="relative flex flex-col justify-end p-6 overflow-hidden duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-yellowy text-neutral-900 rounded-2xl md:p-12 h-96 hover hover:-translate-y-2">
+                                <img className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10" src="/img/creditum-black.png" alt="" />
+                                <div className="relative space-y-2 md:max-w-sm">
+                                    <p className="text-3xl font-extrabold uppercase font-montserrat">Creditum</p>
+                                    <p className="text-xl">Creditum is a Revenant Labs protocol that provides fixed interest rates loans to mint cUSD</p>
+                                </div>
+                            </a>
+                        </Link>
+
+                        {/* <Link href="/singularity" passHref> */}
+                        <a className="relative flex flex-col justify-end p-6 overflow-hidden duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-purp text-neutral-900 rounded-2xl md:p-12 h-96 hover hover:-translate-y-2 group">
+                            <div className="absolute inset-0 z-10 flex items-center justify-center p-6 transition ease-in-out opacity-0 group-hover:opacity-100 bg-neutral-900 bg-opacity-90">
+                                <p className="space-x-2 text-white uppercase opacity-50 font-extended">
+                                    <i className="fas fa-lock"></i>
+                                    <span>Coming soon.</span>
+                                </p>
+                            </div>
+                            {/* <MeshBackground id="singularity-gradient-colors" /> */}
+                            <img className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10" src="/img/singularity-black.png" alt="" />
+
+                            <div className="relative space-y-2 md:max-w-sm ">
+                                <p className="text-3xl font-extrabold uppercase font-montserrat">Singularity</p>
+                                <p className="text-xl">Singularity is a decentralized exchange that provides the best swap rates on stablecoins</p>
+                            </div>
+                        </a>
+                        {/* </Link> */}
+                    </div>
+
+                    <a
+                        href="https://discord.gg/aDmKM7E7SY"
+                        target="_blank"
+                        className="flex max-w-5xl p-6 mx-auto duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-neutral-600 rounded-2xl md:p-12 hover hover:-translate-y-2"
+                        // style={{ backgroundImage: `url("/img/orange-banner.jpg")` }}
+                    >
+                        <div className="flex-1">
+                            <div className="flex-1 space-y-2 md:max-w-lg">
+                                <p className="text-3xl font-extrabold uppercase font-montserrat">Join the Community</p>
+                                <p className="text-xl">The easiest way to get started is with help. We invite you to join our community, where we're available to answer any questions you might have.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <i className="fab fa-discord text-7xl" />
+                        </div>
+                    </a>
                 </div>
             </div>
 
-            <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tl from-green-500 to-yellow-500 opacity-60" />
-                <div className="relative max-w-7xl mx-auto p-12 py-24 text-green-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="bg-neutral-700">
+                <img src="/img/gray-slime-top.svg" alt="" />
+            </div>
+
+            <div className="bg-neutral-700">
+                <div className="container p-6 py-24 mx-auto max-w-7xl md:py-48">
+                    <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                         <div>
                             <img className="w-full" src="/img/peggy/peggy-standing.png" alt="" />
                         </div>
@@ -55,33 +117,22 @@ export default function Index() {
                 </div>
             </div>
 
-            {/* <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-900 to-yellow-800 opacity-30" />
+            {/* <CallToAction /> */}
 
-                <div className="relative max-w-7xl mx-auto p-12 py-24 text-yellow-100">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4 ">
-                            <p className="text-3xl uppercase md:text-5xl font-montserrat font-extrabold">Creditum</p>
-                            <p className="text-2xl">Quis reprehenderit quis reprehenderit ut nisi anim nisi. Magna sit reprehenderit magna nostrud cillum pariatur voluptate. Velit eu proident veniam consectetur voluptate sint et labore id commodo ex consequat. Ad do eu do aliqua aliqua incididunt nulla fugiat proident.</p>
-                        </div>
-                        <div className="flex justify-end">
-                            <img className="w-20 h-20" src="/img/creditum-white.png" alt="" />
-                        </div>
-                    </div>
-                </div>
+            {/* <div className="text-yellow-100 bg-yellow-900 bg-center bg-cover" style={{ backgroundImage: `url("/img/blue-mesh-dark.jpg")` }}>
+                <div className="container max-w-3xl p-6 py-24 mx-auto space-y-12 md:py-48">
+                    <motion.img animate={{ y: [0, -10, 0] }} transition={{ loop: Infinity, duration: 3 }} className="w-64 mx-auto" src="/img/ftm-logo.svg" alt="" />
 
-                <div className="relative max-w-7xl mx-auto p-12 py-24 text-yellow-100">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="flex">
-                            <img className="w-20 h-20" src="/img/creditum-white.png" alt="" />
-                        </div>
-                        <div className="space-y-4 ">
-                            <p className="text-3xl uppercase md:text-5xl font-montserrat font-extrabold">Singularity</p>
-                            <p className="text-2xl">In aute occaecat ipsum aute dolore pariatur proident ut ad dolor enim. Tempor nostrud occaecat ullamco voluptate magna. Officia sunt tempor laboris anim.</p>
+                    <div className="space-y-8">
+                        <p className="text-4xl font-extrabold md:text-6xl">Powered by the worlds fastest and most efficient blockchain.</p>
+                        <div className="space-y-4">
+                            <p className="text-xl">Our products are deployed on the Fantom Blockchain — known for nearly instant, cheap, and safe transactions. Avoid Ethereum's slow wait times and high gas fees, while utilizing your same assets. It's that simple.</p>
                         </div>
                     </div>
                 </div>
             </div> */}
+
+            <RvntClaim />
 
             <Footer />
         </>

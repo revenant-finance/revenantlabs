@@ -39,6 +39,7 @@ const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd
 
 export default function CreditumStaking() {
     const [status, setStatus] = useState('idle')
+    const [claimStatus, setClaimStatus] = useState('idle')
     const [lockingMode, setLockingMode] = useState<'locking' | 'unlocking'>('locking')
     const [updateMode, setUpdateMode] = useState<'amount' | 'time' | null>(null)
     const [stakingTime, setStakingTime] = useState(0)
@@ -96,6 +97,19 @@ export default function CreditumStaking() {
         }
     }
 
+    const onClaim = async () => {
+        try {
+            setClaimStatus('loading')
+            newAlert({ title: 'Claiming rewards...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
+            await claim()
+            setClaimStatus('idle')
+            newAlert({ title: 'Claim Complete', subtitle: 'Process complete. Your rewards have been sent to your wallet.' })
+        } catch (error) {
+            newAlert({ title: 'Claiming Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
+            setClaimStatus('error')
+        }
+    }
+
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
             <InfoBanner header="Locking" title="Lock your CREDIT tokens" subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury." />
@@ -146,11 +160,12 @@ export default function CreditumStaking() {
                         <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veCreditTotalSupply)} CREDIT`} />
                         <DataPoint title="User Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
                         <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
-                    </div>
-                    <div className="">
                         <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 'None'}`} />
-                        {/* <Countdown epochTime={veCreditData?.lockEnd} /> */}
-                        {/* <DataPoint title="Time Until Unlock" value={`${formatter(veCreditData.lockEnd - +new Date() / 1000 > 0 ? (veCreditData.lockEnd - +new Date() / 1000) / (60 * 60) : 0)} hours`} /> */}
+                    </div>
+
+                    <div className="">
+                        <DataPoint title="Next Reward Distribution" value={`${epochToDate(veCreditData.rewardTime)}`} />
+                        <DataPoint title="Estimated Reward Distribution" value={`${commaFormatter(veCreditData.userRewardAmount)}`} />
                     </div>
 
                     <div className="space-y-2">
@@ -237,6 +252,12 @@ export default function CreditumStaking() {
                                     </>
                                 )}
                             </>
+                        )}
+
+                        {veCreditData.userRewardAmount !== '0' && (
+                            <Button loading={claimStatus === 'loading'} className="text-neutral-900 bg-green-500" onClick={() => onClaim()}>
+                                Claim Rewards
+                            </Button>
                         )}
 
                         <Button loading={status === 'loading'} disabled={!value && !stakingTime && lockingMode !== 'unlocking'} onClick={lockingMode === 'locking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>

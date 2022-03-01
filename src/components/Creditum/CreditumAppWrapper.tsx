@@ -69,11 +69,11 @@ export function CreditumAppWrapper({ children }) {
                 <div className="flex">
                     <div className="flex-1 h-2 bg-purp" />
                     <div className="flex-1 h-2 bg-salmon" />
-                    <div className="flex-1 h-2 bg-yellowy" />
+                    <div className="flex-1 h-2 bg-bluey" />
                     <div className="flex-1 h-2 bg-greeny" />
                     <div className="flex-1 h-2 bg-purp" />
                     <div className="flex-1 h-2 bg-salmon" />
-                    <div className="flex-1 h-2 bg-yellowy" />
+                    <div className="flex-1 h-2 bg-bluey" />
                     <div className="flex-1 h-2 bg-greeny" />
                 </div>
             </div>
