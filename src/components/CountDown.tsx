@@ -33,7 +33,7 @@ const Countdown = ({epochTime}) => {
     }
 
     timerComponents.push(
-      <span>
+      <span key={interval}>
         {timeLeft[interval]} {timeLeft[interval] !== 1 ? interval : interval.slice(0, -1)}{" "}
       </span>
     );
