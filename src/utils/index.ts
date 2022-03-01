@@ -5,6 +5,9 @@ const commaNumber = require('comma-number')
 
 const format = commaNumber.bindWith(',', '.')
 
+export const currentEpoch = parseInt(+new Date()) / 1000
+
+
 export const ZERO_ADDRESS = constants.AddressZero
 export const EMPTY_ADDRESS = '0x0Af3F4817dcD3644ca7e0319dDe861932544D0D5'
 export const MAX_UINT256 = constants.MaxUint256

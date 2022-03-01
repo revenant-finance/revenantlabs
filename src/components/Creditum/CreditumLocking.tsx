@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import useAlerts from '../../hooks/useAlerts'
-import { commaFormatter, epochToDate } from '../../utils'
+import { commaFormatter, epochToDate, currentEpoch } from '../../utils'
 import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
@@ -11,7 +11,6 @@ import InfoBanner from '../InfoBanner'
 import Input from '../Input'
 
 const secondsWeek = 60 * 60 * 24 * 7
-const currentEpoch = parseInt(+new Date()) / 1000
 const fourYearsSeconds = 60 * 60 * 24 * 365 * 4
 
 const calculateUnlockEpoch = (time, date) => {
@@ -42,8 +41,6 @@ export default function CreditumStaking() {
     const [value, setValue] = useState('')
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
-
-    console.log(veCreditData)
 
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return
