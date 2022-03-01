@@ -83,7 +83,7 @@ export default function useVeCredit() {
         if (!account) return
         let tx = null
         try {
-            tx = await feesContract.claim()
+            tx = await feesContract.withdraw()
             await tx.wait(1)
             console.log(tx)
             update()
@@ -96,7 +96,7 @@ export default function useVeCredit() {
         if (!account) return
         let tx = null
         try {
-            tx = await feesContract.withdraw()
+            tx = await feesContract.claim()
             await tx.wait(1)
             console.log(tx)
             update()
