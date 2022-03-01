@@ -32,7 +32,7 @@ const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd
     )
 }
 
-export default function CreditumStaking() {
+export default function CreditumLocking() {
     const [status, setStatus] = useState('idle')
     const [claimStatus, setClaimStatus] = useState('idle')
     const [lockingMode, setLockingMode] = useState<'locking' | 'unlocking'>('locking')
@@ -112,7 +112,7 @@ export default function CreditumStaking() {
                     <div className="flex flex-col items-end gap-6 md:flex-row">
                         <div>
                             <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>
-                            <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and recieve veCREDIT on our newest protocol update.</p>
+                            <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and receive veCREDIT on our newest protocol update.</p>
                         </div>
                         <div>
                             <ConnectWalletFirstButton>
@@ -144,7 +144,7 @@ export default function CreditumStaking() {
                         </div>
 
                         <p>
-                            {lockingMode === 'locking' && 'Lock your CREDIT tokens to recieve veCREDIT.'}
+                            {lockingMode === 'locking' && 'Lock your CREDIT tokens to receive veCREDIT.'}
                             {lockingMode === 'unlocking' && 'Your Lock duration has been completed. Please withdraw all CREDIT'}
                         </p>
                     </div>
