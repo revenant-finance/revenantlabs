@@ -106,7 +106,7 @@ export default function CreditumStaking() {
                     <div className="flex flex-col items-end gap-6 md:flex-row">
                         <div>
                             <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>
-                            <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and recieve veCREDIT on our newest protocol update.</p>
+                            <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and receive veCREDIT on our newest protocol update.</p>
                         </div>
                         <div>
                             <ConnectWalletFirstButton>
