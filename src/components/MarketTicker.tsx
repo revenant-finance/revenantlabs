@@ -7,9 +7,9 @@ import ReactTyped from 'react-typed'
 
 const MarketTickerItem = ({ title, value }) => {
     return (
-        <p className="inline-block whitespace-nowrap">
+        <p className="inline-block whitespace-nowrap ">
             <span className="font-medium">{title}: </span>
-            <span className="font-light">{value}</span>
+            <span className="font-extended">{value}</span>
         </p>
     )
 }
@@ -28,7 +28,7 @@ export default function MarketTicker() {
     const tvl = creditumTvl + farmTvl + xTokenTvl + veTokenTvl
 
     return (
-        <div className="p-2 bg-yellow-400 text-neutral-900 rounded-2xl">
+        <div className="bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl shadow-2xl p-2">
             {!tvl && (
                 <p className="font-medium text-center opacity-50">
                     <ReactTyped strings={['Loading...']} loop />
@@ -39,13 +39,22 @@ export default function MarketTicker() {
                     {({ index }) => (
                         <>
                             <div className="flex items-center mr-4 space-x-4">
-                                <MarketTickerItem title="Market Cap" value={formatter(govTokenData?.marketCap)} />
-                                <MarketTickerItem title="CREDIT Circulating Supply" value={formatter(govTokenData?.circSupply)} />
-                                <MarketTickerItem title="$CREDIT Price" value={`$${formatter(govTokenData?.tokenPrice)}`} />
-                                <MarketTickerItem title="Total Value Locked (TVL)" value={`$${formatter(tvl)}`} />
-                                {/* <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} /> */}
-                                {/* <MarketTickerItem title="Total cUSD Minted" value={Object.keys(creditumData).length ? formatter(creditumData?.cusd.assetOverview.totalMinted) : 'loading'} /> */}
-                                {/* <MarketTickerItem title="Market Utilization Ratio" value={formatter(999999999)} /> */}
+                                <MarketTickerItem
+                                    title="CREDIT Market Cap"
+                                    value={`$${formatter(govTokenData?.marketCap)}`}
+                                />
+                                <MarketTickerItem
+                                    title="CREDIT Circulating Supply"
+                                    value={`${formatter(govTokenData?.circSupply)}`}
+                                />
+                                <MarketTickerItem
+                                    title="CREDIT Price"
+                                    value={`$${formatter(govTokenData?.tokenPrice)}`}
+                                />
+                                <MarketTickerItem
+                                    title="Creditum Total Value Locked (TVL)"
+                                    value={`$${formatter(tvl)}`}
+                                />
                             </div>
                         </>
                     )}

@@ -10,6 +10,10 @@ import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
+import dayjs from 'dayjs'
+
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
 
 const Web3ReactProviderDefault = dynamic(() => import('../components/Provider'), { ssr: false })
 

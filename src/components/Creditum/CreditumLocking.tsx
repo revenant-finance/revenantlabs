@@ -27,7 +27,13 @@ const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd
     }
 
     return (
-        <Button className={classNames(stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600')} onClick={() => setStakingTime(value)} disabled={disabled}>
+        <Button
+            className={classNames(
+                stakingTime === value ? 'bg-yellow-400 text-neutral-700' : 'bg-neutral-600'
+            )}
+            onClick={() => setStakingTime(value)}
+            disabled={disabled}
+        >
             {children}
         </Button>
     )
@@ -52,17 +58,33 @@ export default function CreditumLocking() {
 
     const hasExistingLock = veCreditData?.creditLocked !== '0'
 
-    const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit, claim } = useVeCredit()
+    const {
+        approve,
+        initialDeposit,
+        increaseAmount,
+        increaseLockTime,
+        withdraw,
+        unstakeXCredit,
+        claim
+    } = useVeCredit()
 
     const onLock = async () => {
         try {
             setStatus('loading')
-            newAlert({ title: 'Locking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
+            newAlert({
+                title: 'Locking...',
+                subtitle: 'Please complete the rest of the transaction on your wallet.'
+            })
             if (hasExistingLock) {
                 if (updateMode === 'amount') await increaseAmount(value)
                 if (updateMode === 'time') {
-                    if (calculateUnlockEpoch(fourYearsSeconds, currentEpoch) <= veCreditData.lockEnd) {
-                        newAlert({ title: 'Locking Failed', subtitle: 'Can only increase locking duration' })
+                    if (
+                        calculateUnlockEpoch(fourYearsSeconds, currentEpoch) <= veCreditData.lockEnd
+                    ) {
+                        newAlert({
+                            title: 'Locking Failed',
+                            subtitle: 'Can only increase locking duration'
+                        })
                         return
                     }
                     await increaseLockTime(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))
@@ -70,10 +92,17 @@ export default function CreditumLocking() {
             } else {
                 await initialDeposit(value, calculateUnlockEpoch(stakingTime, currentEpoch))
             }
-            newAlert({ title: 'Locking Complete', subtitle: 'Process complete. Your tokens have been locked.' })
+            newAlert({
+                title: 'Locking Complete',
+                subtitle: 'Process complete. Your tokens have been locked.'
+            })
             setStatus('idle')
         } catch (error) {
-            newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
+            newAlert({
+                title: 'Locking Failed',
+                subtitle: 'An error occurred. Please try again',
+                mood: 'negative'
+            })
             setStatus('error')
         }
     }
@@ -81,12 +110,22 @@ export default function CreditumLocking() {
     const onUnlock = async () => {
         try {
             setStatus('loading')
-            newAlert({ title: 'Unlocking...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
+            newAlert({
+                title: 'Unlocking...',
+                subtitle: 'Please complete the rest of the transaction on your wallet.'
+            })
             await withdraw()
             setStatus('idle')
-            newAlert({ title: 'Unlocking Complete', subtitle: 'Process complete. Your tokens have been unlocked.' })
+            newAlert({
+                title: 'Unlocking Complete',
+                subtitle: 'Process complete. Your tokens have been unlocked.'
+            })
         } catch (error) {
-            newAlert({ title: 'Locking Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
+            newAlert({
+                title: 'Locking Failed',
+                subtitle: 'An error occurred. Please try again',
+                mood: 'negative'
+            })
             setStatus('error')
         }
     }
@@ -94,36 +133,52 @@ export default function CreditumLocking() {
     const onClaim = async () => {
         try {
             setClaimStatus('loading')
-            newAlert({ title: 'Claiming rewards...', subtitle: 'Please complete the rest of the transaction on your wallet.' })
+            newAlert({
+                title: 'Claiming rewards...',
+                subtitle: 'Please complete the rest of the transaction on your wallet.'
+            })
             await claim()
             setClaimStatus('idle')
-            newAlert({ title: 'Claim Complete', subtitle: 'Process complete. Your rewards have been sent to your wallet.' })
+            newAlert({
+                title: 'Claim Complete',
+                subtitle: 'Process complete. Your rewards have been sent to your wallet.'
+            })
         } catch (error) {
-            newAlert({ title: 'Claiming Failed', subtitle: 'An error occurred. Please try again', mood: 'negative' })
+            newAlert({
+                title: 'Claiming Failed',
+                subtitle: 'An error occurred. Please try again',
+                mood: 'negative'
+            })
             setClaimStatus('error')
         }
     }
 
     return (
         <div className="w-full p-6 mx-auto space-y-12 max-w-7xl">
-            <InfoBanner header="Locking" title="Lock your CREDIT tokens" subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury." />
+            <InfoBanner
+                header="Locking"
+                title="Lock your CREDIT tokens"
+                subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury."
+            />
 
             {veCreditData?.xTokenBalance && (
-                <div className="p-6 space-y-2 bg-opacity-50 border-2 shadow-2xl bg-neutral-800 border-neutral-800 rounded-2xl">
-                    <div className="flex flex-col items-end gap-6 md:flex-row">
-                        <div>
-                            <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>
-                            <p className="text-xl">The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and receive veCREDIT on our newest protocol update.</p>
-                        </div>
-                        <div>
-                            <ConnectWalletFirstButton>
-                                <Button onClick={() => unstakeXCredit(veCreditData?.xTokenBalance)} className="bg-yellow-400 text-neutral-700 whitespace-nowrap" loading={false}>
-                                    Withdraw {veCreditData?.xTokenBalance} xCREDIT
-                                </Button>
-                            </ConnectWalletFirstButton>
-                        </div>
+                <InfoBanner
+                    header="Migration"
+                    title="Migrate your xTokens to veTokens."
+                    subtitle="The new update is here. Migrate your xCREDIT into veCREDIT by unstaking your CREDIT from the xCREDIT pool so you're able to lock it and receive veCREDIT on our newest protocol update."
+                >
+                    <div className="flex items-end">
+                        <ConnectWalletFirstButton>
+                            <Button
+                                onClick={() => unstakeXCredit(veCreditData?.xTokenBalance)}
+                                className="bg-yellow-400 text-neutral-700 whitespace-nowrap"
+                                loading={false}
+                            >
+                                Withdraw {veCreditData?.xTokenBalance} xCREDIT
+                            </Button>
+                        </ConnectWalletFirstButton>
                     </div>
-                </div>
+                </InfoBanner>
             )}
 
             <div className="p-6 space-y-6 bg-opacity-50 border-2 shadow-2xl md:py-24 bg-neutral-800 border-neutral-800 rounded-2xl">
@@ -145,55 +200,119 @@ export default function CreditumLocking() {
                         </div>
 
                         <p>
-                            {lockingMode === 'locking' && 'Lock your CREDIT tokens to receive veCREDIT.'}
-                            {lockingMode === 'unlocking' && 'Your Lock duration has been completed. Please withdraw all CREDIT'}
+                            {lockingMode === 'locking' &&
+                                'Lock your CREDIT tokens to receive veCREDIT.'}
+                            {lockingMode === 'unlocking' &&
+                                'Your Lock duration has been completed. Please withdraw all CREDIT'}
                         </p>
                     </div>
                     <div>
-                        <DataPoint title="Credit Balance" value={`${commaFormatter(veCreditData.tokenBal)}`} />
-                        <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veCreditTotalSupply)} CREDIT`} />
-                        <DataPoint title="User Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
-                        <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
-                        <DataPoint title="Unlock Date" value={`${veCreditData.lockEnd - currentEpoch > 0 ? epochToDate(veCreditData.lockEnd) : 'None'}`} />
+                        <DataPoint
+                            title="Credit Balance"
+                            value={`${commaFormatter(veCreditData.tokenBal)}`}
+                        />
+                        <DataPoint
+                            title="Total Locked"
+                            value={`${commaFormatter(veCreditData.veCreditTotalSupply)} CREDIT`}
+                        />
+                        <DataPoint
+                            title="User Locked"
+                            value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`}
+                        />
+                        <DataPoint
+                            title="User veCREDIT"
+                            value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`}
+                        />
+                        <DataPoint
+                            title="Unlock Date"
+                            value={`${
+                                veCreditData.lockEnd - currentEpoch > 0
+                                    ? epochToDate(veCreditData.lockEnd)
+                                    : 'None'
+                            }`}
+                        />
                     </div>
 
-                    <div className="">
-                        <DataPoint title="Next Reward Distribution" value={`${epochToDate(veCreditData.rewardTime)}`} />
-                        <DataPoint title="Estimated Reward Distribution" value={`${commaFormatter(veCreditData.userRewardAmount)}`} />
-                    </div>
-                    <Countdown epochTime={veCreditData.rewardTime}/>
-
+                    {veCreditData.rewardTime && (
+                        <div className="bg-yellow-400 text-neutral-800 rounded-2xl p-6 text-center">
+                            <p className="text-xs font-bold opacity-50 uppercase tracking-widest">
+                                Upcoming Reward Distribution
+                            </p>
+                            <p className="text-2xl md:text-3xl font-extended">
+                                {`~${commaFormatter(veCreditData.userRewardAmount)}`} CREDIT
+                            </p>
+                            <p className="font-medium space-x-2">
+                                <Countdown date={veCreditData.rewardTime} />
+                                <span className="opacity-50">
+                                    {epochToDate(veCreditData.rewardTime)}
+                                </span>
+                            </p>
+                        </div>
+                    )}
 
                     <div className="space-y-2">
                         {lockingMode === 'locking' && (
                             <>
                                 {!hasExistingLock && (
                                     <>
-                                        <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />
+                                        <Input
+                                            label={`Amount of CREDIT to Lock`}
+                                            type="number"
+                                            value={value}
+                                            onChange={(e) => setValue(e.target.value)}
+                                            onMax={() => setValue(veCreditData.tokenBal)}
+                                        />
                                         <div className="space-y-2">
-                                            <Input label="Lock Until:" disabled={true} value={epochToDate(calculateUnlockEpoch(stakingTime, currentEpoch))} />
+                                            <Input
+                                                label="Lock Until:"
+                                                disabled={true}
+                                                value={epochToDate(
+                                                    calculateUnlockEpoch(stakingTime, currentEpoch)
+                                                )}
+                                            />
                                             <div className="flex gap-2">
-                                                <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 14}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     2wk
                                                 </TimeStakeButton>
-                                                <TimeStakeButton value={60 * 60 * 24 * 30} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 30}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     1mo
                                                 </TimeStakeButton>
-                                                <TimeStakeButton value={60 * 60 * 24 * 90} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 90}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     3mo
                                                 </TimeStakeButton>
-                                                <TimeStakeButton value={60 * 60 * 24 * 180} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 180}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     6mo
                                                 </TimeStakeButton>
                                             </div>
                                             <div className="flex gap-2">
-                                                <TimeStakeButton value={60 * 60 * 24 * 365} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 365}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     1yr
                                                 </TimeStakeButton>
-                                                <TimeStakeButton value={60 * 60 * 24 * 365 * 2} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 365 * 2}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     2yr
                                                 </TimeStakeButton>
-                                                <TimeStakeButton value={60 * 60 * 24 * 365 * 4} {...{ stakingTime, setStakingTime }}>
+                                                <TimeStakeButton
+                                                    value={60 * 60 * 24 * 365 * 4}
+                                                    {...{ stakingTime, setStakingTime }}
+                                                >
                                                     4yr
                                                 </TimeStakeButton>
                                             </div>
@@ -203,10 +322,16 @@ export default function CreditumLocking() {
 
                                 {hasExistingLock && (
                                     <div className="flex gap-2">
-                                        <Button className="bg-neutral-800" onClick={() => setUpdateMode('amount')}>
+                                        <Button
+                                            className="bg-neutral-800"
+                                            onClick={() => setUpdateMode('amount')}
+                                        >
                                             Increase Amount
                                         </Button>
-                                        <Button className="bg-neutral-800" onClick={() => setUpdateMode('time')}>
+                                        <Button
+                                            className="bg-neutral-800"
+                                            onClick={() => setUpdateMode('time')}
+                                        >
                                             Increase Time
                                         </Button>
                                     </div>
@@ -214,32 +339,105 @@ export default function CreditumLocking() {
 
                                 {hasExistingLock && updateMode && (
                                     <>
-                                        {updateMode === 'amount' && <Input label={`Amount of CREDIT to Lock`} type="number" value={value} onChange={(e) => setValue(e.target.value)} onMax={() => setValue(veCreditData.tokenBal)} />}
+                                        {updateMode === 'amount' && (
+                                            <Input
+                                                label={`Amount of CREDIT to Lock`}
+                                                type="number"
+                                                value={value}
+                                                onChange={(e) => setValue(e.target.value)}
+                                                onMax={() => setValue(veCreditData.tokenBal)}
+                                            />
+                                        )}
                                         {updateMode === 'time' && (
                                             <div className="space-y-2">
-                                                <Input label="Lock Until:" value={epochToDate(calculateUnlockEpoch(stakingTime, veCreditData?.lockEnd))} disabled={true} onMax={() => setStakingTime(currentEpoch + fourYearsSeconds - veCreditData?.lockEnd)} />
+                                                <Input
+                                                    label="Lock Until:"
+                                                    value={epochToDate(
+                                                        calculateUnlockEpoch(
+                                                            stakingTime,
+                                                            veCreditData?.lockEnd
+                                                        )
+                                                    )}
+                                                    disabled={true}
+                                                    onMax={() =>
+                                                        setStakingTime(
+                                                            currentEpoch +
+                                                                fourYearsSeconds -
+                                                                veCreditData?.lockEnd
+                                                        )
+                                                    }
+                                                />
                                                 <div className="flex gap-2">
-                                                    <TimeStakeButton value={60 * 60 * 24 * 14} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 14}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         2wk
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 30} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 30}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         1mo
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 90} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 90}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         3mo
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 180} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 180}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         6mo
                                                     </TimeStakeButton>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 365}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         1yr
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 2} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 365 * 2}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         2yr
                                                     </TimeStakeButton>
-                                                    <TimeStakeButton value={60 * 60 * 24 * 365 * 4} {...{ stakingTime, setStakingTime, lockEnd: veCreditData?.lockEnd }}>
+                                                    <TimeStakeButton
+                                                        value={60 * 60 * 24 * 365 * 4}
+                                                        {...{
+                                                            stakingTime,
+                                                            setStakingTime,
+                                                            lockEnd: veCreditData?.lockEnd
+                                                        }}
+                                                    >
                                                         4yr
                                                     </TimeStakeButton>
                                                 </div>
@@ -251,12 +449,21 @@ export default function CreditumLocking() {
                         )}
 
                         {veCreditData.userRewardAmount && veCreditData.userRewardAmount !== '0' && (
-                            <Button loading={claimStatus === 'loading'} className="bg-green-500 text-neutral-900" onClick={() => onClaim()}>
+                            <Button
+                                loading={claimStatus === 'loading'}
+                                className="bg-green-500 hover:bg-green-600 text-neutral-900"
+                                onClick={() => onClaim()}
+                            >
                                 Claim Rewards
                             </Button>
                         )}
 
-                        <Button loading={status === 'loading'} disabled={!value && !stakingTime && lockingMode !== 'unlocking'} onClick={lockingMode === 'locking' ? () => onLock() : () => onUnlock()} className={classNames('text-neutral-900 bg-yellow-400')}>
+                        <Button
+                            loading={status === 'loading'}
+                            disabled={!value && !stakingTime && lockingMode !== 'unlocking'}
+                            onClick={lockingMode === 'locking' ? () => onLock() : () => onUnlock()}
+                            className={classNames('text-neutral-900 bg-yellow-400')}
+                        >
                             {lockingMode === 'locking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
                         </Button>
                     </div>

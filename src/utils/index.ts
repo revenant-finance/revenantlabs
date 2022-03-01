@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { BigNumber, ethers, utils, constants } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 
@@ -7,14 +8,13 @@ const format = commaNumber.bindWith(',', '.')
 
 export const currentEpoch = parseInt(+new Date()) / 1000
 
-
 export const ZERO_ADDRESS = constants.AddressZero
 export const EMPTY_ADDRESS = '0x0Af3F4817dcD3644ca7e0319dDe861932544D0D5'
 export const MAX_UINT256 = constants.MaxUint256
 export const SECONDS_PER_YEAR = 31536000
 
 export const epochToDate = (epoch) => {
-    return new Date(epoch * 1000).toLocaleDateString('en-gb', { year: 'numeric', month: 'long', day: 'numeric' })
+    return dayjs.unix(epoch).format('MMM D, YYYY')
 }
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -142,7 +142,9 @@ export const formatter = (value, decimals = 2, suffixStr = '') => {
         unit = 1.0e3
     }
 
-    return `${format(Math.floor((abs / unit) * Math.pow(10, decimals)) / Math.pow(10, decimals))}${suffix}${suffixStr && ` ${suffixStr}`}`
+    return `${format(
+        Math.floor((abs / unit) * Math.pow(10, decimals)) / Math.pow(10, decimals)
+    )}${suffix}${suffixStr && ` ${suffixStr}`}`
 }
 
 export const commaFormatter = (value, decimals = 2) => {
