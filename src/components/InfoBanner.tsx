@@ -13,7 +13,7 @@ export default function InfoBanner({ header, title, subtitle, children }: InfoBa
                     <p className="text-xs font-bold opacity-50 uppercase tracking-widest">
                         {header}
                     </p>
-                    <p className="font-extended uppercase text-2xl text-yellow-400">{title}</p>
+                    <p className="font-medium text-2xl text-yellow-400">{title}</p>
                     <p className="text-xl">{subtitle}</p>
                 </div>
                 {children}
