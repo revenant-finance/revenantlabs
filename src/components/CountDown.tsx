@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 
 const Countdown = ({epochTime}) => {
   const calculateTimeLeft = () => {
-    let year = new Date().getFullYear();
     const difference = +new Date(epochTime * 1000) - +new Date();
     let timeLeft = {};
 
     if (difference > 0) {
       timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        Days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        Hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        Minutes: Math.floor((difference / 1000 / 60) % 60),
+        Seconds: Math.floor((difference / 1000) % 60),
       };
     }
 
@@ -36,25 +34,17 @@ const Countdown = ({epochTime}) => {
 
     timerComponents.push(
       <span>
-        {timeLeft[interval]} {interval}{" "}
+        {timeLeft[interval]} {timeLeft[interval] !== 1 ? interval : interval.slice(0, -1)}{" "}
       </span>
     );
   });
   return (
     <>
-      <h1 className="text-4xl font-bold font-header text-darkBlue">Time until unlock: </h1>
-      <StyledCountDown>
-        {timerComponents.length ? timerComponents : <span>Time's up!</span>}
-      </StyledCountDown>
+      <h1 className="font-bold font-header">Time until Next Distribution: </h1>
+        {timerComponents.length ? timerComponents : <span>Distribution Unlocked: Claim your Rewards</span>}
     </>
   );
 };
 
-const StyledCountDown = styled.div`
-  font-size: 30px;
-  justify-content: center;
-  font-family: Orbitron;
-  color: #f4c521;
-`;
 
 export default Countdown;

@@ -9,6 +9,7 @@ import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import Input from '../Input'
+import Countdown from '../CountDown'
 
 const secondsWeek = 60 * 60 * 24 * 7
 const fourYearsSeconds = 60 * 60 * 24 * 365 * 4
@@ -160,6 +161,8 @@ export default function CreditumLocking() {
                         <DataPoint title="Next Reward Distribution" value={`${epochToDate(veCreditData.rewardTime)}`} />
                         <DataPoint title="Estimated Reward Distribution" value={`${commaFormatter(veCreditData.userRewardAmount)}`} />
                     </div>
+                    <Countdown epochTime={veCreditData.rewardTime}/>
+
 
                     <div className="space-y-2">
                         {lockingMode === 'locking' && (
