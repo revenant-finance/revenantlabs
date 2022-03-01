@@ -83,7 +83,20 @@ export default function useVeCredit() {
         if (!account) return
         let tx = null
         try {
-            tx = await veCreditContract.withdraw()
+            tx = await feesContract.claim()
+            await tx.wait(1)
+            console.log(tx)
+            update()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function claim() {
+        if (!account) return
+        let tx = null
+        try {
+            tx = await feesContract.withdraw()
             await tx.wait(1)
             console.log(tx)
             update()
@@ -106,5 +119,5 @@ export default function useVeCredit() {
         }
     }
 
-    return { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit }
+    return { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit, claim }
 }

@@ -57,7 +57,7 @@ export default function CreditumStaking() {
 
     const hasExistingLock = veCreditData?.creditLocked !== '0'
 
-    const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit } = useVeCredit()
+    const { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit, claim } = useVeCredit()
 
     const onLock = async () => {
         try {
@@ -101,7 +101,7 @@ export default function CreditumStaking() {
             <InfoBanner header="Locking" title="Lock your CREDIT tokens" subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury." />
 
             {veCreditData?.xTokenBalance && (
-                <div className="p-6 space-y-2 shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl">
+                <div className="p-6 space-y-2 bg-opacity-50 border-2 shadow-2xl bg-neutral-800 border-neutral-800 rounded-2xl">
                     <div className="flex flex-col items-end gap-6 md:flex-row">
                         <div>
                             <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>

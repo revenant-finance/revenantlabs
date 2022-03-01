@@ -17,7 +17,6 @@ export function useVeCreditDataInternal() {
     const xCreditContract = getXTokenContract(xCreditAddress)
     const creditContract = getTokenContract(creditAddress)
     const feesContract = getVeTokenFeesContract()
-    console.log(feesContract)
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
 
