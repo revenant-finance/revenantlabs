@@ -4,7 +4,6 @@ import { toEth } from '../../utils'
 import * as constants from '../../data'
 import useRefresh from '../useRefresh'
 import { useActiveWeb3React } from '..'
-import BN from 'bignumber.js'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
@@ -52,7 +51,8 @@ export function useVeCreditDataInternal() {
                     veTokenValue: toEth(veTokenValue),
                     rewardTime: Number(rewardTime),
                     totalRewardAmount: toEth(totalRewardAmount),
-                    userRewardAmount: toEth(userRewardAmount)
+                    userRewardAmount: toEth(userRewardAmount),
+                    estimatedReward: toEth(totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply))
                 }
             } else {
                 feesContract.callStatic['claim(address)'](account)

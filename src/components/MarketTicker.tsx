@@ -23,72 +23,33 @@ const MarketTickerItem = ({ title, value }) => {
 }
 
 export default function MarketTicker() {
-    // const {farmTvl } = useFarmData()
-    // const {veCreditTvl } = useVeCreditData()
-    // const {whaterElseTvl } = useVeCreditData()
-    // const tvl = farmTvl + veCreditTvl + whaterElseTvl
-
-    const [tvl, setTvl] = useState(0)
-    const [supply, setSupply] = useState(0)
-    const [marketCap, setMarketCap] = useState(0)
-    const [tokenPrice, setTokenPrice] = useState('0')
-    const { creditumData, refreshing } = useCreditumData()
+    const { creditumData, govTokenData } = useCreditumData()
     const { veCreditData } = useVeCreditData()
     const { farmData } = useFarmData()
-    const { getPrice } = usePrice()
-    const { library } = useActiveWeb3React()
 
-    useEffect(() => {
-        if (!library) return
-        if (Object.keys(creditumData).length && Object.keys(farmData).length && veCreditData.xTokenValue !== '0') {
-            getCirculatingSupply()
-        }
-    }, [Object.keys(creditumData).length, Object.keys(farmData).length, refreshing, veCreditData, tokenPrice])
+    let creditumTvl = creditumData?.cusd?.assetOverview.tvl
+    let farmTvl = farmData?.tvl
 
-    const getTvl = (_tokenPrice) => {
-        let creditumTvl = creditumData.cusd.assetOverview.tvl
-        let farmTvl = farmData.tvl
+    const xTokenTvl = parseFloat(veCreditData.xTokenValue) * parseFloat(govTokenData?.tokenPrice)
+    const veTokenTvl = parseFloat(veCreditData.veTokenValue) * parseFloat(govTokenData?.tokenPrice)
 
-        const xTokenTvl = parseFloat(veCreditData.xTokenValue) * parseFloat(_tokenPrice)
-        const veTokenTvl = parseFloat(veCreditData.veTokenValue) * parseFloat(_tokenPrice)
-
-        const totalTvl = creditumTvl + xTokenTvl + farmTvl + veTokenTvl
-        setTvl(totalTvl)
-    }
-
-    const getCirculatingSupply = async () => {
-        const MAX_SUPPLY = 50000000
-        const creditumContract = getTokenContract(creditum.address, library)
-        const [vesting, multisig, farming, revenant, _tokenPrice] = await Promise.all([
-            creditumContract.balanceOf('0x96AF48D95bf6e226D9696d6E074f40002407fEcC'),
-            creditumContract.balanceOf('0x667D9921836BB8e7629B3E0a3a0C6776dB538029'),
-            creditumContract.balanceOf('0xe0c43105235C1f18EA15fdb60Bb6d54814299938'),
-            creditumContract.balanceOf('0x3A276b8bfb9DEC7e19E43157FC9142B95238Ab6f'),
-            getPrice(creditum.address)
-        ])
-        const circSupply = MAX_SUPPLY - Number(toEth(vesting)) - Number(toEth(multisig)) - Number(toEth(farming)) - Number(toEth(revenant))
-        const _marketCap = circSupply * _tokenPrice
-        getTvl(_tokenPrice)
-        setTokenPrice(_tokenPrice)
-        setSupply(circSupply)
-        setMarketCap(_marketCap)
-    }
+    const tvl = creditumTvl + farmTvl + xTokenTvl + veTokenTvl
 
     return (
         <div className="p-2 bg-yellow-400 text-neutral-900 rounded-2xl">
-            {!marketCap && (
-                <p className="text-center opacity-50 font-medium">
+            {!tvl && (
+                <p className="font-medium text-center opacity-50">
                     <ReactTyped strings={['Loading...']} loop />
                 </p>
             )}
-            {!!marketCap && (
+            {!!tvl && (
                 <Ticker>
                     {({ index }) => (
                         <>
                             <div className="flex items-center mr-4 space-x-4">
-                                <MarketTickerItem title="Market Cap" value={formatter(marketCap)} />
-                                <MarketTickerItem title="CREDIT Circulating Supply" value={formatter(supply)} />
-                                <MarketTickerItem title="$CREDIT Price" value={`$${formatter(tokenPrice)}`} />
+                                <MarketTickerItem title="Market Cap" value={formatter(govTokenData?.marketCap)} />
+                                <MarketTickerItem title="CREDIT Circulating Supply" value={formatter(govTokenData?.circSupply)} />
+                                <MarketTickerItem title="$CREDIT Price" value={`$${formatter(govTokenData?.tokenPrice)}`} />
                                 <MarketTickerItem title="Total Value Locked (TVL)" value={`$${formatter(tvl)}`} />
                                 {/* <MarketTickerItem title="Total Collateral Amount" value={formatter(999999999)} /> */}
                                 {/* <MarketTickerItem title="Total cUSD Minted" value={Object.keys(creditumData).length ? formatter(creditumData?.cusd.assetOverview.totalMinted) : 'loading'} /> */}

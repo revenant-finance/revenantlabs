@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import useAlerts from '../../hooks/useAlerts'
-import { commaFormatter } from '../../utils'
+import { commaFormatter, epochToDate } from '../../utils'
 import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
@@ -18,10 +18,6 @@ const calculateUnlockEpoch = (time, date) => {
     const lockDate = date + time
     const roundedLockDateEpoch = Math.floor(lockDate / secondsWeek) * secondsWeek
     return roundedLockDateEpoch
-}
-
-const epochToDate = (epoch) => {
-    return new Date(epoch * 1000).toLocaleDateString('en-gb', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
 const TimeStakeButton = ({ children, value, stakingTime, setStakingTime, lockEnd = 0 }) => {
@@ -255,7 +251,7 @@ export default function CreditumStaking() {
                         )}
 
                         {veCreditData.userRewardAmount !== '0' && (
-                            <Button loading={claimStatus === 'loading'} className="text-neutral-900 bg-green-500" onClick={() => onClaim()}>
+                            <Button loading={claimStatus === 'loading'} className="bg-green-500 text-neutral-900" onClick={() => onClaim()}>
                                 Claim Rewards
                             </Button>
                         )}

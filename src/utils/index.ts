@@ -10,6 +10,10 @@ export const EMPTY_ADDRESS = '0x0Af3F4817dcD3644ca7e0319dDe861932544D0D5'
 export const MAX_UINT256 = constants.MaxUint256
 export const SECONDS_PER_YEAR = 31536000
 
+export const epochToDate = (epoch) => {
+    return new Date(epoch * 1000).toLocaleDateString('en-gb', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
     try {
