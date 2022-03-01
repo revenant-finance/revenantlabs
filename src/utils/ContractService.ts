@@ -16,7 +16,7 @@ export const getXTokenContract = (address, provider?: ethers.Signer | ethers.pro
 
 export const getVeTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) => getContract(address, JSON.parse(constants.CONTRACT_VETOKEN_ABI), provider)
 
-export const getVeTokenFeesContract = (provider?: ethers.Signer | ethers.providers.Provider) => getContract(constants.CONTRACT_CREDITUM[250].token.vecreditfees, JSON.parse(constants.CONTRACT_VETOKEN_ABI), provider)
+export const getVeTokenFeesContract = (provider?: ethers.Signer | ethers.providers.Provider) => getContract(constants.CONTRACT_CREDITUM[250].token.vecreditfees, JSON.parse(constants.CONTRACT_VETOKENFEES_ABI), provider)
 
 export const getMulticallContract = (provider?: ethers.Signer | ethers.providers.Provider) => getContract(constants.UTIL_CONTRACT_ADDRESS[250].multicall, JSON.parse(constants.CONTRACT_MULTICALL_ABI), provider)
 

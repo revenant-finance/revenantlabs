@@ -17,13 +17,14 @@ export function useVeCreditDataInternal() {
     const xCreditContract = getXTokenContract(xCreditAddress)
     const creditContract = getTokenContract(creditAddress)
     const feesContract = getVeTokenFeesContract()
+    console.log(feesContract)
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
 
     const fetchData = async () => {
         try {
             if (account) {
-                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue] = await Promise.all([
+                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue, rewardTime, rewardAmount] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
@@ -31,9 +32,10 @@ export function useVeCreditDataInternal() {
                     creditContract.balanceOf(xCreditAddress),
                     veCreditContract['balanceOf(address)'](account),
                     veCreditContract.supply(),
-                    //unknown parameter
                     veCreditContract.locked(account),
-                    creditContract.balanceOf(veCreditAddress)
+                    creditContract.balanceOf(veCreditAddress),
+                    feesContract.time_cursor(),
+                    feesContract.token_last_balance()
                 ])
 
                 return {
@@ -46,15 +48,19 @@ export function useVeCreditDataInternal() {
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     creditLocked: toEth(locked.amount),
                     lockEnd: locked.end.toNumber(),
-                    veTokenValue: toEth(veTokenValue)
+                    veTokenValue: toEth(veTokenValue),
+                    rewardTime: Number(rewardTime),
+                    rewardAmount: toEth(rewardAmount)
                 }
             } else {
-                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue] = await Promise.all([xCreditContract.getShareValue(), creditContract.balanceOf(xCreditAddress), veCreditContract.supply(), creditContract.balanceOf(veCreditAddress)])
+                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, rewardAmount] = await Promise.all([xCreditContract.getShareValue(), creditContract.balanceOf(xCreditAddress), veCreditContract.supply(), creditContract.balanceOf(veCreditAddress), feesContract.time_cursor(), feesContract.token_last_balance()])
                 return {
                     xtokenShare: toEth(xtokenShare),
                     xTokenValue: toEth(xTokenValue),
                     veTokenValue: toEth(veTokenValue),
-                    veCreditTotalSupply: toEth(veCreditTotalSupply)
+                    veCreditTotalSupply: toEth(veCreditTotalSupply),
+                    rewardTime: Number(rewardTime),
+                    rewardAmount: toEth(rewardAmount)
                 }
             }
         } catch (e) {
