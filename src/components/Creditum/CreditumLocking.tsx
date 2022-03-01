@@ -250,7 +250,7 @@ export default function CreditumStaking() {
                             </>
                         )}
 
-                        {veCreditData.userRewardAmount !== '0' && (
+                        {veCreditData.userRewardAmount && veCreditData.userRewardAmount !== '0' && (
                             <Button loading={claimStatus === 'loading'} className="bg-green-500 text-neutral-900" onClick={() => onClaim()}>
                                 Claim Rewards
                             </Button>

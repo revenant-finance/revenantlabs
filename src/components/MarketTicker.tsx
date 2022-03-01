@@ -3,15 +3,7 @@ import useCreditumData from '../hooks/Creditum/useCreditumData'
 import useFarmData from '../hooks/Creditum/useFarmData'
 import useVeCreditData from '../hooks/Creditum/useVeCreditData'
 import { formatter } from '../utils'
-import usePrice from '../hooks/usePrice'
-import { useEffect, useState } from 'react'
-import { getTokenContract } from '../utils/ContractService'
-import { toEth } from '../utils'
-import { CONTRACT_CREDITUM } from '../data'
-import { useActiveWeb3React } from '../hooks'
 import ReactTyped from 'react-typed'
-
-const creditum = CONTRACT_CREDITUM[250].token
 
 const MarketTickerItem = ({ title, value }) => {
     return (

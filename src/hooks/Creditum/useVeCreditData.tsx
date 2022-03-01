@@ -55,15 +55,13 @@ export function useVeCreditDataInternal() {
                     estimatedReward: toEth(totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply))
                 }
             } else {
-                feesContract.callStatic['claim(address)'](account)
-                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, totalRewardAmount, userRewardAmount] = await Promise.all([
+                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, totalRewardAmount] = await Promise.all([
                     xCreditContract.getShareValue(),
                     creditContract.balanceOf(xCreditAddress),
                     veCreditContract.supply(),
                     creditContract.balanceOf(veCreditAddress),
                     feesContract.time_cursor(),
                     feesContract.token_last_balance(),
-                    feesContract.callStatic['claim(address)'](account)
                 ])
                 return {
                     xtokenShare: toEth(xtokenShare),
@@ -72,7 +70,6 @@ export function useVeCreditDataInternal() {
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     rewardTime: Number(rewardTime),
                     totalRewardAmount: toEth(totalRewardAmount),
-                    userRewardAmount: toEth(userRewardAmount)
                 }
             }
         } catch (e) {
