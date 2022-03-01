@@ -17,7 +17,7 @@ const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
     return (
         <div className="flex items-center">
             <Link href={href} passHref>
-                <a className={classNames('flex items-center space-x-2', isThisPage && 'bg-yellow-400 text-neutral-900 px-4 py-2', className)}>
+                <a className={classNames('flex items-center space-x-2 rounded-2xl', isThisPage && 'bg-yellow-400 text-neutral-900 px-4 py-2', className)}>
                     <i className={classNames('text-xs', isThisPage ? 'opacity-100' : 'opacity-25', icon)} />
                     <span>{children}</span>
                 </a>
@@ -33,7 +33,7 @@ export function CreditumAppWrapper({ children }) {
                 <title>Creditum — Revenant Labs</title>
             </Head>
 
-            <div className="fixed inset-0 bg-gradient-to-tl from-blue-900 to-yellow-400 opacity-40" />
+            <div className="fixed inset-0 bg-gradient-to-tl from-blue-900 to-blue-400 opacity-40" />
 
             <div className="relative z-10">
                 <div className="w-full p-6 pb-0 mx-auto space-y-6 max-w-7xl md:pt-12">
@@ -69,11 +69,11 @@ export function CreditumAppWrapper({ children }) {
                 <div className="flex">
                     <div className="flex-1 h-2 bg-purp" />
                     <div className="flex-1 h-2 bg-salmon" />
-                    <div className="flex-1 h-2 bg-bluey" />
+                    <div className="flex-1 h-2 bg-yellowy" />
                     <div className="flex-1 h-2 bg-greeny" />
                     <div className="flex-1 h-2 bg-purp" />
                     <div className="flex-1 h-2 bg-salmon" />
-                    <div className="flex-1 h-2 bg-bluey" />
+                    <div className="flex-1 h-2 bg-yellowy" />
                     <div className="flex-1 h-2 bg-greeny" />
                 </div>
             </div>

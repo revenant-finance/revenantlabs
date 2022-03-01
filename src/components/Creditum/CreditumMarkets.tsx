@@ -406,7 +406,7 @@ export default function CreditumMarkets() {
                                             )}
 
                                             <ConnectWalletButton>
-                                                <Button loading={withdrawStatus === 'loading'} onClick={() => onRepay()} disabled={!withdrawInput && !repayInput} className="text-white bg-blue-800 rounded hover:bg-blue-900">
+                                                <Button loading={withdrawStatus === 'loading'} onClick={() => onRepay()} disabled={!withdrawInput && !repayInput} className="text-white bg-yellow-800 rounded hover:bg-yellow-900">
                                                     Repay & Withdraw
                                                 </Button>
                                             </ConnectWalletButton>

@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react'
-import InfoBanner from '../InfoBanner'
 import classNames from 'classnames'
-import DataPoint from '../DataPoint'
-import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
-import Button from '../Button'
-import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
+import { useEffect, useState } from 'react'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
+import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import useAlerts from '../../hooks/useAlerts'
 import { commaFormatter } from '../../utils'
+import Button from '../Button'
+import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
+import DataPoint from '../DataPoint'
+import InfoBanner from '../InfoBanner'
 import Input from '../Input'
-import Countdown from '../CountDown'
 
 const secondsWeek = 60 * 60 * 24 * 7
 const currentEpoch = parseInt(+new Date()) / 1000
@@ -102,7 +101,7 @@ export default function CreditumStaking() {
             <InfoBanner header="Locking" title="Lock your CREDIT tokens" subtitle="Locking your CREDIT will give you veCREDIT tokens that accumulate fees generated from the protocol. veCREDIT is not transferable and locked for the period chose by the user. Users can increase the amount and time CREDIT is locked for after locking initially. 75% of fees go to veCREDIT 25% goes to treasury." />
 
             {veCreditData?.xTokenBalance && (
-                <div className="p-6 bg-neutral-700">
+                <div className="p-6 space-y-2 shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl">
                     <div className="flex flex-col items-end gap-6 md:flex-row">
                         <div>
                             <p className="text-2xl text-yellow-400">Migrate your xTokens to veTokens.</p>

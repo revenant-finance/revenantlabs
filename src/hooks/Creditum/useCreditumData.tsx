@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getTokenContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
+import usePrice from '../usePrice'
 import useRefresh from '../useRefresh'
 import { FarmDataWrapper } from './useFarmData'
-import usePrice from '../usePrice'
-import { useActiveWeb3React } from '..'
 import { VeCreditDataWrapper } from './useVeCreditData'
 
 const creditumABI = JSON.parse(constants.CONTRACT_CREDITUM_ABI)
@@ -176,7 +176,12 @@ function useCreditumDataInternal() {
                     totalUserDeposits = Number(marketData.userDeposits) * marketData.priceUsd
                     totalUserDebt = Number(marketData.positionDebtValue)
                 }
-                formattedCreditumData[assetIds[i]] = { collaterals: formattedAssetData, mintToken: { ...cTokenBalances[0], ...assetData.mint }, assetOverview: { tvl, totalUserDeposits, totalUserDebt, totalMinted: cTokenBalances[0].totalSupply } }
+
+                formattedCreditumData[assetIds[i]] = {
+                    collaterals: formattedAssetData,
+                    mintToken: { ...cTokenBalances[0], ...assetData.mint },
+                    assetOverview: { tvl, totalUserDeposits, totalUserDebt, totalMinted: cTokenBalances[0].totalSupply }
+                }
             }
 
             const govTokenPrice = await getPrice('0x77128DFdD0ac859B33F44050c6fa272F34872B5E')

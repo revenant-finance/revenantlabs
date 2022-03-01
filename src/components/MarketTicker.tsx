@@ -23,6 +23,11 @@ const MarketTickerItem = ({ title, value }) => {
 }
 
 export default function MarketTicker() {
+    // const {farmTvl } = useFarmData()
+    // const {veCreditTvl } = useVeCreditData()
+    // const {whaterElseTvl } = useVeCreditData()
+    // const tvl = farmTvl + veCreditTvl + whaterElseTvl
+
     const [tvl, setTvl] = useState(0)
     const [supply, setSupply] = useState(0)
     const [marketCap, setMarketCap] = useState(0)

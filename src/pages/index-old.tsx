@@ -48,7 +48,7 @@ export default function IndexPage() {
                 <div className="container mx-auto space-y-6">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <Link href="/creditum" passHref>
-                            <a className="relative flex flex-col justify-end p-6 overflow-hidden duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-bluey text-neutral-900 rounded-2xl md:p-12 h-96 hover hover:-translate-y-2">
+                            <a className="relative flex flex-col justify-end p-6 overflow-hidden duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-yellowy text-neutral-900 rounded-2xl md:p-12 h-96 hover hover:-translate-y-2">
                                 <img className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10" src="/img/creditum-black.png" alt="" />
                                 <div className="relative space-y-2 md:max-w-sm">
                                     <p className="text-3xl font-extrabold uppercase font-montserrat">Creditum</p>
@@ -119,7 +119,7 @@ export default function IndexPage() {
 
             {/* <CallToAction /> */}
 
-            {/* <div className="text-blue-100 bg-blue-900 bg-center bg-cover" style={{ backgroundImage: `url("/img/blue-mesh-dark.jpg")` }}>
+            {/* <div className="text-yellow-100 bg-yellow-900 bg-center bg-cover" style={{ backgroundImage: `url("/img/blue-mesh-dark.jpg")` }}>
                 <div className="container max-w-3xl p-6 py-24 mx-auto space-y-12 md:py-48">
                     <motion.img animate={{ y: [0, -10, 0] }} transition={{ loop: Infinity, duration: 3 }} className="w-64 mx-auto" src="/img/ftm-logo.svg" alt="" />
 
