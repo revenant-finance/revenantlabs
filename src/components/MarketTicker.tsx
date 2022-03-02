@@ -68,8 +68,6 @@ export default function MarketTicker() {
         setMarketCap(_marketCap)
     }
 
-    console.log(tvl)
-
     return (
         <div className="p-2 bg-yellow-400 text-neutral-900">
             {marketCap && <Ticker>

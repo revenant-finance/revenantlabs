@@ -144,6 +144,7 @@ export default function CreditumStaking() {
                         <DataPoint title="Credit Balance" value={`${commaFormatter(veCreditData.tokenBal)}`} />
                         <DataPoint title="Total CREDIT Locked" value={`${commaFormatter(veCreditData.veTokenValue)}`} />
                         <DataPoint title="veCREDIT Total Supply" value={`${commaFormatter(veCreditData.veCreditTotalSupply)}`} />
+                        <DataPoint title="Avg Lock Days" value={`${commaFormatter(Number(veCreditData.veCreditTotalSupply) / Number(veCreditData.veTokenValue)) * 365 * 4}`} />
                         <DataPoint title="User Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
                         <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
                     </div>
