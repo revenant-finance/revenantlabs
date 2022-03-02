@@ -47,8 +47,6 @@ export default function CreditumStaking() {
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
-    console.log(status === "loading")
-
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return
         if (veCreditData?.lockEnd < currentEpoch) {
@@ -144,7 +142,8 @@ export default function CreditumStaking() {
                     </div>
                     <div>
                         <DataPoint title="Credit Balance" value={`${commaFormatter(veCreditData.tokenBal)}`} />
-                        <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veCreditTotalSupply)}`} />
+                        <DataPoint title="Total Locked" value={`${commaFormatter(veCreditData.veTokenValue)}`} />
+                        <DataPoint title="veCREDIT Total Supply" value={`${commaFormatter(veCreditData.veCreditTotalSupply)}`} />
                         <DataPoint title="User Locked" value={`${commaFormatter(veCreditData.creditLocked)} CREDIT`} />
                         <DataPoint title="User veCREDIT" value={`${commaFormatter(veCreditData.veCreditBal)} veCREDIT`} />
                     </div>
