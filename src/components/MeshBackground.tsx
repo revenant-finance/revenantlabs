@@ -1,11 +1,9 @@
 import classNames from 'classnames'
-import { nanoid } from 'nanoid'
 import { useEffect } from 'react'
 import { Gradient } from '../lib/gradient'
 
 export default function MeshBackground({ id, className }) {
     let gradient
-
     useEffect(() => {
         try {
             if (gradient) return
@@ -21,6 +19,6 @@ export default function MeshBackground({ id, className }) {
             id={id}
             className={classNames('fixed h-full w-full inset-0', className)}
             data-transition-in
-        ></canvas>
+        />
     )
 }

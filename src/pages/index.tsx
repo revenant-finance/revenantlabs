@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import HomepageBackground from '../components/HomepageBackground'
 
 export default function Index() {
@@ -6,9 +7,14 @@ export default function Index() {
         <>
             <HomepageBackground />
 
-            <div className="relative max-w-screen-2xl mx-auto p-12 md:p-24 space-y-12 md:space-y-24">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1] }}
+                transition={{ duration: 2 }}
+                className="relative max-w-2xl lg:max-w-screen-2xl mx-auto p-12 lg:p-24 space-y-12"
+            >
                 <div className="flex flex-col lg:flex-row gap-6 lg:items-center">
-                    <img className="w-16" src="/img/revenant-coin.png" alt="" />
+                    <img className="w-32" src="/img/revenant-coin.png" alt="" />
                     <div className="hidden lg:block flex-1"></div>
                     <div className="hidden lg:flex text-xl gap-4 whitespace-nowrap">
                         <a className="opacity-50 hover:opacity-100" href="/twitter" target="_blank">
@@ -40,32 +46,33 @@ export default function Index() {
                             blockchain.
                         </p>
                         <div className="flex gap-6">
-                            <button className="px-6 py-3 bg-gradient-to-br text-purple-200 from-purple-400 to-purple-800 rounded-full font-medium text-xl shadow-2xl">
-                                Open Creditum
-                            </button>
-                            {/* <button className="px-5 py-3 bg-gradient-to-br text-purple-200 from-purple-400 to-purple-800 rounded-2xl font-medium text-2xl shadow-2xl">
-                                Open Creditum
-                            </button> */}
+                            <Link href="/creditum" passHref>
+                                <a className="px-6 py-3 bg-gradient-to-br text-purple-200 from-purple-400 to-purple-800 rounded-full font-medium text-xl shadow-2xl">
+                                    Open Creditum
+                                </a>
+                            </Link>
                         </div>
 
                         <div className="flex flex-wrap gap-6">
                             <div className="space-y-1">
-                                <p className="text-2xl lg:text-4xl font-extended">37M+</p>
+                                <p className="text-2xl lg:text-4xl font-extended">
+                                    1.3<span className="text-purple-400">K+</span>
+                                </p>
+                                <p className="text-xs lg:text-base opacity-50">Active Users</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-2xl lg:text-4xl font-extended">
+                                    $37<span className="text-purple-400">M+</span>
+                                </p>
                                 <p className="text-xs lg:text-base opacity-50">
-                                    Across Protocol(s)
+                                    Locked Across Protocols
                                 </p>
                             </div>
                             <div className="space-y-1">
-                                <p className="text-2xl lg:text-4xl font-extended">37M+</p>
-                                <p className="text-xs lg:text-base opacity-50">
-                                    Across Protocol(s)
+                                <p className="text-2xl lg:text-4xl font-extended">
+                                    +<i className="fas fa-infinity text-purple-400"></i>
                                 </p>
-                            </div>
-                            <div className="space-y-1">
-                                <p className="text-2xl lg:text-4xl font-extended">37M+</p>
-                                <p className="text-xs lg:text-base opacity-50">
-                                    Across Protocol(s)
-                                </p>
+                                <p className="text-xs lg:text-base opacity-50">Passion for DeFi</p>
                             </div>
                         </div>
                         <div className="text-2xl space-x-2">
@@ -99,7 +106,7 @@ export default function Index() {
                             </a>
                         </div>
                     </div>
-                    <div>
+                    <div className="hidden lg:block">
                         <motion.img
                             animate={{ rotate: ['2deg', '-2deg', '2deg'], scale: [1, 1.1, 1] }}
                             transition={{ duration: 6, loop: Infinity }}
@@ -108,7 +115,7 @@ export default function Index() {
                         />
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </>
     )
 }
