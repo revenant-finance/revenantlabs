@@ -34,7 +34,7 @@ export default function MarketTicker() {
 
     useEffect(() => {
         if (!library) return
-        if (Object.keys(creditumData).length && Object.keys(farmData).length && veCreditData.xTokenValue !== '0') {
+        if (Object.keys(creditumData).length && Object.keys(farmData).length && veCreditData?.xTokenValue !== '0') {
             getCirculatingSupply()
         }
     }, [Object.keys(creditumData).length, Object.keys(farmData).length, refreshing, veCreditData, tokenPrice])
@@ -43,8 +43,8 @@ export default function MarketTicker() {
         let creditumTvl = creditumData.cusd.assetOverview.tvl
         let farmTvl = farmData.tvl
 
-        const xTokenTvl = parseFloat(veCreditData.xTokenValue) * parseFloat(_tokenPrice)
-        const veTokenTvl = parseFloat(veCreditData.veTokenValue) * parseFloat(_tokenPrice)
+        const xTokenTvl = parseFloat(veCreditData?.xTokenValue) * parseFloat(_tokenPrice)
+        const veTokenTvl = parseFloat(veCreditData?.veTokenValue) * parseFloat(_tokenPrice)
 
         const totalTvl = creditumTvl + xTokenTvl + farmTvl + veTokenTvl
         setTvl(totalTvl)
@@ -67,6 +67,8 @@ export default function MarketTicker() {
         setSupply(circSupply)
         setMarketCap(_marketCap)
     }
+
+    console.log(tvl)
 
     return (
         <div className="p-2 bg-yellow-400 text-neutral-900">
