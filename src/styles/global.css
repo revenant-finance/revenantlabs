@@ -50,3 +50,24 @@ body,
     --gradient-color-3: #fff562;
     --gradient-color-4: #c58115;
 }
+
+#blue-gradient {
+    --gradient-color-1: #322f58;
+    --gradient-color-2: #63beff;
+    --gradient-color-3: #23222e;
+    --gradient-color-4: #aaa4fd;
+}
+
+#purple-gradient {
+    --gradient-color-1: #322f58;
+    --gradient-color-2: #575298;
+    --gradient-color-3: #23222e;
+    --gradient-color-4: #9189ff;
+}
+
+#purple-gradient-b {
+    --gradient-color-1: #322f58;
+    --gradient-color-2: #9189ff;
+    --gradient-color-3: #23222e;
+    --gradient-color-4: #aaa4fd;
+}

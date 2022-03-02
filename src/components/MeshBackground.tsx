@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { useEffect } from 'react'
 import { Gradient } from '../lib/gradient'
 
-export default function MeshBackground({ id }) {
+export default function MeshBackground({ id, className }) {
     let gradient
 
     useEffect(() => {
@@ -16,5 +16,11 @@ export default function MeshBackground({ id }) {
         }
     }, [])
 
-    return <canvas id={id} className={classNames('absolute h-full w-full inset-0')} data-transition-in></canvas>
+    return (
+        <canvas
+            id={id}
+            className={classNames('fixed h-full w-full inset-0', className)}
+            data-transition-in
+        ></canvas>
+    )
 }
