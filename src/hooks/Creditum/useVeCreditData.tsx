@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getXTokenContract, getTokenContract, getVeTokenContract, getVeTokenFeesContract } from '../../utils/ContractService'
+import {
+    getXTokenContract,
+    getTokenContract,
+    getVeTokenContract,
+    getVeTokenFeesContract
+} from '../../utils/ContractService'
 import { toEth } from '../../utils'
 import * as constants from '../../data'
 import useRefresh from '../useRefresh'
@@ -23,7 +28,20 @@ export function useVeCreditDataInternal() {
     const fetchData = async () => {
         try {
             if (account) {
-                const [allow, tokenBal, xTokenBalance, xtokenShare, xTokenValue, veCreditBal, veCreditTotalSupply, locked, veTokenValue, rewardTime, totalRewardAmount, userRewardAmount] = await Promise.all([
+                const [
+                    allow,
+                    tokenBal,
+                    xTokenBalance,
+                    xtokenShare,
+                    xTokenValue,
+                    veCreditBal,
+                    veCreditTotalSupply,
+                    locked,
+                    veTokenValue,
+                    rewardTime,
+                    totalRewardAmount,
+                    userRewardAmount
+                ] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
                     xCreditContract.balanceOf(account),
@@ -52,16 +70,25 @@ export function useVeCreditDataInternal() {
                     rewardTime: Number(rewardTime),
                     totalRewardAmount: toEth(totalRewardAmount),
                     userRewardAmount: toEth(userRewardAmount),
-                    estimatedReward: toEth(totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply))
+                    estimatedReward: toEth(
+                        totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply)
+                    )
                 }
             } else {
-                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, totalRewardAmount] = await Promise.all([
+                const [
+                    xtokenShare,
+                    xTokenValue,
+                    veCreditTotalSupply,
+                    veTokenValue,
+                    rewardTime,
+                    totalRewardAmount
+                ] = await Promise.all([
                     xCreditContract.getShareValue(),
                     creditContract.balanceOf(xCreditAddress),
+                    veCreditContract['totalSupply()'](),
                     veCreditContract.supply(),
-                    creditContract.balanceOf(veCreditAddress),
                     feesContract.time_cursor(),
-                    feesContract.token_last_balance(),
+                    feesContract.token_last_balance()
                 ])
                 return {
                     xtokenShare: toEth(xtokenShare),
@@ -69,7 +96,7 @@ export function useVeCreditDataInternal() {
                     veTokenValue: toEth(veTokenValue),
                     veCreditTotalSupply: toEth(veCreditTotalSupply),
                     rewardTime: Number(rewardTime),
-                    totalRewardAmount: toEth(totalRewardAmount),
+                    totalRewardAmount: toEth(totalRewardAmount)
                 }
             }
         } catch (e) {
@@ -93,7 +120,11 @@ const VeCreditDataContext = createContext({})
 
 export const VeCreditDataWrapper = ({ children }) => {
     const veCredit = useVeCreditDataInternal()
-    return <VeCreditDataContext.Provider value={{ ...veCredit }}>{children}</VeCreditDataContext.Provider>
+    return (
+        <VeCreditDataContext.Provider value={{ ...veCredit }}>
+            {children}
+        </VeCreditDataContext.Provider>
+    )
 }
 
 export default function useVeCreditData() {

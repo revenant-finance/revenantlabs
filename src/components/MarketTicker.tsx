@@ -22,13 +22,13 @@ export default function MarketTicker() {
     let creditumTvl = creditumData?.cusd?.assetOverview.tvl
     let farmTvl = farmData?.tvl
 
-    const xTokenTvl = parseFloat(veCreditData.xTokenValue) * parseFloat(govTokenData?.tokenPrice)
-    const veTokenTvl = parseFloat(veCreditData.veTokenValue) * parseFloat(govTokenData?.tokenPrice)
+    const xTokenTvl = parseFloat(veCreditData?.xTokenValue) * parseFloat(govTokenData?.tokenPrice)
+    const veTokenTvl = parseFloat(veCreditData?.veTokenValue) * parseFloat(govTokenData?.tokenPrice)
 
     const tvl = creditumTvl + farmTvl + xTokenTvl + veTokenTvl
 
     return (
-        <div className="bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl shadow-2xl p-2">
+        <div className="p-2 bg-opacity-50 border-2 shadow-2xl bg-neutral-800 border-neutral-800 rounded-2xl">
             {!tvl && (
                 <p className="font-medium text-center opacity-50">
                     <ReactTyped strings={['Loading...']} loop />

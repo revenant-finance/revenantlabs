@@ -49,6 +49,8 @@ export default function CreditumLocking() {
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
+    console.log(veCreditData)
+
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return
         if (veCreditData?.lockEnd < currentEpoch) {
@@ -213,7 +215,7 @@ export default function CreditumLocking() {
                         />
                         <DataPoint
                             title="Total Locked"
-                            value={`${commaFormatter(veCreditData.veCreditTotalSupply)} CREDIT`}
+                            value={`${commaFormatter(veCreditData.veTokenValue)} CREDIT`}
                         />
                         <DataPoint
                             title="User Locked"
@@ -234,14 +236,14 @@ export default function CreditumLocking() {
                     </div>
 
                     {veCreditData.rewardTime && (
-                        <div className="bg-yellow-400 text-neutral-800 rounded-2xl p-6 text-center">
-                            <p className="text-xs font-bold opacity-50 uppercase tracking-widest">
+                        <div className="p-6 text-center bg-yellow-400 text-neutral-800 rounded-2xl">
+                            <p className="text-xs font-bold tracking-widest uppercase opacity-50">
                                 Upcoming Reward Distribution
                             </p>
                             <p className="text-2xl md:text-3xl font-extended">
                                 {`~${commaFormatter(veCreditData.userRewardAmount)}`} CREDIT
                             </p>
-                            <p className="font-medium space-x-2">
+                            <p className="space-x-2 font-medium">
                                 <Countdown date={veCreditData.rewardTime} />
                                 <span className="opacity-50">
                                     {epochToDate(veCreditData.rewardTime)}
