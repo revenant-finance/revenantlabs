@@ -53,8 +53,9 @@ export default function MarketTicker() {
     const getCirculatingSupply = async () => {
         const MAX_SUPPLY = 50000000
         const creditumContract = getTokenContract(creditum.address, library)
-        const [vesting, multisig, farming, revenant, _tokenPrice] = await Promise.all([
+        const [vesting, vestingSeb, multisig, farming, revenant, _tokenPrice] = await Promise.all([
             creditumContract.balanceOf('0x96AF48D95bf6e226D9696d6E074f40002407fEcC'),
+            creditumContract.balanceOf('0x270144231ef669010780f2e72fb414d056baba40'),
             creditumContract.balanceOf('0x667D9921836BB8e7629B3E0a3a0C6776dB538029'),
             creditumContract.balanceOf('0xe0c43105235C1f18EA15fdb60Bb6d54814299938'),
             creditumContract.balanceOf('0x3A276b8bfb9DEC7e19E43157FC9142B95238Ab6f'),
