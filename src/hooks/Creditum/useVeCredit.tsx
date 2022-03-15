@@ -17,10 +17,10 @@ export default function useVeCredit() {
     const creditContract = getTokenContract(creditAddress, library.getSigner())
     const feesContract = getVeTokenFeesContract(library.getSigner())
 
-    const approve = async () => {
+    const approve = async (amount) => {
         if (!account) return
         try {
-            const tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
+            const tx = await creditContract.approve(veCreditAddress, toWei(amount))
             await tx.wait(1)
             // update()
         } catch (ex) {
@@ -35,7 +35,7 @@ export default function useVeCredit() {
         try {
             const allowance = await creditContract.allowance(account, veCreditContract.address)
             if (Number(toEth(allowance)) < Number(amount)) {
-                tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
+                tx = await creditContract.approve(veCreditAddress, toWei(amount))
                 await tx.wait(1)
             } else {
                 //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week 

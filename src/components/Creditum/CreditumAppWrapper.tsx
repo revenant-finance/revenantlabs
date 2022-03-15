@@ -2,6 +2,11 @@ import classNames from 'classnames'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Modal from '../Modal'
+import { useState }  from 'react'
+import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
+import useVeCredit from '../../hooks/Creditum/useVeCredit'
+import Button from '../Button'
 
 interface HeaderLink {
     href: string
@@ -26,11 +31,23 @@ const HeaderLink = ({ href, icon, children, className }: HeaderLink) => {
 }
 
 export function CreditumAppWrapper({ children }) {
+    const [showModel, setShowModel] = useState(true)
+    const { veCreditData }  = useVeCreditData()
+    const { approve } = useVeCredit()
+
     return (
         <>
             <Head>
                 <title>Creditum — Revenant Labs</title>
             </Head>
+            {Number(veCreditData?.allowance) > 0 && <Modal style="creditum"visible={showModel} onClose={() => setShowModel(false)}>
+                <div className="space-y-4">
+                    <div className="">There is a minor bug with all veToken contracts. This is a combined effort with LiquidDriver and SpiritSwap. Further details will be revealed later. To avoid exposure please unapprove any approvals to the veCREDIT contract. All locked veCREDIT is safe!</div>
+                    <Button className="bg-yellow-400 text-neutral-700 whitespace-nowrap" onClick={() => approve('0')}>
+                        UnApprove VeCredit
+                    </Button>
+                </div>
+            </Modal>} 
 
             <div className="w-full p-6 pb-0 mx-auto space-y-6 max-w-7xl md:pt-12">
                 {/* <div className="flex flex-wrap items-center gap-6 overflow-auto whitespace-nowrap">
