@@ -3,7 +3,7 @@ module.exports = {
         return [
             {
                 source: '/twitter',
-                destination: 'https://twitter.com/RevenantFinance',
+                destination: 'https://twitter.com/RevenantLabs',
                 permanent: true
             },
             {

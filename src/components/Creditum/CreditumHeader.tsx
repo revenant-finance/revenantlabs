@@ -48,7 +48,7 @@ export default function CredtiumHeader() {
                     </a>
                 </Link>
                 <div className="hidden md:block flex-1" />
-                <div className="flex space-x-2 overflow-auto font-medium whitespace-nowrap no-scrollbar">
+                <div className="flex space-x-2 font-medium whitespace-nowrap no-scrollbar">
                     <CredtiumHeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                         Market
                     </CredtiumHeaderLink>

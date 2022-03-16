@@ -57,7 +57,7 @@ function useFarmDataInternal() {
             tvl += _farmStats.tvl
             return { ..._farmStats, ...farm, earnings: earnings[i] }
         })
-        return {farms: formattedFarmData, tvl}
+        return { farms: formattedFarmData, tvl }
     }
 
     useEffect(() => {
@@ -82,11 +82,20 @@ function useFarmDataInternal() {
                 params: [userAddress, constants.CONTRACT_CREDITUM_FARMS[250].farmAddress]
             }))
 
-            const [userInfo, depositTokenBalance, allowance] = await Promise.all([multicall(farmABI, userInfoCalls), multicall(erc20ABI, depositTokenBalanceCalls), multicall(erc20ABI, allowanceCalls)])
+            const [userInfo, depositTokenBalance, allowance] = await Promise.all([
+                multicall(farmABI, userInfoCalls),
+                multicall(erc20ABI, depositTokenBalanceCalls),
+                multicall(erc20ABI, allowanceCalls)
+            ])
 
             let formattedFarmData = []
             for (let i = 0; i < farms.length; i++) {
-                const farm = formatFarmData(farms[i], userInfo[i] ? userInfo[i] : null, depositTokenBalance[i] ? depositTokenBalance[i] : BigNumber.from(0), allowance[i] ? allowance[i] : BigNumber.from(0))
+                const farm = formatFarmData(
+                    farms[i],
+                    userInfo[i] ? userInfo[i] : null,
+                    depositTokenBalance[i] ? depositTokenBalance[i] : BigNumber.from(0),
+                    allowance[i] ? allowance[i] : BigNumber.from(0)
+                )
                 formattedFarmData.push(farm)
             }
 
@@ -109,9 +118,15 @@ export const FarmContext = createContext({})
 
 export function FarmDataWrapper({ children }: any) {
     const farmData = useFarmDataInternal()
+
+    const [selectedFarm, setSelectedFarm] = useState()
+    const [mode, setMode] = useState<'deposit' | 'withdraw' | null>(null)
+
     return (
         <>
-            <FarmContext.Provider value={{ ...farmData }}>
+            <FarmContext.Provider
+                value={{ ...farmData, selectedFarm, setSelectedFarm, mode, setMode }}
+            >
                 <>{children}</>
             </FarmContext.Provider>
         </>

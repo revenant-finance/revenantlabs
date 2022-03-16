@@ -15,7 +15,7 @@ export default function Index() {
             >
                 <div className="flex flex-col lg:flex-row gap-6 lg:items-center">
                     <img className="w-32" src="/img/revenant-coin.png" alt="" />
-                    <div className="hidden lg:block flex-1"></div>
+                    {/* <div className="hidden lg:block flex-1"></div>
                     <div className="hidden lg:flex text-xl gap-4 whitespace-nowrap">
                         <a className="opacity-50 hover:opacity-100" href="/twitter" target="_blank">
                             <i className="fab fa-twitter" />
@@ -29,7 +29,7 @@ export default function Index() {
                         <a className="opacity-50 hover:opacity-100" href="/medium" target="_blank">
                             <i className="fab fa-medium" />
                         </a>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <div className="space-y-8">
