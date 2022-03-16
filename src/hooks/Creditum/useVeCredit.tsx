@@ -36,9 +36,8 @@ export default function useVeCredit() {
             const allowance = await creditContract.allowance(account, veCreditContract.address)
             if (Number(toEth(allowance)) < Number(amount)) {
                 tx = await creditContract.approve(veCreditAddress, toWei(amount))
-                await tx.wait(1)
             } else {
-                //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week 
+                //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week
                 tx = await veCreditContract.create_lock(toWei(amount), time)
             }
             await tx.wait(1)
@@ -54,8 +53,12 @@ export default function useVeCredit() {
         if (!account || amount === '0') return
         let tx = null
         try {
-            //may need allowance
-            tx = await veCreditContract.increase_amount(toWei(amount))
+            const allowance = await creditContract.allowance(account, veCreditContract.address)
+            if (Number(toEth(allowance)) < Number(amount)) {
+                tx = await creditContract.approve(veCreditAddress, toWei(amount))
+            } else {
+                tx = await veCreditContract.increase_amount(toWei(amount))
+            }
             await tx.wait(1)
             update()
             console.log(tx)
