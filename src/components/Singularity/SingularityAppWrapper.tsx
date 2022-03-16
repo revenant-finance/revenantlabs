@@ -30,7 +30,10 @@ export function SingularityAppWrapper({ children }) {
     useEffect(() => setToTokenUrlParam(router.query.to), [router])
 
     // Cache'd `from` and `to`. Matches a token id.
-    const [fromTokenCache, setFromTokenCache] = useCookieState('singularity-from-token', fromToken.id)
+    const [fromTokenCache, setFromTokenCache] = useCookieState(
+        'singularity-from-token',
+        fromToken.id
+    )
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken.id)
 
     const [slippage, setSlippage] = useState(0.1)
@@ -45,8 +48,12 @@ export function SingularityAppWrapper({ children }) {
     const totalFees = new BN(toValue).times(totalFeesBp).div(10000)
     const minimumReceived = new BN(toValue).minus(totalFees).toNumber()
 
-    const fromBalanceEth = fromToken ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber() : 0
-    const toBalanceEth = toToken ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber() : 0
+    const fromBalanceEth = fromToken
+        ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber()
+        : 0
+    const toBalanceEth = toToken
+        ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber()
+        : 0
 
     const routerContract = getRouterContract(library.getSigner())
 
@@ -138,14 +145,20 @@ export function SingularityAppWrapper({ children }) {
     }
 
     useEffect(() => {
-        const findFromToken = TOKENS[250].find((token) => token.id === fromTokenUrlParam) || TOKENS[250].find((token) => token.id === fromTokenCache)
-        const findToToken = TOKENS[250].find((token) => token.id === toTokenUrlParam) || TOKENS[250].find((token) => token.id === toTokenCache)
+        const findFromToken =
+            TOKENS[250].find((token) => token.id === fromTokenUrlParam) ||
+            TOKENS[250].find((token) => token.id === fromTokenCache)
+        const findToToken =
+            TOKENS[250].find((token) => token.id === toTokenUrlParam) ||
+            TOKENS[250].find((token) => token.id === toTokenCache)
         if (findFromToken) setFromToken(findFromToken)
         if (findToToken) setToToken(findToToken)
     }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam])
 
     useEffect(() => {
-        router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, { shallow: true })
+        router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, {
+            shallow: true
+        })
     }, [fromToken, toToken])
 
     // Load selected token balances.
@@ -201,7 +214,7 @@ export function SingularityAppWrapper({ children }) {
                 swap
             }}
         >
-            {/* <NotReadyModal /> */}
+            <NotReadyModal />
             {children}
         </SingularityIndexPageContext.Provider>
     )

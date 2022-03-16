@@ -35,7 +35,7 @@ export default function Index() {
                     <div className="space-y-8">
                         <p className="text-4xl lg:text-7xl font-medium font-extended">
                             Welcome to{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-purple-800">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-br from-salmon to-purp">
                                 Revenant Labs
                             </span>
                             . DeFi-suite on Fantom.
@@ -47,7 +47,7 @@ export default function Index() {
                         </p>
                         <div className="flex gap-6">
                             <Link href="/creditum" passHref>
-                                <a className="px-6 py-3 bg-gradient-to-br text-purple-200 from-purple-400 to-purple-800 rounded-full font-medium text-xl shadow-2xl">
+                                <a className="px-6 py-3 bg-gradient-to-br text-white from-salmon to-purp rounded-full font-medium text-xl shadow-2xl">
                                     Open Creditum
                                 </a>
                             </Link>
@@ -56,13 +56,13 @@ export default function Index() {
                         <div className="flex flex-wrap gap-6">
                             <div className="space-y-1">
                                 <p className="text-2xl lg:text-4xl font-extended">
-                                    1.3<span className="text-purple-400">K+</span>
+                                    1.3<span className="text-purp">K+</span>
                                 </p>
                                 <p className="text-xs lg:text-base opacity-50">Active Users</p>
                             </div>
                             <div className="space-y-1">
                                 <p className="text-2xl lg:text-4xl font-extended">
-                                    $37<span className="text-purple-400">M+</span>
+                                    $37<span className="text-purp">M+</span>
                                 </p>
                                 <p className="text-xs lg:text-base opacity-50">
                                     Locked Across Protocols
@@ -70,7 +70,7 @@ export default function Index() {
                             </div>
                             <div className="space-y-1">
                                 <p className="text-2xl lg:text-4xl font-extended">
-                                    +<i className="fas fa-infinity text-purple-400"></i>
+                                    +<i className="fas fa-infinity text-purp"></i>
                                 </p>
                                 <p className="text-xs lg:text-base opacity-50">Passion for DeFi</p>
                             </div>
