@@ -1,6 +1,3 @@
-import classNames from 'classnames'
-import { useRef } from 'react'
-
 interface Input {
     value: string | number
     loading?: boolean
@@ -20,7 +17,11 @@ export default function Input(props: Input) {
         <div>
             {label && <p className="text-xs font-medium mb-1">{label}</p>}
             <div className="w-full bg-white rounded bg-opacity-10 overflow-hidden flex items-stretch">
-                <input {...props} type={props.type || 'text'} className="w-full px-4 py-2 h-full outline-none bg-transparent" />
+                <input
+                    {...props}
+                    type={props.type || 'text'}
+                    className="w-full px-4 py-2 h-full outline-none bg-transparent"
+                />
                 {onMax && (
                     <button onClick={onMax} className="text-xs font-medium px-2">
                         Max

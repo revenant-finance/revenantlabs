@@ -19,14 +19,27 @@ export function UseAlertsWrapper({ children }) {
         setTimeout(() => clearAlert(id), 3000)
         return id
     }
+
     return (
         <AlertsContext.Provider value={{ newAlert, clearAlert }}>
             <>
                 <AnimatePresence>
                     <div className="fixed z-50 w-full max-w-xs space-y-2 bottom-6 right-6">
                         {alerts.map((alert) => (
-                            <motion.div className="bg-neutral-700 p-4 shadow-2xl rounded" initial={{ x: '100%' }} animate={{ x: '0' }} exit={{ x: '100%' }}>
-                                <p className={classNames('font-medium', alert.mood === 'negative' && 'text-red-500')}>{alert.title}</p>
+                            <motion.div
+                                className="bg-neutral-700 p-4 shadow-2xl rounded"
+                                initial={{ x: '100%' }}
+                                animate={{ x: '0' }}
+                                exit={{ x: '100%' }}
+                            >
+                                <p
+                                    className={classNames(
+                                        'font-medium',
+                                        alert.mood === 'negative' && 'text-red-500'
+                                    )}
+                                >
+                                    {alert.title}
+                                </p>
                                 <p className="text-xs">{alert.subtitle}</p>
                             </motion.div>
                         ))}

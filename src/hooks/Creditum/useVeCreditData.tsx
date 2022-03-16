@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useActiveWeb3React } from '..'
+import * as constants from '../../data'
+import { toEth } from '../../utils'
 import {
-    getXTokenContract,
     getTokenContract,
     getVeTokenContract,
-    getVeTokenFeesContract
+    getVeTokenFeesContract,
+    getXTokenContract
 } from '../../utils/ContractService'
-import { toEth } from '../../utils'
-import * as constants from '../../data'
 import useRefresh from '../useRefresh'
-import { useActiveWeb3React } from '..'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
 const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken

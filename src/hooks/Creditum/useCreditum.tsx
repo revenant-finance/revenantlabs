@@ -1,12 +1,11 @@
-import { getCreditumContract, getTokenContract } from '../../utils/ContractService'
-import { toWei, MAX_UINT256 } from '../../utils'
-import useCreditumData from './useCreditumData'
 import { useActiveWeb3React } from '..'
+import { MAX_UINT256, toWei } from '../../utils'
+import { getCreditumContract, getTokenContract } from '../../utils/ContractService'
+import useCreditumData from './useCreditumData'
 
 export default function useCreditum() {
     const { account, library } = useActiveWeb3React()
     const { update, creditumData } = useCreditumData()
-
 
     const enter = async (market, depositAmount, borrowAmount) => {
         if (account) {
@@ -19,8 +18,15 @@ export default function useCreditum() {
                 if (Number(market.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    console.log(toWei(depositAmount, market.decimals).toString(), toWei(borrowAmount).toString())
-                    tx = await creditumContract.enter(market.address, toWei(depositAmount, market.decimals), toWei(borrowAmount))
+                    console.log(
+                        toWei(depositAmount, market.decimals).toString(),
+                        toWei(borrowAmount).toString()
+                    )
+                    tx = await creditumContract.enter(
+                        market.address,
+                        toWei(depositAmount, market.decimals),
+                        toWei(borrowAmount)
+                    )
                 }
                 await tx.wait(1)
                 update()
@@ -40,7 +46,11 @@ export default function useCreditum() {
                 if (Number(cToken.allowBalance) < Number(repayAmount)) {
                     tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    tx = await creditumContract.exit(market?.address, toWei(withdrawAmount, market.decimals), toWei(repayAmount))
+                    tx = await creditumContract.exit(
+                        market?.address,
+                        toWei(withdrawAmount, market.decimals),
+                        toWei(repayAmount)
+                    )
                 }
                 await tx.wait(1)
                 update()
@@ -60,7 +70,10 @@ export default function useCreditum() {
                 if (Number(market?.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    tx = await creditumContract.stabilizerMint(market?.address, toWei(depositAmount, market?.decimals))
+                    tx = await creditumContract.stabilizerMint(
+                        market?.address,
+                        toWei(depositAmount, market?.decimals)
+                    )
                 }
                 await tx.wait(1)
                 update()
@@ -80,7 +93,10 @@ export default function useCreditum() {
                 if (Number(cToken?.allowBalance) < Number(burnAmount)) {
                     tx = await cTokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    tx = await creditumContract.stabilizerRedeem(underlying?.address, toWei(burnAmount))
+                    tx = await creditumContract.stabilizerRedeem(
+                        underlying?.address,
+                        toWei(burnAmount)
+                    )
                 }
                 await tx.wait(1)
                 update()
@@ -94,6 +110,6 @@ export default function useCreditum() {
         enter,
         exit,
         stabilizerMint,
-        stabilizerRedeem,
+        stabilizerRedeem
     }
 }

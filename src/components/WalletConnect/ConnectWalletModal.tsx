@@ -1,7 +1,7 @@
 import { connectorLocalStorageKey, useActiveWeb3React } from '../../hooks'
-import config from './config'
-import Modal from '../Modal'
 import Button from '../Button'
+import Modal from '../Modal'
+import config from './config'
 
 export default function ConnectWalletModal({ open, login, onDismiss = () => null }) {
     const { account } = useActiveWeb3React()
@@ -15,7 +15,10 @@ export default function ConnectWalletModal({ open, login, onDismiss = () => null
                             key={index}
                             onClick={() => {
                                 login(entry.connectorId)
-                                window.localStorage.setItem(connectorLocalStorageKey, entry.connectorId)
+                                window.localStorage.setItem(
+                                    connectorLocalStorageKey,
+                                    entry.connectorId
+                                )
                                 onDismiss()
                             }}
                         >

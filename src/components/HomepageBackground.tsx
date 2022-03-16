@@ -1,5 +1,5 @@
-import MeshBackground from './MeshBackground'
 import { motion } from 'framer-motion'
+import MeshBackground from './MeshBackground'
 
 export default function HomepageBackground() {
     return (

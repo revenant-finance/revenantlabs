@@ -1,7 +1,7 @@
-import { ethers } from 'ethers'
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
 // eslint-disable-next-line import/no-unresolved
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
+import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { injected } from '../connectors'
@@ -9,7 +9,9 @@ import { injected } from '../connectors'
 export const NetworkContextName = 'NETWORK'
 export const connectorLocalStorageKey = 'connectorId'
 
-export function useActiveWeb3React(): Web3ReactContextInterface<ethers.providers.Web3Provider> & { chainId?: number } {
+export function useActiveWeb3React(): Web3ReactContextInterface<ethers.providers.Web3Provider> & {
+    chainId?: number
+} {
     const context = useWeb3ReactCore<ethers.providers.Web3Provider>()
     const contextNetwork = useWeb3ReactCore<ethers.providers.Web3Provider>(NetworkContextName)
     return context.active ? context : contextNetwork

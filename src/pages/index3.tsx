@@ -12,14 +12,23 @@ export default function IndexPage() {
                 <div className="mx-auto max-w-7xl">
                     <div className="flex flex-col gap-6 md:flex-row">
                         <div className="flex-1 space-y-2">
-                            <motion.img animate={{ rotate: ['0%', '100%', '0%'] }} transition={{ duration: 12, loop: Infinity }} className="w-32" src="/img/revenant-coin.png" alt="" />
+                            <motion.img
+                                animate={{ rotate: ['0%', '100%', '0%'] }}
+                                transition={{ duration: 12, loop: Infinity }}
+                                className="w-32"
+                                src="/img/revenant-coin.png"
+                                alt=""
+                            />
 
                             <p className="text-3xl uppercase md:text-7xl font-montserrat">
                                 <span className="font-extrabold text-purp">Revenant</span>
                                 <span className="text-salmon">Labs</span>
                             </p>
                             <p className="max-w-lg text-2xl font-light md:text-4xl">
-                                Revenant is pushing the boundaries of what is possible with DeFi by building tools to empower <span className="bg-salmon text-neutral-900">sovereign cash</span> on the worlds fastest blockchain.
+                                Revenant is pushing the boundaries of what is possible with DeFi by
+                                building tools to empower{' '}
+                                <span className="bg-salmon text-neutral-900">sovereign cash</span>{' '}
+                                on the worlds fastest blockchain.
                             </p>
                         </div>
                         <div className="flex flex-col">
@@ -49,10 +58,19 @@ export default function IndexPage() {
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <Link href="/creditum" passHref>
                             <a className="relative flex flex-col justify-end p-6 overflow-hidden duration-300 ease-in-out bg-center bg-cover shadow-2xl bg-yellowy text-neutral-900 rounded-2xl md:p-12 h-96 hover hover:-translate-y-2">
-                                <img className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10" src="/img/creditum-black.png" alt="" />
+                                <img
+                                    className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10"
+                                    src="/img/creditum-black.png"
+                                    alt=""
+                                />
                                 <div className="relative space-y-2 md:max-w-sm">
-                                    <p className="text-3xl font-extrabold uppercase font-montserrat">Creditum</p>
-                                    <p className="text-xl">Creditum is a Revenant Labs protocol that provides fixed interest rates loans to mint cUSD</p>
+                                    <p className="text-3xl font-extrabold uppercase font-montserrat">
+                                        Creditum
+                                    </p>
+                                    <p className="text-xl">
+                                        Creditum is a Revenant Labs protocol that provides fixed
+                                        interest rates loans to mint cUSD
+                                    </p>
                                 </div>
                             </a>
                         </Link>
@@ -66,11 +84,20 @@ export default function IndexPage() {
                                 </p>
                             </div>
                             {/* <MeshBackground id="singularity-gradient-colors" /> */}
-                            <img className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10" src="/img/singularity-black.png" alt="" />
+                            <img
+                                className="absolute w-16 right-6 top-6 md:right-12 md:top-12 opacity-10"
+                                src="/img/singularity-black.png"
+                                alt=""
+                            />
 
                             <div className="relative space-y-2 md:max-w-sm ">
-                                <p className="text-3xl font-extrabold uppercase font-montserrat">Singularity</p>
-                                <p className="text-xl">Singularity is a decentralized exchange that provides the best swap rates on stablecoins</p>
+                                <p className="text-3xl font-extrabold uppercase font-montserrat">
+                                    Singularity
+                                </p>
+                                <p className="text-xl">
+                                    Singularity is a decentralized exchange that provides the best
+                                    swap rates on stablecoins
+                                </p>
                             </div>
                         </a>
                         {/* </Link> */}
@@ -84,8 +111,14 @@ export default function IndexPage() {
                     >
                         <div className="flex-1">
                             <div className="flex-1 space-y-2 md:max-w-lg">
-                                <p className="text-3xl font-extrabold uppercase font-montserrat">Join the Community</p>
-                                <p className="text-xl">The easiest way to get started is with help. We invite you to join our community, where we're available to answer any questions you might have.</p>
+                                <p className="text-3xl font-extrabold uppercase font-montserrat">
+                                    Join the Community
+                                </p>
+                                <p className="text-xl">
+                                    The easiest way to get started is with help. We invite you to
+                                    join our community, where we're available to answer any
+                                    questions you might have.
+                                </p>
                             </div>
                         </div>
 
@@ -107,10 +140,22 @@ export default function IndexPage() {
                             <img className="w-full" src="/img/peggy/peggy-standing.png" alt="" />
                         </div>
                         <div className="space-y-8">
-                            <p className="text-4xl font-extrabold md:text-7xl">Peggy is building with the community in mind.</p>
+                            <p className="text-4xl font-extrabold md:text-7xl">
+                                Peggy is building with the community in mind.
+                            </p>
                             <div className="space-y-4">
-                                <p className="text-xl">Our community-first approach to building tools is rooted in the belief that the most effective way to build is through collaboration. No matter your stakes, your voice is an important part of our vision.</p>
-                                <p className="text-xl">Our team is semi-anonymous with members that have been building on Fantom since the beginning. Xam Pham, Shien110, Entropy, Xannie, Cript Walkin, and njRedDot are here to provide you with the best experience possible when working with our products.</p>
+                                <p className="text-xl">
+                                    Our community-first approach to building tools is rooted in the
+                                    belief that the most effective way to build is through
+                                    collaboration. No matter your stakes, your voice is an important
+                                    part of our vision.
+                                </p>
+                                <p className="text-xl">
+                                    Our team is semi-anonymous with members that have been building
+                                    on Fantom since the beginning. Xam Pham, Shien110, Entropy,
+                                    Xannie, Cript Walkin, and njRedDot are here to provide you with
+                                    the best experience possible when working with our products.
+                                </p>
                             </div>
                         </div>
                     </div>

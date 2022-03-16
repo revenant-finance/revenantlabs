@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { getFarmsContract, getCrvContract, getTokenContract } from '../../utils/ContractService'
-import usePrice from '../usePrice'
-import { toEth, SECONDS_PER_YEAR } from '../../utils'
-import * as constants from '../../data'
 import { useActiveWeb3React } from '..'
-
+import * as constants from '../../data'
+import { SECONDS_PER_YEAR, toEth } from '../../utils'
+import { getCrvContract, getFarmsContract, getTokenContract } from '../../utils/ContractService'
+import usePrice from '../usePrice'
 
 export default function usePool() {
     const { library } = useActiveWeb3React()
@@ -26,7 +25,7 @@ export default function usePool() {
 
     const calculateApy = async (farmData, tvl) => {
         let prices = earnTokenPrices
-        if (prices.length === 0) {   
+        if (prices.length === 0) {
             prices = await handleEarnTokenPrices()
         }
         let apy = []
@@ -43,13 +42,14 @@ export default function usePool() {
         const crvContract = getCrvContract(farmData.depositToken, library)
 
         // Get the share of lpContract that masterChefContract owns
-        const [farmBalanceData, lpPriceData, totalSupplyData, token0SupplyData, token1SupplyData] = await Promise.all([
-            crvContract.balanceOf(farmContract.address),
-            crvContract.get_virtual_price(),
-            crvContract.totalSupply(),
-            crvContract.balances(0),
-            crvContract.balances(1)
-        ])
+        const [farmBalanceData, lpPriceData, totalSupplyData, token0SupplyData, token1SupplyData] =
+            await Promise.all([
+                crvContract.balanceOf(farmContract.address),
+                crvContract.get_virtual_price(),
+                crvContract.totalSupply(),
+                crvContract.balances(0),
+                crvContract.balances(1)
+            ])
 
         const farmBalance = parseFloat(toEth(farmBalanceData))
         const lpPrice = parseFloat(toEth(lpPriceData))
@@ -85,7 +85,13 @@ export default function usePool() {
         const token1Contract = getTokenContract(farmData.uniLpTokenAddresses.token1, library)
         const lpContract = getTokenContract(farmData.depositToken, library)
 
-        const [lpContractToken0BalData, farmLpBalData, lpTotalSupplyData, lpContractToken1BalData, token1Price] = await Promise.all([
+        const [
+            lpContractToken0BalData,
+            farmLpBalData,
+            lpTotalSupplyData,
+            lpContractToken1BalData,
+            token1Price
+        ] = await Promise.all([
             token0Contract.balanceOf(lpContract.address),
             lpContract.balanceOf(farmContract.address),
             lpContract.totalSupply(),

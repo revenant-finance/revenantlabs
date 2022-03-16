@@ -1,7 +1,12 @@
 import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
-import { getTokenContract, getVeTokenContract, getXTokenContract, getVeTokenFeesContract } from '../../utils/ContractService'
+import {
+    getTokenContract,
+    getVeTokenContract,
+    getVeTokenFeesContract,
+    getXTokenContract
+} from '../../utils/ContractService'
 import useVeCreditData from './useVeCreditData'
 
 const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
@@ -38,7 +43,7 @@ export default function useVeCredit() {
                 tx = await creditContract.approve(veCreditAddress, MAX_UINT256)
                 await tx.wait(1)
             } else {
-                //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week 
+                //Math.roundDown(unlock time / # of seconds in week) * # of seconds in week
                 tx = await veCreditContract.create_lock(toWei(amount), time)
             }
             await tx.wait(1)
@@ -119,5 +124,13 @@ export default function useVeCredit() {
         }
     }
 
-    return { approve, initialDeposit, increaseAmount, increaseLockTime, withdraw, unstakeXCredit, claim }
+    return {
+        approve,
+        initialDeposit,
+        increaseAmount,
+        increaseLockTime,
+        withdraw,
+        unstakeXCredit,
+        claim
+    }
 }

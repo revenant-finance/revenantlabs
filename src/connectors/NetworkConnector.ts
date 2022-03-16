@@ -75,7 +75,9 @@ class MiniRpcProvider implements AsyncSendable {
         }
 
         if (!response.ok) {
-            batch.forEach(({ reject }) => reject(new RequestError(`${response.status}: ${response.statusText}`, -32000)))
+            batch.forEach(({ reject }) =>
+                reject(new RequestError(`${response.status}: ${response.statusText}`, -32000))
+            )
             return
         }
 
@@ -99,23 +101,41 @@ class MiniRpcProvider implements AsyncSendable {
             } = byKey[result.id]
             if (resolve && reject) {
                 if ('error' in result) {
-                    reject(new RequestError(result?.error?.message, result?.error?.code, result?.error?.data))
+                    reject(
+                        new RequestError(
+                            result?.error?.message,
+                            result?.error?.code,
+                            result?.error?.data
+                        )
+                    )
                 } else if ('result' in result) {
                     resolve(result.result)
                 } else {
-                    reject(new RequestError(`Received unexpected JSON-RPC response to ${method} request.`, -32000, result))
+                    reject(
+                        new RequestError(
+                            `Received unexpected JSON-RPC response to ${method} request.`,
+                            -32000,
+                            result
+                        )
+                    )
                 }
             }
         }
     }
 
-    public readonly sendAsync = (request: { jsonrpc: '2.0'; id: number | string | null; method: string; params?: any }, callback: (error: any, response: any) => void): void => {
+    public readonly sendAsync = (
+        request: { jsonrpc: '2.0'; id: number | string | null; method: string; params?: any },
+        callback: (error: any, response: any) => void
+    ): void => {
         this.request(request.method, request.params)
             .then((result) => callback(null, { jsonrpc: '2.0', id: request.id, result }))
             .catch((error) => callback(error, null))
     }
 
-    public readonly request = async (method: string | { method: string; params: unknown[] }, params?: any): Promise<unknown> => {
+    public readonly request = async (
+        method: string | { method: string; params: unknown[] },
+        params?: any
+    ): Promise<unknown> => {
         if (typeof method !== 'string') {
             return this.request(method.method, method.params)
         }
@@ -134,7 +154,8 @@ class MiniRpcProvider implements AsyncSendable {
                 reject
             })
         })
-        this.batchTimeoutId = this.batchTimeoutId ?? setTimeout(this.clearBatch, this.batchWaitTimeMs)
+        this.batchTimeoutId =
+            this.batchTimeoutId ?? setTimeout(this.clearBatch, this.batchWaitTimeMs)
         return promise
     }
 }
@@ -145,14 +166,23 @@ export class NetworkConnector extends AbstractConnector {
     private currentChainId: number
 
     constructor({ urls, defaultChainId }: NetworkConnectorArguments) {
-        invariant(defaultChainId || Object.keys(urls).length === 1, 'defaultChainId is a required argument with >1 url')
+        invariant(
+            defaultChainId || Object.keys(urls).length === 1,
+            'defaultChainId is a required argument with >1 url'
+        )
         super({ supportedChainIds: Object.keys(urls).map((k): number => Number(k)) })
 
         this.currentChainId = defaultChainId || Number(Object.keys(urls)[0])
-        this.providers = Object.keys(urls).reduce<{ [chainId: number]: MiniRpcProvider }>((accumulator, chainId) => {
-            accumulator[Number(chainId)] = new MiniRpcProvider(Number(chainId), urls[Number(chainId)])
-            return accumulator
-        }, {})
+        this.providers = Object.keys(urls).reduce<{ [chainId: number]: MiniRpcProvider }>(
+            (accumulator, chainId) => {
+                accumulator[Number(chainId)] = new MiniRpcProvider(
+                    Number(chainId),
+                    urls[Number(chainId)]
+                )
+                return accumulator
+            },
+            {}
+        )
     }
 
     public get provider(): MiniRpcProvider {
@@ -160,7 +190,11 @@ export class NetworkConnector extends AbstractConnector {
     }
 
     public async activate(): Promise<ConnectorUpdate> {
-        return { provider: this.providers[this.currentChainId], chainId: this.currentChainId, account: null }
+        return {
+            provider: this.providers[this.currentChainId],
+            chainId: this.currentChainId,
+            account: null
+        }
     }
 
     public async getProvider(): Promise<MiniRpcProvider> {

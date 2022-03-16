@@ -1,8 +1,8 @@
-import { getFarmsContract, getTokenContract } from '../../utils/ContractService'
-import { toEth, toWei, MAX_UINT256 } from '../../utils'
-import useFarmData from './useFarmData'
-import * as constants from '../../data'
 import { useActiveWeb3React } from '..'
+import * as constants from '../../data'
+import { MAX_UINT256, toEth, toWei } from '../../utils'
+import { getFarmsContract, getTokenContract } from '../../utils/ContractService'
+import useFarmData from './useFarmData'
 
 const farms = constants.CONTRACT_CREDITUM_FARMS[250].tokens
 

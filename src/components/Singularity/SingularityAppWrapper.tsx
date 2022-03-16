@@ -6,8 +6,8 @@ import shortNumber from 'short-number'
 import { useCookieState } from 'use-cookie-state'
 import { TOKENS } from '../../data/constants'
 import { useActiveWeb3React } from '../../hooks'
-import NotReadyModal from '../NotReadyModal'
 import { getRouterContract, getTokenContract } from '../../utils/ContractService'
+import NotReadyModal from '../NotReadyModal'
 
 export const SingularityIndexPageContext = createContext({})
 

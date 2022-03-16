@@ -11,11 +11,25 @@ export default function ConnectWalletButton(props) {
 
     return (
         <>
-            <button onClick={() => setConnectModalOpen((_) => !_)} className={classNames('pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xl')}>
-                <i className={classNames('fas fa-wallet transition ease-in-out duration-75', account && 'text-salmon')}></i>
+            <button
+                onClick={() => setConnectModalOpen((_) => !_)}
+                className={classNames(
+                    'pointer-events-auto bg-neutral-900 border-2 border-neutral-800 rounded-2xl px-4 py-2 shadow-2xl'
+                )}
+            >
+                <i
+                    className={classNames(
+                        'fas fa-wallet transition ease-in-out duration-75',
+                        account && 'text-salmon'
+                    )}
+                ></i>
             </button>
 
-            <ConnectWalletModal open={connectModalOpen} login={login} onDismiss={() => setConnectModalOpen(false)} />
+            <ConnectWalletModal
+                open={connectModalOpen}
+                login={login}
+                onDismiss={() => setConnectModalOpen(false)}
+            />
         </>
     )
 }

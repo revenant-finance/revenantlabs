@@ -1,21 +1,11 @@
-import classNames from 'classnames'
-import { useEffect, useState } from 'react'
-import useFarm from '../../../hooks/Creditum/useFarm'
 import useFarmData from '../../../hooks/Creditum/useFarmData'
-import useAlerts from '../../../hooks/useAlerts'
-import { commaFormatter } from '../../../utils'
-import Button from '../../Button'
-import ConnectWalletFirstButton from '../../ConnectWalletFirstButton'
-import DataPoint from '../../DataPoint'
 import InfoBanner from '../../InfoBanner'
-import Input from '../../Input'
 import LoadingBanner from '../../LoadingBanner'
-import Modal from '../../Modal'
 import FarmItem from './FarmItem'
 import FarmModal from './FarmModal'
 
 export default function CreditumFarms() {
-    const { farmData, selectedFarm, setSelectedFarm, mode, setMode } = useFarmData()
+    const { farmData, setSelectedFarm, setMode } = useFarmData()
 
     const farms = farmData?.farms
     const openModal = (farm, mode) => {

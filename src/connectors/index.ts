@@ -23,7 +23,8 @@ export const network = new NetworkConnector({
 let networkLibrary: ethers.providers.Web3Provider | undefined
 export function getNetworkLibrary(): ethers.providers.Web3Provider {
     // eslint-disable-next-line no-return-assign
-    return (networkLibrary = networkLibrary ?? new ethers.providers.Web3Provider(network.provider as any))
+    return (networkLibrary =
+        networkLibrary ?? new ethers.providers.Web3Provider(network.provider as any))
 }
 
 export const injected = new InjectedConnector({

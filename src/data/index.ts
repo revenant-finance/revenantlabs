@@ -159,7 +159,8 @@ export const CONTRACT_CREDITUM_FARMS = {
                 token1Symbol: 'wFTM',
                 poolWeight: [0.55, 0, 0, 0, 0],
                 icon: '/img/tokens/creditum.png',
-                buyLink: 'https://spookyswap.finance/add/0x77128DFdD0ac859B33F44050c6fa272F34872B5E/FTM',
+                buyLink:
+                    'https://spookyswap.finance/add/0x77128DFdD0ac859B33F44050c6fa272F34872B5E/FTM',
                 decimals: 18
             },
             {
@@ -174,13 +175,22 @@ export const CONTRACT_CREDITUM_FARMS = {
                 token1Symbol: 'agEUR',
                 poolWeight: [0.09, 1, 0, 0, 0],
                 icon: '/img/tokens/cUSD-agEUR.png',
-                buyLink: 'https://spookyswap.finance/add/0x02a2b736F9150d36C0919F3aCEE8BA2A92FBBb40/0xE3a486C1903Ea794eED5d5Fa0C9473c7D7708f40',
+                buyLink:
+                    'https://spookyswap.finance/add/0x02a2b736F9150d36C0919F3aCEE8BA2A92FBBb40/0xE3a486C1903Ea794eED5d5Fa0C9473c7D7708f40',
                 decimals: 18
             }
         ],
         earnTokens: [
-            { name: 'CREDIT', rps: 0.2314814815, address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E' },
-            { name: 'ANGLE', rps: 0.09920634921, address: '0x3b9e3b5c616A1A038fDc190758Bbe9BAB6C7A857' },
+            {
+                name: 'CREDIT',
+                rps: 0.2314814815,
+                address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E'
+            },
+            {
+                name: 'ANGLE',
+                rps: 0.09920634921,
+                address: '0x3b9e3b5c616A1A038fDc190758Bbe9BAB6C7A857'
+            },
             { name: 'CREDIT', rps: 0, address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E' },
             { name: 'CREDIT', rps: 0, address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E' },
             { name: 'CREDIT', rps: 0, address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E' }

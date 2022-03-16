@@ -1,9 +1,9 @@
 import Ticker from 'react-ticker'
+import ReactTyped from 'react-typed'
 import useCreditumData from '../hooks/Creditum/useCreditumData'
 import useFarmData from '../hooks/Creditum/useFarmData'
 import useVeCreditData from '../hooks/Creditum/useVeCreditData'
 import { formatter } from '../utils'
-import ReactTyped from 'react-typed'
 
 const MarketTickerItem = ({ title, value }) => {
     return (

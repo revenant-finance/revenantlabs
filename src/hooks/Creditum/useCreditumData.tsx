@@ -13,7 +13,20 @@ const creditumABI = JSON.parse(constants.CONTRACT_CREDITUM_ABI)
 const controllerABI = JSON.parse(constants.CONTRACT_CONTROLLER_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
-const formatCreditumData = (_assetCollateralData, _totalMinted, _stabilizerDeposits, _userData, _collateralData, _stabilizerData, _priceUsd, _positionData, _liquidationPrice, _utilizationRatio, _balances, _contractBalance) => {
+const formatCreditumData = (
+    _assetCollateralData,
+    _totalMinted,
+    _stabilizerDeposits,
+    _userData,
+    _collateralData,
+    _stabilizerData,
+    _priceUsd,
+    _positionData,
+    _liquidationPrice,
+    _utilizationRatio,
+    _balances,
+    _contractBalance
+) => {
     return {
         ..._assetCollateralData,
         totalMinted: toEth(_totalMinted),
@@ -45,8 +58,20 @@ const formatCreditumData = (_assetCollateralData, _totalMinted, _stabilizerDepos
 async function getGovTokenData(tokenPrice) {
     const MAX_SUPPLY = 50000000
     const creditumContract = getTokenContract('0x77128DFdD0ac859B33F44050c6fa272F34872B5E')
-    const [vesting, vestingSeb, multisig, farming, revenant] = await Promise.all([creditumContract.balanceOf('0x96AF48D95bf6e226D9696d6E074f40002407fEcC'), creditumContract.balanceOf('0x270144231ef669010780F2e72Fb414d056BaBa40'), creditumContract.balanceOf('0x667D9921836BB8e7629B3E0a3a0C6776dB538029'), creditumContract.balanceOf('0xe0c43105235C1f18EA15fdb60Bb6d54814299938'), creditumContract.balanceOf('0x3A276b8bfb9DEC7e19E43157FC9142B95238Ab6f')])
-    const circSupply = MAX_SUPPLY - Number(toEth(vesting)) - Number(toEth(vestingSeb)) - Number(toEth(multisig)) - Number(toEth(farming)) - Number(toEth(revenant))
+    const [vesting, vestingSeb, multisig, farming, revenant] = await Promise.all([
+        creditumContract.balanceOf('0x96AF48D95bf6e226D9696d6E074f40002407fEcC'),
+        creditumContract.balanceOf('0x270144231ef669010780F2e72Fb414d056BaBa40'),
+        creditumContract.balanceOf('0x667D9921836BB8e7629B3E0a3a0C6776dB538029'),
+        creditumContract.balanceOf('0xe0c43105235C1f18EA15fdb60Bb6d54814299938'),
+        creditumContract.balanceOf('0x3A276b8bfb9DEC7e19E43157FC9142B95238Ab6f')
+    ])
+    const circSupply =
+        MAX_SUPPLY -
+        Number(toEth(vesting)) -
+        Number(toEth(vestingSeb)) -
+        Number(toEth(multisig)) -
+        Number(toEth(farming)) -
+        Number(toEth(revenant))
     const marketCap = circSupply * tokenPrice
     return { circSupply, marketCap }
 }
@@ -105,7 +130,12 @@ function useCreditumDataInternal() {
                     params: [assetData.mint.creditum]
                 }))
 
-                let userDataCalls, positionDataCalls, liquidationPriceCalls, utilizationRatioCalls, collateralBalances, cTokenBalances
+                let userDataCalls,
+                    positionDataCalls,
+                    liquidationPriceCalls,
+                    utilizationRatioCalls,
+                    collateralBalances,
+                    cTokenBalances
                 if (account) {
                     //creditum
                     userDataCalls = assetCollaterals.map((collateral) => ({
@@ -132,15 +162,33 @@ function useCreditumDataInternal() {
                         params: [account, collateral.address]
                     }))
 
-                    const [collateralBalanceData, cTokenBalanceData] = await Promise.all([fetchBalances(account, assetCollaterals, assetData.mint.creditum), fetchBalances(account, [assetData.mint], assetData.mint.creditum)])
+                    const [collateralBalanceData, cTokenBalanceData] = await Promise.all([
+                        fetchBalances(account, assetCollaterals, assetData.mint.creditum),
+                        fetchBalances(account, [assetData.mint], assetData.mint.creditum)
+                    ])
 
                     collateralBalances = collateralBalanceData
                     cTokenBalances = cTokenBalanceData
                 } else {
-                    cTokenBalances = await fetchBalances(EMPTY_ADDRESS, [assetData.mint], assetData.mint.creditum)
+                    cTokenBalances = await fetchBalances(
+                        EMPTY_ADDRESS,
+                        [assetData.mint],
+                        assetData.mint.creditum
+                    )
                 }
 
-                const [totalMinted, stabilizerDeposits, userData, collateralData, stabilizerData, priceUsd, positionData, liquidationPrice, utilizationRatio, contractBalance] = await Promise.all([
+                const [
+                    totalMinted,
+                    stabilizerDeposits,
+                    userData,
+                    collateralData,
+                    stabilizerData,
+                    priceUsd,
+                    positionData,
+                    liquidationPrice,
+                    utilizationRatio,
+                    contractBalance
+                ] = await Promise.all([
                     multicall(creditumABI, totalMintedCalls),
                     multicall(creditumABI, stabilizerDepositsCalls),
                     multicall(creditumABI, userDataCalls),
@@ -180,7 +228,12 @@ function useCreditumDataInternal() {
                 formattedCreditumData[assetIds[i]] = {
                     collaterals: formattedAssetData,
                     mintToken: { ...cTokenBalances[0], ...assetData.mint },
-                    assetOverview: { tvl, totalUserDeposits, totalUserDebt, totalMinted: cTokenBalances[0].totalSupply }
+                    assetOverview: {
+                        tvl,
+                        totalUserDeposits,
+                        totalUserDebt,
+                        totalMinted: cTokenBalances[0].totalSupply
+                    }
                 }
             }
 

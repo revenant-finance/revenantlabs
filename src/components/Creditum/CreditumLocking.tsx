@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import useAlerts from '../../hooks/useAlerts'
-import { commaFormatter, epochToDate, currentEpoch } from '../../utils'
+import { commaFormatter, currentEpoch, epochToDate } from '../../utils'
 import Button from '../Button'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
+import Countdown from '../CountDown'
 import DataPoint from '../DataPoint'
 import InfoBanner from '../InfoBanner'
 import Input from '../Input'
-import Countdown from '../CountDown'
 
 const secondsWeek = 60 * 60 * 24 * 7
 const fourYearsSeconds = 60 * 60 * 24 * 365 * 4

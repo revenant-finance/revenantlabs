@@ -1,4 +1,5 @@
 import { Web3ReactProvider } from '@web3-react/core'
+import dayjs from 'dayjs'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
@@ -10,7 +11,6 @@ import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
-import dayjs from 'dayjs'
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)

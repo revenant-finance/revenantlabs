@@ -6,7 +6,17 @@ import Portal from '../Portal'
 import useSingularityData from './SingularityAppWrapper'
 
 export default function SwapperModal() {
-    const { fromToken, toToken, setFromToken, setToToken, showSelectTokenModal, setShowSelectTokenModal, selectingToken, inEth, setSelectingToken } = useSingularityData()
+    const {
+        fromToken,
+        toToken,
+        setFromToken,
+        setToToken,
+        showSelectTokenModal,
+        setShowSelectTokenModal,
+        selectingToken,
+        inEth,
+        setSelectingToken
+    } = useSingularityData()
 
     const [filter, setFilter] = useState('')
 
@@ -36,19 +46,33 @@ export default function SwapperModal() {
             <Modal visible={showSelectTokenModal} onClose={() => setShowSelectTokenModal(false)}>
                 <div className="flex flex-col">
                     <div className="flex w-full rounded bg-neutral-700">
-                        <Input autoFocus value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Name, Symbol, or Contract Address" />
+                        <Input
+                            autoFocus
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            placeholder="Name, Symbol, or Contract Address"
+                        />
                     </div>
                     <div className="flex-1 max-h-full overflow-auto">
                         {tokenList.map((token) => {
                             return (
-                                <button key={token.id} onClick={() => setToken(token)} className="flex items-center w-full p-2 px-4 space-x-4 text-left hover:bg-neutral-900 rounded-xl">
+                                <button
+                                    key={token.id}
+                                    onClick={() => setToken(token)}
+                                    className="flex items-center w-full p-2 px-4 space-x-4 text-left hover:bg-neutral-900 rounded-xl"
+                                >
                                     <img className="h-8 rounded w8 full" src={token.image} alt="" />
                                     <div className="flex-1 overflow-hidden">
                                         <p>{token.name}</p>
                                         <p className="space-x-1 font-mono text-xs">
                                             <span>{token.symbol}</span>
-                                            <a href={`https://ftmscan.com/address/${token.address}`} target="_blank" className="underline truncate opacity-50 hover:no-underline">
-                                                {token.address.slice(0, 6)}...{token.address.slice(-6)}
+                                            <a
+                                                href={`https://ftmscan.com/address/${token.address}`}
+                                                target="_blank"
+                                                className="underline truncate opacity-50 hover:no-underline"
+                                            >
+                                                {token.address.slice(0, 6)}...
+                                                {token.address.slice(-6)}
                                             </a>
                                         </p>
                                     </div>

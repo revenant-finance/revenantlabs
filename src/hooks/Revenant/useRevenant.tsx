@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useActiveWeb3React } from '..'
 import { CONTRACT_REVENANT } from '../../data'
 import merkle from '../../data/Revenant/merkle.json'
 import { toEth, toWei } from '../../utils'
 import { fetchBalances, getMerkleContract, getRevenantContract } from '../../utils/ContractService'
 import useRefresh from '../useRefresh'
-import { useActiveWeb3React } from '..'
 
 export default function useRevenant() {
     const [status, setStatus] = useState(true)
@@ -34,7 +34,12 @@ export default function useRevenant() {
             return
         }
         try {
-            const tx = await merkleContract.claim(merkleData.Index, account, merkleData.Amount, merkleData.Proof)
+            const tx = await merkleContract.claim(
+                merkleData.Index,
+                account,
+                merkleData.Amount,
+                merkleData.Proof
+            )
             await tx.wait(5)
             setClaimRVNT('0')
             setStatus(!status)

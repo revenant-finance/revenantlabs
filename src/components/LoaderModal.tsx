@@ -1,5 +1,5 @@
-import Typed from 'react-typed'
 import { motion } from 'framer-motion'
+import Typed from 'react-typed'
 import { getFtmScanLink } from '../utils'
 
 interface LoaderModalProps {
@@ -14,7 +14,13 @@ export default function LoaderModal({ complete, tx }: LoaderModalProps) {
     }
 
     return (
-        <motion.div initial={{ x: '100%' }} animate={{ x: '0' }} exit={{ x: '100%' }} onClick={(e) => gotoTx(e)} className="relative z-50 w-full bg-animated-rainbow rounded-2xl shadow-xl p-1">
+        <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: '0' }}
+            exit={{ x: '100%' }}
+            onClick={(e) => gotoTx(e)}
+            className="relative z-50 w-full bg-animated-rainbow rounded-2xl shadow-xl p-1"
+        >
             <div className="bg-white rounded-2xl p-4">
                 <div className="flex items-center space-x-4">
                     <div className="flex-1 space-y-1 overflow-hidden">

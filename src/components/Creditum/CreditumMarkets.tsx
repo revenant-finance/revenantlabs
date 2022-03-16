@@ -1,10 +1,11 @@
+import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import useCreditum from '../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../hooks/useAlerts'
-import { formatter, commaFormatter } from '../../utils'
+import { commaFormatter, formatter } from '../../utils'
 import Button from '../Button'
 import ConnectWalletButton from '../ConnectWalletFirstButton'
 import DataPoint from '../DataPoint'
@@ -13,7 +14,6 @@ import Input from '../Input'
 import LoadingBanner from '../LoadingBanner'
 import MarketTicker from '../MarketTicker'
 import SlideOpen from '../SlideOpen'
-import BigNumber from 'bignumber.js'
 
 const MarketItemAccordion = ({ market, invert }) => {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
