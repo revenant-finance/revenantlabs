@@ -110,7 +110,7 @@ export default function Index() {
                         <motion.img
                             animate={{ rotate: ['2deg', '-2deg', '2deg'], scale: [1, 1.1, 1] }}
                             transition={{ duration: 6, loop: Infinity }}
-                            src="/img/saly-36.png"
+                            src="/img/3d-peggy.png"
                             alt=""
                         />
                     </div>
