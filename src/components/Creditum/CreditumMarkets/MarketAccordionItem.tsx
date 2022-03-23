@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
+import { useEffect } from 'react'
 import useCreditumData from '../../../hooks/Creditum/useCreditumData'
 import { commaFormatter, formatter } from '../../../utils'
 import DataPoint from '../../DataPoint'
@@ -9,6 +10,8 @@ export default function MarketAccordionItem({ market, invert }) {
     const { selectedMarket, setSelectedMarket } = useCreditumData()
     const isOpen = selectedMarket?.id === market.id
     const amountBorrowable = market.collateralMintLimit - market.totalMinted
+
+    // useEffect(() => console.log(market), [])
 
     return (
         <div>
@@ -20,23 +23,33 @@ export default function MarketAccordionItem({ market, invert }) {
                     invert && !isOpen && 'bg-neutral-800'
                 )}
             >
-                <div className="flex items-center flex-1 space-x-2 md:space-x-4">
+                <div className="flex flex-1 items-center space-x-2 md:space-x-4">
                     <img className="w-6 h-6" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">
-                        <p className="text-xl font-medium">{market.symbol}</p>
+                        <p className="text-lg md:text-xl font-medium whitespace-nowrap">
+                            {market.symbol}
+                        </p>
                         <p className="opacity-50">${formatter(market.priceUsd)}</p>
                     </div>
                 </div>
                 <div className="font-mono text-xs text-right md:text-sm">
                     <p
                         className={classNames(
+                            'hidden md:block',
                             !isOpen && amountBorrowable <= 10 && 'text-red-400',
                             !isOpen && amountBorrowable <= 1000 && 'text-yellow-400'
                         )}
                     >
-                        {formatter(amountBorrowable)} cUSD
+                        <span className="opacity-75">Available: </span>
+                        <span className="font-medium">{formatter(amountBorrowable)} cUSD</span>
                     </p>
-                    <p className="">Borrowable</p>
+                    <p>
+                        <span className="opacity-75">Wallet Balance: </span>
+                        <br className="block sm:hidden" />
+                        <span className="font-medium">
+                            {formatter(market.walletBalance)} {market.symbol}
+                        </span>
+                    </p>
                 </div>
             </button>
 

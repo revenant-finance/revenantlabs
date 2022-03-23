@@ -34,7 +34,14 @@ export default function CreditumMarkets() {
                     <AnimatePresence>
                         {markets && (
                             <SlideOpen>
-                                <div className="space-y-8 shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl overflow-hidden">
+                                <div className="shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl overflow-hidden">
+                                    {!selectedMarket && (
+                                        <div className="bg-neutral-800 text-neutral-500 text-xs p-2 text-center">
+                                            <p className="text-xs">
+                                                Select a market to get started.
+                                            </p>
+                                        </div>
+                                    )}
                                     <div className="">
                                         {markets.map((market, index) => (
                                             <MarketAccordionItem
