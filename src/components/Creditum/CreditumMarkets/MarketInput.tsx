@@ -48,7 +48,7 @@ export default function MarketInput({ type }) {
     const { enter, exit, stabilizerMint, stabilizerRedeem } = useCreditum()
     const { newAlert, clearAlert } = useAlerts()
 
-    const isDeposit = type === 'repay'
+    const isDeposit = type === 'deposit'
 
     const [depositStatus, setDepositStatus] = useState('idle')
     const [withdrawStatus, setWithdrawStatus] = useState('idle')
