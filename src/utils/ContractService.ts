@@ -7,6 +7,8 @@ export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(
     process.env.NEXT_PUBLIC_NETWORK_URL
 )
 
+//GENERAL
+
 export const getContract = (
     address: string,
     abi: any,
@@ -46,6 +48,16 @@ export const getRouterContract = (provider?: ethers.Signer | ethers.providers.Pr
         provider
     )
 
+//REVNENANT
+export const getRevenantContract = (
+    address,
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(address, JSON.parse(constants.CONTRACT_REVENANT_ABI), provider)
+
+export const getMerkleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
+    getContract(address, JSON.parse(constants.CONTRACT_MERKLE_ABI), provider)
+
+//CREDITUM
 export const getUnitrollerContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
@@ -56,14 +68,6 @@ export const getCreditumContract = (
     provider?: ethers.Signer | ethers.providers.Provider
 ) => getContract(address, JSON.parse(constants.CONTRACT_CREDITUM_ABI), provider)
 
-export const getRevenantContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_REVENANT_ABI), provider)
-
-export const getMerkleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_MERKLE_ABI), provider)
-
 export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
         constants.CONTRACT_CREDITUM_FARMS[250].farmAddress,
@@ -73,6 +77,25 @@ export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Pro
 
 export const getCrvContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+
+//SINGULARITY
+
+export const getSingOracleContract = (
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(constants.CONTRACT_SINGULARITY[250].oracle, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+
+export const getSingRouterContract = (
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(constants.CONTRACT_SINGULARITY[250].router, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+
+export const getSingFactoryContract = (
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(constants.CONTRACT_SINGULARITY[250].factory, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+
+export const getSingLpContract = (
+    address,
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
 
 export const fetchBalances = async (account: string, tokens: any, allowAddress: string) => {
     if (tokens) {
