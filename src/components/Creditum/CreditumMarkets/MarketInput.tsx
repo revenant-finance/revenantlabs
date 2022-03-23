@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useCreditum from '../../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../../hooks/useAlerts'
@@ -15,7 +15,6 @@ export default function MarketInput({ type }) {
     const {
         creditumData,
         selectedMarket,
-        setSelectedMarket,
         depositInput,
         setDepositInput,
         borrowInput,
@@ -24,18 +23,11 @@ export default function MarketInput({ type }) {
         setRepayInput,
         withdrawInput,
         setWithdrawInput,
-        showMoreInfo,
-        setShowMoreInfo,
-        showDepositTool,
-        setShowDepositTool,
-        showRepayTool,
-        setShowRepayTool,
         liquidationPriceDeposit,
         setLiquidationPriceDeposit,
         healthDeposit,
         setHealthDeposit,
         borrowPercent,
-        setBorrowPercent,
         newBorrowPercentDeposit,
         setNewBorrowPercentDeposit,
         liquidationPriceRepay,
