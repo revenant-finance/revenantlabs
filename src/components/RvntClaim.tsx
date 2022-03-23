@@ -93,33 +93,13 @@ export default function RvntClaim() {
                 </div>
             </Modal>
 
-            <div className="bg-neutral-700 border-neutral-900 border-t-2">
-                <div className="max-w-5xl container mx-auto p-6 py-12">
-                    <div className="flex flex-col items-center sm:flex-row gap-12">
-                        <div className="flex flex-1 gap-6">
-                            <i className="text-3xl fas fa-exclamation-triangle"></i>
-                            <div className="space-y-1">
-                                <p className="text-xl font-extrabold">
-                                    Affected by the StakeSteak exploit in late 2021?
-                                </p>
-                                <p>
-                                    Users affected by the StakeSteak exploit are able to claim RVNT
-                                    tokens now. RVNT tokens are ecosystem-wide redemption tokens,
-                                    usable to claim allocations of Revenant Labs projects.
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <button
-                                onClick={() => setShowModal((_) => !_)}
-                                className="bg-neutral-900 text-neutral-400 font-extrabold whitespace-nowrap uppercase rounded px-4 py-2"
-                            >
-                                Claim Tokens
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button
+                onClick={() => setShowModal(true)}
+                className="underline opacity-50 hover:underline-none hover:opacity-75"
+                // className="px-4 py-2 bg-gradient-to-br text-white from-salmon to-purp rounded-full font-medium md:text-xl shadow-2xl"
+            >
+                Claim RVNT
+            </button>
         </>
     )
 }

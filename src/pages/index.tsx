@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import HomepageBackground from '../components/HomepageBackground'
+import RvntClaim from '../components/RvntClaim'
 
 export default function Index() {
     return (
@@ -45,12 +46,14 @@ export default function Index() {
                             building tools to empower sovereign cash on the worlds fastest
                             blockchain.
                         </p>
-                        <div className="flex gap-6">
+                        <div className="flex gap-4 whitespace-nowrap flex-wrap">
                             <Link href="/creditum" passHref>
-                                <a className="px-6 py-3 bg-gradient-to-br text-white from-salmon to-purp rounded-full font-medium text-xl shadow-2xl">
+                                <a className="px-6 py-2 bg-gradient-to-br text-neutral-900 from-salmon to-purp rounded-full font-medium md:text-xl shadow-2xl">
                                     Open Creditum
                                 </a>
                             </Link>
+
+                            <RvntClaim />
                         </div>
 
                         <div className="flex flex-wrap gap-6">
