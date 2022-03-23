@@ -97,6 +97,8 @@ export const getSingLpContract = (
     provider?: ethers.Signer | ethers.providers.Provider
 ) => getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
 
+//UTILS
+
 export const fetchBalances = async (account: string, tokens: any, allowAddress: string) => {
     if (tokens) {
         const abi = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
