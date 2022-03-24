@@ -213,29 +213,40 @@ export const CRV_ADDRESS = {
 export const CONTRACT_SINGULARITY = {
     1: {},
     250: {
-        tokens: {
-            btc: {
-                id: 'btc',
-                symbol: 'BTC',
-                asset: 'wbtc.png',
-                address: creditumAddress[250].TOKEN.btc,
-                decimals: 8
-            }
-        },
-        lptokens: {
-            btc: {
-                id: 'btc',
-                symbol: 'BTC',
-                asset: 'wbtc.png',
-                address: creditumAddress[250].TOKEN.btc,
-                decimals: 8
-            }
+        traunches: {
+            safe: {
+                factory: singularityAddress[250].CONTRACT.factorySafe,
+                router: singularityAddress[250].CONTRACT.routerSafe,
+                tokens: {
+                    btc: {
+                        id: 'btc',
+                        symbol: 'BTC',
+                        asset: 'wbtc.png',
+                        address: singularityAddress[250].TOKEN.btc,
+                        lpAddress: singularityAddress[250].LPTOKEN.btcSafe,
+                        decimals: 8
+                    }
+                },
+            },
+            cusd: {
+                factory: singularityAddress[250].CONTRACT.factoryCUSD,
+                router: singularityAddress[250].CONTRACT.routerCUSD,
+                tokens: {
+                    btc: {
+                        id: 'btc',
+                        symbol: 'BTC',
+                        asset: 'wbtc.png',
+                        address: singularityAddress[250].TOKEN.btc,
+                        lpAddress: singularityAddress[250].LPTOKEN.btcCUSD,
+                        decimals: 8
+                    }
+                },
+            },
         },
         oracle: singularityAddress[250].CONTRACT.oracle,
-        factory: singularityAddress[250].CONTRACT.factory,
-        router: singularityAddress[250].CONTRACT.router,
     }
 }
+
 
 // Contract ABI
 

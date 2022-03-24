@@ -8,6 +8,7 @@ import { TOKENS } from '../../data/constants'
 import { useActiveWeb3React } from '../../hooks'
 import { getRouterContract, getTokenContract } from '../../utils/ContractService'
 import NotReadyModal from '../NotReadyModal'
+import useSingularityData2 from '../../hooks/Creditum/useSingularity'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -15,6 +16,8 @@ export function SingularityAppWrapper({ children }) {
     const router = useRouter()
 
     const { account, library } = useActiveWeb3React()
+    const { singularityData } = useSingularityData2()
+    // console.log(singularityData)
 
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
@@ -214,7 +217,7 @@ export function SingularityAppWrapper({ children }) {
                 swap
             }}
         >
-            <NotReadyModal />
+            {/* <NotReadyModal /> */}
             {children}
         </SingularityIndexPageContext.Provider>
     )

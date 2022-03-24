@@ -82,38 +82,40 @@ export const getCrvContract = (address, provider?: ethers.Signer | ethers.provid
 
 export const getSingOracleContract = (
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(constants.CONTRACT_SINGULARITY[250].oracle, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+) => getContract(constants.CONTRACT_SINGULARITY[250].oracle, JSON.parse(constants.CONTRACT_SING_ORACLE_ABI), provider)
 
 export const getSingRouterContract = (
+    address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(constants.CONTRACT_SINGULARITY[250].router, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+) => getContract(address, JSON.parse(constants.CONTRACT_SING_ROUTER_ABI), provider)
 
 export const getSingFactoryContract = (
+    address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(constants.CONTRACT_SINGULARITY[250].factory, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+) => getContract(address, JSON.parse(constants.CONTRACT_SING_FACTORY_ABI), provider)
 
 export const getSingLpContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+) => getContract(address, JSON.parse(constants.CONTRACT_SING_LP_ABI), provider)
 
 //UTILS
 
-export const fetchBalances = async (account: string, tokens: any, allowAddress: string) => {
+export const fetchBalances = async (account: string, tokens: any, allowAddress: string, addressField: string) => {
     if (tokens) {
         const abi = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
         const walletBalanceCalls = tokens.map((token) => ({
-            address: token.address,
+            address: token[`${addressField}`],
             name: 'balanceOf',
             params: [account]
         }))
         const allowanceCalls = tokens.map((token) => ({
-            address: token.address,
+            address: token[`${addressField}`],
             name: 'allowance',
             params: [account, allowAddress]
         }))
         const totalSupplyCalls = tokens.map((token) => ({
-            address: token.address,
+            address: token[`${addressField}`],
             name: 'totalSupply'
         }))
 

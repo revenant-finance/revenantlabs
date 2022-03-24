@@ -163,8 +163,8 @@ function useCreditumDataInternal() {
                     }))
 
                     const [collateralBalanceData, cTokenBalanceData] = await Promise.all([
-                        fetchBalances(account, assetCollaterals, assetData.mint.creditum),
-                        fetchBalances(account, [assetData.mint], assetData.mint.creditum)
+                        fetchBalances(account, assetCollaterals, assetData.mint.creditum, 'address'),
+                        fetchBalances(account, [assetData.mint], assetData.mint.creditum, 'address')
                     ])
 
                     collateralBalances = collateralBalanceData
@@ -173,7 +173,8 @@ function useCreditumDataInternal() {
                     cTokenBalances = await fetchBalances(
                         EMPTY_ADDRESS,
                         [assetData.mint],
-                        assetData.mint.creditum
+                        assetData.mint.creditum,
+                        'address'
                     )
                 }
 
