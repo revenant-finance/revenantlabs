@@ -17,7 +17,7 @@ export default {
 
         },
         CONTRACT: {
-            oracle: '0xD316F76014Dd81E9Fe0aD6D0d68E4A141503795a',
+            oracle: '0xC659b3879eD5B3079D5B7Fb89801143E6C1fD8Fa',
             routerSafe: '0xE9B5Cf1e1454B9F3F11BBDE9acECDf65c223E035',
             factorySafe: '0x7461dd01E68B11A6082A44FdE9c85a63cca134A2',
             routerCUSD: '0xE9B5Cf1e1454B9F3F11BBDE9acECDf65c223E035',

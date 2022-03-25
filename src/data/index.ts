@@ -222,6 +222,7 @@ export const CONTRACT_SINGULARITY = {
                         id: 'btc',
                         symbol: 'BTC',
                         asset: 'wbtc.png',
+                        name: 'Wrapped Bitcoin',
                         address: singularityAddress[250].TOKEN.btc,
                         lpAddress: singularityAddress[250].LPTOKEN.btcSafe,
                         decimals: 8
@@ -230,6 +231,7 @@ export const CONTRACT_SINGULARITY = {
                         id: 'usdc',
                         symbol: 'USDC',
                         asset: 'usdc.png',
+                        name: 'USDC',
                         address: singularityAddress[250].TOKEN.usdc,
                         lpAddress: singularityAddress[250].LPTOKEN.usdcSafe,
                         decimals: 6
@@ -237,7 +239,8 @@ export const CONTRACT_SINGULARITY = {
                     eth: {
                         id: 'eth',
                         symbol: 'ETH',
-                        asset: 'eth.png',
+                        asset: 'weth.png',
+                        name: 'Wrapped Ether',
                         address: singularityAddress[250].TOKEN.eth,
                         lpAddress: singularityAddress[250].LPTOKEN.ethSafe,
                         decimals: 18
@@ -252,6 +255,7 @@ export const CONTRACT_SINGULARITY = {
                         id: 'btc',
                         symbol: 'BTC',
                         asset: 'wbtc.png',
+                        name: 'Wrapped Bitcoin',
                         address: singularityAddress[250].TOKEN.btc,
                         lpAddress: singularityAddress[250].LPTOKEN.btcCUSD,
                         decimals: 8
@@ -260,6 +264,7 @@ export const CONTRACT_SINGULARITY = {
                         id: 'usdc',
                         symbol: 'USDC',
                         asset: 'usdc.png',
+                        name: 'USDC',
                         address: singularityAddress[250].TOKEN.usdc,
                         lpAddress: singularityAddress[250].LPTOKEN.usdcCUSD,
                         decimals: 6
@@ -267,7 +272,8 @@ export const CONTRACT_SINGULARITY = {
                     eth: {
                         id: 'eth',
                         symbol: 'ETH',
-                        asset: 'eth.png',
+                        asset: 'weth.png',
+                        name: 'Wrapped Ether',
                         address: singularityAddress[250].TOKEN.eth,
                         lpAddress: singularityAddress[250].LPTOKEN.ethCUSD,
                         decimals: 18

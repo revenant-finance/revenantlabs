@@ -4,10 +4,7 @@ import * as constants from '../../data'
 import { EMPTY_ADDRESS, toEth, MAX_UINT256 } from '../../utils'
 import {
     fetchBalances,
-    getTokenContract,
-    getSingLpContract,
     getSingOracleContract,
-    getSingRouterContract
 } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
@@ -27,7 +24,8 @@ const formatSingularityData = (
     _lpUnderlyingBalance,
     _walletBalance,
     _lpBalance,
-    _tokenPrice
+    _tokenPrice,
+    _lastUpdated
 ) => {
     return {
         ..._token,
@@ -38,8 +36,8 @@ const formatSingularityData = (
         pricePerShare: String(_pricePerShare),
         tradingFeeRate: String(_tradingFeeRate),
         _lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
-        tokenPrice: toEth(_tokenPrice[0], _token.decimals),
-        lastUpdated: _tokenPrice[1]
+        tokenPrice: toEth(_tokenPrice),
+        lastUpdated: String(_lastUpdated)
     }
 }
 
@@ -137,7 +135,6 @@ function useSingularityDataInternal() {
             })
 
             const traunchData = await Promise.all(allTraunchCalls)
-            console.log(traunchData)
             traunchData.forEach((traunch, i) => {
                 const formattedTokenData = []
                 const tokens = allTraunchData[i].tokens
@@ -161,13 +158,13 @@ function useSingularityDataInternal() {
                         lpUnderlyingBalances[j][0],  
                         walletBalances[j],     
                         lpBalances[j], 
-                        tokenPrices[j]
+                        tokenPrices[0][j],
+                        tokenPrices[1][j]
                     )
                     formattedTokenData.push(tokenData)
                 }
                 formattedSingularityData[`${traunchIds[i]}`] = { tokens: formattedTokenData, router: allTraunchData[i].traunchData.router  }
             })
-            console.log(formattedSingularityData)
 
             console.log('refreshing collaterals result ===== ')
             setSingularityData(formattedSingularityData)

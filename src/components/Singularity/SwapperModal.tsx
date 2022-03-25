@@ -4,6 +4,7 @@ import Input from '../Input'
 import Modal from '../Modal'
 import Portal from '../Portal'
 import useSingularityData from './SingularityAppWrapper'
+import { CONTRACT_SINGULARITY } from '../../data'
 
 export default function SwapperModal() {
     const {
@@ -19,8 +20,9 @@ export default function SwapperModal() {
     } = useSingularityData()
 
     const [filter, setFilter] = useState('')
+    const TOKENS = Object.values(CONTRACT_SINGULARITY[250].traunches.safe.tokens)
 
-    const tokenList = TOKENS['250']
+    const tokenList = TOKENS
         .filter((token) => {
             // Don't show selected tokens, if selected.
             if (selectingToken === 'to') return fromToken ? token.id !== fromToken.id : true

@@ -4,9 +4,12 @@ import { useActiveWeb3React } from '../../hooks'
 import Input from '../Input'
 import useSingularityData from './SingularityAppWrapper'
 import SwapperModal from './SwapperModal'
+import { toEth } from '../../utils'
+import useAuth from '../../hooks/useAuth'
 
 export default function () {
     const { account, library } = useActiveWeb3React()
+    const { login } = useAuth()
     const {
         openModal,
         fromToken,
@@ -28,6 +31,7 @@ export default function () {
         minimumReceived,
         swap
     } = useSingularityData()
+    console.log(toEth(toValue, toToken.decimals))
 
     return (
         <>
@@ -66,7 +70,7 @@ export default function () {
                                 <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
                                     {fromToken && (
                                         <span className="flex items-center space-x-2">
-                                            <img className="w-6" src={fromToken.image} alt="" />
+                                            <img className="w-6" src={`/img/tokens/${fromToken.asset}`} alt="" />
                                             {/* <span>{fromToken.symbol}</span> */}
                                         </span>
                                     )}
@@ -116,7 +120,7 @@ export default function () {
                                 <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
                                     {toToken && (
                                         <span className="flex items-center space-x-2">
-                                            <img className="w-6" src={toToken.image} alt="" />
+                                            <img className="w-6" src={`/img/tokens/${toToken.asset}`} alt="" />
                                             {/* <span>{toToken.symbol}</span> */}
                                         </span>
                                     )}
@@ -134,7 +138,7 @@ export default function () {
                                 <div className="whitespace-nowrap">
                                     <p className="text-xs opacity-50">From</p>
                                     <p className="">
-                                        {formatter(inEth(fromValue, fromToken.decimals))}{' '}
+                                        {formatter(toEth(fromValue, fromToken.decimals))}{' '}
                                         {fromToken.symbol}
                                     </p>
                                 </div>
@@ -185,9 +189,9 @@ export default function () {
                     )}
 
                     <div>
-                        {/* <button onClick={account ? () => swap() : () => wallet.connect()} className="w-full px-2 py-2 font-medium text-yellow-400 bg-yellow-900 rounded">
+                        <button onClick={account ? () => swap() : () => login()} className="w-full px-2 py-2 font-medium text-yellow-400 bg-yellow-900 rounded">
                             {account ? 'Swap' : 'Connect Wallet'}
-                        </button> */}
+                        </button>
                     </div>
 
                     {fromToken && toToken && (

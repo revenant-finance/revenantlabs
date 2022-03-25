@@ -4,11 +4,12 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import shortNumber from 'short-number'
 import { useCookieState } from 'use-cookie-state'
-import { TOKENS } from '../../data/constants'
 import { useActiveWeb3React } from '../../hooks'
-import { getRouterContract, getTokenContract } from '../../utils/ContractService'
+import { getSingRouterContract, getTokenContract } from '../../utils/ContractService'
 import NotReadyModal from '../NotReadyModal'
 import useSingularityData2 from '../../hooks/Creditum/useSingularity'
+import { CONTRACT_SINGULARITY } from '../../data'
+import { toEth, toWei } from '../../utils'
 
 export const SingularityIndexPageContext = createContext({})
 
@@ -17,14 +18,16 @@ export function SingularityAppWrapper({ children }) {
 
     const { account, library } = useActiveWeb3React()
     const { singularityData } = useSingularityData2()
-    // console.log(singularityData)
+    if (!Object.values(singularityData).length) return null
 
+    const TOKENS = Object.values(singularityData.safe.tokens)
+    console.log(TOKENS)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState(0.0)
     const [toValue, _setToValue] = useState(0.0)
-    const [fromToken, _setFromToken] = useState(TOKENS[250][0])
-    const [toToken, _setToToken] = useState(TOKENS[250][1])
+    const [fromToken, _setFromToken] = useState(TOKENS[0])
+    const [toToken, _setToToken] = useState(TOKENS[1])
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -58,7 +61,7 @@ export function SingularityAppWrapper({ children }) {
         ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber()
         : 0
 
-    const routerContract = getRouterContract(library.getSigner())
+    const routerContract = getSingRouterContract(singularityData.safe.router, library.getSigner())
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
@@ -79,22 +82,25 @@ export function SingularityAppWrapper({ children }) {
         _setToValue(fromValue)
     }
 
-    const getAmountsOut = async (value, path) => {
-        const amountsOut = await routerContract.getAmountsOut(value, path)
-        return amountsOut[amountsOut.length - 1]
+    const getAmountOut = async (value, tokenIn, tokenOut) => {
+        const amountsOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
+        return amountsOut
     }
 
     // const doApprovalCheck = () => {}
 
     const swap = async () => {
         try {
-            const path = [fromToken.address, toToken.address]
+            if (Number(fromToken.allowBalance) < Number(fromValue)) {
+                const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
+                await fromTokenContract.approve(singularityData.safe.router, toWei(String(fromValue), fromToken.decimals))
+            }
             const amountIn = fromValue
-            const amountOut = await getAmountsOut(amountIn, path)
+            const amountOut = await getAmountOut(amountIn, fromToken.address, toToken.address)
             const to = account
             const timestamp = Date.now() + 1000 * 60 * 10
-            console.log(amountIn, amountOut, path, to, timestamp)
-            await routerContract.swapTokensForExactTokens(amountIn, amountOut, path, to, timestamp)
+            console.log(fromToken.address, toToken.address, amountIn, amountOut, to, timestamp)
+            await routerContract.swapExactTokensForTokens(fromToken.address, toToken.address, amountIn, amountOut, to, timestamp)
         } catch (error) {
             console.log(error)
         }
@@ -105,7 +111,7 @@ export function SingularityAppWrapper({ children }) {
             _setFromValue(balance)
             if (!balance) _setToValue(0)
             if (!toToken || !fromToken || !balance) return
-            const amountsOut = await getAmountsOut(balance, [fromToken.address, toToken.address])
+            const amountsOut = await getAmountOut(balance, fromToken.address, toToken.address)
             _setToValue(amountsOut)
         } catch (error) {
             _setToValue(0)
@@ -118,7 +124,7 @@ export function SingularityAppWrapper({ children }) {
             _setToValue(balance)
             if (!balance) _setFromValue(0)
             if (!toToken || !fromToken || !balance) return
-            const amountsOut = await getAmountsOut(balance, [toToken.address, fromToken.address])
+            const amountsOut = await getAmountOut(balance, toToken.address, fromToken.address)
             _setFromValue(amountsOut)
         } catch (error) {
             _setFromValue(0)
@@ -149,11 +155,11 @@ export function SingularityAppWrapper({ children }) {
 
     useEffect(() => {
         const findFromToken =
-            TOKENS[250].find((token) => token.id === fromTokenUrlParam) ||
-            TOKENS[250].find((token) => token.id === fromTokenCache)
+            TOKENS.find((token) => token.id === fromTokenUrlParam) ||
+            TOKENS.find((token) => token.id === fromTokenCache)
         const findToToken =
-            TOKENS[250].find((token) => token.id === toTokenUrlParam) ||
-            TOKENS[250].find((token) => token.id === toTokenCache)
+            TOKENS.find((token) => token.id === toTokenUrlParam) ||
+            TOKENS.find((token) => token.id === toTokenCache)
         if (findFromToken) setFromToken(findFromToken)
         if (findToToken) setToToken(findToToken)
     }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam])
