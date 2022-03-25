@@ -2,10 +2,10 @@ import { BigNumberInput } from 'big-number-input'
 import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
 import Input from '../Input'
-import useSingularityData from './SingularityAppWrapper'
 import SwapperModal from './SwapperModal'
 import { toEth } from '../../utils'
 import useAuth from '../../hooks/useAuth'
+import useSingularity from '../../hooks/useSingularity'
 
 export default function () {
     const { account, library } = useActiveWeb3React()
@@ -30,7 +30,7 @@ export default function () {
         totalFees,
         minimumReceived,
         swap
-    } = useSingularityData()
+    } = useSingularity()
 
     return (
         <>

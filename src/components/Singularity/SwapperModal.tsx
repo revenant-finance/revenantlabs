@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { TOKENS } from '../../data/constants'
+import useSingularity from '../../hooks/useSingularity'
 import Input from '../Input'
 import Modal from '../Modal'
 import Portal from '../Portal'
-import useSingularityData from './SingularityAppWrapper'
-import { CONTRACT_SINGULARITY } from '../../data'
 
 export default function SwapperModal() {
     const {
@@ -18,7 +16,7 @@ export default function SwapperModal() {
         selectingToken,
         inEth,
         setSelectingToken
-    } = useSingularityData()
+    } = useSingularity()
 
     const [filter, setFilter] = useState('')
 
