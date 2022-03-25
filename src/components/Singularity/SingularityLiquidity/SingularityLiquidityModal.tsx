@@ -1,0 +1,45 @@
+import useSingularity from '../../../hooks/useSingularity'
+import Button from '../../Button'
+import Input from '../../Input'
+import Modal from '../../Modal'
+
+export default function SingularityLiquidityModal() {
+    const { lpInput, setLpInput, selectedLp, setSelectedLp } = useSingularity()
+
+    return (
+        <>
+            <Modal visible={selectedLp ? true : false} onClose={() => setSelectedLp(null)}>
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <p>confirm deposit</p>
+                        <Input
+                            type="number"
+                            value={lpInput}
+                            onChange={(e) => setLpInput(e.target.value)}
+                        />
+                        <div className="flex">
+                            <p className="flex-1">data</p>
+                            <p>data</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Deposit: {lpInput}</p>
+                        <p>tokenPrice: {selectedLp?.tokenPrice}</p>
+                        <p>Fees: {'?????????'}</p>
+                    </div>
+                    <div>
+                        <p>Ur Deposit: {lpInput}</p>
+                        <p>
+                            Pool Share: {'?????????'} {'=>'} {'?????????'}
+                        </p>
+                    </div>
+
+                    <div className="flex space-x-6">
+                        <Button>Cancel</Button>
+                        <Button className="bg-blue-500">Approve</Button>
+                    </div>
+                </div>
+            </Modal>
+        </>
+    )
+}

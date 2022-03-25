@@ -31,7 +31,6 @@ export default function () {
         minimumReceived,
         swap
     } = useSingularityData()
-    console.log(toEth(toValue, toToken.decimals))
 
     return (
         <>
@@ -70,7 +69,11 @@ export default function () {
                                 <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
                                     {fromToken && (
                                         <span className="flex items-center space-x-2">
-                                            <img className="w-6" src={`/img/tokens/${fromToken.asset}`} alt="" />
+                                            <img
+                                                className="w-6"
+                                                src={`/img/tokens/${fromToken.asset}`}
+                                                alt=""
+                                            />
                                             {/* <span>{fromToken.symbol}</span> */}
                                         </span>
                                     )}
@@ -120,7 +123,11 @@ export default function () {
                                 <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
                                     {toToken && (
                                         <span className="flex items-center space-x-2">
-                                            <img className="w-6" src={`/img/tokens/${toToken.asset}`} alt="" />
+                                            <img
+                                                className="w-6"
+                                                src={`/img/tokens/${toToken.asset}`}
+                                                alt=""
+                                            />
                                             {/* <span>{toToken.symbol}</span> */}
                                         </span>
                                     )}
@@ -150,7 +157,7 @@ export default function () {
                                     <p className="text-xs opacity-50">To</p>
 
                                     <p className="">
-                                        {formatter(inEth(toValue, toToken.decimals))}{' '}
+                                        {formatter(toEth(toValue, toToken.decimals))}{' '}
                                         {toToken.symbol}
                                     </p>
                                 </div>
@@ -177,7 +184,7 @@ export default function () {
                                         ~{inEth(totalFees, toToken.decimals)} {toToken.symbol}
                                     </p>
                                 </div>
-                                <div className="flex items-center text-yellow-400">
+                                <div className="flex items-center text-purple-400">
                                     <p className="flex-1">Minimum Received</p>
                                     <p className="">
                                         ~{formatter(inEth(minimumReceived, toToken.decimals))}{' '}
@@ -189,7 +196,10 @@ export default function () {
                     )}
 
                     <div>
-                        <button onClick={account ? () => swap() : () => login()} className="w-full px-2 py-2 font-medium text-yellow-400 bg-yellow-900 rounded">
+                        <button
+                            onClick={account ? () => swap() : () => login()}
+                            className="w-full px-2 py-2 font-medium text-purple-400 bg-purple-900 rounded"
+                        >
                             {account ? 'Swap' : 'Connect Wallet'}
                         </button>
                     </div>
