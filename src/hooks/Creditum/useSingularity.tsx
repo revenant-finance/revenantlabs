@@ -1,132 +1,230 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '..'
 import * as constants from '../../data'
-import { toEth } from '../../utils'
+import { EMPTY_ADDRESS, toEth, MAX_UINT256 } from '../../utils'
 import {
-    getTokenContract,
-    getVeTokenContract,
-    getVeTokenFeesContract,
-    getXTokenContract
+    fetchBalances,
+    getSingOracleContract,
 } from '../../utils/ContractService'
+import multicall from '../../utils/multicall'
 import useRefresh from '../useRefresh'
 
-const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
-const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
-const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
+const routerABI = JSON.parse(constants.CONTRACT_SING_ROUTER_ABI)
+const factoryABI = JSON.parse(constants.CONTRACT_SING_FACTORY_ABI)
+const oracleABI = JSON.parse(constants.CONTRACT_SING_ORACLE_ABI)
+const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
+const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
-export function useSingularityInternal() {
-    const [veCreditData, setVeCreditData] = useState({})
+const formatSingularityData = (
+    _token,
+    _assetAmount,
+    _liabilityAmount,
+    _pricePerShare,
+    _tradingFeeRate,
+    _lpUnderlyingBalance,
+    _walletBalance,
+    _lpBalance,
+    _tokenPrice,
+    _lastUpdated
+) => {
+    return {
+        ..._token,
+        ..._lpBalance,
+        ..._walletBalance,
+        assetAmount: toEth(_assetAmount, _token.decimals),
+        liabilityAmount: toEth(_liabilityAmount, _token.decimals),
+        pricePerShare: String(_pricePerShare),
+        tradingFeeRate: String(_tradingFeeRate),
+        _lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
+        tokenPrice: toEth(_tokenPrice),
+        lastUpdated: String(_lastUpdated)
+    }
+}
+
+function useSingularityDataInternal() {
     const { slowRefresh } = useRefresh()
+    const [refreshing, setRefreshing] = useState(false)
+    const [singularityData, setSingularityData] = useState({})
     const { account } = useActiveWeb3React()
-    const veCreditContract = getVeTokenContract(veCreditAddress)
-    const xCreditContract = getXTokenContract(xCreditAddress)
-    const creditContract = getTokenContract(creditAddress)
-    const feesContract = getVeTokenFeesContract()
+    const oracleContract = getSingOracleContract()
+
     const [refresh, setRefresh] = useState(0)
     const update = () => setRefresh((i) => i + 1)
 
-    const fetchData = async () => {
-        try {
-            if (account) {
-                const [
-                    allow,
-                    tokenBal,
-                    xTokenBalance,
-                    xtokenShare,
-                    xTokenValue,
-                    veCreditBal,
-                    veCreditTotalSupply,
-                    locked,
-                    veTokenValue,
-                    rewardTime,
-                    totalRewardAmount,
-                    userRewardAmount
-                ] = await Promise.all([
-                    creditContract.allowance(account, veCreditAddress),
-                    creditContract.balanceOf(account),
-                    xCreditContract.balanceOf(account),
-                    xCreditContract.getShareValue(),
-                    creditContract.balanceOf(xCreditAddress),
-                    veCreditContract['balanceOf(address)'](account),
-                    veCreditContract.supply(),
-                    veCreditContract.locked(account),
-                    creditContract.balanceOf(veCreditAddress),
-                    feesContract.time_cursor(),
-                    feesContract.token_last_balance(),
-                    feesContract.callStatic['claim(address)'](account)
-                ])
+    //Oracle
+    //getLatestRounds
 
-                return {
-                    allowance: toEth(allow),
-                    tokenBal: toEth(tokenBal),
-                    xTokenBalance: toEth(xTokenBalance),
-                    xtokenShare: toEth(xtokenShare),
-                    xTokenValue: toEth(xTokenValue),
-                    veCreditBal: toEth(veCreditBal),
-                    veCreditTotalSupply: toEth(veCreditTotalSupply),
-                    creditLocked: toEth(locked.amount),
-                    lockEnd: locked.end.toNumber(),
-                    veTokenValue: toEth(veTokenValue),
-                    rewardTime: Number(rewardTime),
-                    totalRewardAmount: toEth(totalRewardAmount),
-                    userRewardAmount: toEth(userRewardAmount),
-                    estimatedReward: toEth(
-                        totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply)
+    //LP
+    //getCollateralizationRatio, getPricePerShare, getAmountToUSD, getLpFeeRate, getDepositFee, getWithdrawFee, getSlippageIn, getSlippageOut, getTradingFeeRate, getTradingFees || deposit, withdraw
+
+    //Router
+    //getAmountOut || poolFor, swapExactTokensForTokens, swapExactETHForTokens, swapExactTokensForETH, addLiquidity, addLiquidityETH, removeLiquidity, removeLiquidityETH, removeLiquidityWithPermit, removeLiquidityETHWithPermit
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setRefreshing(true)
+            const traunchIds = Object.keys(constants.CONTRACT_SINGULARITY[250].traunches)
+            let formattedSingularityData = new Object()
+            const allTraunchData = traunchIds.map((traunchId) => {
+                const traunchData = constants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
+                const tokens = Object.values(traunchData.tokens)
+                const tokenAddresses = tokens.map((token) => {
+                    return token.address
+                })
+                let balanceCalls, lpBalanceCalls
+                if (account) {
+                    balanceCalls = fetchBalances(account, tokens, traunchData.router, 'address')
+                    lpBalanceCalls = fetchBalances(account, tokens, traunchData.router, 'lpAddress')
+                } else {
+                    balanceCalls = fetchBalances(
+                        EMPTY_ADDRESS,
+                        tokens,
+                        traunchData.router,
+                        'address'
+                    )
+                    lpBalanceCalls = fetchBalances(
+                        EMPTY_ADDRESS,
+                        tokens,
+                        traunchData.router,
+                        'lpAddress'
                     )
                 }
-            } else {
-                const [
-                    xtokenShare,
-                    xTokenValue,
-                    veCreditTotalSupply,
-                    veTokenValue,
-                    rewardTime,
-                    totalRewardAmount
-                ] = await Promise.all([
-                    xCreditContract.getShareValue(),
-                    creditContract.balanceOf(xCreditAddress),
-                    veCreditContract['totalSupply()'](),
-                    veCreditContract.supply(),
-                    feesContract.time_cursor(),
-                    feesContract.token_last_balance()
+
+                const assetsAmountCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'assets'
+                }))
+
+                const liabilitiesAmountCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'liabilities'
+                }))
+
+                const pricePerShareCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'getPricePerShare'
+                }))
+
+                const tradingFeeRateCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'getTradingFeeRate'
+                }))
+
+                const lpUnderlyingBalanceCalls = tokens.map((value) => ({
+                    address: value.address,
+                    name: 'balanceOf',
+                    params: [value.lpAddress]
+                }))
+
+                const traunchCalls = Promise.all([
+                    multicall(lpTokenABI, assetsAmountCalls),
+                    multicall(lpTokenABI, liabilitiesAmountCalls),
+                    multicall(lpTokenABI, pricePerShareCalls),
+                    multicall(lpTokenABI, tradingFeeRateCalls),
+                    multicall(erc20ABI, lpUnderlyingBalanceCalls),
+                    balanceCalls,
+                    lpBalanceCalls,
+                    oracleContract.getLatestRounds(tokenAddresses)
                 ])
-                return {
-                    xtokenShare: toEth(xtokenShare),
-                    xTokenValue: toEth(xTokenValue),
-                    veTokenValue: toEth(veTokenValue),
-                    veCreditTotalSupply: toEth(veCreditTotalSupply),
-                    rewardTime: Number(rewardTime),
-                    totalRewardAmount: toEth(totalRewardAmount)
+
+                return { traunchCalls, tokens, traunchData }
+            })
+
+            const allTraunchCalls = allTraunchData.map((traunch) => {
+                return traunch.traunchCalls
+            })
+
+            const traunchData = await Promise.all(allTraunchCalls)
+            traunchData.forEach((traunch, i) => {
+                const formattedTokenData = []
+                const tokens = allTraunchData[i].tokens
+                const [
+                    assetsAmount,
+                    liabilitiesAmount,
+                    pricePerShares,
+                    tradingFeeRates,
+                    lpUnderlyingBalances,
+                    walletBalances,
+                    lpBalances,
+                    tokenPrices
+                ] = traunch
+                for (let j = 0; j < liabilitiesAmount.length; j++) {
+                    const tokenData = formatSingularityData(
+                        tokens[j],
+                        assetsAmount[j][0], 
+                        liabilitiesAmount[j][0], 
+                        pricePerShares[j][0],  
+                        tradingFeeRates[j][0],  
+                        lpUnderlyingBalances[j][0],  
+                        walletBalances[j],     
+                        lpBalances[j], 
+                        tokenPrices[0][j],
+                        tokenPrices[1][j]
+                    )
+                    formattedTokenData.push(tokenData)
                 }
-            }
-        } catch (e) {
-            console.log(e)
+                formattedSingularityData[`${traunchIds[i]}`] = { tokens: formattedTokenData, router: allTraunchData[i].traunchData.router  }
+            })
+
+            console.log('refreshing collaterals result ===== ')
+            setSingularityData(formattedSingularityData)
+            setRefreshing(false)
+        }
+        fetchData()
+    }, [account, slowRefresh, refresh])
+
+    return {
+        singularityData,
+        update,
+        refreshing
+    }
+}
+
+export const SingularityContext = createContext({})
+
+export function SingularityDataWrapper({ children }: any) {
+    const [traunch, setTraunch] = useState(null)
+    const [token, setToken] = useState(null)
+    const { account, library } = useActiveWeb3React()
+    const singularityData = useSingularityDataInternal()
+    // const routerContract = getSingRouterContract(traunch?.router, library.getSigner())
+    // const tokenContract = getTokenContract(token?.address, library?.getSigner())
+
+    const approve = async () => {
+        if (!account) return
+        try {
+            const tx = await tokenContract.approve(traunch?.router, MAX_UINT256)
+            await tx.wait(1)
+            singularityData.update()
+        } catch (ex) {
+            console.error(ex)
         }
     }
 
-    useEffect(() => {
-        fetchData().then((res) => {
-            res && setVeCreditData(res)
-        })
-    }, [account, refresh, slowRefresh])
+    // const approve = async () => {
+    //     if (!account) return
+    //     try {
+    //         const tx = await tokenContract.approve(traunch?.router, MAX_UINT256)
+    //         await tx.wait(1)
+    //         singularityData.update()
+    //     } catch (ex) {
+    //         console.error(ex)
+    //     }
+    // }
 
-    return {
-        veCreditData,
-        update
-    }
-}
-
-const VeCreditDataContext = createContext({})
-
-export const VeCreditDataWrapper = ({ children }) => {
-    const veCredit = useSingularityInternal()
     return (
-        <VeCreditDataContext.Provider value={{ ...veCredit }}>
-            {children}
-        </VeCreditDataContext.Provider>
+        <>
+            <SingularityContext.Provider
+                value={{
+                    ...singularityData
+                }}
+            >
+                <>{children}</>
+            </SingularityContext.Provider>
+        </>
     )
 }
 
-export default function useVeCreditData() {
-    return useContext(VeCreditDataContext) as any
+export default function useSingularityData2() {
+    return useContext(SingularityContext) as any
 }

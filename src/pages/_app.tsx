@@ -8,6 +8,7 @@ import Meta from '../../public/img/Meta'
 import Navigation from '../components/Navigation'
 import Web3ReactManager from '../components/Web3ReactManager'
 import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
+import { SingularityDataWrapper } from '../hooks/Creditum/useSingularity'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
@@ -30,8 +31,10 @@ export default function App({ Component, pageProps }: AppProps) {
                     <Web3ReactManager>
                         <UseAlertsWrapper>
                             <CreditumDataWrapper>
-                                <Navigation />
-                                <Component {...pageProps} />
+                                <SingularityDataWrapper>
+                                    <Navigation />
+                                    <Component {...pageProps} />
+                                </SingularityDataWrapper>
                             </CreditumDataWrapper>
                         </UseAlertsWrapper>
                     </Web3ReactManager>

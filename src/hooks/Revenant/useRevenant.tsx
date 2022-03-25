@@ -64,7 +64,7 @@ export default function useRevenant() {
     }
 
     const getRVNTBalance = async () => {
-        const balanceCall = await fetchBalances(account, [rvnt], revenantContract.address)
+        const balanceCall = await fetchBalances(account, [rvnt], revenantContract.address, 'address')
         const balance = balanceCall[0].walletBalance
         return balance
     }
