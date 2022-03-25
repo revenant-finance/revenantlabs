@@ -39,7 +39,7 @@ const formatSingularityData = (
         tradingFeeRate: String(_tradingFeeRate),
         _lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
         tokenPrice: toEth(_tokenPrice[0], _token.decimals),
-        // lastUpdated: _tokenPrice[1]
+        lastUpdated: _tokenPrice[1]
     }
 }
 
@@ -122,13 +122,11 @@ function useSingularityDataInternal() {
                     multicall(lpTokenABI, assetsAmountCalls),
                     multicall(lpTokenABI, liabilitiesAmountCalls),
                     multicall(lpTokenABI, pricePerShareCalls),
-                    multicall(lpTokenABI, pricePerShareCalls),
-                    // multicall(lpTokenABI, tradingFeeRateCalls),
+                    multicall(lpTokenABI, tradingFeeRateCalls),
                     multicall(erc20ABI, lpUnderlyingBalanceCalls),
                     balanceCalls,
                     lpBalanceCalls,
-                    multicall(lpTokenABI, pricePerShareCalls),
-                    // oracleContract.getLatestRounds(tokenAddresses)
+                    oracleContract.getLatestRounds(tokenAddresses)
                 ])
 
                 return { traunchCalls, tokens, traunchData }
@@ -139,6 +137,7 @@ function useSingularityDataInternal() {
             })
 
             const traunchData = await Promise.all(allTraunchCalls)
+            console.log(traunchData)
             traunchData.forEach((traunch, i) => {
                 const formattedTokenData = []
                 const tokens = allTraunchData[i].tokens
