@@ -5,8 +5,9 @@ import Input from '../../Input'
 import Modal from '../../Modal'
 
 export default function SingularityLiquidityModal() {
-    const { lpInput, setLpInput, selectedLp, setSelectedLp } = useSingularity()
+    const { selectedLp, setSelectedLp } = useSingularity()
 
+    const [lpInput, setLpInput] = useState('')
     const [isWithdraw, setIsWithdraw] = useState(false)
 
     return (

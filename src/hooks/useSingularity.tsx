@@ -28,7 +28,6 @@ export function useSingularityInteral() {
     const { account, library } = useActiveWeb3React()
     const oracleContract = getSingOracleContract()
 
-    const [lpInput, setLpInput] = useState('')
     const [selectedLp, setSelectedLp] = useState(null)
 
     const [data, setData] = useState({})
@@ -370,8 +369,6 @@ export function useSingularityInteral() {
     return {
         data,
         update,
-        lpInput,
-        setLpInput,
         selectedLp,
         setSelectedLp,
         refreshing,
@@ -407,5 +404,5 @@ export function useSingularityInteral() {
 }
 
 export default function useSingularity() {
-    return useContext(SingularityContext)
+    return useContext<any>(SingularityContext)
 }
