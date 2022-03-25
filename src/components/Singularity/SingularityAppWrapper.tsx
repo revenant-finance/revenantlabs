@@ -16,7 +16,7 @@ export function SingularityAppWrapper({ children }) {
 
             <div className="w-full h-full bg-center bg-cover p-6 py-24">
                 <MeshBackground id="singularity-gradient-colors" />
-                <div className="bg-black absolute inset-0 bg-opacity-50" />
+                <div className="bg-black fixed inset-0 bg-opacity-50" />
                 <div className="relative z-10">{children}</div>
             </div>
         </SingularityContext.Provider>

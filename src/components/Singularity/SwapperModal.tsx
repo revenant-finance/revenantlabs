@@ -7,15 +7,11 @@ import Portal from '../Portal'
 export default function SwapperModal() {
     const {
         tokens,
-        fromToken,
-        toToken,
         setFromToken,
         setToToken,
         showSelectTokenModal,
         setShowSelectTokenModal,
-        selectingToken,
-        inEth,
-        setSelectingToken
+        selectingToken
     } = useSingularity()
 
     const [filter, setFilter] = useState('')
