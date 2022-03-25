@@ -27,8 +27,6 @@ export default function SingularityLiquidity() {
                             </tr>
                         </thead>
 
-                        <p className="w-32 overflow-hidden">{JSON.stringify(selectedLp)}</p>
-
                         <tbody>
                             {tokens?.map((token) => (
                                 <tr>
