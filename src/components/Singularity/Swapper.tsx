@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
 import Input from '../Input'
 import SwapperModal from './SwapperModal'
-import { toEth } from '../../utils'
 import useAuth from '../../hooks/useAuth'
 import useSingularity from '../../hooks/useSingularity'
 
@@ -21,15 +20,13 @@ export default function () {
         slippage,
         setSlippage,
         swapTokens,
-        fromBalanceEth,
-        toBalanceEth,
         maxFrom,
         maxTo,
-        inEth,
         formatter,
         totalFees,
         minimumReceived,
-        swap
+        swap,
+        data
     } = useSingularity()
 
     return (
@@ -41,23 +38,19 @@ export default function () {
                     <div className="relative overflow-hidden border-2 rounded-2xl border-neutral-800">
                         <div className="flex w-full border-b-2 bg-neutral-700 border-neutral-800 ">
                             <div className="flex-1">
-                                <BigNumberInput
-                                    renderInput={(props) => (
-                                        <input
-                                            {...props}
-                                            className={classNames(
-                                                'bg-transparent outline-none p-4 w-full',
-                                                !!fromBalanceEth && 'pb-0'
-                                            )}
-                                        />
+                                <input
+                                    type="number"
+                                    className={classNames(
+                                        'bg-transparent outline-none p-4 w-full',
+                                        !!fromToken?.walletBalance && 'pb-0'
                                     )}
-                                    decimals={fromToken ? fromToken.decimals : 18}
+                                    onChange={(e) => setFromValue(e.target.value)}
                                     value={fromValue}
-                                    onChange={(value) => setFromValue(value)}
                                 />
-                                {!!fromBalanceEth && (
+
+                                {!!fromToken?.walletBalance && (
                                     <button onClick={maxFrom} className="px-4 pb-2 text-xs">
-                                        Max: {formatter(fromBalanceEth)} {fromToken.symbol}
+                                        Max: {formatter(fromToken.walletBalance)} {fromToken.symbol}
                                     </button>
                                 )}
                             </div>
@@ -95,23 +88,18 @@ export default function () {
 
                         <div className="flex w-full bg-neutral-700">
                             <div className="flex-1">
-                                <BigNumberInput
-                                    renderInput={(props) => (
-                                        <input
-                                            {...props}
-                                            className={classNames(
-                                                'bg-transparent outline-none p-4 w-full',
-                                                !!toBalanceEth && 'pb-0'
-                                            )}
-                                        />
+                                <input
+                                    type="number"
+                                    className={classNames(
+                                        'bg-transparent outline-none p-4 w-full',
+                                        !!toToken?.walletBalance && 'pb-0'
                                     )}
-                                    decimals={toToken ? toToken.decimals : 18}
                                     value={toValue}
-                                    onChange={(value) => setToValue(value)}
+                                    onChange={(e) => setToValue(e.target.value)}
                                 />
-                                {!!toBalanceEth && (
+                                {!!toToken?.walletBalance && (
                                     <button onClick={maxTo} className="px-4 pb-2 text-xs">
-                                        Max: {formatter(toBalanceEth)} {toToken.symbol}
+                                        Max: {formatter(toToken?.walletBalance)} {toToken.symbol}
                                     </button>
                                 )}
                             </div>
@@ -145,8 +133,7 @@ export default function () {
                                 <div className="whitespace-nowrap">
                                     <p className="text-xs opacity-50">From</p>
                                     <p className="">
-                                        {formatter(toEth(fromValue, fromToken.decimals))}{' '}
-                                        {fromToken.symbol}
+                                        {formatter(fromValue)} {fromToken.symbol}
                                     </p>
                                 </div>
 
@@ -157,8 +144,7 @@ export default function () {
                                     <p className="text-xs opacity-50">To</p>
 
                                     <p className="">
-                                        {formatter(toEth(toValue, toToken.decimals))}{' '}
-                                        {toToken.symbol}
+                                        {formatter(toValue)} {toToken.symbol}
                                     </p>
                                 </div>
                             </div>
@@ -181,14 +167,13 @@ export default function () {
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Total Fees</p>
                                     <p className="">
-                                        ~{inEth(totalFees, toToken.decimals)} {toToken.symbol}
+                                        ~{String(totalFees)} {toToken.symbol}
                                     </p>
                                 </div>
                                 <div className="flex items-center text-purple-400">
                                     <p className="flex-1">Minimum Received</p>
                                     <p className="">
-                                        ~{formatter(inEth(minimumReceived, toToken.decimals))}{' '}
-                                        {toToken.symbol}
+                                        ~{formatter(minimumReceived)} {toToken.symbol}
                                     </p>
                                 </div>
                             </div>
@@ -206,9 +191,8 @@ export default function () {
 
                     {fromToken && toToken && (
                         <p className="font-mono text-xs text-center opacity-50">
-                            Swapping {formatter(inEth(fromValue || 0, fromToken.decimals))}{' '}
-                            {fromToken.symbol} to {formatter(inEth(toValue || 0, toToken.decimals))}{' '}
-                            {toToken.symbol}.
+                            Swapping {formatter(fromValue || 0)} {fromToken.symbol} to{' '}
+                            {formatter(toValue || 0)} {toToken.symbol}.
                         </p>
                     )}
                 </div>

@@ -6,7 +6,8 @@ import {
     fetchBalances,
     getSingOracleContract,
     getSingRouterContract,
-    getTokenContract
+    getTokenContract,
+    getSingLpContract
 } from '../utils/ContractService'
 import multicall from '../utils/multicall'
 import useRefresh from './useRefresh'
@@ -15,7 +16,7 @@ import shortNumber from 'short-number'
 import { useRouter } from 'next/router'
 import { useCookieState } from 'use-cookie-state'
 import BN from 'bignumber.js'
-import exp from 'constants'
+import { ethers, BigNumber } from 'ethers'
 
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
@@ -31,12 +32,13 @@ export function useSingularityInteral() {
     const [selectedLp, setSelectedLp] = useState(null)
 
     const [data, setData] = useState({})
+    console.log(data)
     const [refreshing, setRefreshing] = useState(false)
     const [refresh, setRefresh] = useState(0)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
-    const [fromValue, _setFromValue] = useState(0.0)
-    const [toValue, _setToValue] = useState(0.0)
+    const [fromValue, _setFromValue] = useState('0')
+    const [toValue, _setToValue] = useState('0')
     const [fromToken, _setFromToken] = useState()
     const [toToken, _setToToken] = useState()
 
@@ -53,40 +55,31 @@ export function useSingularityInteral() {
     )
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken?.id)
 
+    //set by user
     const [slippage, setSlippage] = useState(0.1)
-    const [fromBalance, setFromBalance] = useState(0)
-    const [toBalance, setToBalance] = useState(0)
 
     const tokens = data?.safe?.tokens || []
-    const slippageBp = Number((slippage * 100).toFixed(0))
-    const priceImpactBp = 10
-    const feeBp = 300
-    const totalFeesBp = slippageBp + priceImpactBp + feeBp
 
-    const totalFees = new BN(toValue).times(totalFeesBp).div(10000)
-    const minimumReceived = new BN(toValue).minus(totalFees).toNumber()
+    const totalFees = 0
+    console.log(new BN(toValue).times(.9).toString())
+    const minimumReceived = new BN(toValue).times(1-slippage).toString()
 
-    const fromBalanceEth = fromToken
-        ? new BN(fromBalance).div(new BN(10).pow(new BN(fromToken.decimals))).toNumber()
-        : 0
-    const toBalanceEth = toToken
-        ? new BN(toBalance).div(new BN(10).pow(new BN(toToken.decimals))).toNumber()
-        : 0
-
-    const routerContract = data.safe && getSingRouterContract(data.safe.router, library.getSigner())
+    const routerContract = data?.safe && getSingRouterContract(data.safe.router, library.getSigner())
+    const fromLpContract = data?.safe && fromToken && getSingRouterContract(fromToken.lpAddress, library.getSigner())
+    const toLpContract = data?.safe && toToken && getSingRouterContract(toToken.lpAddress, library.getSigner())
 
     const update = () => setRefresh((i) => i + 1)
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
         setFromTokenCache(token.id)
-        setFromValue(0)
+        setFromValue('0')
     }
 
     const setToToken = (token: any) => {
         _setToToken(token)
         setToTokenCache(token.id)
-        setToValue(0)
+        setToValue('0')
     }
 
     const swapTokens = () => {
@@ -103,45 +96,37 @@ export function useSingularityInteral() {
 
     const setFromValue = async (balance) => {
         try {
-            _setFromValue(balance)
-            if (!balance) _setToValue(0)
             if (!toToken || !fromToken || !balance) return
-            const amountsOut = await getAmountOut(balance, fromToken.address, toToken.address)
-            _setToValue(amountsOut)
+            _setFromValue(balance)
+            const amountsOut = await getAmountOut(toWei(balance, fromToken.decimals), fromToken.address, toToken.address)
+            _setToValue(toEth(amountsOut, toToken.decimals))
         } catch (error) {
-            _setToValue(0)
+            _setToValue('0')
             console.log(error)
         }
     }
 
     const setToValue = async (balance) => {
         try {
-            _setToValue(balance)
-            if (!balance) _setFromValue(0)
             if (!toToken || !fromToken || !balance) return
-            const amountsOut = await getAmountOut(balance, toToken.address, fromToken.address)
-            _setFromValue(amountsOut)
+            console.log(balance)
+            _setToValue(balance)
+            const amountsOut = await getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address)
+            // const [amountsOut, fees] = await Promise.all([getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address), fromLpContract.getTradingFees(balance)])
+            _setFromValue(toEth(amountsOut, fromToken.decimals))
         } catch (error) {
             _setFromValue(0)
             console.log(error)
         }
     }
 
-    const maxFrom = () => setFromValue(fromBalance)
-    const maxTo = () => setToValue(toBalance)
+    // const maxFrom = () => setFromValue(fromBalance)
+    // const maxTo = () => setToValue(toBalance)
 
     const openModal = (modalType: 'from' | 'to') => {
         setShowSelectTokenModal(true)
         setSelectingToken(modalType)
     }
-
-    const inEth = (value: number, decimals: number) =>
-        Number(
-            new BN(value)
-                .div(new BN(10).pow(new BN(decimals)))
-                .toNumber()
-                .toFixed(2)
-        )
 
     const formatter = (value: number) => {
         const number = Number(Number(value).toFixed(2))
@@ -170,30 +155,10 @@ export function useSingularityInteral() {
     // }, [fromToken, toToken])
 
     // Load selected token balances.
-    useEffect(() => {
-        if (!account) return
-        if (!fromToken || !toToken) return
-
-        const getFromBalance = async () => {
-            if (!fromToken) return
-            const fromTokenContract = getTokenContract(fromToken.address)
-            const fromTokenBalance = await fromTokenContract.balanceOf(account)
-            setFromBalance(fromTokenBalance)
-        }
-
-        const getToBalance = async () => {
-            if (!toToken) return
-            const toTokenContract = getTokenContract(toToken.address)
-            const toTokenBalance = await toTokenContract.balanceOf(account)
-            setToBalance(toTokenBalance)
-        }
-        getFromBalance()
-        getToBalance()
-    }, [account, fromToken, toToken])
 
     const swap = async () => {
         try {
-            if (Number(fromToken.allowBalance) < Number(fromValue)) {
+            if (Number(fromToken?.allowBalance) < Number(fromValue)) {
                 const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
                 await fromTokenContract.approve(
                     data.safe.router,
@@ -201,15 +166,13 @@ export function useSingularityInteral() {
                 )
             }
             const amountIn = fromValue
-            const amountOut = await getAmountOut(amountIn, fromToken.address, toToken.address)
             const to = account
             const timestamp = Date.now() + 1000 * 60 * 10
-            console.log(fromToken.address, toToken.address, amountIn, amountOut, to, timestamp)
             await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
                 amountIn,
-                amountOut,
+                100,
                 to,
                 timestamp
             )
@@ -389,13 +352,8 @@ export function useSingularityInteral() {
         slippage,
         setSlippage,
         swapTokens,
-        fromBalance,
-        toBalance,
-        fromBalanceEth,
-        toBalanceEth,
-        maxFrom,
-        maxTo,
-        inEth,
+        // maxFrom,
+        // maxTo,
         formatter,
         totalFees,
         minimumReceived,
