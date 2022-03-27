@@ -32,15 +32,18 @@ export function useSingularityInteral() {
     const [selectedLp, setSelectedLp] = useState(null)
 
     const [data, setData] = useState({})
-    console.log(data)
     const [refreshing, setRefreshing] = useState(false)
     const [refresh, setRefresh] = useState(0)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
-    const [fromValue, _setFromValue] = useState('0')
-    const [toValue, _setToValue] = useState('0')
+    const [fromValue, _setFromValue] = useState('')
+    const [toValue, _setToValue] = useState('')
     const [fromToken, _setFromToken] = useState()
     const [toToken, _setToToken] = useState()
+    const [inFees, setInFees] = useState('0')
+    const [outFees, setOutFees] = useState('0')
+    const [slippageIn, setSlippageIn] = useState('0')
+    const [slippageOut, setSlippageOut] = useState('0')
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -61,7 +64,6 @@ export function useSingularityInteral() {
     const tokens = data?.safe?.tokens || []
 
     const totalFees = 0
-    console.log(new BN(toValue).times(.9).toString())
     const minimumReceived = new BN(toValue).times(1-slippage).toString()
 
     const routerContract = data?.safe && getSingRouterContract(data.safe.router, library.getSigner())
@@ -101,7 +103,7 @@ export function useSingularityInteral() {
             const amountsOut = await getAmountOut(toWei(balance, fromToken.decimals), fromToken.address, toToken.address)
             _setToValue(toEth(amountsOut, toToken.decimals))
         } catch (error) {
-            _setToValue('0')
+            _setToValue('')
             console.log(error)
         }
     }
@@ -109,19 +111,18 @@ export function useSingularityInteral() {
     const setToValue = async (balance) => {
         try {
             if (!toToken || !fromToken || !balance) return
-            console.log(balance)
             _setToValue(balance)
             const amountsOut = await getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address)
-            // const [amountsOut, fees] = await Promise.all([getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address), fromLpContract.getTradingFees(balance)])
+            const fees = await fromLpContract.getTradingFees(amountsOut)
             _setFromValue(toEth(amountsOut, fromToken.decimals))
         } catch (error) {
-            _setFromValue(0)
+            _setFromValue('')
             console.log(error)
         }
     }
 
-    // const maxFrom = () => setFromValue(fromBalance)
-    // const maxTo = () => setToValue(toBalance)
+    const maxFrom = () => setFromValue(fromToken.walletBalance)
+    const maxTo = () => setToValue(toToken.walletBalance)
 
     const openModal = (modalType: 'from' | 'to') => {
         setShowSelectTokenModal(true)
@@ -162,10 +163,12 @@ export function useSingularityInteral() {
                 const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
                 await fromTokenContract.approve(
                     data.safe.router,
-                    toWei(String(fromValue), fromToken.decimals)
+                    toWei(fromValue, fromToken.decimals)
                 )
             }
-            const amountIn = fromValue
+            const amountIn = toWei(fromValue, fromToken.decimals)
+            console.log(amountIn.toString())
+            console.log()
             const to = account
             const timestamp = Date.now() + 1000 * 60 * 10
             await routerContract.swapExactTokensForTokens(
@@ -173,6 +176,62 @@ export function useSingularityInteral() {
                 toToken.address,
                 amountIn,
                 100,
+                to,
+                timestamp
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //Replace fromToken with underlyingToken with new state
+    //minAmount not working
+    const depositLp = async (amountIn, token) => {
+        try {
+            if (Number(token?.allowBalance) < Number(amountIn)) {
+                console.log(token.address)
+                const depositTokenContract = getTokenContract(token.address, library.getSigner())
+                await depositTokenContract.approve(
+                    data.safe.router,
+                    toWei(String(fromValue), token.decimals)
+                )
+            }
+            const to = account
+            const timestamp = Date.now() + 1000 * 60 * 10
+            const minAmount = new BN(amountIn).div(token.pricePerShare).toString()
+            console.log(to, timestamp, minAmount, amountIn, token.address)
+            await routerContract.addLiquidity(
+                token.address,
+                toWei(amountIn, token.decimals),
+                0,
+                to,
+                timestamp
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //fromToken is lpToken
+    //minAmount not working
+    const withdrawLp = async(amountIn, token) => {
+        try {
+            if (Number(token?.lpBalance.allowBalance) < Number(amountIn)) {
+                const fromTokenContract = getTokenContract(token.lpAddress, library.getSigner())
+                await fromTokenContract.approve(
+                    data.safe.router,
+                    toWei(amountIn)
+                )
+            }
+            const to = account
+            console.log(amountIn)
+            const timestamp = Date.now() + 1000 * 60 * 10
+            const minAmount = new BN(amountIn).times(token.pricePerShare).toString()
+            await routerContract.removeLiquidity(
+                token.address,
+                toWei(amountIn, token.decimals),
+                0,
                 to,
                 timestamp
             )
@@ -195,13 +254,13 @@ export function useSingularityInteral() {
     ) => {
         return {
             ..._token,
-            ..._lpBalance,
+            lpBalance: _lpBalance,
             ..._walletBalance,
             assetAmount: toEth(_assetAmount, _token.decimals),
             liabilityAmount: toEth(_liabilityAmount, _token.decimals),
-            pricePerShare: String(_pricePerShare),
+            pricePerShare: toEth(_pricePerShare),
             tradingFeeRate: String(_tradingFeeRate),
-            _lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
+            lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
             tokenPrice: toEth(_tokenPrice),
             lastUpdated: String(_lastUpdated)
         }
@@ -262,6 +321,7 @@ export function useSingularityInteral() {
                     name: 'balanceOf',
                     params: [value.lpAddress]
                 }))
+                
 
                 const traunchCalls = Promise.all([
                     multicall(lpTokenABI, assetsAmountCalls),
@@ -326,8 +386,7 @@ export function useSingularityInteral() {
         // return () => clearInterval(interval)
     }, [account, slowRefresh, refresh])
 
-    const depositLp = () => {}
-    const withdrawLp = () => {}
+
 
     return {
         data,
@@ -352,12 +411,14 @@ export function useSingularityInteral() {
         slippage,
         setSlippage,
         swapTokens,
-        // maxFrom,
-        // maxTo,
+        maxFrom,
+        maxTo,
         formatter,
         totalFees,
         minimumReceived,
-        swap
+        swap,
+        withdrawLp,
+        depositLp
     }
 }
 

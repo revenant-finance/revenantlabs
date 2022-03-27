@@ -5,7 +5,8 @@ import Input from '../../Input'
 import Modal from '../../Modal'
 
 export default function SingularityLiquidityModal() {
-    const { selectedLp, setSelectedLp } = useSingularity()
+    const { selectedLp, setSelectedLp, depositLp, withdrawLp } = useSingularity()
+    console.log(selectedLp)
 
     const [lpInput, setLpInput] = useState('')
     const [isWithdraw, setIsWithdraw] = useState(false)
@@ -38,7 +39,7 @@ export default function SingularityLiquidityModal() {
                             <p>Fees: {'?????????'}</p>
 
                             <p>
-                                Ur Deposits:{'?????????'} {'=>'} {'?????????'}
+                                Ur Deposits:{selectedLp.lpBalance.walletBalance * selectedLp.pricePerShare} {'=>'} {'?????????'}
                             </p>
                         </div>
                     )}
@@ -50,14 +51,14 @@ export default function SingularityLiquidityModal() {
                             <p>Fees: {'?????????'}</p>
 
                             <p>
-                                Ur Deposits:{'?????????'} {'=>'} {'?????????'}
+                                Ur Deposits:{selectedLp.lpBalance.walletBalance * selectedLp.pricePerShare} {'=>'} {'?????????'}
                             </p>
                         </div>
                     )}
 
                     <div className="flex space-x-6">
                         <Button>Cancel</Button>
-                        <Button className="bg-blue-500">
+                        <Button className="bg-blue-500" onClick={isWithdraw ? () => withdrawLp(lpInput, selectedLp) : () => depositLp(lpInput, selectedLp)}>
                             {isWithdraw ? 'Withdraw' : 'Deposit'}
                         </Button>
                     </div>

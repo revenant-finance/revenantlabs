@@ -9,7 +9,6 @@ export default function useCreditum() {
 
     const enter = async (market, depositAmount, borrowAmount) => {
         if (account) {
-            console.log(market, depositAmount, borrowAmount)
             let tx = null
             const cToken = creditumData.cusd.mintToken
             const creditumContract = getCreditumContract(cToken.creditum, library.getSigner())
@@ -18,10 +17,6 @@ export default function useCreditum() {
                 if (Number(market.allowBalance) < Number(depositAmount)) {
                     tx = await tokenContract.approve(creditumContract.address, MAX_UINT256)
                 } else {
-                    console.log(
-                        toWei(depositAmount, market.decimals).toString(),
-                        toWei(borrowAmount).toString()
-                    )
                     tx = await creditumContract.enter(
                         market.address,
                         toWei(depositAmount, market.decimals),

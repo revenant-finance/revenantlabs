@@ -61,8 +61,9 @@ export function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function toWei(ether: string, decimals = 18): BigNumber {
-    return utils.parseUnits(ether, decimals)
+export function toWei(ether: string, decimals = 18): string {
+    const places = BigNumber.from(10).pow(decimals)
+    return String(BigNumber.from(ether).mul(places))
 }
 
 export function toEth(ether: ethers.BigNumberish | string, decimals = 18): string {

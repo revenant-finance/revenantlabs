@@ -49,8 +49,6 @@ export default function CreditumLocking() {
     const { newAlert } = useAlerts()
     const { veCreditData } = useVeCreditData()
 
-    console.log(veCreditData)
-
     useEffect(() => {
         if (veCreditData?.lockEnd === 0) return
         if (veCreditData?.lockEnd < currentEpoch) {

@@ -1,8 +1,9 @@
 import useSingularity from '../../../hooks/useSingularity'
 import SingularityLiquidityModal from './SingularityLiquidityModal'
+import { commaFormatter } from '../../../utils'
 
 export default function SingularityLiquidity() {
-    const { selectedLp, setSelectedLp, tokens } = useSingularity()
+    const { selectedLp, setSelectedLp, tokens, data } = useSingularity()
 
     return (
         <>
@@ -14,7 +15,7 @@ export default function SingularityLiquidity() {
                         <p className="flex-1">Deposits</p>
                         <button>Claim Rewards</button>
                     </div>
-                    <table className="w-full bg-neutral-900 table-auto">
+                    <table className="w-full table-auto bg-neutral-900">
                         <thead>
                             <tr>
                                 <th>Asset</th>
@@ -38,7 +39,7 @@ export default function SingularityLiquidity() {
                                         />
                                         <p>{token.name}</p>
                                     </td>
-                                    <td>{`?????`}</td>
+                                    <td>{commaFormatter(token.pricePerShare * token.lpBalance.walletBalance)}</td>
                                     <td>{`?????`}</td>
                                     <td>{`?????`}</td>
                                     <td>{`?????`}</td>
@@ -46,7 +47,56 @@ export default function SingularityLiquidity() {
                                     <td>
                                         <button
                                             onClick={() => setSelectedLp(token)}
-                                            className="bg-purple-500 text-white"
+                                            className="text-white bg-purple-500"
+                                        >
+                                            Manage
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div className="max-w-5xl mx-auto">
+                <div>
+                    <div className="flex">
+                        <p className="flex-1">Deposits</p>
+                        <button>Claim Rewards</button>
+                    </div>
+                    <table className="w-full table-auto bg-neutral-900">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Pool Size</th>
+                                <th>Volume (24H)</th>
+                                <th>Coverage</th>
+                                <th>Base + Boost APR</th>
+                                <th>Reward</th>
+                                <th>...</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {tokens?.map((token) => (
+                                <tr>
+                                    <td className="flex space-x-2">
+                                        <img
+                                            className="w-6 h-6"
+                                            src={`/img/tokens/${token.asset}`}
+                                            alt=""
+                                        />
+                                        <p>{token.name}</p>
+                                    </td>
+                                    <td>${commaFormatter(token.lpUnderlyingBalance * token.tokenPrice)}</td>
+                                    <td>{`?????`}</td>
+                                    <td>{`?????`}</td>
+                                    <td>{`?????`}</td>
+                                    <td>{`?????`}</td>
+                                    <td>
+                                        <button
+                                            onClick={() => setSelectedLp(token)}
+                                            className="text-white bg-purple-500"
                                         >
                                             Manage
                                         </button>
