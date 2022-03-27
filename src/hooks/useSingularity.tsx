@@ -200,7 +200,6 @@ export function useSingularityInteral() {
             const to = account
             const timestamp = Date.now() + 1000 * 60 * 10
             const minAmount = new BN(amountIn).div(token.pricePerShare).toString()
-            console.log(to, timestamp, minAmount, amountIn, token.address)
             await routerContract.addLiquidity(
                 token.address,
                 toWei(amountIn, token.decimals),
@@ -225,7 +224,6 @@ export function useSingularityInteral() {
                 )
             }
             const to = account
-            console.log(amountIn)
             const timestamp = Date.now() + 1000 * 60 * 10
             const minAmount = new BN(amountIn).times(token.pricePerShare).toString()
             await routerContract.removeLiquidity(

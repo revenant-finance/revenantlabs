@@ -39,7 +39,7 @@ export default function SingularityLiquidityModal() {
                             <p>Fees: {'?????????'}</p>
 
                             <p>
-                                Ur Deposits:{selectedLp.lpBalance.walletBalance * selectedLp.pricePerShare} {'=>'} {'?????????'}
+                                Ur Deposits:{selectedLp?.lpBalance.walletBalance * selectedLp?.pricePerShare} {'=>'} {selectedLp?.lpBalance.walletBalance * selectedLp?.pricePerShare + (Number(lpInput) * selectedLp?.pricePerShare)}
                             </p>
                         </div>
                     )}
@@ -51,7 +51,7 @@ export default function SingularityLiquidityModal() {
                             <p>Fees: {'?????????'}</p>
 
                             <p>
-                                Ur Deposits:{selectedLp.lpBalance.walletBalance * selectedLp.pricePerShare} {'=>'} {'?????????'}
+                                Ur Deposits:{selectedLp?.lpBalance.walletBalance * selectedLp?.pricePerShare} {'=>'} {selectedLp?.lpBalance.walletBalance * selectedLp?.pricePerShare - Number(lpInput)}
                             </p>
                         </div>
                     )}
