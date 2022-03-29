@@ -164,7 +164,7 @@ export default function () {
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Price Impact</p>
-                                    <p className="">~{formatter(priceImpact)}%</p>
+                                    <p className="">{formatter(priceImpact)}%</p>
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Total Fees</p>

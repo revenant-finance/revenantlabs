@@ -107,7 +107,7 @@ export function useSingularityInteral() {
             setInFee(toEth(tradingFeeIn, fromToken.decimals))
             setOutFee(toEth(tradingFeeOut, toToken.decimals))
             const normalizedPrice = (Number(_toValue) / balance)
-            const _priceImpact = normalizedPrice * 100 / Number(toEth(amountOut1.amountOut, toToken.decimals))
+            const _priceImpact = (normalizedPrice * 100 / Number(toEth(amountOut1.amountOut, toToken.decimals))) - 100
             setPriceImpact(_priceImpact)
         } catch (error) {
             _setToValue('')
