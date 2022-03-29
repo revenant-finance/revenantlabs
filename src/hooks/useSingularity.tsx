@@ -218,7 +218,7 @@ export function useSingularityInteral() {
             lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
             tokenPrice: toEth(_tokenPrice),
             lastUpdated: String(_lastUpdated),
-            collatRatio: String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000)
+            collatRatio: Number(_liabilityAmount) ? String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000) : '0'
         }
     }
 
