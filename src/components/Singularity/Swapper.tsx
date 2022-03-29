@@ -4,7 +4,7 @@ import Input from '../Input'
 import SwapperModal from './SwapperModal'
 import useAuth from '../../hooks/useAuth'
 import useSingularity from '../../hooks/useSingularity'
-import { commaFormatter } from '../../utils'
+import { commaFormatter, currentEpoch } from '../../utils'
 
 export default function () {
     const { account, library } = useActiveWeb3React()
@@ -21,13 +21,11 @@ export default function () {
         setSlippageTolerance,
         swapTokens,
         maxFrom,
-        maxTo,
         formatter,
         totalFees,
         minimumReceived,
         swap,
         priceImpact,
-        data
     } = useSingularity()
 
     return (
@@ -166,12 +164,18 @@ export default function () {
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Price Impact</p>
-                                    <p className="">~{priceImpact}%</p>
+                                    <p className="">~{formatter(priceImpact)}%</p>
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Total Fees</p>
                                     <p className="">
-                                        ${String(totalFees)} USD
+                                        ${String(commaFormatter(totalFees.toFixed(2)))} USD
+                                    </p>
+                                </div>
+                                <div className="flex items-center text-xs">
+                                    <p className="flex-1">Last Updated</p>
+                                    <p className="">
+                                        {(currentEpoch - fromToken.lastUpdated).toFixed(0)} Seconds
                                     </p>
                                 </div>
                                 <div className="flex items-center text-purple-400">
