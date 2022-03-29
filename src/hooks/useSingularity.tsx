@@ -1,22 +1,20 @@
-import { useContext, useEffect, useState, createContext } from 'react'
-import { useActiveWeb3React } from './'
+import commaNumber from 'comma-number'
+import { BigNumber } from 'ethers'
+import { useRouter } from 'next/router'
+import { createContext, useContext, useEffect, useState } from 'react'
+import shortNumber from 'short-number'
+import { useCookieState } from 'use-cookie-state'
 import * as constants from '../data'
-import { EMPTY_ADDRESS, toEth, toWei } from '../utils'
+import { EMPTY_ADDRESS, MAX_UINT256, toEth, toWei } from '../utils'
 import {
     fetchBalances,
     getSingOracleContract,
     getSingRouterContract,
-    getTokenContract,
-    getSingLpContract
+    getTokenContract
 } from '../utils/ContractService'
 import multicall from '../utils/multicall'
+import { useActiveWeb3React } from './'
 import useRefresh from './useRefresh'
-import commaNumber from 'comma-number'
-import shortNumber from 'short-number'
-import { useRouter } from 'next/router'
-import { useCookieState } from 'use-cookie-state'
-import BN from 'bignumber.js'
-import { ethers, BigNumber } from 'ethers'
 
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
@@ -40,10 +38,13 @@ export function useSingularityInteral() {
     const [toValue, _setToValue] = useState('')
     const [fromToken, _setFromToken] = useState()
     const [toToken, _setToToken] = useState()
-    const [inFees, setInFees] = useState('0')
-    const [outFees, setOutFees] = useState('0')
+    const [slippageTolerance, setSlippageTolerance] = useState(0.1)
+    const [inFee, setInFee] = useState('0')
+    const [outFee, setOutFee] = useState('0')
     const [slippageIn, setSlippageIn] = useState('0')
     const [slippageOut, setSlippageOut] = useState('0')
+    const [priceImpact, setPriceImpact] = useState(0)
+
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -59,16 +60,12 @@ export function useSingularityInteral() {
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken?.id)
 
     //set by user
-    const [slippage, setSlippage] = useState(0.1)
 
     const tokens = data?.safe?.tokens || []
 
-    const totalFees = 0
-    const minimumReceived = new BN(toValue).times(1-slippage).toString()
-
-    const routerContract = data?.safe && getSingRouterContract(data.safe.router, library.getSigner())
-    const fromLpContract = data?.safe && fromToken && getSingRouterContract(fromToken.lpAddress, library.getSigner())
-    const toLpContract = data?.safe && toToken && getSingRouterContract(toToken.lpAddress, library.getSigner())
+    const totalFees = (Number(inFee) * fromToken?.tokenPrice) + (Number(outFee) * toToken?.tokenPrice)
+    const inverseSlippage = (1 - slippageTolerance) * 100
+    const minimumReceived = toValue ? toEth(BigNumber.from(Number(toWei(toValue, toToken?.decimals))).mul(inverseSlippage).div(100), toToken?.decimals) : '0'
 
     const update = () => setRefresh((i) => i + 1)
 
@@ -92,16 +89,26 @@ export function useSingularityInteral() {
     }
 
     const getAmountOut = async (value, tokenIn, tokenOut) => {
-        const amountsOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
-        return amountsOut
+        const routerContract = getSingRouterContract(data.safe.router)
+        const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
+        return amountOut
     }
 
     const setFromValue = async (balance) => {
         try {
             if (!toToken || !fromToken || !balance) return
             _setFromValue(balance)
-            const amountsOut = await getAmountOut(toWei(balance, fromToken.decimals), fromToken.address, toToken.address)
-            _setToValue(toEth(amountsOut, toToken.decimals))
+            const [amountOutData, amountOut1]  = await Promise.all([getAmountOut(toWei(balance, fromToken.decimals), fromToken.address, toToken.address), getAmountOut(toWei("1", fromToken.decimals), fromToken.address, toToken.address)])
+            const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } = amountOutData
+            const _toValue = toEth(amountOut, toToken.decimals)
+            _setToValue(_toValue)
+            setSlippageIn(toEth(slippageIn, fromToken.decimals))
+            setSlippageOut(toEth(slippageOut, toToken.decimals))
+            setInFee(toEth(tradingFeeIn, fromToken.decimals))
+            setOutFee(toEth(tradingFeeOut, toToken.decimals))
+            const normalizedPrice = (Number(_toValue) / balance)
+            const _priceImpact = normalizedPrice * 100 / Number(toEth(amountOut1.amountOut, toToken.decimals))
+            setPriceImpact(_priceImpact)
         } catch (error) {
             _setToValue('')
             console.log(error)
@@ -112,9 +119,12 @@ export function useSingularityInteral() {
         try {
             if (!toToken || !fromToken || !balance) return
             _setToValue(balance)
-            const amountsOut = await getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address)
-            const fees = await fromLpContract.getTradingFees(amountsOut)
-            _setFromValue(toEth(amountsOut, fromToken.decimals))
+            // const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } = await getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address)
+            // _setFromValue(toEth(amountOut, fromToken.decimals))
+            // setSlippageIn(toEth(slippageIn, fromToken.decimals))
+            // setSlippageOut(toEth(slippageOut, toToken.decimals))
+            // setInFee(toEth(tradingFeeIn, fromToken.decimals))
+            // setOutFee(toEth(tradingFeeOut, toToken.decimals))
         } catch (error) {
             _setFromValue('')
             console.log(error)
@@ -163,19 +173,19 @@ export function useSingularityInteral() {
                 const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
                 await fromTokenContract.approve(
                     data.safe.router,
-                    toWei(fromValue, fromToken.decimals)
+                    MAX_UINT256
+                    // toWei(fromValue, fromToken.decimals)
                 )
             }
+            const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
-            console.log(amountIn.toString())
-            console.log()
             const to = account
-            const timestamp = Date.now() + 1000 * 60 * 10
+            const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
             await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
                 amountIn,
-                100,
+                toWei(minimumReceived, toToken.decimals),
                 to,
                 timestamp
             )
@@ -184,59 +194,6 @@ export function useSingularityInteral() {
         }
     }
 
-
-    //Replace fromToken with underlyingToken with new state
-    //minAmount not working
-    const depositLp = async (amountIn, token) => {
-        try {
-            if (Number(token?.allowBalance) < Number(amountIn)) {
-                console.log(token.address)
-                const depositTokenContract = getTokenContract(token.address, library.getSigner())
-                await depositTokenContract.approve(
-                    data.safe.router,
-                    toWei(String(fromValue), token.decimals)
-                )
-            }
-            const to = account
-            const timestamp = Date.now() + 1000 * 60 * 10
-            const minAmount = new BN(amountIn).div(token.pricePerShare).toString()
-            await routerContract.addLiquidity(
-                token.address,
-                toWei(amountIn, token.decimals),
-                0,
-                to,
-                timestamp
-            )
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    //fromToken is lpToken
-    //minAmount not working
-    const withdrawLp = async(amountIn, token) => {
-        try {
-            if (Number(token?.lpBalance.allowBalance) < Number(amountIn)) {
-                const fromTokenContract = getTokenContract(token.lpAddress, library.getSigner())
-                await fromTokenContract.approve(
-                    data.safe.router,
-                    toWei(amountIn)
-                )
-            }
-            const to = account
-            const timestamp = Date.now() + 1000 * 60 * 10
-            const minAmount = new BN(amountIn).times(token.pricePerShare).toString()
-            await routerContract.removeLiquidity(
-                token.address,
-                toWei(amountIn, token.decimals),
-                0,
-                to,
-                timestamp
-            )
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const formatSingularityData = (
         _token,
@@ -260,7 +217,8 @@ export function useSingularityInteral() {
             tradingFeeRate: String(_tradingFeeRate),
             lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
             tokenPrice: toEth(_tokenPrice),
-            lastUpdated: String(_lastUpdated)
+            lastUpdated: String(_lastUpdated),
+            collatRatio: String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000)
         }
     }
 
@@ -380,8 +338,6 @@ export function useSingularityInteral() {
         }
 
         fetchData()
-        // const interval = setInterval(fetchData, 3000)
-        // return () => clearInterval(interval)
     }, [account, slowRefresh, refresh])
 
 
@@ -406,8 +362,8 @@ export function useSingularityInteral() {
         setFromValue,
         toValue,
         setToValue,
-        slippage,
-        setSlippage,
+        slippageTolerance,
+        setSlippageTolerance,
         swapTokens,
         maxFrom,
         maxTo,
@@ -415,8 +371,7 @@ export function useSingularityInteral() {
         totalFees,
         minimumReceived,
         swap,
-        withdrawLp,
-        depositLp
+        priceImpact
     }
 }
 

@@ -1,10 +1,10 @@
-import { BigNumberInput } from 'big-number-input'
 import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
 import Input from '../Input'
 import SwapperModal from './SwapperModal'
 import useAuth from '../../hooks/useAuth'
 import useSingularity from '../../hooks/useSingularity'
+import { commaFormatter } from '../../utils'
 
 export default function () {
     const { account, library } = useActiveWeb3React()
@@ -17,8 +17,8 @@ export default function () {
         setFromValue,
         toValue,
         setToValue,
-        slippage,
-        setSlippage,
+        slippageTolerance,
+        setSlippageTolerance,
         swapTokens,
         maxFrom,
         maxTo,
@@ -26,6 +26,7 @@ export default function () {
         totalFees,
         minimumReceived,
         swap,
+        priceImpact,
         data
     } = useSingularity()
 
@@ -96,12 +97,13 @@ export default function () {
                                     )}
                                     value={toValue}
                                     onChange={(e) => setToValue(e.target.value)}
+                                    disabled={true}
                                 />
-                                {!!toToken?.walletBalance && (
+                                {/* {!!toToken?.walletBalance && (
                                     <button onClick={maxTo} className="px-4 pb-2 text-xs">
                                         Max: {formatter(toToken?.walletBalance)} {toToken.symbol}
                                     </button>
-                                )}
+                                )} */}
                             </div>
                             <button
                                 onClick={() => openModal('to')}
@@ -135,6 +137,7 @@ export default function () {
                                     <p className="">
                                         {formatter(fromValue)} {fromToken.symbol}
                                     </p>
+                                    <p className="">${commaFormatter((Number(fromValue) * fromToken.tokenPrice).toFixed(2))}</p>
                                 </div>
 
                                 <div className="flex items-center justify-center flex-1">
@@ -146,6 +149,7 @@ export default function () {
                                     <p className="">
                                         {formatter(toValue)} {toToken.symbol}
                                     </p>
+                                    <p className="">${commaFormatter((Number(toValue) * toToken.tokenPrice).toFixed(2))}</p>
                                 </div>
                             </div>
 
@@ -154,20 +158,20 @@ export default function () {
                                     <p className="flex-1">Slippage</p>
                                     <Input
                                         type="number"
-                                        value={slippage}
-                                        onChange={(e) => setSlippage(e.target.value)}
-                                        onMax={() => setSlippage(100)}
+                                        value={slippageTolerance}
+                                        onChange={(e) => setSlippageTolerance(e.target.value)}
+                                        onMax={() => setSlippageTolerance(100)}
                                     />
                                     {/* <p className="">0.1%</p> */}
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Price Impact</p>
-                                    <p className="">~0.2%</p>
+                                    <p className="">~{priceImpact}%</p>
                                 </div>
                                 <div className="flex items-center text-xs">
                                     <p className="flex-1">Total Fees</p>
                                     <p className="">
-                                        ~{String(totalFees)} {toToken.symbol}
+                                        ${String(totalFees)} USD
                                     </p>
                                 </div>
                                 <div className="flex items-center text-purple-400">

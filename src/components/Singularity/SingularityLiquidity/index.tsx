@@ -12,18 +12,18 @@ export default function SingularityLiquidity() {
             <div className="max-w-5xl mx-auto">
                 <div>
                     <div className="flex">
-                        <p className="flex-1">Deposits</p>
-                        <button>Claim Rewards</button>
+                        <p className="flex-1">My Deposits</p>
+                        {/* <button>Claim Rewards</button> */}
                     </div>
                     <table className="w-full table-auto bg-neutral-900">
                         <thead>
                             <tr>
                                 <th>Asset</th>
                                 <th>Amount</th>
-                                <th>Volume (24H)</th>
-                                <th>Coverage</th>
-                                <th>Base + Boost APR</th>
-                                <th>Pending</th>
+                                {/* <th>Volume (24H)</th> */}
+                                <th>Collateralization Ratio</th>
+                                <th>Assets</th>
+                                <th>Liabilities</th>
                                 <th>...</th>
                             </tr>
                         </thead>
@@ -40,10 +40,9 @@ export default function SingularityLiquidity() {
                                         <p>{token.name}</p>
                                     </td>
                                     <td>{commaFormatter(token.pricePerShare * token.lpBalance.walletBalance)}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
+                                    <td>{commaFormatter(token.collatRatio)}</td>
+                                    <td>{commaFormatter(token.assetAmount)} {console.log(token)}</td>
+                                    <td>{commaFormatter(token.liabilityAmount)}</td>
                                     <td>
                                         <button
                                             onClick={() => setSelectedLp(token)}
@@ -69,10 +68,10 @@ export default function SingularityLiquidity() {
                             <tr>
                                 <th>Asset</th>
                                 <th>Pool Size</th>
-                                <th>Volume (24H)</th>
-                                <th>Coverage</th>
-                                <th>Base + Boost APR</th>
-                                <th>Reward</th>
+                                {/* <th>Volume (24H)</th> */}
+                                <th>Collateralization Ratio</th>
+                                <th>Pool Assets</th>
+                                <th>Pool Liabilities</th>
                                 <th>...</th>
                             </tr>
                         </thead>
@@ -89,10 +88,9 @@ export default function SingularityLiquidity() {
                                         <p>{token.name}</p>
                                     </td>
                                     <td>${commaFormatter(token.lpUnderlyingBalance * token.tokenPrice)}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
-                                    <td>{`?????`}</td>
+                                    <td>{commaFormatter(token.collatRatio)}</td>
+                                    <td>{commaFormatter(token.assetAmount)} {console.log(token)}</td>
+                                    <td>{commaFormatter(token.liabilityAmount)}</td>
                                     <td>
                                         <button
                                             onClick={() => setSelectedLp(token)}
