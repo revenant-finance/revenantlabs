@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import * as constants from '../../data'
 import { useActiveWeb3React } from '../../hooks'
 import useRefresh from '../../hooks/useRefresh'
+import { SingularityLiquidityWrapper } from '../../hooks/useSingularityLiquidity'
 import { SingularitySwapperWrapper } from '../../hooks/useSingularitySwapper'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getSingOracleContract } from '../../utils/ContractService'
@@ -16,12 +17,14 @@ export function SingularityAppWrapper({ children }) {
     return (
         <SingularityDataWrapper>
             <SingularitySwapperWrapper>
-                <SingularityHeader />
-                <div className="w-full h-full p-6 py-24 bg-center bg-cover">
-                    <MeshBackground id="singularity-gradient-colors" />
-                    <div className="fixed inset-0 bg-black bg-opacity-50" />
-                    <div className="relative z-10">{children}</div>
-                </div>
+                <SingularityLiquidityWrapper>
+                    <SingularityHeader />
+                    <div className="w-full h-full p-6 py-24 bg-center bg-cover">
+                        <MeshBackground id="singularity-gradient-colors" />
+                        <div className="fixed inset-0 bg-black bg-opacity-50" />
+                        <div className="relative z-10">{children}</div>
+                    </div>
+                </SingularityLiquidityWrapper>
             </SingularitySwapperWrapper>
         </SingularityDataWrapper>
     )
