@@ -13,51 +13,7 @@ import SingularityHeader from './SingularityHeader'
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
-export function SingularityAppWrapper({ children }) {
-    return (
-        <SingularityDataWrapper>
-            <SingularitySwapperWrapper>
-                <SingularityLiquidityWrapper>
-                    <SingularityHeader />
-                    <div className="w-full h-full p-6 py-24 bg-center bg-cover">
-                        <MeshBackground id="singularity-gradient-colors" />
-                        <div className="fixed inset-0 bg-black bg-opacity-50" />
-                        <div className="relative z-10">{children}</div>
-                    </div>
-                </SingularityLiquidityWrapper>
-            </SingularitySwapperWrapper>
-        </SingularityDataWrapper>
-    )
-}
-
-const formatSingularityData = (
-    _token,
-    _assetAmount,
-    _liabilityAmount,
-    _pricePerShare,
-    _tradingFeeRate,
-    _lpUnderlyingBalance,
-    _walletBalance,
-    _lpBalance,
-    _tokenPrice,
-    _lastUpdated
-) => {
-    return {
-        ..._token,
-        lpBalance: _lpBalance,
-        ..._walletBalance,
-        assetAmount: toEth(_assetAmount, _token.decimals),
-        liabilityAmount: toEth(_liabilityAmount, _token.decimals),
-        pricePerShare: toEth(_pricePerShare),
-        tradingFeeRate: String(_tradingFeeRate),
-        lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
-        tokenPrice: toEth(_tokenPrice),
-        lastUpdated: String(_lastUpdated),
-        collatRatio: Number(_liabilityAmount)
-            ? String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000)
-            : '0'
-    }
-}
+export const SingularityDataContext = createContext({})
 
 function useSingularityDataInternal() {
     const { slowRefresh } = useRefresh()
@@ -66,6 +22,35 @@ function useSingularityDataInternal() {
     const [data, setData] = useState({})
     const [refreshing, setRefreshing] = useState(false)
     const [refresh, setRefresh] = useState(0)
+
+    const formatSingularityData = (
+        _token,
+        _assetAmount,
+        _liabilityAmount,
+        _pricePerShare,
+        _tradingFeeRate,
+        _lpUnderlyingBalance,
+        _walletBalance,
+        _lpBalance,
+        _tokenPrice,
+        _lastUpdated
+    ) => {
+        return {
+            ..._token,
+            lpBalance: _lpBalance,
+            ..._walletBalance,
+            assetAmount: toEth(_assetAmount, _token.decimals),
+            liabilityAmount: toEth(_liabilityAmount, _token.decimals),
+            pricePerShare: toEth(_pricePerShare),
+            tradingFeeRate: String(_tradingFeeRate),
+            lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
+            tokenPrice: toEth(_tokenPrice),
+            lastUpdated: String(_lastUpdated),
+            collatRatio: Number(_liabilityAmount)
+                ? String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000)
+                : '0'
+        }
+    }
 
     const update = () => setRefresh((i) => i + 1)
 
@@ -191,17 +176,28 @@ function useSingularityDataInternal() {
     return { tokens, data, refreshing, update }
 }
 
-export const SingularityDataContext = createContext({})
+export function SingularityAppWrapper({ children }) {
+    const hook = useSingularityDataInternal()
 
-export function SingularityDataWrapper({ children }: any) {
-    const data = useSingularityDataInternal()
+    const [test, setTest] = useState(0)
+
+    useEffect(() => {
+        setTimeout(() => setTest(2), 200)
+    }, [])
 
     return (
-        <>
-            <SingularityDataContext.Provider value={{ ...data }}>
-                <>{children}</>
-            </SingularityDataContext.Provider>
-        </>
+        <SingularityDataContext.Provider value={{ ...hook, test }}>
+            <SingularitySwapperWrapper>
+                <SingularityLiquidityWrapper>
+                    <SingularityHeader />
+                    <div className="w-full h-full p-6 py-24 bg-center bg-cover">
+                        <MeshBackground id="singularity-gradient-colors" />
+                        <div className="fixed inset-0 bg-black bg-opacity-50" />
+                        <div className="relative z-10">{children}</div>
+                    </div>
+                </SingularityLiquidityWrapper>
+            </SingularitySwapperWrapper>
+        </SingularityDataContext.Provider>
     )
 }
 

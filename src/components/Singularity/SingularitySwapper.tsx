@@ -1,16 +1,13 @@
 import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
-import Input from '../Input'
-import SwapperModal from './SwapperModal'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
 import { commaFormatter, currentEpoch } from '../../utils'
-import { createContext } from 'react'
-
-const SingularitySwapperContext = createContext({})
+import Input from '../Input'
+import SwapperModal from './SwapperModal'
 
 export default function SingularitySwapper() {
-    const { account, library } = useActiveWeb3React()
+    const { account } = useActiveWeb3React()
     const { login } = useAuth()
     const {
         openModal,

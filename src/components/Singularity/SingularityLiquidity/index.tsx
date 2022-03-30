@@ -1,14 +1,11 @@
-import SingularityLiquidityModal from './SingularityLiquidityModal'
-import { commaFormatter } from '../../../utils'
-import { createContext, useContext, useEffect, useState } from 'react'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
+import { commaFormatter } from '../../../utils'
 import { useSingularityData } from '../SingularityAppWrapper'
+import SingularityLiquidityModal from './SingularityLiquidityModal'
 
 export default function SingularityLiquidity() {
     const { tokens } = useSingularityData()
-    const { selectedLp, setSelectedLp } = useSingularityLiquidity()
-
-    useEffect(() => console.log(tokens), [tokens])
+    const { setSelectedLp } = useSingularityLiquidity()
 
     return (
         <>
