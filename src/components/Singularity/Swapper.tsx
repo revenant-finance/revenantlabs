@@ -3,10 +3,13 @@ import { useActiveWeb3React } from '../../hooks'
 import Input from '../Input'
 import SwapperModal from './SwapperModal'
 import useAuth from '../../hooks/useAuth'
-import useSingularity from '../../hooks/useSingularity'
+import useSingularitySwapper from '../../hooks/useSingularitySwapper'
 import { commaFormatter, currentEpoch } from '../../utils'
+import { createContext } from 'react'
 
-export default function () {
+const SingularitySwapperContext = createContext({})
+
+export default function SingularitySwapper() {
     const { account, library } = useActiveWeb3React()
     const { login } = useAuth()
     const {
@@ -25,8 +28,8 @@ export default function () {
         totalFees,
         minimumReceived,
         swap,
-        priceImpact,
-    } = useSingularity()
+        priceImpact
+    } = useSingularitySwapper()
 
     return (
         <>
@@ -135,7 +138,12 @@ export default function () {
                                     <p className="">
                                         {formatter(fromValue)} {fromToken.symbol}
                                     </p>
-                                    <p className="">${commaFormatter((Number(fromValue) * fromToken.tokenPrice).toFixed(2))}</p>
+                                    <p className="">
+                                        $
+                                        {commaFormatter(
+                                            (Number(fromValue) * fromToken.tokenPrice).toFixed(2)
+                                        )}
+                                    </p>
                                 </div>
 
                                 <div className="flex items-center justify-center flex-1">
@@ -147,7 +155,12 @@ export default function () {
                                     <p className="">
                                         {formatter(toValue)} {toToken.symbol}
                                     </p>
-                                    <p className="">${commaFormatter((Number(toValue) * toToken.tokenPrice).toFixed(2))}</p>
+                                    <p className="">
+                                        $
+                                        {commaFormatter(
+                                            (Number(toValue) * toToken.tokenPrice).toFixed(2)
+                                        )}
+                                    </p>
                                 </div>
                             </div>
 

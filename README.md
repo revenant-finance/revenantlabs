@@ -4,17 +4,10 @@ High-powered React-centric template for building high-powered apps.
 
 
 
+## Context & Hooks
 
-## Hooks
+- `useSingularityData()` (SingularityAppWrapper.tsx) - Provides shared data from contracts to all singularity-realted components.
 
-### Creditum
+- `useSingularitySwapper()` - Contains state/functions for swapper and child components.
 
-- `useCreditumData()`: Gets market data found on https://revenant.finance/creditum. Requires wrapper.
-- `useCredtium()`: Market functionailty.
-- `useFarmData()`: Get farm objects array. Requires wrapper.
-- `useFarm()`: Interact with farms.
-- `usePool()`: Utiltiy hook used within `useFarmData()`.
-
-### Revenant
-
-- `useReveanant()`: Claim and get balance for RVNT tokens.
+- `useSingularityLiquidity()` - Contains state/functions for liqudity page and child components.

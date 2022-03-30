@@ -1,4 +1,3 @@
-import MeshBackground from '../../components/MeshBackground'
 import { SingularityAppWrapper } from '../../components/Singularity/SingularityAppWrapper'
 import Swapper from '../../components/Singularity/Swapper'
 

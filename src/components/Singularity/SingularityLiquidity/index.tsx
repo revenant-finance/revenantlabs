@@ -1,9 +1,14 @@
-import useSingularity from '../../../hooks/useSingularity'
 import SingularityLiquidityModal from './SingularityLiquidityModal'
 import { commaFormatter } from '../../../utils'
+import { createContext, useContext, useEffect, useState } from 'react'
+import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
+import { useSingularityData } from '../SingularityAppWrapper'
 
 export default function SingularityLiquidity() {
-    const { selectedLp, setSelectedLp, tokens, data } = useSingularity()
+    const { tokens } = useSingularityData()
+    const { selectedLp, setSelectedLp } = useSingularityLiquidity()
+
+    useEffect(() => console.log(tokens), [tokens])
 
     return (
         <>
@@ -39,9 +44,15 @@ export default function SingularityLiquidity() {
                                         />
                                         <p>{token.name}</p>
                                     </td>
-                                    <td>{commaFormatter(token.pricePerShare * token.lpBalance.walletBalance)}</td>
+                                    <td>
+                                        {commaFormatter(
+                                            token.pricePerShare * token.lpBalance.walletBalance
+                                        )}
+                                    </td>
                                     <td>{commaFormatter(token.collatRatio)}</td>
-                                    <td>{commaFormatter(token.assetAmount)} {console.log(token)}</td>
+                                    <td>
+                                        {commaFormatter(token.assetAmount)} {console.log(token)}
+                                    </td>
                                     <td>{commaFormatter(token.liabilityAmount)}</td>
                                     <td>
                                         <button
@@ -87,9 +98,16 @@ export default function SingularityLiquidity() {
                                         />
                                         <p>{token.name}</p>
                                     </td>
-                                    <td>${commaFormatter(token.lpUnderlyingBalance * token.tokenPrice)}</td>
+                                    <td>
+                                        $
+                                        {commaFormatter(
+                                            token.lpUnderlyingBalance * token.tokenPrice
+                                        )}
+                                    </td>
                                     <td>{commaFormatter(token.collatRatio)}</td>
-                                    <td>{commaFormatter(token.assetAmount)} {console.log(token)}</td>
+                                    <td>
+                                        {commaFormatter(token.assetAmount)} {console.log(token)}
+                                    </td>
                                     <td>{commaFormatter(token.liabilityAmount)}</td>
                                     <td>
                                         <button

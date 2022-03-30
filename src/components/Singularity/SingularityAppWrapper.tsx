@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import * as constants from '../../data'
 import { useActiveWeb3React } from '../../hooks'
 import useRefresh from '../../hooks/useRefresh'
-import { SingularitySwapperWrapper } from '../../hooks/useSingularity'
+import { SingularitySwapperWrapper } from '../../hooks/useSingularitySwapper'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getSingOracleContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
@@ -183,7 +183,9 @@ function useSingularityDataInternal() {
         fetchData()
     }, [account, slowRefresh, refresh])
 
-    return { data, refreshing, update }
+    const tokens = data?.safe?.tokens
+
+    return { tokens, data, refreshing, update }
 }
 
 export const SingularityDataContext = createContext({})

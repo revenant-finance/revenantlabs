@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useSingularity from '../../hooks/useSingularity'
+import useSingularitySwapper from '../../hooks/useSingularitySwapper'
 import Input from '../Input'
 import Modal from '../Modal'
 import Portal from '../Portal'
@@ -12,25 +12,26 @@ export default function SwapperModal() {
         showSelectTokenModal,
         setShowSelectTokenModal,
         selectingToken
-    } = useSingularity()
+    } = useSingularitySwapper()
 
     const [filter, setFilter] = useState('')
 
-    const tokenList = tokens
-        .filter((token) => {
-            // Don't show selected tokens, if selected.
-            // if (selectingToken === 'to') return fromToken ? token.id !== fromToken.id : true
-            // if (selectingToken === 'from') return toToken ? token.id !== toToken.id : true
-            return true
-        })
-        .filter((token) => {
-            const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
-            const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
-            const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
+    const tokenList =
+        tokens
+            ?.filter((token) => {
+                // Don't show selected tokens, if selected.
+                // if (selectingToken === 'to') return fromToken ? token.id !== fromToken.id : true
+                // if (selectingToken === 'from') return toToken ? token.id !== toToken.id : true
+                return true
+            })
+            ?.filter((token) => {
+                const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
+                const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
+                const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
 
-            if (matchesName || matchesSymbol || matchesAddress) return true
-            return false
-        })
+                if (matchesName || matchesSymbol || matchesAddress) return true
+                return false
+            }) || []
 
     const setToken = (token) => {
         if (selectingToken === 'from') setFromToken(token)

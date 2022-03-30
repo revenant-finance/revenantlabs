@@ -15,8 +15,6 @@ export function useSingularitySwapperInternal() {
 
     const { data } = useSingularityData()
 
-    const [selectedLp, setSelectedLp] = useState(null)
-    
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState('')
@@ -42,8 +40,6 @@ export function useSingularitySwapperInternal() {
         fromToken?.id
     )
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken?.id)
-
-    //set by user
 
     const tokens = data?.safe?.tokens || []
 
@@ -194,8 +190,6 @@ export function useSingularitySwapperInternal() {
     }
 
     return {
-        selectedLp,
-        setSelectedLp,
         tokens,
         openModal,
         showSelectTokenModal,
