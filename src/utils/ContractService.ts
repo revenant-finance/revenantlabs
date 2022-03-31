@@ -18,6 +18,11 @@ export const getContract = (
     return new ethers.Contract(address, abi, signerOrProvider)
 }
 
+export const getTestTokenContract = (
+    address,
+    provider?: ethers.Signer | ethers.providers.Provider
+) => getContract(address, JSON.parse(constants.CONTRACT_TEST_ERC20_ABI), provider)
+
 export const getTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI), provider)
 
@@ -80,9 +85,12 @@ export const getCrvContract = (address, provider?: ethers.Signer | ethers.provid
 
 //SINGULARITY
 
-export const getSingOracleContract = (
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(constants.CONTRACT_SINGULARITY[250].oracle, JSON.parse(constants.CONTRACT_SING_ORACLE_ABI), provider)
+export const getSingOracleContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
+    getContract(
+        constants.CONTRACT_SINGULARITY[250].oracle,
+        JSON.parse(constants.CONTRACT_SING_ORACLE_ABI),
+        provider
+    )
 
 export const getSingRouterContract = (
     address,
@@ -94,14 +102,17 @@ export const getSingFactoryContract = (
     provider?: ethers.Signer | ethers.providers.Provider
 ) => getContract(address, JSON.parse(constants.CONTRACT_SING_FACTORY_ABI), provider)
 
-export const getSingLpContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_SING_LP_ABI), provider)
+export const getSingLpContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
+    getContract(address, JSON.parse(constants.CONTRACT_SING_LP_ABI), provider)
 
 //UTILS
 
-export const fetchBalances = async (account: string, tokens: any, allowAddress: string, addressField: string) => {
+export const fetchBalances = async (
+    account: string,
+    tokens: any,
+    allowAddress: string,
+    addressField: string
+) => {
     if (tokens) {
         const abi = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
         const walletBalanceCalls = tokens.map((token) => ({

@@ -1,12 +1,12 @@
 import { useContext, createContext, useState } from 'react'
-import { toWei } from 'web3-utils'
 import { useActiveWeb3React } from '.'
 import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
-import { MAX_UINT256, toEth } from '../utils'
+import { MAX_UINT256, toEth, toWei } from '../utils'
 import {
     getSingLpContract,
     getSingRouterContract,
-    getTokenContract
+    getTokenContract,
+    getTestTokenContract
 } from '../utils/ContractService'
 
 export function useSingularityLiquidityInternal() {
@@ -112,6 +112,15 @@ export function useSingularityLiquidityInternal() {
         }
     }
 
+    const mintTestToken = async (token, amount = '1000') => {
+        try {
+            const fromTokenContract = getTestTokenContract(token.address, library.getSigner())
+            await fromTokenContract.mint(account, toWei(amount, token.decimals))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return {
         selectedLp,
         setSelectedLp,
@@ -126,7 +135,8 @@ export function useSingularityLiquidityInternal() {
         depositReward,
         setDepositReward,
         withdrawLp,
-        depositLp
+        depositLp,
+        mintTestToken
     }
 }
 

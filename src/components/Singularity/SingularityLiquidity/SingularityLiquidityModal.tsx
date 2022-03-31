@@ -15,11 +15,10 @@ export default function SingularityLiquidityModal() {
         slippageTolerance,
         setSlippageTolerance,
         withdrawFee,
-        setWithdrawFee,
         depositReward,
-        setDepositReward,
         withdrawLp,
-        depositLp
+        depositLp,
+        mintTestToken
     } = useSingularityLiquidity()
 
     return (
@@ -119,6 +118,7 @@ export default function SingularityLiquidityModal() {
                         >
                             {isWithdraw ? 'Withdraw' : 'Deposit'}
                         </Button>
+                        <Button className="bg-blue-500" onClick={() => mintTestToken(selectedLp)}>Mint Test Token</Button>
                     </div>
                 </div>
             </Modal>

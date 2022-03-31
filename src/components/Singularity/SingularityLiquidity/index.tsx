@@ -48,7 +48,7 @@ export default function SingularityLiquidity() {
                                     </td>
                                     <td>{commaFormatter(token.collatRatio)}</td>
                                     <td>
-                                        {commaFormatter(token.assetAmount)} {console.log(token)}
+                                        {commaFormatter(token.assetAmount)}
                                     </td>
                                     <td>{commaFormatter(token.liabilityAmount)}</td>
                                     <td>
