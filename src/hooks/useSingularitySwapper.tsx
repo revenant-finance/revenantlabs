@@ -47,7 +47,7 @@ export function useSingularitySwapperInternal() {
     const inverseSlippage = (1 - slippageTolerance) * 100
     const minimumReceived = toValue
         ? toEth(
-              BigNumber.from(Number(toWei(toValue, toToken?.decimals)))
+              toWei(toValue, toToken?.decimals)
                   .mul(inverseSlippage)
                   .div(100),
               toToken?.decimals
@@ -94,6 +94,7 @@ export function useSingularitySwapperInternal() {
             const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } =
                 amountOutData
             const _toValue = toEth(amountOut, toToken.decimals)
+            console.log(_toValue)
             _setToValue(_toValue)
             setSlippageIn(toEth(slippageIn, fromToken.decimals))
             setSlippageOut(toEth(slippageOut, toToken.decimals))
