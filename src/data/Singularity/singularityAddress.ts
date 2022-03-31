@@ -8,20 +8,20 @@ export default {
 
         },
         LPTOKEN: {
-            btcSafe: '0xEcB8Db407dd64fE30D9eD2a24D9CCc3C44E1B7F0',
-            ethSafe: '0x1D6B43BD79D5339BE3ee1D2792943f625bf50BE6',
-            usdcSafe: '0x8B209510877EF84619c96805149D656Cd72f9fd6',
-            btcCUSD: '0xEcB8Db407dd64fE30D9eD2a24D9CCc3C44E1B7F0',
-            ethCUSD: '0x1D6B43BD79D5339BE3ee1D2792943f625bf50BE6',
-            usdcCUSD: '0x8B209510877EF84619c96805149D656Cd72f9fd6'
+            btcSafe: '0x6AEa39666F91a43BEb8a1fDe996B2ace85647F88',
+            ethSafe: '0xD18ef67e52947Ee827FE54b7f6E8a2918c3e9EeF',
+            usdcSafe: '0x517D0AD9E9947e6abf119210E7e2DB498809aB56',
+            btcCUSD: '0x6AEa39666F91a43BEb8a1fDe996B2ace85647F88',
+            ethCUSD: '0xD18ef67e52947Ee827FE54b7f6E8a2918c3e9EeF',
+            usdcCUSD: '0x517D0AD9E9947e6abf119210E7e2DB498809aB56'
 
         },
         CONTRACT: {
             oracle: '0xC659b3879eD5B3079D5B7Fb89801143E6C1fD8Fa',
-            routerSafe: '0x04dbeCd11DEA269f680A4a05eed001ee7eeeEbb6',
-            factorySafe: '0xfF68aEA6F6e2aBbEa2E3bf9e3194D1200048AC83',
-            routerCUSD: '0x04dbeCd11DEA269f680A4a05eed001ee7eeeEbb6',
-            factoryCUSD: '0xfF68aEA6F6e2aBbEa2E3bf9e3194D1200048AC83'
+            routerSafe: '0xc22D8fed59288b07ec30770A2bAb1D5c4696A1d5',
+            factorySafe: '0xf029d2a894B749436BD6105676185B09B27e255D',
+            routerCUSD: '0xc22D8fed59288b07ec30770A2bAb1D5c4696A1d5',
+            factoryCUSD: '0xf029d2a894B749436BD6105676185B09B27e255D'
         }
     }
 }
