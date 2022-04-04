@@ -10,6 +10,7 @@ export default function SingularitySwapper() {
     const { account } = useActiveWeb3React()
     const { login } = useAuth()
     const {
+        status,
         showDetails,
         setShowDetails,
         openModal,
@@ -189,6 +190,7 @@ export default function SingularitySwapper() {
 
                     {isReady && (
                         <Button
+                            loading={status === 'loading'}
                             onClick={account ? () => swap() : () => login()}
                             className="bg-gradient-to-br from-purple-900 to-blue-900 shadow"
                         >

@@ -7,6 +7,7 @@ import SwapperInput from '../SwapperInput'
 
 export default function SingularityLiquidityModal() {
     const {
+        status,
         selectedLp,
         setSelectedLp,
         lpInput,
@@ -30,7 +31,7 @@ export default function SingularityLiquidityModal() {
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
-                            {isWithdraw ? 'Deposit' : 'Withdraw'}
+                            {isWithdraw ? 'Withdraw' : 'Deposit'}
                         </p>
 
                         <button
@@ -159,9 +160,15 @@ export default function SingularityLiquidityModal() {
 
                                         <span>
                                             {formatter(
-                                                selectedLp?.lpBalance.walletBalance *
-                                                    selectedLp?.pricePerShare +
-                                                    Number(lpInput) * selectedLp?.pricePerShare
+                                                isWithdraw
+                                                    ? selectedLp?.lpBalance.walletBalance *
+                                                          selectedLp?.pricePerShare -
+                                                          Number(lpInput) *
+                                                              selectedLp?.pricePerShare
+                                                    : selectedLp?.lpBalance.walletBalance *
+                                                          selectedLp?.pricePerShare +
+                                                          Number(lpInput) *
+                                                              selectedLp?.pricePerShare
                                             )}
                                         </span>
                                         <span>{selectedLp?.symbol}</span>
@@ -187,6 +194,7 @@ export default function SingularityLiquidityModal() {
                             Cancel
                         </Button>
                         <Button
+                            loading={status === 'loading'}
                             className="bg-gradient-to-br from-purple-900 to-blue-900"
                             onClick={
                                 isWithdraw

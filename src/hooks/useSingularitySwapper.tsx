@@ -13,8 +13,10 @@ export function useSingularitySwapperInternal() {
     const router = useRouter()
     const { account, library } = useActiveWeb3React()
 
-    const { data } = useSingularityData()
+    const { data, update } = useSingularityData()
 
+    const [statusMessage, setStatusMessage] = useState('')
+    const [status, setStatus] = useState('idle')
     const [showDetails, setShowDetails] = useState(false)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
@@ -140,19 +142,21 @@ export function useSingularitySwapperInternal() {
 
     const swap = async () => {
         try {
+            setStatus('loading')
             if (Number(fromToken?.allowBalance) < Number(fromValue)) {
                 const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
-                await fromTokenContract.approve(
+                const tx = await fromTokenContract.approve(
                     data.safe.router,
                     MAX_UINT256
                     // toWei(fromValue, fromToken.decimals)
                 )
+                await tx.wait(1)
             }
             const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
-            await routerContract.swapExactTokensForTokens(
+            const tx = await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
                 amountIn,
@@ -160,7 +164,12 @@ export function useSingularitySwapperInternal() {
                 to,
                 timestamp
             )
+            await tx.wait(1)
+            await update()
+            setStatus('complete')
         } catch (error) {
+            setStatus('error')
+            setStatusMessage(error.message)
             console.log(error)
         }
     }
@@ -189,6 +198,8 @@ export function useSingularitySwapperInternal() {
     // Load selected token balances.
 
     return {
+        status,
+        statusMessage,
         showDetails,
         setShowDetails,
         tokens,

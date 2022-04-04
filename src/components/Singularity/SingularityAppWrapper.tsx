@@ -180,14 +180,8 @@ function useSingularityDataInternal() {
 export function SingularityAppWrapper({ children }) {
     const hook = useSingularityDataInternal()
 
-    const [test, setTest] = useState(0)
-
-    useEffect(() => {
-        setTimeout(() => setTest(2), 200)
-    }, [])
-
     return (
-        <SingularityDataContext.Provider value={{ ...hook, test }}>
+        <SingularityDataContext.Provider value={{ ...hook }}>
             <SingularitySwapperWrapper>
                 <SingularityLiquidityWrapper>
                     <SingularityHeader />

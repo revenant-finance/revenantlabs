@@ -12,7 +12,10 @@ import {
 export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
 
-    const { data } = useSingularityData()
+    const { data, update } = useSingularityData()
+
+    const [statusMessage, setStatusMessage] = useState('')
+    const [status, setStatus] = useState('idle')
 
     const [lpInput, _setLpInput] = useState('')
     const [isWithdraw, setIsWithdraw] = useState(false)
@@ -41,13 +44,16 @@ export function useSingularityLiquidityInternal() {
 
     const depositLp = async (amountIn, token) => {
         try {
+            setStatus('loading')
             if (Number(token?.allowBalance) < Number(amountIn)) {
                 const depositTokenContract = getTokenContract(token.address, library.getSigner())
-                await depositTokenContract.approve(
+                const tx = await depositTokenContract.approve(
                     data.safe.router,
                     MAX_UINT256
                     // toWei(amountIn, token.decimals)
                 )
+                await tx.wait(1)
+                await update()
             }
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
@@ -61,27 +67,34 @@ export function useSingularityLiquidityInternal() {
                 .mul(inverseSlippage)
                 .div(formatPricePerShare)
                 .div(10000)
-            await routerContract.addLiquidity(
+            const tx = await routerContract.addLiquidity(
                 token.address,
                 formatAmountIn,
                 toWei(String(minAmount), token.decimals),
                 to,
                 timestamp
             )
+            await tx.wait(1)
+            await update()
+            setStatus('complete')
         } catch (error) {
+            setStatus('error')
+            setStatusMessage(error.message)
             console.log(error)
         }
     }
 
     const withdrawLp = async (amountIn, token) => {
         try {
+            setStatus('loading')
             if (Number(token?.lpBalance.allowBalance) < Number(amountIn)) {
                 const fromTokenContract = getTokenContract(token.lpAddress, library.getSigner())
-                await fromTokenContract.approve(
+                const tx = await fromTokenContract.approve(
                     data.safe.router,
                     MAX_UINT256
                     // toWei(amountIn)
                 )
+                await tx.wait(1)
             }
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
@@ -100,28 +113,39 @@ export function useSingularityLiquidityInternal() {
                     token.decimals
                 )
             ).toFixed(0)
-            await routerContract.removeLiquidity(
+            const tx = await routerContract.removeLiquidity(
                 token.address,
                 formatAmountIn,
                 minAmount,
                 to,
                 timestamp
             )
+            await tx.wait(1)
+            await update()
+            setStatus('complete')
         } catch (error) {
+            setStatus('error')
+            setStatusMessage(error.message)
             console.log(error)
         }
     }
 
     const mintTestToken = async (token, amount = '1000') => {
         try {
+            setStatus('idle')
             const fromTokenContract = getTestTokenContract(token.address, library.getSigner())
             await fromTokenContract.mint(account, toWei(amount, token.decimals))
+            setStatus('complete')
         } catch (error) {
+            setStatus('error')
+            setStatusMessage(error.message)
             console.log(error)
         }
     }
 
     return {
+        status,
+        statusMessage,
         selectedLp,
         setSelectedLp,
         lpInput,
