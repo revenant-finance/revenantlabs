@@ -27,7 +27,7 @@ export default function SingularityLiquidityModal() {
 
     return (
         <>
-            <Modal visible={selectedLp ? true : false} onClose={() => setSelectedLp(null)}>
+            <Modal visible={!!selectedLp} onClose={() => setSelectedLp(null)}>
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
@@ -70,25 +70,6 @@ export default function SingularityLiquidityModal() {
                                     title={`Wallet LP Balance`}
                                     value={`${formatter(selectedLp?.lpBalance.walletBalance)} LP`}
                                 />
-
-                                <DataPoint
-                                    title={`Amount Withdrawn`}
-                                    value={`${formatter(
-                                        Number(lpInput) * selectedLp?.pricePerShare
-                                    )}`}
-                                />
-
-                                <DataPoint title={`Fees`} value={`${formatter(withdrawFee)}`} />
-
-                                {/* <div className="flex items-center text-xs">
-                                    <p className="flex-1">Slippage</p>
-                                    <Input
-                                        type="number"
-                                        value={slippageTolerance}
-                                        onChange={(e) => setSlippageTolerance(e.target.value)}
-                                        onMax={() => setSlippageTolerance(100)}
-                                    />
-                                </div> */}
                             </>
                         )}
 
@@ -176,6 +157,19 @@ export default function SingularityLiquidityModal() {
                                 </>
                             }
                         />
+
+                        {isWithdraw && (
+                            <>
+                                <DataPoint
+                                    title={`Amount Withdrawn`}
+                                    value={`${formatter(
+                                        Number(lpInput) * selectedLp?.pricePerShare
+                                    )}`}
+                                />
+
+                                <DataPoint title={`Fees`} value={`${formatter(withdrawFee)}`} />
+                            </>
+                        )}
                     </div>
 
                     {/* <div className="space-y-2">
