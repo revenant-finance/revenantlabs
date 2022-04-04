@@ -196,12 +196,14 @@ export default function SingularityLiquidityModal() {
                         </Button>
                     </div>
 
-                    {/* <button
-                        onClick={() => mintTestToken(selectedLp)}
-                        className="underline text-sm opacity-50 hover:opacity-100 animate transition-all "
-                    >
-                        Mint Test Token
-                    </button> */}
+                    <div className="flex justify-end opacity-10">
+                        <button
+                            onClick={() => mintTestToken(selectedLp)}
+                            className="underline text-sm opacity-50 hover:opacity-100 animate transition-all "
+                        >
+                            Mint Test Token
+                        </button>
+                    </div>
                 </div>
             </Modal>
         </>
