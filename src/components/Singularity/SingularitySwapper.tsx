@@ -1,7 +1,7 @@
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
-import { commaFormatter, isNotEmpty } from '../../utils'
+import { commaFormatter, currentEpoch, isNotEmpty } from '../../utils'
 import Button from '../Button'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
@@ -171,17 +171,24 @@ export default function SingularitySwapper() {
                                         onMax={() => setSlippageTolerance(100)}
                                     />
                                 </div> */}
-                                    <div className="font-mono flex items-center text-xs opacity-50">
+                                    <div className="font-mono flex items-center text-sm opacity-50">
+                                        <p className="flex-1">Last Updated</p>
+                                        <p className="">
+                                            {formatter(fromToken?.lastUpdated - currentEpoch)}{' '}
+                                            seconds ago
+                                        </p>
+                                    </div>
+                                    <div className="font-mono flex items-center text-sm opacity-50">
                                         <p className="flex-1">Price Impact</p>
                                         <p className="">{formatter(priceImpact)}%</p>
                                     </div>
-                                    <div className="font-mono flex items-center text-xs opacity-50">
+                                    <div className="font-mono flex items-center text-sm opacity-50">
                                         <p className="flex-1">Total Fees</p>
                                         <p className="">
                                             ${String(commaFormatter(totalFees.toFixed(2)))} USD
                                         </p>
                                     </div>
-                                    <div className="font-medium flex items-center text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
+                                    <div className="font-medium text-lg flex items-center text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
                                         <p className="flex-1">Minimum Received</p>
                                         <p className="">
                                             ~{Number(minimumReceived).toFixed(8)} {toToken.symbol}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
-import { commaFormatter, formatter, isNotEmpty } from '../../../utils'
+import { commaFormatter, formatter, isNotEmpty, currentEpoch } from '../../../utils'
 import Button from '../../Button'
 import DataPoint from '../../DataPoint'
 import Modal from '../../Modal'
@@ -77,6 +77,12 @@ export default function SingularityLiquidityModal() {
                                 />
                             </>
                         )}
+
+                        <DataPoint
+                            title="Last Updated"
+                            value={`${formatter(selectedLp?.lpBalance - currentEpoch)}
+                            seconds ago`}
+                        />
 
                         <DataPoint
                             title="Collateralization Ratio"
