@@ -136,6 +136,8 @@ export function useSingularitySwapperInternal() {
         return number < 1000 ? commaNumber(number) : shortNumber(number)
     }
 
+    const isApproved = Number(fromToken?.allowBalance) >= Number(fromValue)
+
     const swap = async () => {
         try {
             if (Number(fromToken?.allowBalance) < Number(fromValue)) {
@@ -212,7 +214,8 @@ export function useSingularitySwapperInternal() {
         totalFees,
         minimumReceived,
         swap,
-        priceImpact
+        priceImpact,
+        isApproved
     }
 }
 

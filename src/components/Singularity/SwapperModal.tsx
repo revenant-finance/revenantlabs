@@ -82,7 +82,9 @@ export default function SwapperModal() {
                                             </p>
                                         </div>
                                         {isNotEmpty(token.walletBalance) && (
-                                            <div className="opacity-50">{token.walletBalance}</div>
+                                            <div className="opacity-50">
+                                                {formatter(token.walletBalance)} {token.symbol}
+                                            </div>
                                         )}
                                     </div>
                                 </button>

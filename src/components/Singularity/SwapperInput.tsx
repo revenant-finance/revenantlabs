@@ -45,10 +45,8 @@ export default function SwapperInput({
             </div>
             {(footerLeft || footerRight) && (
                 <div className="flex">
-                    {footerLeft && (
-                        <p className="flex-1 font-mono text-sm opacity-75">{footerLeft}</p>
-                    )}
-                    {footerRight && <p className="font-mono text-sm opacity-75">{footerRight}</p>}
+                    <p className="flex-1 font-mono text-sm opacity-75">{footerLeft}</p>
+                    <p className="font-mono text-sm opacity-75">{footerRight}</p>
                 </div>
             )}
         </div>

@@ -27,7 +27,8 @@ export default function SingularitySwapper() {
         totalFees,
         minimumReceived,
         swap,
-        priceImpact
+        priceImpact,
+        isApproved
     } = useSingularitySwapper()
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
@@ -74,8 +75,12 @@ export default function SingularitySwapper() {
                                 `$${formatter(fromValue * fromToken?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(fromToken?.walletBalance) &&
-                                `Max: ${formatter(fromToken?.walletBalance)} ${fromToken?.symbol}`
+                                isNotEmpty(fromToken?.walletBalance) && (
+                                    <button onClick={() => setFromValue(fromToken?.walletBalance)}>
+                                        Max: ${formatter(fromToken?.walletBalance)}{' '}
+                                        {fromToken?.symbol}
+                                    </button>
+                                )
                             }
                         />
 
@@ -124,8 +129,8 @@ export default function SingularitySwapper() {
                                 `$${formatter(toValue * toToken?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(fromToken?.walletBalance) &&
-                                `Max: ${formatter(fromToken?.walletBalance)} ${fromToken?.symbol}`
+                                isNotEmpty(toToken?.walletBalance) &&
+                                `Max: ${formatter(toToken?.walletBalance)} ${toToken?.symbol}`
                             }
                         />
                     </div>
@@ -136,7 +141,7 @@ export default function SingularitySwapper() {
                             className="text-left w-full flex items-center justify-center p-4 font-mono text-sm border-2 border-neutral-800 bg-opacity-50 bg-neutral-900 rounded-xl"
                         >
                             <p className="flex-1">
-                                1 {fromToken.symbol} = {000} {toToken.symbol}
+                                1 {toToken.symbol} = {fromValue / toValue} {fromToken.symbol}
                             </p>
                             <p>
                                 <i className="fas fa-caret-down" />
@@ -187,7 +192,13 @@ export default function SingularitySwapper() {
                             onClick={account ? () => swap() : () => login()}
                             className="bg-gradient-to-br from-purple-900 to-blue-900 shadow"
                         >
-                            {account ? 'Swap' : 'Connect Wallet'}
+                            {account
+                                ? `${
+                                      isApproved
+                                          ? `Swap ${fromToken?.symbol}`
+                                          : `Approve ${fromToken?.symbol}`
+                                  }`
+                                : 'Connect Wallet'}
                         </Button>
                     )}
                 </div>

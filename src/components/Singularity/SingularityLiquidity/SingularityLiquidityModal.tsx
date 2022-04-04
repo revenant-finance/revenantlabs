@@ -130,8 +130,12 @@ export default function SingularityLiquidityModal() {
                                 `$${formatter(lpInput * selectedLp?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(selectedLp?.walletBalance) &&
-                                `Max: ${formatter(selectedLp?.walletBalance)} ${selectedLp?.symbol}`
+                                isNotEmpty(selectedLp?.walletBalance) && (
+                                    <button onClick={() => setLpInput(selectedLp?.walletBalance)}>
+                                        Max: {formatter(selectedLp?.walletBalance)}{' '}
+                                        {selectedLp?.symbol}
+                                    </button>
+                                )
                             }
                         />
                     </div>
