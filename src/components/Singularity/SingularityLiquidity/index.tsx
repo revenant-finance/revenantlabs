@@ -1,5 +1,6 @@
+import classNames from 'classnames'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
-import { formatter } from '../../../utils'
+import { formatter, isNotEmpty } from '../../../utils'
 import DataPoint from '../../DataPoint'
 import { useSingularityData } from '../SingularityAppWrapper'
 import SingularityLiquidityModal from './SingularityLiquidityModal'
@@ -8,10 +9,15 @@ export default function SingularityLiquidity() {
     const { tokens } = useSingularityData()
     const { setSelectedLp } = useSingularityLiquidity()
 
-    const orderedTokens = tokens?.sort((a, b) => {
-        const getTokenBalance = (token) => token.pricePerShare * token.lpBalance.walletBalance
-        return getTokenBalance(b) - getTokenBalance(a)
-    })
+    const orderedTokens = tokens
+        ?.sort((a, b) => {
+            const getTokenBalance = (token) => token.pricePerShare * token.walletBalance
+            return getTokenBalance(b) - getTokenBalance(a)
+        })
+        ?.sort((a, b) => {
+            const getTokenBalance = (token) => token.pricePerShare * token.lpBalance.walletBalance
+            return getTokenBalance(b) - getTokenBalance(a)
+        })
 
     const isLoading = !orderedTokens?.length
 
@@ -72,21 +78,46 @@ export default function SingularityLiquidity() {
                                             <DataPoint
                                                 title="Your Balance"
                                                 value={`$${formatter(
+                                                    token.pricePerShare * token.walletBalance
+                                                )}`}
+                                            />
+                                            <DataPoint
+                                                title="Your Deposits"
+                                                value={`$${formatter(
                                                     token.pricePerShare *
                                                         token.lpBalance.walletBalance
                                                 )}`}
                                             />
                                         </div>
                                         <div className="hidden md:flex gap-4">
-                                            <div className="font-medium bg-gradient-to-br from-purple-900 to-blue-900 py-2 px-4 rounded">
+                                            <div
+                                                className={classNames(
+                                                    'text-center font-medium py-2 px-4 rounded border-2 border-neutral-800'
+                                                )}
+                                            >
                                                 <p className="text-2xl">
-                                                    $
+                                                    {formatter(
+                                                        token.pricePerShare * token.walletBalance
+                                                    )}{' '}
+                                                    {token.symbol}
+                                                </p>
+                                                <p className="text-sm opacity-50">Your Balance</p>
+                                            </div>
+                                            <div
+                                                className={classNames(
+                                                    'text-center font-medium py-2 px-4 rounded border-2 border-neutral-800',
+                                                    isNotEmpty(token.lpBalance.walletBalance) &&
+                                                        'bg-gradient-to-br from-purple-900 to-blue-900'
+                                                )}
+                                            >
+                                                <p className="text-2xl">
                                                     {formatter(
                                                         token.pricePerShare *
                                                             token.lpBalance.walletBalance
-                                                    )}
+                                                    )}{' '}
+                                                    {token.symbol}
                                                 </p>
-                                                <p className="text-sm">Your Balance</p>
+                                                <p className="text-sm opacity-50">Your Deposits</p>
                                             </div>
                                         </div>
                                     </div>
