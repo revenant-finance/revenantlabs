@@ -1,10 +1,8 @@
-import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
-import { commaFormatter, currentEpoch, isNotEmpty } from '../../utils'
+import { commaFormatter, isNotEmpty } from '../../utils'
 import Button from '../Button'
-import Input from '../Input'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 

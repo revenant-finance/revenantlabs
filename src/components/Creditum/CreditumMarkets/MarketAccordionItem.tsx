@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
-import { useEffect } from 'react'
 import useCreditumData from '../../../hooks/Creditum/useCreditumData'
 import { commaFormatter, formatter } from '../../../utils'
 import DataPoint from '../../DataPoint'

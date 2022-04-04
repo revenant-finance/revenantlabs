@@ -1,6 +1,5 @@
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
-import { commaFormatter, formatter } from '../../../utils'
-import Button from '../../Button'
+import { formatter } from '../../../utils'
 import DataPoint from '../../DataPoint'
 import { useSingularityData } from '../SingularityAppWrapper'
 import SingularityLiquidityModal from './SingularityLiquidityModal'

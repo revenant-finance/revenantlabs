@@ -1,7 +1,6 @@
-import Link from 'next/link'
 import classNames from 'classnames'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 export function SingularityHeaderItem({ href, children }) {
     const router = useRouter()

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import { AnimatePresence } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useCreditum from '../../../hooks/Creditum/useCreditum'
 import useCreditumData from '../../../hooks/Creditum/useCreditumData'
 import useAlerts from '../../../hooks/useAlerts'

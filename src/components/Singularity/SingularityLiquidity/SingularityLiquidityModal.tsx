@@ -1,8 +1,7 @@
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
-import { commaFormatter, currentEpoch, formatter, isNotEmpty } from '../../../utils'
+import { commaFormatter, formatter, isNotEmpty } from '../../../utils'
 import Button from '../../Button'
 import DataPoint from '../../DataPoint'
-import Input from '../../Input'
 import Modal from '../../Modal'
 import SwapperInput from '../SwapperInput'
 
