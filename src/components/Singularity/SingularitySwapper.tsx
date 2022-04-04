@@ -78,7 +78,7 @@ export default function SingularitySwapper() {
                             footerRight={
                                 isNotEmpty(fromToken?.walletBalance) && (
                                     <button onClick={() => setFromValue(fromToken?.walletBalance)}>
-                                        Max: ${formatter(fromToken?.walletBalance)}{' '}
+                                        Max: {formatter(fromToken?.walletBalance)}{' '}
                                         {fromToken?.symbol}
                                     </button>
                                 )
@@ -130,8 +130,11 @@ export default function SingularitySwapper() {
                                 `$${formatter(toValue * toToken?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(toToken?.walletBalance) &&
-                                `Max: ${formatter(toToken?.walletBalance)} ${toToken?.symbol}`
+                                isNotEmpty(toToken?.walletBalance) && (
+                                    <button onClick={() => setFromValue(toToken?.walletBalance)}>
+                                        Max: {formatter(toToken?.walletBalance)} {toToken?.symbol}
+                                    </button>
+                                )
                             }
                         />
                     </div>

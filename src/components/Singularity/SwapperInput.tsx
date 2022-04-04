@@ -31,7 +31,9 @@ export default function SwapperInput({
             <div className="flex gap-4">
                 <input
                     type="number"
-                    className={classNames('flex-1 bg-transparent outline-none w-full')}
+                    className={classNames(
+                        'font-medium text-lg flex-1 bg-transparent outline-none w-full'
+                    )}
                     onChange={onChange}
                     value={value}
                     readOnly={readOnly}
