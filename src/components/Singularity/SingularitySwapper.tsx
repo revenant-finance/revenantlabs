@@ -145,7 +145,8 @@ export default function SingularitySwapper() {
                             className="text-left w-full flex items-center justify-center p-4 font-mono text-sm border-2 border-neutral-800 bg-opacity-50 bg-neutral-900 rounded-xl"
                         >
                             <p className="flex-1">
-                                1 {toToken.symbol} = {fromValue / toValue} {fromToken.symbol}
+                                1 {toToken.symbol} = {commaFormatter(fromValue / toValue)}{' '}
+                                {fromToken.symbol}
                             </p>
                             <p>
                                 <i className="fas fa-caret-down" />

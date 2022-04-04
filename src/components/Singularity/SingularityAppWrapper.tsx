@@ -17,7 +17,7 @@ const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 export const SingularityDataContext = createContext({})
 
 function useSingularityDataInternal() {
-    const { slowRefresh } = useRefresh()
+    const { fastRefresh } = useRefresh()
     const { account } = useActiveWeb3React()
     const oracleContract = getSingOracleContract()
     const [data, setData] = useState({})
@@ -170,7 +170,7 @@ function useSingularityDataInternal() {
         }
 
         fetchData()
-    }, [account, slowRefresh, refresh])
+    }, [account, fastRefresh, refresh])
 
     const tokens = data?.safe?.tokens
 
