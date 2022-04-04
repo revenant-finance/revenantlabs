@@ -8,10 +8,12 @@ import {
     getTokenContract,
     getTestTokenContract
 } from '../utils/ContractService'
+import useAlerts from './useAlerts'
 
 export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
 
+    const { newAlert } = useAlerts()
     const { data, update } = useSingularityData()
 
     const [statusMessage, setStatusMessage] = useState('')
@@ -53,7 +55,7 @@ export function useSingularityLiquidityInternal() {
                     // toWei(amountIn, token.decimals)
                 )
                 await tx.wait(1)
-                await update()
+                update()
             }
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
@@ -77,9 +79,19 @@ export function useSingularityLiquidityInternal() {
             await tx.wait(1)
             await update()
             setStatus('complete')
+            newAlert({
+                title: 'Deposit Complete',
+                subtitle: 'Your transaction has been successfully confirmed to the network.',
+                type: 'success'
+            })
         } catch (error) {
             setStatus('error')
             setStatusMessage(error.message)
+            newAlert({
+                title: 'Deposit Failed',
+                subtitle: 'Your transaction has not been completed.',
+                type: 'fail'
+            })
             console.log(error)
         }
     }
@@ -95,6 +107,7 @@ export function useSingularityLiquidityInternal() {
                     // toWei(amountIn)
                 )
                 await tx.wait(1)
+                update()
             }
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
@@ -123,9 +136,19 @@ export function useSingularityLiquidityInternal() {
             await tx.wait(1)
             await update()
             setStatus('complete')
+            newAlert({
+                title: 'Withdraw Complete',
+                subtitle: 'Your transaction has been successfully confirmed to the network.',
+                type: 'success'
+            })
         } catch (error) {
             setStatus('error')
             setStatusMessage(error.message)
+            newAlert({
+                title: 'Withdraw Failed',
+                subtitle: 'Your transaction has not been completed.',
+                type: 'fail'
+            })
             console.log(error)
         }
     }
@@ -134,11 +157,23 @@ export function useSingularityLiquidityInternal() {
         try {
             setStatus('idle')
             const fromTokenContract = getTestTokenContract(token.address, library.getSigner())
-            await fromTokenContract.mint(account, toWei(amount, token.decimals))
+            const tx = await fromTokenContract.mint(account, toWei(amount, token.decimals))
+            await tx.wait(1)
+            await update()
             setStatus('complete')
+            newAlert({
+                title: 'Minting Complete',
+                subtitle: 'Your transaction has been successfully confirmed to the network.',
+                type: 'success'
+            })
         } catch (error) {
             setStatus('error')
             setStatusMessage(error.message)
+            newAlert({
+                title: 'Minting Failed',
+                subtitle: 'Your transaction has not been completed.',
+                type: 'fail'
+            })
             console.log(error)
         }
     }

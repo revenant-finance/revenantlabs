@@ -6,7 +6,9 @@ import { createContext, useContext, useState } from 'react'
 const AlertsContext = createContext({})
 
 export function UseAlertsWrapper({ children }) {
-    const [alerts, setAlerts] = useState([])
+    const [alerts, setAlerts] = useState([
+        // { title: 'test', subtitle: '123' }
+    ])
 
     const clearAlert = (id) => {
         setAlerts((_) => _.filter((alert) => alert.id !== id))
@@ -16,7 +18,7 @@ export function UseAlertsWrapper({ children }) {
         const id = nanoid()
         const newAlertItem = { id, ...props }
         setAlerts((_) => [..._, newAlertItem])
-        setTimeout(() => clearAlert(id), 3000)
+        setTimeout(() => clearAlert(id), 5000)
         return id
     }
 
@@ -53,6 +55,6 @@ export function UseAlertsWrapper({ children }) {
 }
 
 export default function useAlerts() {
-    const context = useContext(AlertsContext)
+    const context = useContext<any>(AlertsContext)
     return { ...context }
 }

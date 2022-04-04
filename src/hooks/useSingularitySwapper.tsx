@@ -8,11 +8,13 @@ import { MAX_UINT256, toEth, toWei } from '../utils'
 import { getSingRouterContract, getTokenContract } from '../utils/ContractService'
 import { useActiveWeb3React } from './'
 import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
+import useAlerts from './useAlerts'
 
 export function useSingularitySwapperInternal() {
     const router = useRouter()
     const { account, library } = useActiveWeb3React()
 
+    const { newAlert } = useAlerts()
     const { data, update } = useSingularityData()
 
     const [statusMessage, setStatusMessage] = useState('')
@@ -67,7 +69,7 @@ export function useSingularitySwapperInternal() {
     const swapTokens = () => {
         _setFromToken(toToken)
         _setToToken(fromToken)
-        _setFromValue(toValue)
+        // _setFromValue(toValue)
         _setToValue(fromValue)
     }
 
@@ -79,7 +81,6 @@ export function useSingularitySwapperInternal() {
 
     const setFromValue = async (balance) => {
         try {
-            if (!toToken || !fromToken || !balance) return
             _setFromValue(balance)
             const [amountOutData, amountOut1] = await Promise.all([
                 getAmountOut(
@@ -92,7 +93,6 @@ export function useSingularitySwapperInternal() {
             const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } =
                 amountOutData
             const _toValue = toEth(amountOut, toToken.decimals)
-            console.log(_toValue)
             _setToValue(_toValue)
             setSlippageIn(toEth(slippageIn, fromToken.decimals))
             setSlippageOut(toEth(slippageOut, toToken.decimals))
@@ -104,6 +104,7 @@ export function useSingularitySwapperInternal() {
                 100
             setPriceImpact(_priceImpact)
         } catch (error) {
+            _setFromValue('')
             _setToValue('')
             console.log(error)
         }
@@ -120,7 +121,7 @@ export function useSingularitySwapperInternal() {
             // setInFee(toEth(tradingFeeIn, fromToken.decimals))
             // setOutFee(toEth(tradingFeeOut, toToken.decimals))
         } catch (error) {
-            _setFromValue('')
+            // _setFromValue('')
             console.log(error)
         }
     }
@@ -151,6 +152,7 @@ export function useSingularitySwapperInternal() {
                     // toWei(fromValue, fromToken.decimals)
                 )
                 await tx.wait(1)
+                update()
             }
             const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
@@ -166,10 +168,20 @@ export function useSingularitySwapperInternal() {
             )
             await tx.wait(1)
             await update()
+            newAlert({
+                title: 'Swap Complete',
+                subtitle: 'Your transaction has been successfully confirmed to the network.',
+                type: 'success'
+            })
             setStatus('complete')
         } catch (error) {
             setStatus('error')
             setStatusMessage(error.message)
+            newAlert({
+                title: 'Swap Failed',
+                subtitle: 'Your transaction has not been completed.',
+                type: 'fail'
+            })
             console.log(error)
         }
     }
