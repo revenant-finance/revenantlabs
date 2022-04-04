@@ -17,7 +17,7 @@ export default function MeshBackground({ id, className }) {
     return (
         <canvas
             id={id}
-            className={classNames('fixed h-full w-full inset-0', className)}
+            className={classNames('fixed h-full w-full inset-0 filter blur-xl', className)}
             data-transition-in
         />
     )

@@ -20,7 +20,7 @@ export default function ConnectWalletButton(props) {
                 <i
                     className={classNames(
                         'fas fa-wallet transition ease-in-out duration-75',
-                        account && 'text-salmon'
+                        account && 'text-bluey'
                     )}
                 ></i>
             </button>

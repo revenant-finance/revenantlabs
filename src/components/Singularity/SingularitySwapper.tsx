@@ -2,14 +2,18 @@ import classNames from 'classnames'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
-import { commaFormatter, currentEpoch } from '../../utils'
+import { commaFormatter, currentEpoch, isNotEmpty } from '../../utils'
+import Button from '../Button'
 import Input from '../Input'
+import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 
 export default function SingularitySwapper() {
     const { account } = useActiveWeb3React()
     const { login } = useAuth()
     const {
+        showDetails,
+        setShowDetails,
         openModal,
         fromToken,
         toToken,
@@ -28,37 +32,23 @@ export default function SingularitySwapper() {
         priceImpact
     } = useSingularitySwapper()
 
+    const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
+
     return (
         <>
             <SwapperModal />
 
-            <div className="relative w-full max-w-md mx-auto space-y-4">
-                <div className="p-6 space-y-3 border-2 shadow-2xl bg-neutral-900 border-neutral-800 rounded-2xl">
-                    <div className="relative overflow-hidden border-2 rounded-2xl border-neutral-800">
-                        <div className="flex w-full border-b-2 bg-neutral-700 border-neutral-800 ">
-                            <div className="flex-1">
-                                <input
-                                    type="number"
-                                    className={classNames(
-                                        'bg-transparent outline-none p-4 w-full',
-                                        !!fromToken?.walletBalance && 'pb-0'
-                                    )}
-                                    onChange={(e) => setFromValue(e.target.value)}
-                                    value={fromValue}
-                                />
-
-                                {!!fromToken?.walletBalance && (
-                                    <button onClick={maxFrom} className="px-4 pb-2 text-xs">
-                                        Max: {formatter(fromToken.walletBalance)} {fromToken.symbol}
-                                    </button>
-                                )}
-                            </div>
-                            <button
-                                onClick={() => openModal('from')}
-                                type="button"
-                                className="flex items-center justify-center px-3 space-x-2"
-                            >
-                                <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
+            <div className="relative w-full max-w-lg mx-auto space-y-4">
+                <div className="w-full p-6 space-y-4 border-2 shadow-2xl bg-opacity-75 bg-neutral-900 border-neutral-800 rounded-xl">
+                    <div>
+                        {/* ======= FROM MODAL INPUTS =======  */}
+                        <SwapperInput
+                            className="mb-2"
+                            onChange={(e) => setFromValue(e.target.value)}
+                            value={fromValue}
+                            onClick={() => openModal('from')}
+                            buttonContent={
+                                <>
                                     {fromToken && (
                                         <span className="flex items-center space-x-2">
                                             <img
@@ -66,49 +56,49 @@ export default function SingularitySwapper() {
                                                 src={`/img/tokens/${fromToken.asset}`}
                                                 alt=""
                                             />
-                                            {/* <span>{fromToken.symbol}</span> */}
+                                            <span className="font-medium uppercase">
+                                                {fromToken.symbol}
+                                            </span>
+                                            <i className="fas fa-caret-down opacity-25" />
                                         </span>
                                     )}
                                     {!fromToken && (
-                                        <i className="fas fa-box hover:animate-spin"></i>
+                                        <span className="flex items-center space-x-2">
+                                            <p className="opacity-50">Select Token</p>
+                                            <i className="fas fa-caret-down opacity-25" />
+                                        </span>
                                     )}
-                                </div>
-                            </button>
-                        </div>
+                                </>
+                            }
+                            footerLeft={
+                                isNotEmpty(fromValue) &&
+                                fromToken?.tokenPrice &&
+                                `$${formatter(fromValue * fromToken?.tokenPrice)}`
+                            }
+                            footerRight={
+                                isNotEmpty(fromToken?.walletBalance) &&
+                                `Max: ${formatter(fromToken?.walletBalance)} ${fromToken?.symbol}`
+                            }
+                        />
 
-                        <div className="relative z-10 w-full pointer-events-none">
+                        {/* ======= SWAP INPUTS BUTTON =======  */}
+                        <div className="h-0 relative flex items-center ml-6 md:ml-0 md:justify-center">
                             <button
                                 onClick={swapTokens}
-                                className="block w-8 h-8 ml-auto mr-6 -mt-4 -mb-4 border-2 rounded-full pointer-events-auto md:mx-auto md:h-10 md:w-10 bg-neutral-800 border-neutral-900 md:-mt-5 md:-mb-5"
+                                className="group absolute rounded-full w-8 md:w-12 h-8 md:h-12 md:text-lg flex items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900 shadow"
                             >
-                                <i className="fas fa-retweet" />
+                                <i className="transition group-hover:rotate-180 duration-300 fas fa-retweet" />
                             </button>
                         </div>
+                        {/* ======= TO MODAL INPUTS =======  */}
 
-                        <div className="flex w-full bg-neutral-700">
-                            <div className="flex-1">
-                                <input
-                                    type="number"
-                                    className={classNames(
-                                        'bg-transparent outline-none p-4 w-full',
-                                        !!toToken?.walletBalance && 'pb-0'
-                                    )}
-                                    value={toValue}
-                                    onChange={(e) => setToValue(e.target.value)}
-                                    disabled={true}
-                                />
-                                {/* {!!toToken?.walletBalance && (
-                                    <button onClick={maxTo} className="px-4 pb-2 text-xs">
-                                        Max: {formatter(toToken?.walletBalance)} {toToken.symbol}
-                                    </button>
-                                )} */}
-                            </div>
-                            <button
-                                onClick={() => openModal('to')}
-                                type="button"
-                                className="flex items-center justify-center px-3"
-                            >
-                                <div className="flex items-center w-full max-w-lg px-3 py-2 space-x-2 border-2 shadow-2xl bg-neutral-800 border-neutral-900 rounded-2xl whitespace-nowrap">
+                        <SwapperInput
+                            readOnly
+                            onChange={(e) => setToValue(e.target.value)}
+                            value={toValue}
+                            onClick={() => openModal('to')}
+                            buttonContent={
+                                <>
                                     {toToken && (
                                         <span className="flex items-center space-x-2">
                                             <img
@@ -116,53 +106,55 @@ export default function SingularitySwapper() {
                                                 src={`/img/tokens/${toToken.asset}`}
                                                 alt=""
                                             />
-                                            {/* <span>{toToken.symbol}</span> */}
+                                            <span className="font-medium uppercase">
+                                                {toToken.symbol}
+                                            </span>
+                                            <i className="fas fa-caret-down opacity-25" />
                                         </span>
                                     )}
-                                    {!toToken && <i className="fas fa-box hover:animate-spin"></i>}
-                                </div>
-                            </button>
-                        </div>
+                                    {!toToken && (
+                                        <span className="flex items-center space-x-2">
+                                            <p className="opacity-50">Select Token</p>
+                                            <i className="fas fa-caret-down opacity-25" />
+                                        </span>
+                                    )}
+                                </>
+                            }
+                            footerLeft={
+                                isNotEmpty(toValue) &&
+                                toToken?.tokenPrice &&
+                                `$${formatter(toValue * toToken?.tokenPrice)}`
+                            }
+                            footerRight={
+                                isNotEmpty(fromToken?.walletBalance) &&
+                                `Max: ${formatter(fromToken?.walletBalance)} ${fromToken?.symbol}`
+                            }
+                        />
                     </div>
 
-                    {!!fromToken && !!toToken && !!fromValue && !!toValue && (
-                        <div className="p-4 space-y-2 font-mono border-2 border-neutral-800 bg-neutral-700 rounded-2xl">
-                            <p className="text-xs font-extrabold">Operation Receipt</p>
+                    {!showDetails && isReady && (
+                        <button
+                            onClick={() => setShowDetails((_) => !_)}
+                            className="text-left w-full flex items-center justify-center p-4 font-mono text-sm border-2 border-neutral-800 bg-opacity-50 bg-neutral-900 rounded-xl"
+                        >
+                            <p className="flex-1">
+                                1 {fromToken.symbol} = {000} {toToken.symbol}
+                            </p>
+                            <p>
+                                <i className="fas fa-caret-down" />
+                            </p>
+                        </button>
+                    )}
 
-                            <div className="flex p-2 space-x-4 rounded bg-neutral-800">
-                                <div className="whitespace-nowrap">
-                                    <p className="text-xs opacity-50">From</p>
-                                    <p className="">
-                                        {formatter(fromValue)} {fromToken.symbol}
-                                    </p>
-                                    <p className="">
-                                        $
-                                        {commaFormatter(
-                                            (Number(fromValue) * fromToken.tokenPrice).toFixed(2)
-                                        )}
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center justify-center flex-1">
-                                    <i className="fas fa-circle-arrow-right"></i>
-                                </div>
-                                <div className=" whitespace-nowrap">
-                                    <p className="text-xs opacity-50">To</p>
-
-                                    <p className="">
-                                        {formatter(toValue)} {toToken.symbol}
-                                    </p>
-                                    <p className="">
-                                        $
-                                        {commaFormatter(
-                                            (Number(toValue) * toToken.tokenPrice).toFixed(2)
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-1">
-                                <div className="flex items-center text-xs">
+                    {showDetails && isReady && (
+                        <>
+                            {/* ======= FEE SUMMARY =======  */}
+                            <button
+                                onClick={() => setShowDetails((_) => !_)}
+                                className="text-left w-full p-4 space-y-2 border-2 border-neutral-800 bg-opacity-75 bg-neutral-900 rounded-xl"
+                            >
+                                <div className="space-y-1">
+                                    {/* <div className="flex items-center text-xs">
                                     <p className="flex-1">Slippage</p>
                                     <Input
                                         type="number"
@@ -170,48 +162,35 @@ export default function SingularitySwapper() {
                                         onChange={(e) => setSlippageTolerance(e.target.value)}
                                         onMax={() => setSlippageTolerance(100)}
                                     />
-                                    {/* <p className="">0.1%</p> */}
+                                </div> */}
+                                    <div className="font-mono flex items-center text-xs opacity-50">
+                                        <p className="flex-1">Price Impact</p>
+                                        <p className="">{formatter(priceImpact)}%</p>
+                                    </div>
+                                    <div className="font-mono flex items-center text-xs opacity-50">
+                                        <p className="flex-1">Total Fees</p>
+                                        <p className="">
+                                            ${String(commaFormatter(totalFees.toFixed(2)))} USD
+                                        </p>
+                                    </div>
+                                    <div className="font-medium flex items-center text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
+                                        <p className="flex-1">Minimum Received</p>
+                                        <p className="">
+                                            ~{Number(minimumReceived).toFixed(8)} {toToken.symbol}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex items-center text-xs">
-                                    <p className="flex-1">Price Impact</p>
-                                    <p className="">{formatter(priceImpact)}%</p>
-                                </div>
-                                <div className="flex items-center text-xs">
-                                    <p className="flex-1">Total Fees</p>
-                                    <p className="">
-                                        ${String(commaFormatter(totalFees.toFixed(2)))} USD
-                                    </p>
-                                </div>
-                                <div className="flex items-center text-xs">
-                                    <p className="flex-1">Last Updated</p>
-                                    <p className="">
-                                        {(currentEpoch - fromToken.lastUpdated).toFixed(0)} Seconds
-                                    </p>
-                                </div>
-                                <div className="flex items-center text-purple-400">
-                                    <p className="flex-1">Minimum Received</p>
-                                    <p className="">
-                                        ~{formatter(minimumReceived)} {toToken.symbol}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                            </button>
+                        </>
                     )}
 
-                    <div>
-                        <button
+                    {isReady && (
+                        <Button
                             onClick={account ? () => swap() : () => login()}
-                            className="w-full px-2 py-2 font-medium text-purple-400 bg-purple-900 rounded"
+                            className="bg-gradient-to-br from-purple-900 to-blue-900 shadow"
                         >
                             {account ? 'Swap' : 'Connect Wallet'}
-                        </button>
-                    </div>
-
-                    {fromToken && toToken && (
-                        <p className="font-mono text-xs text-center opacity-50">
-                            Swapping {formatter(fromValue || 0)} {fromToken.symbol} to{' '}
-                            {formatter(toValue || 0)} {toToken.symbol}.
-                        </p>
+                        </Button>
                     )}
                 </div>
             </div>

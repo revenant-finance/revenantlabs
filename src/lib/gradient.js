@@ -556,16 +556,20 @@ class Gradient {
                     ;(this.mesh.material.uniforms.u_time.value = this.t), this.minigl.render()
                 }
                 if (0 !== this.last && this.isStatic)
-                    return this.minigl.render(), void this.disconnect()
-                /*this.isIntersecting && */ ;(this.conf.playing || this.isMouseDown) &&
-                    requestAnimationFrame(this.animate)
+                    return (
+                        this.minigl.render(), void this.disconnect()
+                        /*this.isIntersecting && */
+                    )
+                ;(this.conf.playing || this.isMouseDown) && requestAnimationFrame(this.animate)
             }),
             e(this, 'addIsLoadedClass', () => {
                 /*this.isIntersecting && */ !this.isLoadedClass &&
                     ((this.isLoadedClass = !0),
                     this.el.classList.add('isLoaded'),
                     setTimeout(() => {
-                        this.el.parentElement.classList.add('isLoaded')
+                        try {
+                            this.el.parentElement.classList.add('isLoaded')
+                        } catch (error) {}
                     }, 3e3))
             }),
             e(this, 'pause', () => {

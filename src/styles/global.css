@@ -38,11 +38,23 @@ body,
     /* color: red !important; */
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
 #singularity-gradient-colors {
-    --gradient-color-1: #000000;
-    --gradient-color-2: #002d47;
-    --gradient-color-3: #000114;
-    --gradient-color-4: #270047;
+    --gradient-color-1: #5b1365;
+    --gradient-color-2: #240649;
+    --gradient-color-3: #090738;
+    --gradient-color-4: #186076;
 }
 #creditum-gradient-colors {
     --gradient-color-1: #b69322;
@@ -66,8 +78,8 @@ body,
 }
 
 #purple-gradient-b {
-    --gradient-color-1: #322f58;
-    --gradient-color-2: #9189ff;
-    --gradient-color-3: #23222e;
-    --gradient-color-4: #aaa4fd;
+    --gradient-color-1: #9189ff;
+    --gradient-color-2: #322f58;
+    --gradient-color-3: #aaa4fd;
+    --gradient-color-4: #23222e;
 }

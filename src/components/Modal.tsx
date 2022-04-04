@@ -15,9 +15,9 @@ export default function Modal({ visible, onClose, children, style }) {
                         onClick={() => onClose()}
                     >
                         <motion.div
-                            initial={{ translateY: '-20%' }}
+                            initial={{ translateY: '-3%' }}
                             animate={{ translateY: '0%' }}
-                            exit={{ translateY: '-20%' }}
+                            exit={{ translateY: '-3%' }}
                             className={classNames(
                                 'max-w-lg w-full p-6 shadow-2xl bg-neutral-900  border-2 border-neutral-800 rounded-2xl  overflow-auto'
                             )}

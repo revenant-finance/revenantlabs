@@ -34,7 +34,7 @@ export default function Navigation() {
                         <i
                             className={classNames(
                                 'fas fa-bars transition ease-in-out duration-75',
-                                open && 'rotate-90 text-salmon'
+                                open && 'rotate-90 text-bluey'
                             )}
                         ></i>
                     </button>
@@ -51,7 +51,7 @@ export default function Navigation() {
                             <div className="flex flex-col gap-1">
                                 <Link href="/" passHref>
                                     <a className="text-xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">
-                                        Go Home
+                                        <span>Home</span>
                                     </a>
                                 </Link>
                                 {/* <Link href={'/singularity?from=wftm&to=credit'} passHref>
@@ -64,7 +64,7 @@ export default function Navigation() {
                             <div className="space-y-2">
                                 <Link href="/creditum">
                                     <a
-                                        className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-tr from-salmon to-bluey"
+                                        className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-tr from-blue-600 to-yellow-300"
                                         href=""
                                     >
                                         Open <b>Creditum</b>
@@ -72,7 +72,7 @@ export default function Navigation() {
                                 </Link>
                                 <Link href="/singularity">
                                     <a
-                                        className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-tr from-salmon to-bluey"
+                                        className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-br from-purple-500 to-blue-500"
                                         href=""
                                     >
                                         Open <b>Singularity</b>

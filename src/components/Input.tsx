@@ -5,6 +5,7 @@ interface Input {
     children?: any
     type?: string
     className?: string
+    placeholder?: string
     // disabled?: boolean
     onChange?: (any) => any
     onMax?: (any) => any

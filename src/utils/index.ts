@@ -155,3 +155,7 @@ export const commaFormatter = (value, decimals = 2) => {
 export const sumOfArray = (array) => {
     return array.reduce((pv, cv) => pv + cv, 0)
 }
+
+export const isNotEmpty = (value) => {
+    return value !== '0' && !!value
+}

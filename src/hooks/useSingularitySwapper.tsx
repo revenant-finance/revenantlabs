@@ -15,6 +15,7 @@ export function useSingularitySwapperInternal() {
 
     const { data } = useSingularityData()
 
+    const [showDetails, setShowDetails] = useState(false)
     const [showSelectTokenModal, setShowSelectTokenModal] = useState(false)
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState('')
@@ -46,24 +47,19 @@ export function useSingularitySwapperInternal() {
     const totalFees = Number(inFee) * fromToken?.tokenPrice + Number(outFee) * toToken?.tokenPrice
     const inverseSlippage = (1 - slippageTolerance) * 100
     const minimumReceived = toValue
-        ? toEth(
-              toWei(toValue, toToken?.decimals)
-                  .mul(inverseSlippage)
-                  .div(100),
-              toToken?.decimals
-          )
+        ? toEth(toWei(toValue, toToken?.decimals).mul(inverseSlippage).div(100), toToken?.decimals)
         : '0'
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
         setFromTokenCache(token.id)
-        setFromValue('0')
+        setFromValue('')
     }
 
     const setToToken = (token: any) => {
         _setToToken(token)
         setToTokenCache(token.id)
-        setToValue('0')
+        setToValue('')
     }
 
     const swapTokens = () => {
@@ -140,29 +136,6 @@ export function useSingularitySwapperInternal() {
         return number < 1000 ? commaNumber(number) : shortNumber(number)
     }
 
-    useEffect(() => {
-        if (!tokens) return
-        const findFromToken =
-            tokens.find((token) => token.id === fromTokenUrlParam) ||
-            tokens.find((token) => token.id === fromTokenCache)
-        const findToToken =
-            tokens.find((token) => token.id === toTokenUrlParam) ||
-            tokens.find((token) => token.id === toTokenCache)
-        if (findFromToken) setFromToken(findFromToken)
-        if (findToToken) setToToken(findToToken)
-    }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam, tokens])
-
-    // useEffect(() => {
-    //     if (!fromToken || !toToken) return
-    //     if (!router.asPath.startsWith('/singularity')) return
-
-    //     router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, {
-    //         shallow: true
-    //     })
-    // }, [fromToken, toToken])
-
-    // Load selected token balances.
-
     const swap = async () => {
         try {
             if (Number(fromToken?.allowBalance) < Number(fromValue)) {
@@ -190,7 +163,32 @@ export function useSingularitySwapperInternal() {
         }
     }
 
+    useEffect(() => {
+        if (!tokens) return
+        const findFromToken =
+            tokens.find((token) => token.id === fromTokenUrlParam) ||
+            tokens.find((token) => token.id === fromTokenCache)
+        const findToToken =
+            tokens.find((token) => token.id === toTokenUrlParam) ||
+            tokens.find((token) => token.id === toTokenCache)
+        if (findFromToken) setFromToken(findFromToken)
+        if (findToToken) setToToken(findToToken)
+    }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam, tokens])
+
+    useEffect(() => {
+        if (!fromToken || !toToken) return
+        if (!router.asPath.startsWith('/singularity')) return
+
+        router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, {
+            shallow: true
+        })
+    }, [fromToken, toToken])
+
+    // Load selected token balances.
+
     return {
+        showDetails,
+        setShowDetails,
         tokens,
         openModal,
         showSelectTokenModal,
