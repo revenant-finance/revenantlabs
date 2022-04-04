@@ -92,7 +92,7 @@ export default function SingularityLiquidityModal() {
                         )}
 
                         <DataPoint
-                            title="Collateralization Ration"
+                            title="Collateralization Ratio"
                             value={`${commaFormatter(selectedLp?.collatRatio)}`}
                         />
 

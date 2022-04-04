@@ -8,6 +8,7 @@ import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getSingOracleContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import MeshBackground from '../MeshBackground'
+import SingularityFooter from './SingularityFooter'
 import SingularityHeader from './SingularityHeader'
 
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
@@ -194,6 +195,7 @@ export function SingularityAppWrapper({ children }) {
                         <MeshBackground id="singularity-gradient-colors" />
                         <div className="fixed inset-0 bg-black bg-opacity-50" />
                         <div className="relative z-10">{children}</div>
+                        <SingularityFooter />
                     </div>
                 </SingularityLiquidityWrapper>
             </SingularitySwapperWrapper>

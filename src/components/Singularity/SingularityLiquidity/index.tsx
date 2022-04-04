@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
 import { formatter, isNotEmpty } from '../../../utils'
+import Bar from '../../Bar'
 import DataPoint from '../../DataPoint'
 import { useSingularityData } from '../SingularityAppWrapper'
 import SingularityLiquidityModal from './SingularityLiquidityModal'
@@ -47,47 +48,56 @@ export default function SingularityLiquidity() {
                                     onClick={() => setSelectedLp(token)}
                                     className="w-full text-left border-2 shadow-2xl bg-neutral-900 border-neutral-800 bg-opacity-75 rounded-xl whitespace-nowrap overflow-auto p-6 transition-all transform hover:-translate-y-1"
                                 >
-                                    <div className="flex gap-4 flex-wrap">
+                                    <div className="flex items-center gap-4 flex-wrap">
                                         <div className="w-full flex-1 flex items-center gap-4">
                                             <img
                                                 className="w-12"
                                                 src={`/img/tokens/${token.asset}`}
                                                 alt=""
                                             />
-                                            <div className="font-medium">
-                                                <p className="text-2xl space-x-2">
-                                                    <span>{token.name}</span>
-                                                    <span className="text-lg opacity-25">
-                                                        ${formatter(token.tokenPrice)}
-                                                    </span>
-                                                </p>
-                                                <p className="text-xl opacity-50">
-                                                    <span>
-                                                        $
-                                                        {formatter(
-                                                            token.lpUnderlyingBalance *
-                                                                token.tokenPrice
-                                                        )}
-                                                    </span>
-                                                    <span> Deposited in Pool</span>
-                                                </p>
+                                            <div className="space-y-2">
+                                                <div className="font-medium">
+                                                    <p className="text-lg md:text-2xl space-x-2">
+                                                        <span>{token.name}</span>
+                                                        <span className="text-sm md:text-lg opacity-25">
+                                                            ${formatter(token.tokenPrice)}
+                                                        </span>
+                                                    </p>
+                                                    <p className="md:text-xl opacity-50">
+                                                        <span>
+                                                            $
+                                                            {formatter(
+                                                                token.lpUnderlyingBalance *
+                                                                    token.tokenPrice
+                                                            )}
+                                                        </span>
+                                                        <span> Deposited in Pool</span>
+                                                    </p>
+                                                </div>
+
+                                                <div className="hidden md:block w-32">
+                                                    <Bar value={token.collatRatio * 100} />
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div className="md:hidden w-full">
-                                            <DataPoint
-                                                title="Your Balance"
-                                                value={`$${formatter(
-                                                    token.pricePerShare * token.walletBalance
-                                                )}`}
-                                            />
-                                            <DataPoint
-                                                title="Your Deposits"
-                                                value={`$${formatter(
-                                                    token.pricePerShare *
-                                                        token.lpBalance.walletBalance
-                                                )}`}
-                                            />
+                                        <div className="md:hidden w-full space-y-2">
+                                            <Bar value={token.collatRatio * 100} />
+                                            <div>
+                                                <DataPoint
+                                                    title="Your Balance"
+                                                    value={`$${formatter(
+                                                        token.pricePerShare * token.walletBalance
+                                                    )}`}
+                                                />
+                                                <DataPoint
+                                                    title="Your Deposits"
+                                                    value={`$${formatter(
+                                                        token.pricePerShare *
+                                                            token.lpBalance.walletBalance
+                                                    )}`}
+                                                />
+                                            </div>
                                         </div>
                                         <div className="hidden md:flex gap-4">
                                             <div
