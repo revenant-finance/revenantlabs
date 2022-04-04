@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
 import { commaFormatter, formatter, isNotEmpty } from '../../../utils'
 import Button from '../../Button'
@@ -24,6 +25,10 @@ export default function SingularityLiquidityModal() {
     } = useSingularityLiquidity()
 
     const actionVerb = `${isWithdraw ? 'withdraw' : 'deposit'}`
+
+    useEffect(() => {
+        console.log(`selectedLp`, selectedLp)
+    }, [selectedLp])
 
     return (
         <>
@@ -122,6 +127,13 @@ export default function SingularityLiquidityModal() {
                                 )
                             }
                         />
+
+                        <Button
+                            className="w-full bg-neutral-800"
+                            onClick={() => mintTestToken(selectedLp)}
+                        >
+                            Mint {1000} test{selectedLp?.symbol} Tokens
+                        </Button>
                     </div>
                     <div>
                         <DataPoint
@@ -198,15 +210,6 @@ export default function SingularityLiquidityModal() {
                         >
                             {isWithdraw ? 'Withdraw' : 'Deposit'} {selectedLp?.symbol}
                         </Button>
-                    </div>
-
-                    <div className="flex justify-end opacity-10">
-                        <button
-                            onClick={() => mintTestToken(selectedLp)}
-                            className="underline text-sm opacity-50 hover:opacity-100 animate transition-all "
-                        >
-                            Mint Test Token
-                        </button>
                     </div>
                 </div>
             </Modal>

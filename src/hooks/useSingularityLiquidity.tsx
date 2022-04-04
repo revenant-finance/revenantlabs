@@ -202,11 +202,11 @@ export function useSingularityLiquidityInternal() {
 export const SingularityLiquidityContext = createContext({})
 
 export function SingularityLiquidityWrapper({ children }: any) {
-    const Liquidity = useSingularityLiquidityInternal()
+    const hook = useSingularityLiquidityInternal()
 
     return (
         <>
-            <SingularityLiquidityContext.Provider value={{ ...Liquidity }}>
+            <SingularityLiquidityContext.Provider value={{ ...hook }}>
                 <>{children}</>
             </SingularityLiquidityContext.Provider>
         </>
