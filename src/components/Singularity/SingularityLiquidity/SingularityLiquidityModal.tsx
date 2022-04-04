@@ -26,10 +26,6 @@ export default function SingularityLiquidityModal() {
 
     const actionVerb = `${isWithdraw ? 'withdraw' : 'deposit'}`
 
-    useEffect(() => {
-        console.log(`selectedLp`, selectedLp)
-    }, [selectedLp])
-
     return (
         <>
             <Modal visible={!!selectedLp} onClose={() => setSelectedLp(null)}>

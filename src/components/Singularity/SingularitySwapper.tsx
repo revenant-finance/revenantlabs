@@ -35,15 +35,11 @@ export default function SingularitySwapper() {
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
 
-    const [testt, setTestt] = useState('')
-
     return (
         <>
             <SwapperModal />
 
             <div className="relative w-full max-w-lg mx-auto space-y-4">
-                <input type="text" value={testt} onChange={(e) => setTestt(e.target.value)} />
-
                 <div className="w-full p-6 space-y-4 border-2 shadow-2xl bg-opacity-75 bg-neutral-900 border-neutral-800 rounded-xl">
                     <div>
                         {/* ======= FROM MODAL INPUTS =======  */}

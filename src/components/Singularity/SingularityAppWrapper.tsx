@@ -56,11 +56,11 @@ function useSingularityDataInternal() {
 
     const update = () => setRefresh((i) => i + 1)
 
-    const [test, setTest] = useState({ test: 1 })
+    // const [test, setTest] = useState({ test: 1 })
 
     useEffect(() => {
         const onLoad = async () => {
-            // let formattedSingularityData = {}
+            let formattedSingularityData = {}
             const traunchIds = Object.keys(constants.CONTRACT_SINGULARITY[250].traunches)
             const allTraunchData = traunchIds.map((traunchId) => {
                 const traunchData = constants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
@@ -134,70 +134,64 @@ function useSingularityDataInternal() {
             const traunchData = await Promise.all(allTraunchCalls)
 
             const formattedTraunchData = traunchData.map((traunch, index) => {
-                // do something
-                // do something
-                // do something
-                // do something
-                // do something
-                // do something
+                const tokens = allTraunchData[index].tokens
+                const [
+                    assetsAmount,
+                    liabilitiesAmount,
+                    pricePerShares,
+                    tradingFeeRates,
+                    lpUnderlyingBalances,
+                    walletBalances,
+                    lpBalances,
+                    tokenPrices
+                ] = traunch
 
-                return {}
+                return {
+                    router: allTraunchData[index].traunchData.router,
+                    tokens: liabilitiesAmount.map((liability, index) => {
+                        const tokenData = formatSingularityData(
+                            tokens[index],
+                            assetsAmount[index][0],
+                            liabilitiesAmount[index][0],
+                            pricePerShares[index][0],
+                            tradingFeeRates[index][0],
+                            lpUnderlyingBalances[index][0],
+                            walletBalances[index],
+                            lpBalances[index],
+                            tokenPrices[0][index],
+                            tokenPrices[1][index]
+                        )
+
+                        return tokenData
+                    })
+                }
             })
 
-            // traunchData.forEach((traunch, i) => {
-            //     const formattedTokenData = []
-            //     const tokens = allTraunchData[i].tokens
-            //     const [
-            //         assetsAmount,
-            //         liabilitiesAmount,
-            //         pricePerShares,
-            //         tradingFeeRates,
-            //         lpUnderlyingBalances,
-            //         walletBalances,
-            //         lpBalances,
-            //         tokenPrices
-            //     ] = traunch
-            //     for (let j = 0; j < liabilitiesAmount.length; j++) {
-            //         const tokenData = formatSingularityData(
-            //             tokens[j],
-            //             assetsAmount[j][0],
-            //             liabilitiesAmount[j][0],
-            //             pricePerShares[j][0],
-            //             tradingFeeRates[j][0],
-            //             lpUnderlyingBalances[j][0],
-            //             walletBalances[j],
-            //             lpBalances[j],
-            //             tokenPrices[0][j],
-            //             tokenPrices[1][j]
-            //         )
-            //         formattedTokenData.push(tokenData)
-            //     }
-            //     formattedSingularityData[`${traunchIds[i]}`] = {
-            //         tokens: formattedTokenData,
-            //         router: allTraunchData[i].traunchData.router
-            //     }
-            // })
-
-            setData(traunchData)
-            console.log(`formattedSingularityData`, formattedSingularityData)
-            // setData(formattedSingularityData)
+            setData(
+                traunchIds.reduce((a, b, index) => {
+                    return {
+                        [a]: formattedTraunchData[index],
+                        [b]: formattedTraunchData[index]
+                    }
+                })
+            )
         }
 
         onLoad()
-    }, [account, test])
+    }, [account, refresh, fastRefresh])
 
     const tokens = data?.safe?.tokens
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTest((prev) => ({
-                test: prev.test + 1
-            }))
-        }, 1000)
-        return () => clearInterval(timer)
-    }, [])
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setTest((prev) => ({
+    //             test: prev.test + 1
+    //         }))
+    //     }, 1000)
+    //     return () => clearInterval(timer)
+    // }, [])
 
-    return { tokens, data, refreshing, update, test }
+    return { tokens, data, refreshing, update }
 }
 
 export function SingularityAppWrapper({ children }) {
@@ -211,12 +205,7 @@ export function SingularityAppWrapper({ children }) {
                     <div className="w-full h-full p-6 py-24 bg-center bg-cover">
                         <MeshBackground id="singularity-gradient-colors" />
                         <div className="fixed inset-0 bg-black bg-opacity-50" />
-                        <div className="relative z-10">
-                            {JSON.stringify(hook.data)}
-                            {JSON.stringify(hook.test)}
-
-                            {children}
-                        </div>
+                        <div className="relative z-10">{children}</div>
                         <SingularityFooter />
                     </div>
                 </SingularityLiquidityWrapper>
