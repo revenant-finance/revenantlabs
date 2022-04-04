@@ -10,6 +10,7 @@ import multicall from '../../utils/multicall'
 import MeshBackground from '../MeshBackground'
 import SingularityFooter from './SingularityFooter'
 import SingularityHeader from './SingularityHeader'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
@@ -55,11 +56,12 @@ function useSingularityDataInternal() {
 
     const update = () => setRefresh((i) => i + 1)
 
+    const [test, setTest] = useState({ test: 1 })
+
     useEffect(() => {
-        const fetchData = async () => {
-            setRefreshing(true)
+        const onLoad = async () => {
+            // let formattedSingularityData = {}
             const traunchIds = Object.keys(constants.CONTRACT_SINGULARITY[250].traunches)
-            let formattedSingularityData = new Object()
             const allTraunchData = traunchIds.map((traunchId) => {
                 const traunchData = constants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
                 const tokens = Object.values(traunchData.tokens)
@@ -130,51 +132,72 @@ function useSingularityDataInternal() {
             })
 
             const traunchData = await Promise.all(allTraunchCalls)
-            traunchData.forEach((traunch, i) => {
-                const formattedTokenData = []
-                const tokens = allTraunchData[i].tokens
-                const [
-                    assetsAmount,
-                    liabilitiesAmount,
-                    pricePerShares,
-                    tradingFeeRates,
-                    lpUnderlyingBalances,
-                    walletBalances,
-                    lpBalances,
-                    tokenPrices
-                ] = traunch
-                for (let j = 0; j < liabilitiesAmount.length; j++) {
-                    const tokenData = formatSingularityData(
-                        tokens[j],
-                        assetsAmount[j][0],
-                        liabilitiesAmount[j][0],
-                        pricePerShares[j][0],
-                        tradingFeeRates[j][0],
-                        lpUnderlyingBalances[j][0],
-                        walletBalances[j],
-                        lpBalances[j],
-                        tokenPrices[0][j],
-                        tokenPrices[1][j]
-                    )
-                    formattedTokenData.push(tokenData)
-                }
-                formattedSingularityData[`${traunchIds[i]}`] = {
-                    tokens: formattedTokenData,
-                    router: allTraunchData[i].traunchData.router
-                }
+
+            const formattedTraunchData = traunchData.map((traunch, index) => {
+                // do something
+                // do something
+                // do something
+                // do something
+                // do something
+                // do something
+
+                return {}
             })
 
-            console.log('refreshing collaterals result ===== ')
-            setData(formattedSingularityData)
-            setRefreshing(false)
+            // traunchData.forEach((traunch, i) => {
+            //     const formattedTokenData = []
+            //     const tokens = allTraunchData[i].tokens
+            //     const [
+            //         assetsAmount,
+            //         liabilitiesAmount,
+            //         pricePerShares,
+            //         tradingFeeRates,
+            //         lpUnderlyingBalances,
+            //         walletBalances,
+            //         lpBalances,
+            //         tokenPrices
+            //     ] = traunch
+            //     for (let j = 0; j < liabilitiesAmount.length; j++) {
+            //         const tokenData = formatSingularityData(
+            //             tokens[j],
+            //             assetsAmount[j][0],
+            //             liabilitiesAmount[j][0],
+            //             pricePerShares[j][0],
+            //             tradingFeeRates[j][0],
+            //             lpUnderlyingBalances[j][0],
+            //             walletBalances[j],
+            //             lpBalances[j],
+            //             tokenPrices[0][j],
+            //             tokenPrices[1][j]
+            //         )
+            //         formattedTokenData.push(tokenData)
+            //     }
+            //     formattedSingularityData[`${traunchIds[i]}`] = {
+            //         tokens: formattedTokenData,
+            //         router: allTraunchData[i].traunchData.router
+            //     }
+            // })
+
+            setData(traunchData)
+            console.log(`formattedSingularityData`, formattedSingularityData)
+            // setData(formattedSingularityData)
         }
 
-        fetchData()
-    }, [account, fastRefresh, refresh])
+        onLoad()
+    }, [account, test])
 
     const tokens = data?.safe?.tokens
 
-    return { tokens, data, refreshing, update }
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTest((prev) => ({
+                test: prev.test + 1
+            }))
+        }, 1000)
+        return () => clearInterval(timer)
+    }, [])
+
+    return { tokens, data, refreshing, update, test }
 }
 
 export function SingularityAppWrapper({ children }) {
@@ -188,7 +211,12 @@ export function SingularityAppWrapper({ children }) {
                     <div className="w-full h-full p-6 py-24 bg-center bg-cover">
                         <MeshBackground id="singularity-gradient-colors" />
                         <div className="fixed inset-0 bg-black bg-opacity-50" />
-                        <div className="relative z-10">{children}</div>
+                        <div className="relative z-10">
+                            {JSON.stringify(hook.data)}
+                            {JSON.stringify(hook.test)}
+
+                            {children}
+                        </div>
                         <SingularityFooter />
                     </div>
                 </SingularityLiquidityWrapper>

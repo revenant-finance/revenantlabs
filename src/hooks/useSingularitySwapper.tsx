@@ -207,8 +207,6 @@ export function useSingularitySwapperInternal() {
         })
     }, [fromToken, toToken])
 
-    // Load selected token balances.
-
     return {
         status,
         statusMessage,
