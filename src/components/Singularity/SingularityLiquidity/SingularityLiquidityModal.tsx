@@ -72,7 +72,9 @@ export default function SingularityLiquidityModal() {
 
                                 <DataPoint
                                     title={`Amount Withdrawn`}
-                                    value={`${Number(lpInput) * selectedLp?.pricePerShare}`}
+                                    value={`${formatter(
+                                        Number(lpInput) * selectedLp?.pricePerShare
+                                    )}`}
                                 />
 
                                 <DataPoint title={`Fees`} value={`${formatter(withdrawFee)}`} />
