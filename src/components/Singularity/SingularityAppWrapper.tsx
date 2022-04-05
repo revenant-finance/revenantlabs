@@ -10,7 +10,6 @@ import multicall from '../../utils/multicall'
 import MeshBackground from '../MeshBackground'
 import SingularityFooter from './SingularityFooter'
 import SingularityHeader from './SingularityHeader'
-import useDeepCompareEffect from 'use-deep-compare-effect'
 
 const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
