@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { BigNumber, constants, ethers, utils } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
+import commaNumber from 'comma-number'
 
 const commaNumber = require('comma-number')
 
@@ -117,6 +118,18 @@ export const currencyFormatter = (labelValue) => {
     //       new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e3}`).dp(2, 1)
     //     )}K`
     //   : `$${format(new BigNumber(`${Math.abs(Number(labelValue))}`).dp(2, 1))}`;
+}
+
+export const smartNumberFormatter = (_number) => {
+    const number = Number(_number)
+    let totalDecimals = 6
+    if (number > 1) totalDecimals = 5
+    if (number > 10) totalDecimals = 4
+    if (number > 100) totalDecimals = 3
+    if (number > 1000) totalDecimals = 2
+    if (number > 10000) totalDecimals = 1
+    if (number > 100000) totalDecimals = 0
+    return commaNumber(parseFloat(number.toFixed(totalDecimals)))
 }
 
 export const formatter = (value, decimals = 2, suffixStr = '') => {

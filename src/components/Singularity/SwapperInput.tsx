@@ -9,6 +9,7 @@ interface SwapperInput {
     footerLeft?: any
     footerRight?: any
     readOnly?: boolean
+    inputType?: string
 }
 
 export default function SwapperInput({
@@ -19,7 +20,8 @@ export default function SwapperInput({
     buttonContent,
     footerLeft,
     footerRight,
-    readOnly
+    readOnly,
+    inputType
 }: SwapperInput) {
     return (
         <div
@@ -30,7 +32,7 @@ export default function SwapperInput({
         >
             <div className="flex gap-4">
                 <input
-                    type="number"
+                    type={inputType || 'number'}
                     className={classNames(
                         'font-medium text-lg flex-1 bg-transparent outline-none w-full'
                     )}

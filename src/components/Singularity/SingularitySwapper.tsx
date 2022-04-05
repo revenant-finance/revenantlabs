@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
-import { commaFormatter, currentEpoch, isNotEmpty } from '../../utils'
+import { commaFormatter, currentEpoch, isNotEmpty, smartNumberFormatter } from '../../utils'
 import Button from '../Button'
 import LiveTime from '../LiveTime'
 import SwapperInput from './SwapperInput'
@@ -78,10 +78,12 @@ export default function SingularitySwapper() {
                                 `$${formatter(fromValue * fromToken?.tokenPrice)}`
                             }
                             footerRight={
-                                    <button onClick={() => setFromValue(fromToken?.walletBalance)} className="underline hover:no-underline">
-                                        Max: {formatter(fromToken?.walletBalance)}{' '}
-                                        {fromToken?.symbol}
-                                    </button>
+                                <button
+                                    onClick={() => setFromValue(fromToken?.walletBalance)}
+                                    className="underline hover:no-underline"
+                                >
+                                    Max: {formatter(fromToken?.walletBalance)} {fromToken?.symbol}
+                                </button>
                             }
                         />
 
@@ -98,8 +100,9 @@ export default function SingularitySwapper() {
 
                         <SwapperInput
                             readOnly
-                            onChange={(e) => setToValue(e.target.value)}
-                            value={toValue}
+                            inputType="text"
+                            // onChange={(e) => setToValue(e.target.value)}
+                            value={smartNumberFormatter(toValue)}
                             onClick={() => openModal('to')}
                             buttonContent={
                                 <>
@@ -130,9 +133,9 @@ export default function SingularitySwapper() {
                                 `$${formatter(toValue * toToken?.tokenPrice)}`
                             }
                             footerRight={
-                                    <div>
-                                        Balance: {formatter(toToken?.walletBalance)} {toToken?.symbol}
-                                    </div>
+                                <div>
+                                    Balance: {formatter(toToken?.walletBalance)} {toToken?.symbol}
+                                </div>
                             }
                         />
                     </div>
@@ -143,7 +146,7 @@ export default function SingularitySwapper() {
                             className="flex items-center justify-center w-full p-4 font-mono text-sm text-left bg-opacity-50 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
                         >
                             <p className="flex-1">
-                                1 {toToken.symbol} = {commaFormatter(fromValue / toValue, 4)}{' '}
+                                1 {toToken.symbol} = {smartNumberFormatter(fromValue / toValue)}{' '}
                                 {fromToken.symbol}
                             </p>
                             <p>
@@ -170,6 +173,20 @@ export default function SingularitySwapper() {
                                     />
                                 </div> */}
                                     <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">Price per {fromToken?.symbol}</p>
+                                        <p className="">
+                                            {smartNumberFormatter(toValue / fromValue)}{' '}
+                                            {toToken?.symbol} / {fromToken?.symbol}{' '}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">Price per {toToken?.symbol}</p>
+                                        <p className="">
+                                            {smartNumberFormatter(fromValue / toValue)}{' '}
+                                            {fromToken?.symbol} / {toToken?.symbol}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Last Updated</p>
                                         <p className="">
                                             <LiveTime date={fromToken?.lastUpdated} /> seconds ago
@@ -177,18 +194,17 @@ export default function SingularitySwapper() {
                                     </div>
                                     <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Price Impact</p>
-                                        <p className="">{formatter(priceImpact)}%</p>
+                                        <p className="">{smartNumberFormatter(priceImpact)}%</p>
                                     </div>
                                     <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Total Fees</p>
-                                        <p className="">
-                                            ${String(commaFormatter(totalFees.toFixed(2)))} USD
-                                        </p>
+                                        <p className="">${smartNumberFormatter(totalFees)} USD</p>
                                     </div>
                                     <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
                                         <p className="flex-1">Minimum Received</p>
                                         <p className="">
-                                            ~{Number(minimumReceived).toFixed(8)} {toToken.symbol}
+                                            ~{smartNumberFormatter(minimumReceived)}{' '}
+                                            {toToken.symbol}
                                         </p>
                                     </div>
                                 </div>
