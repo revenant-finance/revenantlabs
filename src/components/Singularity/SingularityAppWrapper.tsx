@@ -18,12 +18,15 @@ const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 export const SingularityDataContext = createContext({})
 
 function useSingularityDataInternal() {
-    const { fastRefresh } = useRefresh()
     const { account } = useActiveWeb3React()
     const oracleContract = getSingOracleContract()
+
     const [data, setData] = useState({})
-    const [refreshing, setRefreshing] = useState(false)
     const [refresh, setRefresh] = useState(0)
+
+    const tokens = data?.safe?.tokens
+
+    const update = () => setRefresh((_) => _ + 1)
 
     const formatSingularityData = (
         _token,
@@ -54,13 +57,8 @@ function useSingularityDataInternal() {
         }
     }
 
-    const update = () => setRefresh((i) => i + 1)
-
-    // const [test, setTest] = useState({ test: 1 })
-
     useEffect(() => {
         const onLoad = async () => {
-            let formattedSingularityData = {}
             const traunchIds = Object.keys(constants.CONTRACT_SINGULARITY[250].traunches)
             const allTraunchData = traunchIds.map((traunchId) => {
                 const traunchData = constants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
@@ -167,6 +165,8 @@ function useSingularityDataInternal() {
                 }
             })
 
+            console.log('Refreshing data...')
+
             setData(
                 traunchIds.reduce((a, b, index) => {
                     return {
@@ -178,20 +178,16 @@ function useSingularityDataInternal() {
         }
 
         onLoad()
-    }, [account, refresh, fastRefresh])
+    }, [account, refresh])
 
-    const tokens = data?.safe?.tokens
+    useEffect(() => {
+        const timer = setInterval(() => {
+            update()
+        }, 2000)
+        return () => clearInterval(timer)
+    }, [])
 
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         setTest((prev) => ({
-    //             test: prev.test + 1
-    //         }))
-    //     }, 1000)
-    //     return () => clearInterval(timer)
-    // }, [])
-
-    return { tokens, data, refreshing, update }
+    return { tokens, data, update }
 }
 
 export function SingularityAppWrapper({ children }) {

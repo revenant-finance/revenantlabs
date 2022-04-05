@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../../hooks/useSingularitySwapper'
 import { commaFormatter, currentEpoch, isNotEmpty } from '../../utils'
 import Button from '../Button'
+import LiveTime from '../LiveTime'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 
@@ -175,8 +176,7 @@ export default function SingularitySwapper() {
                                     <div className="font-mono flex items-center text-sm opacity-50">
                                         <p className="flex-1">Last Updated</p>
                                         <p className="">
-                                            {formatter(fromToken?.lastUpdated - currentEpoch)}{' '}
-                                            seconds ago
+                                            <LiveTime date={fromToken?.lastUpdated} /> seconds ago
                                         </p>
                                     </div>
                                     <div className="font-mono flex items-center text-sm opacity-50">

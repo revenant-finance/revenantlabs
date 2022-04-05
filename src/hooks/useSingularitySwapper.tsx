@@ -24,8 +24,8 @@ export function useSingularitySwapperInternal() {
     const [selectingToken, setSelectingToken] = useState<'from' | 'to'>(null)
     const [fromValue, _setFromValue] = useState('')
     const [toValue, _setToValue] = useState('')
-    const [fromToken, _setFromToken] = useState()
-    const [toToken, _setToToken] = useState()
+    const [_fromTokenId, _setFromTokenId] = useState()
+    const [_toTokenId, _setToTokenId] = useState()
     const [slippageTolerance, setSlippageTolerance] = useState(0.1)
     const [inFee, setInFee] = useState('0')
     const [outFee, setOutFee] = useState('0')
@@ -54,22 +54,25 @@ export function useSingularitySwapperInternal() {
         ? toEth(toWei(toValue, toToken?.decimals).mul(inverseSlippage).div(100), toToken?.decimals)
         : '0'
 
+    const fromToken = tokens?.find((token) => token.id === _fromTokenId)
+    const toToken = tokens?.find((token) => token.id === _toTokenId)
+
     const setFromToken = async (token: any) => {
-        _setFromToken(token)
+        _setFromTokenId(token.id)
         setFromTokenCache(token.id)
         setFromValue('')
     }
 
     const setToToken = (token: any) => {
-        _setToToken(token)
+        _setToTokenId(token.id)
         setToTokenCache(token.id)
         setToValue('')
     }
 
     const swapTokens = () => {
-        _setFromToken(toToken)
-        _setToToken(fromToken)
-        // _setFromValue(toValue)
+        _setFromTokenId(toToken.id)
+        _setToTokenId(fromToken.id)
+        _setFromValue(toValue)
         _setToValue(fromValue)
     }
 
@@ -186,8 +189,12 @@ export function useSingularitySwapperInternal() {
         }
     }
 
+    // Grabs a token from either URL or cache. URL takes precedence.
     useEffect(() => {
         if (!tokens) return
+        if (fromToken) return
+        if (toToken) return
+
         const findFromToken =
             tokens.find((token) => token.id === fromTokenUrlParam) ||
             tokens.find((token) => token.id === fromTokenCache)
@@ -198,9 +205,12 @@ export function useSingularitySwapperInternal() {
         if (findToToken) setToToken(findToToken)
     }, [fromTokenCache, toTokenCache, fromTokenUrlParam, toTokenUrlParam, tokens])
 
+    // Updates the URL when a new token is selected.
     useEffect(() => {
         if (!fromToken || !toToken) return
-        if (!router.asPath.startsWith('/singularity')) return
+        const paths = router.asPath.split('/')
+        const pathSuffix = paths[paths.length - 1]
+        if (!pathSuffix.startsWith('singularity')) return
 
         router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, {
             shallow: true

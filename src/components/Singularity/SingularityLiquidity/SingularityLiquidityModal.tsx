@@ -3,6 +3,7 @@ import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
 import { commaFormatter, formatter, isNotEmpty, currentEpoch } from '../../../utils'
 import Button from '../../Button'
 import DataPoint from '../../DataPoint'
+import LiveTime from '../../LiveTime'
 import Modal from '../../Modal'
 import SwapperInput from '../SwapperInput'
 
@@ -28,7 +29,7 @@ export default function SingularityLiquidityModal() {
 
     return (
         <>
-            <Modal visible={!!selectedLp} onClose={() => setSelectedLp(null)}>
+            <Modal visible={selectedLp} onClose={() => setSelectedLp(null)}>
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
@@ -76,8 +77,11 @@ export default function SingularityLiquidityModal() {
 
                         <DataPoint
                             title="Last Updated"
-                            value={`${formatter(selectedLp?.lpBalance - currentEpoch)}
-                            seconds ago`}
+                            value={
+                                <>
+                                    <LiveTime date={selectedLp?.lastUpdated} /> seconds ago
+                                </>
+                            }
                         />
 
                         <DataPoint

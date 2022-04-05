@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from 'react'
+import { useContext, createContext, useState, useEffect } from 'react'
 import { useActiveWeb3React } from '.'
 import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
 import { MAX_UINT256, toEth, toWei } from '../utils'
@@ -14,14 +14,16 @@ export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
 
     const { newAlert } = useAlerts()
-    const { data, update } = useSingularityData()
+    const { tokens, data, update } = useSingularityData()
 
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState('idle')
 
     const [lpInput, _setLpInput] = useState('')
     const [isWithdraw, setIsWithdraw] = useState(false)
-    const [selectedLp, setSelectedLp] = useState(null)
+    const [_selectedLp, setSelectedLp] = useState(null)
+
+    const selectedLp = tokens?.find((token) => token.id == _selectedLp)
 
     const [slippageTolerance, setSlippageTolerance] = useState(0.1)
     const [withdrawFee, setWithdrawFee] = useState('0')

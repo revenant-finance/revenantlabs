@@ -45,7 +45,7 @@ export default function SingularityLiquidity() {
                             return (
                                 <button
                                     key={token.address}
-                                    onClick={() => setSelectedLp(token)}
+                                    onClick={() => setSelectedLp(token.id)}
                                     className="w-full text-left border-2 shadow-2xl bg-neutral-900 border-neutral-800 bg-opacity-75 rounded-xl whitespace-nowrap overflow-auto p-6 transition-all transform hover:-translate-y-1"
                                 >
                                     <div className="flex items-center gap-4 flex-wrap">
