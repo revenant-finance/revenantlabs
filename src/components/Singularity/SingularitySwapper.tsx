@@ -40,7 +40,7 @@ export default function SingularitySwapper() {
             <SwapperModal />
 
             <div className="relative w-full max-w-lg mx-auto space-y-4">
-                <div className="w-full p-6 space-y-4 border-2 shadow-2xl bg-opacity-75 bg-neutral-900 border-neutral-800 rounded-xl">
+                <div className="w-full p-6 space-y-4 bg-opacity-75 border-2 shadow-2xl bg-neutral-900 border-neutral-800 rounded-xl">
                     <div>
                         {/* ======= FROM MODAL INPUTS =======  */}
                         <SwapperInput
@@ -60,13 +60,13 @@ export default function SingularitySwapper() {
                                             <span className="font-medium uppercase">
                                                 {fromToken.symbol}
                                             </span>
-                                            <i className="fas fa-caret-down opacity-25" />
+                                            <i className="opacity-25 fas fa-caret-down" />
                                         </span>
                                     )}
                                     {!fromToken && (
                                         <span className="flex items-center space-x-2">
                                             <p className="opacity-50">Select Token</p>
-                                            <i className="fas fa-caret-down opacity-25" />
+                                            <i className="opacity-25 fas fa-caret-down" />
                                         </span>
                                     )}
                                 </>
@@ -77,22 +77,20 @@ export default function SingularitySwapper() {
                                 `$${formatter(fromValue * fromToken?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(fromToken?.walletBalance) && (
-                                    <button onClick={() => setFromValue(fromToken?.walletBalance)}>
+                                    <button onClick={() => setFromValue(fromToken?.walletBalance)} className="underline hover:no-underline">
                                         Max: {formatter(fromToken?.walletBalance)}{' '}
                                         {fromToken?.symbol}
                                     </button>
-                                )
                             }
                         />
 
                         {/* ======= SWAP INPUTS BUTTON =======  */}
-                        <div className="h-0 relative flex items-center ml-6 md:ml-0 md:justify-center">
+                        <div className="relative flex items-center h-0 ml-6 md:ml-0 md:justify-center">
                             <button
                                 onClick={swapTokens}
-                                className="group absolute rounded-full w-8 md:w-12 h-8 md:h-12 md:text-lg flex items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900 shadow"
+                                className="absolute flex items-center justify-center w-8 h-8 rounded-full shadow group md:w-12 md:h-12 md:text-lg bg-gradient-to-br from-purple-900 to-blue-900"
                             >
-                                <i className="transition group-hover:rotate-180 duration-300 fas fa-retweet" />
+                                <i className="transition duration-300 group-hover:rotate-180 fas fa-retweet" />
                             </button>
                         </div>
                         {/* ======= TO MODAL INPUTS =======  */}
@@ -114,13 +112,13 @@ export default function SingularitySwapper() {
                                             <span className="font-medium uppercase">
                                                 {toToken.symbol}
                                             </span>
-                                            <i className="fas fa-caret-down opacity-25" />
+                                            <i className="opacity-25 fas fa-caret-down" />
                                         </span>
                                     )}
                                     {!toToken && (
                                         <span className="flex items-center space-x-2">
                                             <p className="opacity-50">Select Token</p>
-                                            <i className="fas fa-caret-down opacity-25" />
+                                            <i className="opacity-25 fas fa-caret-down" />
                                         </span>
                                     )}
                                 </>
@@ -131,11 +129,9 @@ export default function SingularitySwapper() {
                                 `$${formatter(toValue * toToken?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(toToken?.walletBalance) && (
-                                    <button onClick={() => setFromValue(toToken?.walletBalance)}>
-                                        Max: {formatter(toToken?.walletBalance)} {toToken?.symbol}
-                                    </button>
-                                )
+                                    <div>
+                                        Balance: {formatter(toToken?.walletBalance)} {toToken?.symbol}
+                                    </div>
                             }
                         />
                     </div>
@@ -143,10 +139,10 @@ export default function SingularitySwapper() {
                     {!showDetails && isReady && (
                         <button
                             onClick={() => setShowDetails((_) => !_)}
-                            className="text-left w-full flex items-center justify-center p-4 font-mono text-sm border-2 border-neutral-800 bg-opacity-50 bg-neutral-900 rounded-xl"
+                            className="flex items-center justify-center w-full p-4 font-mono text-sm text-left bg-opacity-50 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
                         >
                             <p className="flex-1">
-                                1 {toToken.symbol} = {commaFormatter(fromValue / toValue)}{' '}
+                                1 {toToken.symbol} = {commaFormatter(fromValue / toValue, 4)}{' '}
                                 {fromToken.symbol}
                             </p>
                             <p>
@@ -160,7 +156,7 @@ export default function SingularitySwapper() {
                             {/* ======= FEE SUMMARY =======  */}
                             <button
                                 onClick={() => setShowDetails((_) => !_)}
-                                className="text-left w-full p-4 space-y-2 border-2 border-neutral-800 bg-opacity-75 bg-neutral-900 rounded-xl"
+                                className="w-full p-4 space-y-2 text-left bg-opacity-75 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
                             >
                                 <div className="space-y-1">
                                     {/* <div className="flex items-center text-xs">
@@ -172,24 +168,24 @@ export default function SingularitySwapper() {
                                         onMax={() => setSlippageTolerance(100)}
                                     />
                                 </div> */}
-                                    <div className="font-mono flex items-center text-sm opacity-50">
+                                    <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Last Updated</p>
                                         <p className="">
                                             {formatter(fromToken?.lastUpdated - currentEpoch)}{' '}
                                             seconds ago
                                         </p>
                                     </div>
-                                    <div className="font-mono flex items-center text-sm opacity-50">
+                                    <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Price Impact</p>
                                         <p className="">{formatter(priceImpact)}%</p>
                                     </div>
-                                    <div className="font-mono flex items-center text-sm opacity-50">
+                                    <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Total Fees</p>
                                         <p className="">
                                             ${String(commaFormatter(totalFees.toFixed(2)))} USD
                                         </p>
                                     </div>
-                                    <div className="font-medium text-lg flex items-center text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
+                                    <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
                                         <p className="flex-1">Minimum Received</p>
                                         <p className="">
                                             ~{Number(minimumReceived).toFixed(8)} {toToken.symbol}
@@ -204,7 +200,7 @@ export default function SingularitySwapper() {
                         <Button
                             loading={status === 'loading'}
                             onClick={account ? () => swap() : () => login()}
-                            className="bg-gradient-to-br from-purple-900 to-blue-900 shadow"
+                            className="shadow bg-gradient-to-br from-purple-900 to-blue-900"
                         >
                             {account
                                 ? `${

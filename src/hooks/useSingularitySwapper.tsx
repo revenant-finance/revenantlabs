@@ -1,5 +1,4 @@
 import commaNumber from 'comma-number'
-import { BigNumber } from 'ethers'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import shortNumber from 'short-number'
@@ -32,6 +31,8 @@ export function useSingularitySwapperInternal() {
     const [slippageIn, setSlippageIn] = useState('0')
     const [slippageOut, setSlippageOut] = useState('0')
     const [priceImpact, setPriceImpact] = useState(0)
+    const [totalFees, setTotalFees] = useState(0)
+    const [minimumReceived, setMinimumReceived] = useState('0')
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -48,29 +49,25 @@ export function useSingularitySwapperInternal() {
 
     const tokens = data?.safe?.tokens || []
 
-    const totalFees = Number(inFee) * fromToken?.tokenPrice + Number(outFee) * toToken?.tokenPrice
-    const inverseSlippage = (1 - slippageTolerance) * 100
-    const minimumReceived = toValue
-        ? toEth(toWei(toValue, toToken?.decimals).mul(inverseSlippage).div(100), toToken?.decimals)
-        : '0'
+    useEffect(() => {
+        setFromValue(fromValue)
+    }, [toToken, fromToken])
 
     const setFromToken = async (token: any) => {
         _setFromToken(token)
         setFromTokenCache(token.id)
-        setFromValue('')
     }
 
     const setToToken = (token: any) => {
+        setToValue('')
         _setToToken(token)
         setToTokenCache(token.id)
-        setToValue('')
     }
 
     const swapTokens = () => {
-        _setFromToken(toToken)
-        _setToToken(fromToken)
-        // _setFromValue(toValue)
-        _setToValue(fromValue)
+        setFromToken(toToken)
+        setToToken(fromToken)
+        _setFromValue(toValue)
     }
 
     const getAmountOut = async (value, tokenIn, tokenOut) => {
@@ -94,15 +91,24 @@ export function useSingularitySwapperInternal() {
                 amountOutData
             const _toValue = toEth(amountOut, toToken.decimals)
             _setToValue(_toValue)
-            setSlippageIn(toEth(slippageIn, fromToken.decimals))
-            setSlippageOut(toEth(slippageOut, toToken.decimals))
-            setInFee(toEth(tradingFeeIn, fromToken.decimals))
-            setOutFee(toEth(tradingFeeOut, toToken.decimals))
+            const _slippageIn = toEth(slippageIn, fromToken.decimals)
+            setSlippageIn(_slippageIn)
+            const _slippageOut = toEth(slippageOut, toToken.decimals)
+            setSlippageOut(_slippageOut)
+            const _inFee = toEth(tradingFeeIn, fromToken.decimals)
+            setInFee(_inFee)
+            const _outFee = toEth(tradingFeeOut, toToken.decimals)
+            setOutFee(_outFee)
             const normalizedPrice = Number(_toValue) / balance
             const _priceImpact =
                 (normalizedPrice * 100) / Number(toEth(amountOut1.amountOut, toToken.decimals)) -
                 100
             setPriceImpact(_priceImpact)
+            const _totalFees = Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
+            setTotalFees(_totalFees)
+            const inverseSlippage = (1 - slippageTolerance)
+            const _minimumReceived = String(Number(_toValue) * inverseSlippage)
+            setMinimumReceived(_minimumReceived)
         } catch (error) {
             _setFromValue('')
             _setToValue('')

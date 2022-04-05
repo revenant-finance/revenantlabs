@@ -32,6 +32,16 @@ export function useSingularityLiquidityInternal() {
 
     const inverseSlippage = (1 - slippageTolerance) * 100
 
+    const lpToUnderlying = (amount, pool) => {
+        const underlyingAmount = amount * pool?.pricePerShare
+        return underlyingAmount
+    }
+
+    const underlyingToLp = (amount, pool) => {
+        const lpAmount = String(toWei(amount, pool.decimals).div(toWei(pool.pricePerShare, pool.decimals)))
+        return lpAmount
+    }
+
     const setLpInput = async (input) => {
         _setLpInput(input)
         const lpContract = getSingLpContract(selectedLp.lpAddress)
@@ -109,6 +119,7 @@ export function useSingularityLiquidityInternal() {
                 await tx.wait(1)
                 update()
             }
+
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
             const formatAmountIn = toWei(amountIn, token.decimals)
@@ -195,7 +206,9 @@ export function useSingularityLiquidityInternal() {
         setDepositReward,
         withdrawLp,
         depositLp,
-        mintTestToken
+        mintTestToken,
+        lpToUnderlying,
+        underlyingToLp
     }
 }
 

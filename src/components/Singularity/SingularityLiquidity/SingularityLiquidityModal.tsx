@@ -21,7 +21,9 @@ export default function SingularityLiquidityModal() {
         depositReward,
         withdrawLp,
         depositLp,
-        mintTestToken
+        mintTestToken,
+        lpToUnderlying,
+        underlyingToLp
     } = useSingularityLiquidity()
 
     const actionVerb = `${isWithdraw ? 'withdraw' : 'deposit'}`
@@ -37,7 +39,7 @@ export default function SingularityLiquidityModal() {
 
                         <button
                             onClick={() => setIsWithdraw((_) => !_)}
-                            className="underline text-sm opacity-50 hover:opacity-100 animate transition-all"
+                            className="text-sm underline transition-all opacity-50 hover:opacity-100 animate"
                         >
                             {isWithdraw ? 'Deposit Instead' : 'Withdraw Instead'}
                         </button>
@@ -94,10 +96,14 @@ export default function SingularityLiquidityModal() {
                             title="Liabilities"
                             value={`${commaFormatter(selectedLp?.liabilityAmount)}`}
                         />
+                        <DataPoint
+                            title="Price Per Share"
+                            value={`${commaFormatter(selectedLp?.pricePerShare)}`}
+                        />
                     </div>
 
                     <div className="space-y-2">
-                        <p className="opacity-50 font-medium">
+                        <p className="font-medium opacity-50">
                             How much {selectedLp?.symbol} would you like to {actionVerb}?
                         </p>
                         <SwapperInput
@@ -112,21 +118,35 @@ export default function SingularityLiquidityModal() {
                                     />
                                     <span className="font-medium uppercase">
                                         {selectedLp?.symbol}
+                                        {isWithdraw && '-LP'}
                                     </span>
                                 </span>
                             }
                             footerLeft={
-                                isNotEmpty(lpInput) &&
-                                selectedLp?.tokenPrice &&
-                                `$${formatter(lpInput * selectedLp?.tokenPrice)}`
+                                isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdraw
+                                    ? `${commaFormatter(lpToUnderlying(lpInput, selectedLp))} ${
+                                          selectedLp.symbol
+                                      }`
+                                    : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
                             }
                             footerRight={
-                                isNotEmpty(selectedLp?.walletBalance) && (
-                                    <button onClick={() => setLpInput(selectedLp?.walletBalance)}>
-                                        Max: {formatter(selectedLp?.walletBalance)}{' '}
-                                        {selectedLp?.symbol}
-                                    </button>
-                                )
+                                <button
+                                    className="hover:underline"
+                                    onClick={() =>
+                                        isWithdraw
+                                            ? setLpInput(selectedLp?.lpBalance.walletBalance)
+                                            : setLpInput(selectedLp?.walletBalance)
+                                    }
+                                >
+                                    Max:{' '}
+                                    {isWithdraw
+                                        ? `${commaFormatter(selectedLp?.lpBalance.walletBalance)} ${
+                                              selectedLp?.symbol
+                                          }-LP`
+                                        : `${commaFormatter(selectedLp?.walletBalance)} ${
+                                              selectedLp?.symbol
+                                          }`}
+                                </button>
                             }
                         />
 
@@ -144,9 +164,11 @@ export default function SingularityLiquidityModal() {
                                 <>
                                     <span className="space-x-2">
                                         <span>
-                                            {formatter(
-                                                selectedLp?.lpBalance.walletBalance *
-                                                    selectedLp?.pricePerShare
+                                            {commaFormatter(
+                                                lpToUnderlying(
+                                                    selectedLp?.lpBalance.walletBalance,
+                                                    selectedLp
+                                                )
                                             )}
                                         </span>
                                         <span>
@@ -154,16 +176,24 @@ export default function SingularityLiquidityModal() {
                                         </span>
 
                                         <span>
-                                            {formatter(
+                                            {commaFormatter(
                                                 isWithdraw
-                                                    ? selectedLp?.lpBalance.walletBalance *
-                                                          selectedLp?.pricePerShare -
-                                                          Number(lpInput) *
-                                                              selectedLp?.pricePerShare
-                                                    : selectedLp?.lpBalance.walletBalance *
-                                                          selectedLp?.pricePerShare +
-                                                          Number(lpInput) *
-                                                              selectedLp?.pricePerShare
+                                                    ? lpToUnderlying(
+                                                          selectedLp?.lpBalance.walletBalance,
+                                                          selectedLp
+                                                      ) -
+                                                          lpToUnderlying(
+                                                              Number(lpInput),
+                                                              selectedLp
+                                                          )
+                                                    : lpToUnderlying(
+                                                          selectedLp?.lpBalance.walletBalance,
+                                                          selectedLp
+                                                      ) +
+                                                          lpToUnderlying(
+                                                              Number(lpInput),
+                                                              selectedLp
+                                                          )
                                             )}
                                         </span>
                                         <span>{selectedLp?.symbol}</span>
