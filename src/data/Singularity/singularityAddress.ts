@@ -18,9 +18,9 @@ export default {
         },
         CONTRACT: {
             oracle: '0xC659b3879eD5B3079D5B7Fb89801143E6C1fD8Fa',
-            routerSafe: '0xc22D8fed59288b07ec30770A2bAb1D5c4696A1d5',
+            routerSafe: '0x04dbeCd11DEA269f680A4a05eed001ee7eeeEbb6',
             factorySafe: '0xf029d2a894B749436BD6105676185B09B27e255D',
-            routerCUSD: '0xc22D8fed59288b07ec30770A2bAb1D5c4696A1d5',
+            routerCUSD: '0x04dbeCd11DEA269f680A4a05eed001ee7eeeEbb6',
             factoryCUSD: '0xf029d2a894B749436BD6105676185B09B27e255D'
         }
     }
