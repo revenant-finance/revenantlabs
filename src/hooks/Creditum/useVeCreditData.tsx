@@ -75,21 +75,13 @@ export function useVeCreditDataInternal() {
                     )
                 }
             } else {
-                const [
-                    xtokenShare,
-                    xTokenValue,
-                    veCreditTotalSupply,
-                    veTokenValue,
-                    rewardTime,
-                    totalRewardAmount
-                ] = await Promise.all([
-                    xCreditContract.getShareValue(),
-                    creditContract.balanceOf(xCreditAddress),
-                    veCreditContract['totalSupply()'](),
-                    veCreditContract.supply(),
-                    feesContract.time_cursor(),
-                    feesContract.token_last_balance()
-                ])
+                const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue] =
+                    await Promise.all([
+                        xCreditContract.getShareValue(),
+                        creditContract.balanceOf(xCreditAddress),
+                        veCreditContract['totalSupply()'](),
+                        veCreditContract.supply()
+                    ])
                 return {
                     xtokenShare: toEth(xtokenShare),
                     xTokenValue: toEth(xTokenValue),
