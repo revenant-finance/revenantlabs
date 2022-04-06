@@ -353,7 +353,7 @@ export default function MarketInput({ type }) {
                                         value={
                                             liquidationPriceDeposit < 900000 &&
                                             liquidationPriceDeposit
-                                                ? liquidationPriceDeposit.toFixed(2)
+                                                ? `$${liquidationPriceDeposit.toFixed(2)}`
                                                 : 'None'
                                         }
                                     />

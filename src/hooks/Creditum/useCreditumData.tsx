@@ -276,12 +276,13 @@ export function CreditumDataWrapper({ children }: any) {
 
     const [liquidationPriceDeposit, setLiquidationPriceDeposit] = useState(0)
     const [healthDeposit, setHealthDeposit] = useState(0)
-    const [borrowPercent, setBorrowPercent] = useState(0)
     const [newBorrowPercentDeposit, setNewBorrowPercentDeposit] = useState(0)
 
     const [liquidationPriceRepay, setLiquidationPriceRepay] = useState(0)
     const [healthRepay, setHealthRepay] = useState(0)
     const [newBorrowPercentRepay, setNewBorrowPercentRepay] = useState(0)
+
+    const borrowPercent = (selectedMarket?.positionDebtValue * 100) / (selectedMarket?.positionCollateralValue * selectedMarket?.collateralMaxDebtRatio)
 
     return (
         <>
@@ -311,7 +312,6 @@ export function CreditumDataWrapper({ children }: any) {
                             healthDeposit,
                             setHealthDeposit,
                             borrowPercent,
-                            setBorrowPercent,
                             newBorrowPercentDeposit,
                             setNewBorrowPercentDeposit,
                             liquidationPriceRepay,

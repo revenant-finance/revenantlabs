@@ -12,12 +12,12 @@ export default function Index() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1] }}
                 transition={{ duration: 2 }}
-                className="relative max-w-2xl lg:max-w-screen-2xl mx-auto p-12 lg:p-24 space-y-12"
+                className="relative max-w-2xl p-12 mx-auto space-y-12 lg:max-w-screen-2xl lg:p-24"
             >
-                <div className="flex flex-col lg:flex-row gap-6 lg:items-center">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
                     <img className="w-32" src="/img/revenant-coin.png" alt="" />
-                    {/* <div className="hidden lg:block flex-1"></div>
-                    <div className="hidden lg:flex text-xl gap-4 whitespace-nowrap">
+                    {/* <div className="flex-1 hidden lg:block"></div>
+                    <div className="hidden gap-4 text-xl lg:flex whitespace-nowrap">
                         <a className="opacity-50 hover:opacity-100" href="/twitter" target="_blank">
                             <i className="fab fa-twitter" />
                         </a>
@@ -32,23 +32,23 @@ export default function Index() {
                         </a>
                     </div> */}
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
                     <div className="space-y-8">
-                        <p className="text-4xl lg:text-7xl font-medium font-extended">
+                        <p className="text-4xl font-medium lg:text-7xl font-extended">
                             Welcome to{' '}
                             <span className="text-transparent bg-clip-text bg-gradient-to-br from-salmon to-purp">
                                 Revenant Labs
                             </span>
                             . DeFi-suite on Fantom.
                         </p>
-                        <p className="opacity-50 text-xl lg:text-2xl">
+                        <p className="text-xl opacity-50 lg:text-2xl">
                             Revenant is pushing the boundaries of what is possible with DeFi by
                             building tools to empower sovereign cash on the worlds fastest
                             blockchain.
                         </p>
-                        <div className="flex gap-4 whitespace-nowrap flex-wrap">
+                        <div className="flex flex-wrap gap-4 whitespace-nowrap">
                             <Link href="/creditum" passHref>
-                                <a className="px-6 py-2 bg-gradient-to-br text-neutral-900 from-salmon to-purp rounded-full font-medium md:text-xl shadow-2xl">
+                                <a className="px-6 py-2 font-medium rounded-full shadow-2xl bg-gradient-to-br text-neutral-900 from-salmon to-purp md:text-xl">
                                     Open Creditum
                                 </a>
                             </Link>
@@ -56,18 +56,18 @@ export default function Index() {
                             <RvntClaim />
                         </div>
 
-                        <div className="flex flex-wrap gap-6">
+                        {/* <div className="flex flex-wrap gap-6">
                             <div className="space-y-1">
                                 <p className="text-2xl lg:text-4xl font-extended">
                                     1.3<span className="text-purp">K+</span>
                                 </p>
-                                <p className="text-xs lg:text-base opacity-50">Active Users</p>
+                                <p className="text-xs opacity-50 lg:text-base">Active Users</p>
                             </div>
                             <div className="space-y-1">
                                 <p className="text-2xl lg:text-4xl font-extended">
                                     $37<span className="text-purp">M+</span>
                                 </p>
-                                <p className="text-xs lg:text-base opacity-50">
+                                <p className="text-xs opacity-50 lg:text-base">
                                     Locked Across Protocols
                                 </p>
                             </div>
@@ -75,10 +75,10 @@ export default function Index() {
                                 <p className="text-2xl lg:text-4xl font-extended">
                                     +<i className="fas fa-infinity text-purp"></i>
                                 </p>
-                                <p className="text-xs lg:text-base opacity-50">Passion for DeFi</p>
+                                <p className="text-xs opacity-50 lg:text-base">Passion for DeFi</p>
                             </div>
-                        </div>
-                        <div className="text-2xl space-x-2">
+                        </div> */}
+                        <div className="space-x-2 text-2xl">
                             <a
                                 className="opacity-50 hover:opacity-100"
                                 href="/twitter"

@@ -22,10 +22,10 @@ export default function MarketAccordionItem({ market, invert }) {
                     invert && !isOpen && 'bg-neutral-800'
                 )}
             >
-                <div className="flex flex-1 items-center space-x-2 md:space-x-4">
+                <div className="flex items-center flex-1 space-x-2 md:space-x-4">
                     <img className="w-6 h-6" src={`/img/tokens/${market.asset}`} alt="" />
                     <div className="flex items-center space-x-2">
-                        <p className="text-lg md:text-xl font-medium whitespace-nowrap">
+                        <p className="text-lg font-medium md:text-xl whitespace-nowrap">
                             {market.symbol}
                         </p>
                         <p className="opacity-50">${formatter(market.priceUsd)}</p>
@@ -77,10 +77,10 @@ export default function MarketAccordionItem({ market, invert }) {
                                 />
                                 <DataPoint
                                     title="Current Liquidation Price"
-                                    value={`${
+                                    value={`$${
                                         Number(market.liquidationPrice) > 9000000
                                             ? 'None'
-                                            : commaFormatter(market.liquidationPrice)
+                                            : commaFormatter(market.liquidationPrice * market.priceUsd)
                                     }`}
                                     lineClass="bg-neutral-800"
                                 />

@@ -236,17 +236,17 @@ export default function CreditumLocking() {
                     {veCreditData.rewardTime && (
                         <div className="p-6 text-center bg-yellow-400 text-neutral-800 rounded-2xl">
                             <p className="text-xs font-bold tracking-widest uppercase opacity-50">
-                                Upcoming Reward Distribution
+                                User Reward Amount
                             </p>
                             <p className="text-2xl md:text-3xl font-extended">
                                 {`~${commaFormatter(veCreditData.userRewardAmount)}`} CREDIT
                             </p>
-                            <p className="space-x-2 font-medium">
+                            {/* <p className="space-x-2 font-medium">
                                 <Countdown date={veCreditData.rewardTime} />
                                 <span className="opacity-50">
                                     {epochToDate(veCreditData.rewardTime)}
                                 </span>
-                            </p>
+                            </p> */}
                         </div>
                     )}
 
