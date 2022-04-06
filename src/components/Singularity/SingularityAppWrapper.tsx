@@ -8,6 +8,7 @@ import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getSingOracleContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import MeshBackground from '../MeshBackground'
+import NotReadyModal from '../NotReadyModal'
 import SingularityFooter from './SingularityFooter'
 import SingularityHeader from './SingularityHeader'
 
@@ -196,6 +197,7 @@ export function SingularityAppWrapper({ children }) {
         <SingularityDataContext.Provider value={{ ...hook }}>
             <SingularitySwapperWrapper>
                 <SingularityLiquidityWrapper>
+                    <NotReadyModal />
                     <SingularityHeader />
                     <div className="w-full h-full p-6 py-24 bg-center bg-cover">
                         <MeshBackground id="singularity-gradient-colors" />
