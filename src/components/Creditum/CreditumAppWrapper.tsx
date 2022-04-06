@@ -106,5 +106,3 @@ export function CreditumAppWrapper({ children }) {
     )
 }
 
-// :)
-// :)
