@@ -7,6 +7,7 @@ import useVeCreditData from '../../hooks/Creditum/useVeCreditData'
 import useVeCredit from '../../hooks/Creditum/useVeCredit'
 import Button from '../Button'
 import classNames from 'classnames'
+import CredtiumHeader from './CreditumHeader'
 
 interface HeaderLink {
     href: string
