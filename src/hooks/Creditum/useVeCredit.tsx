@@ -91,7 +91,7 @@ export default function useVeCredit() {
         if (!account) return
         let tx = null
         try {
-            tx = await feesContract.withdraw()
+            tx = await veCreditContract.withdraw()
             await tx.wait(1)
             console.log(tx)
             update()
