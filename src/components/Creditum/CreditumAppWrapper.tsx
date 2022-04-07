@@ -66,7 +66,10 @@ export function CreditumAppWrapper({ children }) {
                             className="bg-yellow-400 text-neutral-700 whitespace-nowrap"
                             onClick={() => approve('0')}
                         >
-                            UnApprove VeCredit
+                            Unapprove veCREDIT
+                        </Button>
+                        <Button className="" onClick={() => setShowModel(false)}>
+                            Continue to locking without unapproving
                         </Button>
                     </div>
                 </Modal>
