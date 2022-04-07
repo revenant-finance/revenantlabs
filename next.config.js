@@ -23,7 +23,7 @@ module.exports = {
             },
             {
                 source: '/docs',
-                destination: 'https://documentation.revenant.finance/stak/',
+                destination: 'https://docs.revenantlabs.io/creditum/',
                 permanent: true
             }
         ]
