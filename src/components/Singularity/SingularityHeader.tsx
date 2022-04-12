@@ -34,13 +34,13 @@ export function SingularityMintTest() {
             <div className="flex flex-col items-center justify-center gap-4 p-6">
                 <div className="flex">Disclaimer: This version of the app is in beta. Tokens being used for liquidity providing and swapping are test tokens that follow real-token oracle prices. You can mint these test tokens here:</div>   
                 <div className="flex gap-2">
-                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.btc, 1)}>
+                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.btc, '1')}>
                         Mint 1 testBTC
                     </Button>
-                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.eth, 10)}>
+                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.eth, '10')}>
                         Mint 10 testEth
                     </Button>
-                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.usdc, 10000)}>
+                    <Button className="shadow bg-gradient-to-br from-purple-900 to-blue-900" onClick={() => mintTestToken(tokens.usdc, '10000')}>
                         Mint 10000 testUSDC
                     </Button>
                 </div>
