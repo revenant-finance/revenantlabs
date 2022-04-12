@@ -167,11 +167,13 @@ export function useSingularitySwapperInternal() {
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
+            console.log(1)
             const tx = await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
                 amountIn,
-                toWei(minimumReceived, toToken.decimals),
+                '0',
+                // toWei(minimumReceived, toToken.decimals),
                 to,
                 timestamp
             )
