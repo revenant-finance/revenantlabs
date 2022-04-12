@@ -458,14 +458,18 @@ export default function CreditumLocking() {
                             </Button>
                         )}
 
-                        <Button
-                            loading={status === 'loading'}
-                            disabled={!value && !stakingTime && lockingMode !== 'unlocking'}
-                            onClick={lockingMode === 'locking' ? () => onLock() : () => onUnlock()}
-                            className={classNames('text-neutral-900 bg-yellow-400')}
-                        >
-                            {lockingMode === 'locking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
-                        </Button>
+                        <ConnectWalletFirstButton>
+                            <Button
+                                loading={status === 'loading'}
+                                disabled={!value && !stakingTime && lockingMode !== 'unlocking'}
+                                onClick={
+                                    lockingMode === 'locking' ? () => onLock() : () => onUnlock()
+                                }
+                                className={classNames('text-neutral-900 bg-yellow-400')}
+                            >
+                                {lockingMode === 'locking' ? 'Lock CREDIT' : 'Unlock CREDIT'}
+                            </Button>
+                        </ConnectWalletFirstButton>
                     </div>
                 </div>
             </div>

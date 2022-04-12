@@ -7,6 +7,7 @@ import Button from '../Button'
 import LiveTime from '../LiveTime'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
+import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
 
 export default function SingularitySwapper() {
     const { account } = useActiveWeb3React()
@@ -213,19 +214,17 @@ export default function SingularitySwapper() {
                     )}
 
                     {isReady && (
-                        <Button
-                            loading={status === 'loading'}
-                            onClick={account ? () => swap() : () => login()}
-                            className="shadow bg-gradient-to-br from-purple-900 to-blue-900"
-                        >
-                            {account
-                                ? `${
-                                      isApproved
-                                          ? `Swap ${fromToken?.symbol}`
-                                          : `Approve ${fromToken?.symbol}`
-                                  }`
-                                : 'Connect Wallet'}
-                        </Button>
+                        <ConnectWalletFirstButton type="singularity">
+                            <Button
+                                loading={status === 'loading'}
+                                onClick={() => swap()}
+                                className="shadow bg-gradient-to-br from-purple-900 to-blue-900"
+                            >
+                                {isApproved
+                                    ? `Swap ${fromToken?.symbol}`
+                                    : `Approve ${fromToken?.symbol}`}
+                            </Button>
+                        </ConnectWalletFirstButton>
                     )}
                 </div>
             </div>

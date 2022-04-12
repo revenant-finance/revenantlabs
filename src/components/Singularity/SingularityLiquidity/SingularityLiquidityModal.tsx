@@ -6,6 +6,7 @@ import DataPoint from '../../DataPoint'
 import LiveTime from '../../LiveTime'
 import Modal from '../../Modal'
 import SwapperInput from '../SwapperInput'
+import ConnectWalletFirstButton from '../../ConnectWalletFirstButton'
 
 export default function SingularityLiquidityModal() {
     const {
@@ -154,12 +155,12 @@ export default function SingularityLiquidityModal() {
                             }
                         />
 
-                        <Button
+                        {/* <Button
                             className="w-full bg-neutral-800"
                             onClick={() => mintTestToken(selectedLp)}
                         >
                             Mint {1000} test{selectedLp?.symbol} Tokens
-                        </Button>
+                        </Button> */}
                     </div>
                     <div>
                         <DataPoint
@@ -235,17 +236,19 @@ export default function SingularityLiquidityModal() {
                         <Button onClick={() => setSelectedLp(null)} className="w-auto">
                             Cancel
                         </Button>
-                        <Button
-                            loading={status === 'loading'}
-                            className="bg-gradient-to-br from-purple-900 to-blue-900"
-                            onClick={
-                                isWithdraw
-                                    ? () => withdrawLp(lpInput, selectedLp)
-                                    : () => depositLp(lpInput, selectedLp)
-                            }
-                        >
-                            {isWithdraw ? 'Withdraw' : 'Deposit'} {selectedLp?.symbol}
-                        </Button>
+                        <ConnectWalletFirstButton type="singularity">
+                            <Button
+                                loading={status === 'loading'}
+                                className="bg-gradient-to-br from-purple-900 to-blue-900"
+                                onClick={
+                                    isWithdraw
+                                        ? () => withdrawLp(lpInput, selectedLp)
+                                        : () => depositLp(lpInput, selectedLp)
+                                }
+                            >
+                                {isWithdraw ? 'Withdraw' : 'Deposit'} {selectedLp?.symbol}
+                            </Button>
+                        </ConnectWalletFirstButton>
                     </div>
                 </div>
             </Modal>

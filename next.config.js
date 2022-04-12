@@ -23,7 +23,7 @@ module.exports = {
             },
             {
                 source: '/docs',
-                destination: 'https://docs.revenantlabs.io/creditum/',
+                destination: 'https://docs.revenantlabs.io/',
                 permanent: true
             }
         ]

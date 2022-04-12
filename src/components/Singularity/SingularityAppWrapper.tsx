@@ -197,7 +197,7 @@ export function SingularityAppWrapper({ children }) {
         <SingularityDataContext.Provider value={{ ...hook }}>
             <SingularitySwapperWrapper>
                 <SingularityLiquidityWrapper>
-                    <NotReadyModal />
+                    {/* <NotReadyModal /> */}
                     <SingularityHeader />
                     <div className="w-full h-full p-6 py-24 bg-center bg-cover">
                         <MeshBackground id="singularity-gradient-colors" />

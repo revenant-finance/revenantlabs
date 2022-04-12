@@ -70,14 +70,14 @@ export default function Navigation() {
                                         Open <b>Creditum</b>
                                     </a>
                                 </Link>
-                                {/* <Link href="/singularity">
+                                <Link href="/singularity">
                                     <a
                                         className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-br from-purple-500 to-blue-500"
                                         href=""
                                     >
                                         Open <b>Singularity</b>
                                     </a>
-                                </Link> */}
+                                </Link>
                             </div>
 
                             <div className="flex items-center">
