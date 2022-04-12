@@ -84,7 +84,8 @@ export function useSingularityLiquidityInternal() {
             const tx = await routerContract.addLiquidity(
                 token.address,
                 formatAmountIn,
-                toWei(String(minAmount), token.decimals),
+                '0',
+                // toWei(String(minAmount), token.decimals),
                 to,
                 timestamp
             )
@@ -142,7 +143,8 @@ export function useSingularityLiquidityInternal() {
             const tx = await routerContract.removeLiquidity(
                 token.address,
                 formatAmountIn,
-                minAmount,
+                '0',
+                // minAmount,
                 to,
                 timestamp
             )

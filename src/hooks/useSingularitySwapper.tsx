@@ -110,7 +110,7 @@ export function useSingularitySwapperInternal() {
                 Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
             setTotalFees(_totalFees)
             const inverseSlippage = 1 - slippageTolerance
-            const _minimumReceived = String(Number(_toValue) * inverseSlippage)
+            const _minimumReceived = (Number(_toValue) * inverseSlippage).toFixed(toToken.decimals)
             setMinimumReceived(_minimumReceived)
         } catch (error) {
             _setFromValue('')
@@ -167,7 +167,7 @@ export function useSingularitySwapperInternal() {
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
-            console.log(1)
+            console.log(minimumReceived)
             const tx = await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
