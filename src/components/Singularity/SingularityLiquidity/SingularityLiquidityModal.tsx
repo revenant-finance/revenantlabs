@@ -25,7 +25,9 @@ export default function SingularityLiquidityModal() {
         depositLp,
         mintTestToken,
         lpToUnderlying,
-        underlyingToLp
+        underlyingToLp,
+        isUnderlyingApproved,
+        isLpApproved
     } = useSingularityLiquidity()
 
     const actionVerb = `${isWithdraw ? 'withdraw' : 'deposit'}`
@@ -246,7 +248,14 @@ export default function SingularityLiquidityModal() {
                                         : () => depositLp(lpInput, selectedLp)
                                 }
                             >
-                                {isWithdraw ? 'Withdraw' : 'Deposit'} {selectedLp?.symbol}
+                                {isWithdraw
+                                    ? isLpApproved
+                                        ? 'Withdraw'
+                                        : 'Approve'
+                                    : isUnderlyingApproved
+                                    ? 'Deposit'
+                                    : 'Approve'}{' '}
+                                {isWithdraw ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol}
                             </Button>
                         </ConnectWalletFirstButton>
                     </div>

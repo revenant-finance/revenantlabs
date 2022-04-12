@@ -34,6 +34,11 @@ export function useSingularityLiquidityInternal() {
 
     const inverseSlippage = (1 - slippageTolerance) * 100
 
+    console.log(selectedLp)
+    const isUnderlyingApproved = Number(selectedLp?.allowBalance) >= Number(lpInput)
+    const isLpApproved = Number(selectedLp?.lpBalance.allowBalance) >= Number(lpInput)
+
+
     const lpToUnderlying = (amount, pool) => {
         const underlyingAmount = amount * pool?.pricePerShare
         return underlyingAmount
@@ -201,6 +206,8 @@ export function useSingularityLiquidityInternal() {
         lpInput,
         setLpInput,
         isWithdraw,
+        isUnderlyingApproved,
+        isLpApproved,
         setIsWithdraw,
         slippageTolerance,
         setSlippageTolerance,
