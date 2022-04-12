@@ -13,12 +13,12 @@ module.exports = {
             },
             {
                 source: '/github',
-                destination: 'https://github.com/revenant-finance',
+                destination: 'https://revenant-labs.medium.com/',
                 permanent: true
             },
             {
                 source: '/medium',
-                destination: 'https://medium.com/@revenant-finance',
+                destination: 'https://revenant-labs.medium.com/',
                 permanent: true
             },
             {
