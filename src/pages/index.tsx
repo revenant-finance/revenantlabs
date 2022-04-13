@@ -52,6 +52,11 @@ export default function Index() {
                                     Open Creditum
                                 </a>
                             </Link>
+                            <Link href="/singularity" passHref>
+                                <a className="px-6 py-2 font-medium rounded-full shadow-2xl bg-gradient-to-br text-neutral-900 from-salmon to-purp md:text-xl">
+                                    Open Singularity
+                                </a>
+                            </Link>
 
                             <RvntClaim />
                         </div>
@@ -78,35 +83,53 @@ export default function Index() {
                                 <p className="text-xs opacity-50 lg:text-base">Passion for DeFi</p>
                             </div>
                         </div> */}
-                        <div className="space-x-2 text-2xl">
-                            <a
-                                className="opacity-50 hover:opacity-100"
-                                href="/twitter"
-                                target="_blank"
-                            >
-                                <i className="fab fa-twitter" />
-                            </a>
-                            <a
-                                className="opacity-50 hover:opacity-100"
-                                href="/discord"
-                                target="_blank"
-                            >
-                                <i className="fab fa-discord" />
-                            </a>
-                            <a
-                                className="opacity-50 hover:opacity-100"
-                                href="/github"
-                                target="_blank"
-                            >
-                                <i className="fab fa-github" />
-                            </a>
-                            <a
-                                className="opacity-50 hover:opacity-100"
-                                href="/medium"
-                                target="_blank"
-                            >
-                                <i className="fab fa-medium" />
-                            </a>
+                        <div className="flex justify-between">
+                            <div className="space-x-2 text-xl">
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/twitter"
+                                    target="_blank"
+                                >
+                                    <i className="fab fa-twitter" />
+                                </a>
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/discord"
+                                    target="_blank"
+                                >
+                                    <i className="fab fa-discord" />
+                                </a>
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/github"
+                                    target="_blank"
+                                >
+                                    <i className="fab fa-github" />
+                                </a>
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/medium"
+                                    target="_blank"
+                                >
+                                    <i className="fab fa-medium" />
+                                </a>
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/medium"
+                                    target="_blank"
+                                >
+                                    ImmuneFi
+                                </a>
+                            </div>
+                            <div className="space-x-2 text-xl">
+                                <a
+                                    className="opacity-50 hover:opacity-100"
+                                    href="/medium"
+                                    target="_blank"
+                                >
+                                    Docs
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div className="hidden lg:block">
