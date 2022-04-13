@@ -102,7 +102,6 @@ export default function SingularitySwapper() {
                         <SwapperInput
                             readOnly
                             inputType="text"
-                            // onChange={(e) => setToValue(e.target.value)}
                             value={smartNumberFormatter(toValue)}
                             onClick={() => openModal('to')}
                             buttonContent={

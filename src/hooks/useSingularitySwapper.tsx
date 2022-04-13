@@ -49,12 +49,14 @@ export function useSingularitySwapperInternal() {
 
     const tokens = data?.safe?.tokens || []
 
-    useEffect(() => {
-        setFromValue(fromValue)
-    }, [toToken, fromToken])
+
 
     const fromToken = tokens?.find((token) => token.id === _fromTokenId)
     const toToken = tokens?.find((token) => token.id === _toTokenId)
+
+    useEffect(() => {
+        setFromValue(fromValue)
+    }, [toToken, fromToken])
 
     const setFromToken = async (token: any) => {
         _setFromTokenId(token.id)

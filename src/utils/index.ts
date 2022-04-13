@@ -121,6 +121,7 @@ export const currencyFormatter = (labelValue) => {
 }
 
 export const smartNumberFormatter = (_number) => {
+    if (_number === '') return ''
     const number = Number(_number)
     let totalDecimals = 6
     if (number > 1) totalDecimals = 5
