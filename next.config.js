@@ -25,6 +25,11 @@ module.exports = {
                 source: '/docs',
                 destination: 'https://docs.revenantlabs.io/',
                 permanent: true
+            },
+            {
+                source: '/bugs',
+                destination: 'https://immunefi.com/bounty/creditum/',
+                permanent: true
             }
         ]
     },

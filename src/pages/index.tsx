@@ -115,7 +115,7 @@ export default function Index() {
                                 </a>
                                 <a
                                     className="opacity-50 hover:opacity-100"
-                                    href="/medium"
+                                    href="/bugs"
                                     target="_blank"
                                 >
                                     ImmuneFi
