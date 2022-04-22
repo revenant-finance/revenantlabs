@@ -37,27 +37,41 @@ export function useSingularityLiquidityInternal() {
     const isUnderlyingApproved = Number(selectedLp?.allowBalance) >= Number(lpInput)
     const isLpApproved = Number(selectedLp?.lpBalance.allowBalance) >= Number(lpInput)
 
-
     const lpToUnderlying = (amount, pool) => {
         const underlyingAmount = amount * pool?.pricePerShare
         return underlyingAmount
     }
 
     const underlyingToLp = (amount, pool) => {
-        const lpAmount = String(toWei(amount, pool.decimals).div(toWei(pool.pricePerShare, pool.decimals)))
+        const lpAmount = String(
+            toWei(amount, pool.decimals).div(toWei(pool.pricePerShare, pool.decimals))
+        )
         return lpAmount
     }
 
     const setLpInput = async (input) => {
-        _setLpInput(input)
-        const lpContract = getSingLpContract(selectedLp.lpAddress)
-        const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
-        const [_withdrawFee, _depositReward] = await Promise.all([
-            lpContract.getWithdrawFee(formattedLpInput),
-            lpContract.getDepositFee(formattedLpInput)
-        ])
-        setWithdrawFee(toEth(_withdrawFee, selectedLp.decimals))
-        setDepositReward(toEth(_depositReward, selectedLp.decimals))
+        try {
+            if (!input) {
+                _setLpInput('')
+                setWithdrawFee('0')
+                setDepositReward('0')
+                return
+            }
+            _setLpInput(input)
+            const lpContract = getSingLpContract(selectedLp.lpAddress)
+            const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
+            const [_withdrawFee, _depositReward] = await Promise.all([
+                lpContract.getWithdrawFee(formattedLpInput),
+                lpContract.getDepositFee(formattedLpInput)
+            ])
+            setWithdrawFee(toEth(_withdrawFee, selectedLp.decimals))
+            setDepositReward(toEth(_depositReward, selectedLp.decimals))
+        } catch (error) {
+            _setLpInput('')
+            setWithdrawFee('0')
+            setDepositReward('0')
+            console.log(error)
+        }
     }
 
     const depositLp = async (amountIn, token) => {
@@ -80,16 +94,16 @@ export function useSingularityLiquidityInternal() {
                 Number(token.pricePerShare).toFixed(token.decimals),
                 token.decimals
             )
-            const minAmount = formatAmountIn
-                .mul(100)
-                .mul(inverseSlippage)
-                .div(formatPricePerShare)
-                .div(10000)
+            const minAmount = String(
+                toWei(String(formatAmountIn), token.decimals)
+                    .mul(inverseSlippage)
+                    .div(formatPricePerShare)
+                    .div(100)
+            )
             const tx = await routerContract.addLiquidity(
                 token.address,
                 formatAmountIn,
-                '0',
-                // toWei(String(minAmount), token.decimals),
+                minAmount,
                 to,
                 timestamp
             )
@@ -134,21 +148,14 @@ export function useSingularityLiquidityInternal() {
                 Number(token.pricePerShare).toFixed(token.decimals),
                 token.decimals
             )
-            const minAmount = Number(
-                toEth(
-                    formatAmountIn
-                        .mul(100)
-                        .mul(inverseSlippage)
-                        .mul(formatPricePerShare)
-                        .div(10000),
-                    token.decimals
-                )
-            ).toFixed(0)
+            const minAmount = toEth(
+                formatAmountIn.mul(inverseSlippage).mul(formatPricePerShare).div(100),
+                token.decimals
+            )
             const tx = await routerContract.removeLiquidity(
                 token.address,
                 formatAmountIn,
-                '0',
-                // minAmount,
+                Number(minAmount).toFixed(0),
                 to,
                 timestamp
             )

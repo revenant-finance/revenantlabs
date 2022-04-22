@@ -30,7 +30,7 @@ export default function SwapperInput({
                 'bg-opacity-75 bg-neutral-800 rounded-xl p-4 space-y-2'
             )}
         >
-            <div className="flex gap-4">
+            <div className="flex gap-4 pb-3 border-0 border-b-2">
                 <input
                     type={inputType || 'number'}
                     className={classNames(
@@ -42,7 +42,7 @@ export default function SwapperInput({
                 />
                 <button
                     onClick={onClick}
-                    className="bg-opacity-75 bg-neutral-700 hover:bg-neutral-600 animate transition-all px-4 py-2 rounded-xl shadow"
+                    className="px-4 py-2 transition-all bg-opacity-75 shadow bg-neutral-700 hover:bg-neutral-600 animate rounded-xl"
                 >
                     {buttonContent}
                 </button>

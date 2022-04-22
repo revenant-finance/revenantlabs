@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import useSingularityLiquidity from '../../../hooks/useSingularityLiquidity'
-import { commaFormatter, formatter, isNotEmpty, currentEpoch } from '../../../utils'
+import { commaFormatter, formatter, isNotEmpty, currentEpoch, smartNumberFormatter } from '../../../utils'
 import Button from '../../Button'
 import DataPoint from '../../DataPoint'
 import LiveTime from '../../LiveTime'
@@ -171,7 +171,7 @@ export default function SingularityLiquidityModal() {
                                 <>
                                     <span className="space-x-2">
                                         <span>
-                                            {commaFormatter(
+                                            {smartNumberFormatter(
                                                 lpToUnderlying(
                                                     selectedLp?.lpBalance.walletBalance,
                                                     selectedLp
@@ -183,7 +183,7 @@ export default function SingularityLiquidityModal() {
                                         </span>
 
                                         <span>
-                                            {commaFormatter(
+                                            {smartNumberFormatter(
                                                 isWithdraw
                                                     ? lpToUnderlying(
                                                           selectedLp?.lpBalance.walletBalance,
@@ -209,17 +209,10 @@ export default function SingularityLiquidityModal() {
                             }
                         />
 
-                        {isWithdraw && (
-                            <>
-                                <DataPoint
-                                    title={`Amount Withdrawn`}
-                                    value={`${formatter(
-                                        Number(lpInput) * selectedLp?.pricePerShare
-                                    )}`}
-                                />
+                        {!isWithdraw && <DataPoint title={"Deposit Reward"} value={`${depositReward} ${selectedLp?.symbol}`} />}
 
-                                <DataPoint title={`Fees`} value={`${formatter(withdrawFee)}`} />
-                            </>
+                        {isWithdraw && (
+                                <DataPoint title={`Withdraw Fees`} value={`${formatter(withdrawFee)} ${selectedLp?.symbol}`} />
                         )}
                     </div>
 

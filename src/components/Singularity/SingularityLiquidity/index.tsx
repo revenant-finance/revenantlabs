@@ -28,15 +28,15 @@ export default function SingularityLiquidity() {
 
             <div className="max-w-5xl mx-auto space-y-4">
                 {isLoading && (
-                    <div className="p-12 w-full text-center">
-                        <i className="fas fa-circle-notch fa-spin text-2xl opacity-25" />
+                    <div className="w-full p-12 text-center">
+                        <i className="text-2xl opacity-25 fas fa-circle-notch fa-spin" />
                     </div>
                 )}
 
                 {!isLoading && (
                     <>
                         <div>
-                            <p className="opacity-75 font-medium text-xl">
+                            <p className="text-xl font-medium opacity-75">
                                 Select a pool to manage your liquidity.
                             </p>
                         </div>
@@ -46,10 +46,10 @@ export default function SingularityLiquidity() {
                                 <button
                                     key={token.address}
                                     onClick={() => setSelectedLp(token.id)}
-                                    className="w-full text-left border-2 shadow-2xl bg-neutral-900 border-neutral-800 bg-opacity-75 rounded-xl whitespace-nowrap overflow-auto p-6 transition-all transform hover:-translate-y-1"
+                                    className="w-full p-6 overflow-auto text-left transition-all transform bg-opacity-75 border-2 shadow-2xl bg-neutral-900 border-neutral-800 rounded-xl whitespace-nowrap hover:bg-opacity-100"
                                 >
-                                    <div className="flex items-center gap-4 flex-wrap">
-                                        <div className="w-full flex-1 flex items-center gap-4">
+                                    <div className="flex flex-wrap items-center gap-4">
+                                        <div className="flex items-center flex-1 w-full gap-4">
                                             <img
                                                 className="w-12"
                                                 src={`/img/tokens/${token.asset}`}
@@ -57,13 +57,13 @@ export default function SingularityLiquidity() {
                                             />
                                             <div className="space-y-2">
                                                 <div className="font-medium">
-                                                    <p className="text-lg md:text-2xl space-x-2">
+                                                    <p className="space-x-2 text-lg md:text-2xl">
                                                         <span>{token.name}</span>
-                                                        <span className="text-sm md:text-lg opacity-25">
+                                                        <span className="text-sm opacity-25 md:text-lg">
                                                             ${formatter(token.tokenPrice)}
                                                         </span>
                                                     </p>
-                                                    <p className="md:text-xl opacity-50">
+                                                    <p className="opacity-50 md:text-xl">
                                                         <span>
                                                             $
                                                             {formatter(
@@ -75,13 +75,13 @@ export default function SingularityLiquidity() {
                                                     </p>
                                                 </div>
 
-                                                <div className="hidden md:block w-32">
+                                                <div className="hidden w-32 md:block">
                                                     <Bar value={token.collatRatio * 100} />
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="md:hidden w-full space-y-2">
+                                        <div className="w-full space-y-2 md:hidden">
                                             <Bar value={token.collatRatio * 100} />
                                             <div>
                                                 <DataPoint
@@ -99,7 +99,7 @@ export default function SingularityLiquidity() {
                                                 />
                                             </div>
                                         </div>
-                                        <div className="hidden md:flex gap-4">
+                                        <div className="hidden gap-4 md:flex">
                                             <div
                                                 className={classNames(
                                                     'text-center font-medium py-2 px-4 rounded border-2 border-neutral-800'
@@ -137,7 +137,7 @@ export default function SingularityLiquidity() {
                     </>
                 )}
 
-                {/* <div className="border-2 shadow-2xl bg-opacity-75 bg-neutral-900 border-neutral-800 rounded-xl whitespace-nowrap overflow-auto">
+                {/* <div className="overflow-auto bg-opacity-75 border-2 shadow-2xl bg-neutral-900 border-neutral-800 rounded-xl whitespace-nowrap">
                     {!isLoading && (
                         <table className="w-full table-auto bg-neutral-900">
                             <thead className="text-left">
@@ -160,7 +160,7 @@ export default function SingularityLiquidity() {
                                             <td className="p-2">
                                                 <p>
                                                     <img
-                                                        className="w-6 h-6 inline mr-2"
+                                                        className="inline w-6 h-6 mr-2"
                                                         src={`/img/tokens/${token.asset}`}
                                                         alt=""
                                                     />
@@ -188,7 +188,7 @@ export default function SingularityLiquidity() {
                                             <td className="p-2">
                                                 <button
                                                     onClick={() => setSelectedLp(token)}
-                                                    className="bg-gradient-to-br from-purple-500 to-blue-500 text-transparent bg-clip-text font-medium"
+                                                    className="font-medium text-transparent bg-gradient-to-br from-purple-500 to-blue-500 bg-clip-text"
                                                 >
                                                     Manage
                                                 </button>

@@ -8,6 +8,7 @@ import LiveTime from '../LiveTime'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 import ConnectWalletFirstButton from '../ConnectWalletFirstButton'
+import Input from '../Input'
 
 export default function SingularitySwapper() {
     const { account } = useActiveWeb3React()
@@ -163,7 +164,7 @@ export default function SingularitySwapper() {
                                 className="w-full p-4 space-y-2 text-left bg-opacity-75 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
                             >
                                 <div className="space-y-1">
-                                    {/* <div className="flex items-center text-xs">
+                                    <div className="flex items-center text-xs">
                                     <p className="flex-1">Slippage</p>
                                     <Input
                                         type="number"
@@ -171,7 +172,7 @@ export default function SingularitySwapper() {
                                         onChange={(e) => setSlippageTolerance(e.target.value)}
                                         onMax={() => setSlippageTolerance(100)}
                                     />
-                                </div> */}
+                                </div>
                                     <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Price per {fromToken?.symbol}</p>
                                         <p className="">

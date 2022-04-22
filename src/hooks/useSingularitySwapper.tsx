@@ -8,6 +8,7 @@ import { getSingRouterContract, getTokenContract } from '../utils/ContractServic
 import { useActiveWeb3React } from './'
 import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
 import useAlerts from './useAlerts'
+import { BigNumber } from 'ethers'
 
 export function useSingularitySwapperInternal() {
     const router = useRouter()
@@ -32,7 +33,7 @@ export function useSingularitySwapperInternal() {
     const [slippageOut, setSlippageOut] = useState('0')
     const [priceImpact, setPriceImpact] = useState(0)
     const [totalFees, setTotalFees] = useState(0)
-    const [minimumReceived, setMinimumReceived] = useState('0')
+    const [minimumReceived, setMinimumReceived] = useState("0")
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -111,8 +112,9 @@ export function useSingularitySwapperInternal() {
             const _totalFees =
                 Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
             setTotalFees(_totalFees)
-            const inverseSlippage = 1 - slippageTolerance
-            const _minimumReceived = (Number(_toValue) * inverseSlippage).toFixed(toToken.decimals)
+            const inverseSlippage = (1 - slippageTolerance) * 100
+            console.log(toValue)
+            const _minimumReceived = toEth(amountOut.mul(inverseSlippage).div(100), toToken.decimals)
             setMinimumReceived(_minimumReceived)
         } catch (error) {
             _setFromValue('')
@@ -169,13 +171,11 @@ export function useSingularitySwapperInternal() {
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
-            console.log(minimumReceived)
             const tx = await routerContract.swapExactTokensForTokens(
                 fromToken.address,
                 toToken.address,
                 amountIn,
-                '0',
-                // toWei(minimumReceived, toToken.decimals),
+                toWei(minimumReceived, toToken.decimals),
                 to,
                 timestamp
             )
