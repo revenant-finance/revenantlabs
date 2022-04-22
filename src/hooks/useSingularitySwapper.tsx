@@ -26,7 +26,7 @@ export function useSingularitySwapperInternal() {
     const [toValue, _setToValue] = useState('')
     const [_fromTokenId, _setFromTokenId] = useState()
     const [_toTokenId, _setToTokenId] = useState()
-    const [slippageTolerance, setSlippageTolerance] = useState(0.1)
+    const [slippageTolerance, _setSlippageTolerance] = useState(0.1)
     const [inFee, setInFee] = useState('0')
     const [outFee, setOutFee] = useState('0')
     const [slippageIn, setSlippageIn] = useState('0')
@@ -75,6 +75,13 @@ export function useSingularitySwapperInternal() {
         _setFromValue(toValue)
     }
 
+    const setSlippageTolerance = (tolerance) => {
+        const inverseSlippage = ((1 - slippageTolerance) * 100).toFixed(0)
+        const _minimumReceived = toEth(toWei(toValue, toToken.decimals).mul(inverseSlippage).div(100), toToken.decimals)
+        setMinimumReceived(_minimumReceived)
+        _setSlippageTolerance(tolerance)
+    }
+
     const getAmountOut = async (value, tokenIn, tokenOut) => {
         const routerContract = getSingRouterContract(data.safe.router)
         const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
@@ -112,8 +119,7 @@ export function useSingularitySwapperInternal() {
             const _totalFees =
                 Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
             setTotalFees(_totalFees)
-            const inverseSlippage = (1 - slippageTolerance) * 100
-            console.log(toValue)
+            const inverseSlippage = ((1 - slippageTolerance) * 100).toFixed(0)
             const _minimumReceived = toEth(amountOut.mul(inverseSlippage).div(100), toToken.decimals)
             setMinimumReceived(_minimumReceived)
         } catch (error) {
@@ -127,12 +133,6 @@ export function useSingularitySwapperInternal() {
         try {
             if (!toToken || !fromToken || !balance) return
             _setToValue(balance)
-            // const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } = await getAmountOut(toWei(balance, toToken.decimals), toToken.address, fromToken.address)
-            // _setFromValue(toEth(amountOut, fromToken.decimals))
-            // setSlippageIn(toEth(slippageIn, fromToken.decimals))
-            // setSlippageOut(toEth(slippageOut, toToken.decimals))
-            // setInFee(toEth(tradingFeeIn, fromToken.decimals))
-            // setOutFee(toEth(tradingFeeOut, toToken.decimals))
         } catch (error) {
             // _setFromValue('')
             console.log(error)
@@ -261,7 +261,11 @@ export function useSingularitySwapperInternal() {
         minimumReceived,
         swap,
         priceImpact,
-        isApproved
+        isApproved,
+        inFee,
+        outFee,
+        slippageIn,
+        slippageOut
     }
 }
 

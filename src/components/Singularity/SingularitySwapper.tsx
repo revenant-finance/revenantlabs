@@ -33,7 +33,11 @@ export default function SingularitySwapper() {
         minimumReceived,
         swap,
         priceImpact,
-        isApproved
+        isApproved,
+        inFee,
+        outFee,
+        slippageIn,
+        slippageOut
     } = useSingularitySwapper()
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
@@ -141,14 +145,14 @@ export default function SingularitySwapper() {
                         />
                     </div>
 
-                    {!showDetails && isReady && (
+                    {isReady && (
                         <button
                             onClick={() => setShowDetails((_) => !_)}
                             className="flex items-center justify-center w-full p-4 font-mono text-sm text-left bg-opacity-50 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
                         >
                             <p className="flex-1">
-                                1 {toToken.symbol} = {smartNumberFormatter(fromValue / toValue)}{' '}
-                                {fromToken.symbol}
+                                1 {fromToken.symbol} = {smartNumberFormatter(toValue / fromValue)}{' '}
+                                {toToken.symbol}
                             </p>
                             <p>
                                 <i className="fas fa-caret-down" />
@@ -159,20 +163,7 @@ export default function SingularitySwapper() {
                     {showDetails && isReady && (
                         <>
                             {/* ======= FEE SUMMARY =======  */}
-                            <button
-                                onClick={() => setShowDetails((_) => !_)}
-                                className="w-full p-4 space-y-2 text-left bg-opacity-75 border-2 border-neutral-800 bg-neutral-900 rounded-xl"
-                            >
-                                <div className="space-y-1">
-                                    <div className="flex items-center text-xs">
-                                    <p className="flex-1">Slippage</p>
-                                    <Input
-                                        type="number"
-                                        value={slippageTolerance}
-                                        onChange={(e) => setSlippageTolerance(e.target.value)}
-                                        onMax={() => setSlippageTolerance(100)}
-                                    />
-                                </div>
+                            <div className="w-full p-4 space-y-2 text-left bg-opacity-75 border-2 border-neutral-800 bg-neutral-900 rounded-xl">
                                     <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Price per {fromToken?.symbol}</p>
                                         <p className="">
@@ -198,9 +189,35 @@ export default function SingularitySwapper() {
                                         <p className="">{smartNumberFormatter(priceImpact)}%</p>
                                     </div>
                                     <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">In Fee</p>
+                                        <p className="">${smartNumberFormatter(inFee)} {fromToken?.symbol}</p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">In Slippage</p>
+                                        <p className="">${smartNumberFormatter(slippageIn)} {fromToken?.symbol}</p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">Out Fees</p>
+                                        <p className="">${smartNumberFormatter(outFee)} {toToken?.symbol}</p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">Out Slippage</p>
+                                        <p className="">${smartNumberFormatter(slippageOut)} {toToken?.symbol}</p>
+                                    </div>
+                                    <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Total Fees</p>
                                         <p className="">${smartNumberFormatter(totalFees)} USD</p>
                                     </div>
+                                    <div className="space-y-1">
+                                    <div className="flex items-center text-xs">
+                                    <p className="flex-1">Slippage</p>
+                                    <Input
+                                        type="number"
+                                        value={slippageTolerance}
+                                        onChange={(e) => setSlippageTolerance(e.target.value)}
+                                        onMax={() => setSlippageTolerance(0.1)}
+                                    />
+                                </div>
                                     <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
                                         <p className="flex-1">Minimum Received</p>
                                         <p className="">
@@ -209,7 +226,7 @@ export default function SingularitySwapper() {
                                         </p>
                                     </div>
                                 </div>
-                            </button>
+                            </div>
                         </>
                     )}
 
