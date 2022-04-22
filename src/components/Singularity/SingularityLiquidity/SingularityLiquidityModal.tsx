@@ -105,7 +105,7 @@ export default function SingularityLiquidityModal() {
                         />
                         <DataPoint
                             title="Price Per Share"
-                            value={`${commaFormatter(selectedLp?.pricePerShare)}`}
+                            value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
                         />
                     </div>
 
