@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import Footer from '../components/Footer'
-import RvntClaim from '../components/RvntClaim'
+import Footer from '../components/Footers/Footer'
+import RvntClaim from '../Revenant/RvntClaim'
 
 export default function IndexPage() {
     return (

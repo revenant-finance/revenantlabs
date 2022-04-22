@@ -5,10 +5,10 @@ import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 import smoothscroll from 'smoothscroll-polyfill'
 import Meta from '../../public/img/Meta'
-import Navigation from '../components/Navigation'
-import { SingularityAppWrapper } from '../components/Singularity/SingularityAppWrapper'
-import Web3ReactManager from '../components/Web3ReactManager'
-import { CreditumDataWrapper } from '../hooks/Creditum/useCreditumData'
+import Navigation from '../components/Nav/Navigation'
+import { SingularityAppWrapper } from '../Singularity/SingularityAppWrapper'
+import Web3ReactManager from '../components/Wallet/Web3ReactManager'
+import { CreditumDataWrapper } from '../Creditum/hooks/useCreditumData'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
@@ -16,7 +16,7 @@ import getLibrary from '../utils/getLibrary'
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-const Web3ReactProviderDefault = dynamic(() => import('../components/Provider'), { ssr: false })
+const Web3ReactProviderDefault = dynamic(() => import('../components/Wallet/Provider'), { ssr: false })
 
 export default function App({ Component, pageProps }: AppProps) {
     useEffect(() => {

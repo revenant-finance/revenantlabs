@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import Footer from '../components/Footer'
+import Footer from '../components/Footers/Footer'
 
 export default function Index() {
     return (

@@ -6,7 +6,7 @@ import { useCookieState } from 'use-cookie-state'
 import { MAX_UINT256, toEth, toWei } from '../utils'
 import { getSingRouterContract, getTokenContract } from '../utils/ContractService'
 import { useActiveWeb3React } from './'
-import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
+import { useSingularityData } from '../Singularity/SingularityAppWrapper'
 import useAlerts from './useAlerts'
 import { BigNumber } from 'ethers'
 

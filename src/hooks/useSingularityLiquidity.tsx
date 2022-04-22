@@ -1,6 +1,6 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { useActiveWeb3React } from '.'
-import { useSingularityData } from '../components/Singularity/SingularityAppWrapper'
+import { useSingularityData } from '../Singularity/SingularityAppWrapper'
 import { MAX_UINT256, toEth, toWei } from '../utils'
 import {
     getSingLpContract,

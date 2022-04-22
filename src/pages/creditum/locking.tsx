@@ -1,5 +1,5 @@
-import { CreditumAppWrapper } from '../../components/Creditum/CreditumAppWrapper'
-import CreditumLocking from '../../components/Creditum/CreditumLocking'
+import { CreditumAppWrapper } from '../../Creditum/CreditumAppWrapper'
+import CreditumLocking from '../../Creditum/CreditumLocking/CreditumLocking'
 
 export default function Creditum() {
     return (

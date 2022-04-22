@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import HomepageBackground from '../components/HomepageBackground'
-import RvntClaim from '../components/RvntClaim'
+import HomepageBackground from '../components/Backgrounds/HomepageBackground'
+import RvntClaim from '../Revenant/RvntClaim'
 
 export default function Index() {
     return (

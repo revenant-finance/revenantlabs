@@ -1,6 +1,6 @@
-import creditumAddress from './Creditum/creditumAddress'
-import revenantAddress from './Revenant/revenantAddress'
-import singularityAddress from './Singularity/singularityAddress'
+import creditumAddress from '../Creditum/data/creditumAddress'
+import revenantAddress from '../Revenant/data/revenantAddress'
+import singularityAddress from '../Singularity/data/singularityAddress'
 
 export const NetworkContextName = 'NETWORK'
 
