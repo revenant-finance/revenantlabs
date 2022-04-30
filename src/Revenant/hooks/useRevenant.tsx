@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
-import { CONTRACT_REVENANT } from '../../data'
+import { CONTRACT_REVENANT } from '../data'
 import merkle from '../data/merkle.json'
 import { toEth, toWei } from '../../utils'
 import { fetchBalances, getMerkleContract, getRevenantContract } from '../../utils/ContractService'

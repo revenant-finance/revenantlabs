@@ -2,6 +2,9 @@ import { ethers } from 'ethers'
 import { toEth } from '.'
 import * as constants from '../data'
 import multicall from './multicall'
+import * as credConstants from '../Creditum/data'
+import * as revConstants from '../Revenant/data'
+import * as singConstants from '../Singularity/data'
 
 export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(
     process.env.NEXT_PUBLIC_NETWORK_URL
@@ -21,7 +24,7 @@ export const getContract = (
 export const getTestTokenContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_TEST_ERC20_ABI), provider)
+) => getContract(address, JSON.parse(singConstants.CONTRACT_TEST_ERC20_ABI), provider)
 
 export const getTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI), provider)
@@ -34,7 +37,7 @@ export const getVeTokenContract = (address, provider?: ethers.Signer | ethers.pr
 
 export const getVeTokenFeesContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
-        constants.CONTRACT_CREDITUM[250].token.vecreditfees,
+        credConstants.CONTRACT_CREDITUM[250].token.vecreditfees,
         JSON.parse(constants.CONTRACT_VETOKENFEES_ABI),
         provider
     )
@@ -57,53 +60,53 @@ export const getRouterContract = (provider?: ethers.Signer | ethers.providers.Pr
 export const getRevenantContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_REVENANT_ABI), provider)
+) => getContract(address, JSON.parse(revConstants.CONTRACT_REVENANT_ABI), provider)
 
 export const getMerkleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_MERKLE_ABI), provider)
+    getContract(address, JSON.parse(revConstants.CONTRACT_MERKLE_ABI), provider)
 
 //CREDITUM
 export const getUnitrollerContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_CONTROLLER_ABI), provider)
+) => getContract(address, JSON.parse(credConstants.CONTRACT_CONTROLLER_ABI), provider)
 
 export const getCreditumContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_CREDITUM_ABI), provider)
+) => getContract(address, JSON.parse(credConstants.CONTRACT_CREDITUM_ABI), provider)
 
 export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
-        constants.CONTRACT_CREDITUM_FARMS[250].farmAddress,
-        JSON.parse(constants.CONTRACT_FARMS_ABI),
+        credConstants.CONTRACT_CREDITUM_FARMS[250].farmAddress,
+        JSON.parse(credConstants.CONTRACT_FARMS_ABI),
         provider
     )
 
 export const getCrvContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_CRV_ABI), provider)
+    getContract(address, JSON.parse(credConstants.CONTRACT_CRV_ABI), provider)
 
 //SINGULARITY
 
 export const getSingOracleContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
-        constants.CONTRACT_SINGULARITY[250].oracle,
-        JSON.parse(constants.CONTRACT_SING_ORACLE_ABI),
+        singConstants.CONTRACT_SINGULARITY[250].oracle,
+        JSON.parse(singConstants.CONTRACT_SING_ORACLE_ABI),
         provider
     )
 
 export const getSingRouterContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_SING_ROUTER_ABI), provider)
+) => getContract(address, JSON.parse(singConstants.CONTRACT_SING_ROUTER_ABI), provider)
 
 export const getSingFactoryContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(constants.CONTRACT_SING_FACTORY_ABI), provider)
+) => getContract(address, JSON.parse(singConstants.CONTRACT_SING_FACTORY_ABI), provider)
 
 export const getSingLpContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_SING_LP_ABI), provider)
+    getContract(address, JSON.parse(singConstants.CONTRACT_SING_LP_ABI), provider)
 
 //UTILS
 

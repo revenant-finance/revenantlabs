@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
-import * as constants from '../../data'
+import * as credConstants from '../data'
 import { SECONDS_PER_YEAR, toEth } from '../../utils'
 import { getCrvContract, getFarmsContract, getTokenContract } from '../../utils/ContractService'
 import usePrice from '../../hooks/usePrice'
@@ -10,7 +10,7 @@ export default function usePool() {
     const { getPrice } = usePrice()
     const [earnTokenPrices, setEarnTokenPrices] = useState([])
 
-    const earnTokens = constants.CONTRACT_CREDITUM_FARMS[250].earnTokens
+    const earnTokens = credConstants.CONTRACT_CREDITUM_FARMS[250].earnTokens
 
     const farmContract = getFarmsContract(library)
 

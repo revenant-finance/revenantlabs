@@ -27,6 +27,16 @@ module.exports = {
                 permanent: true
             },
             {
+                source: '/docsCred',
+                destination: 'https://docs.revenantlabs.io/creditum/',
+                permanent: true
+            },
+            {
+                source: '/docsSing',
+                destination: 'https://docs.revenantlabs.io/singularity/',
+                permanent: true
+            },
+            {
                 source: '/bugs',
                 destination: 'https://immunefi.com/bounty/creditum/',
                 permanent: true

@@ -12,9 +12,9 @@ import Modal from '../../components/Modals/Modal'
 
 export default function FarmModal() {
     const { newAlert, clearAlert } = useAlerts()
-    const { farmData, selectedFarm, setSelectedFarm, mode, setMode } = useFarmData()
+    const { selectedFarm, setSelectedFarm, mode, setMode } = useFarmData()
 
-    const { deposit, withdraw, claim } = useFarm()
+    const { deposit, withdraw } = useFarm()
 
     const [status, setStatus] = useState('idle')
     const [value, setValue] = useState('')

@@ -1,18 +1,18 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import * as constants from '../data'
+import * as singConstants from './data'
 import { useActiveWeb3React } from '../hooks'
 import useRefresh from '../hooks/useRefresh'
-import { SingularityLiquidityWrapper } from '../hooks/useSingularityLiquidity'
-import { SingularitySwapperWrapper } from '../hooks/useSingularitySwapper'
+import { SingularityLiquidityWrapper } from './hooks/useSingularityLiquidity'
+import { SingularitySwapperWrapper } from './hooks/useSingularitySwapper'
 import { EMPTY_ADDRESS, toEth } from '../utils'
 import { fetchBalances, getSingOracleContract } from '../utils/ContractService'
 import multicall from '../utils/multicall'
 import MeshBackground from '../components/Backgrounds/MeshBackground'
-import NotReadyModal from '../components/Modals/NotReadyModal'
 import SingularityFooter from './SingularityFooter'
 import SingularityHeader from './SingularityHeader'
 
-const lpTokenABI = JSON.parse(constants.CONTRACT_SING_LP_ABI)
+const lpTokenABI = JSON.parse(singConstants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
 export const SingularityDataContext = createContext({})
@@ -59,9 +59,9 @@ function useSingularityDataInternal() {
 
     useEffect(() => {
         const onLoad = async () => {
-            const traunchIds = Object.keys(constants.CONTRACT_SINGULARITY[250].traunches)
+            const traunchIds = Object.keys(singConstants.CONTRACT_SINGULARITY[250].traunches)
             const allTraunchData = traunchIds.map((traunchId) => {
-                const traunchData = constants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
+                const traunchData = singConstants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
                 const tokens = Object.values(traunchData.tokens)
                 const tokenAddresses = tokens.map((token) => {
                     return token.address

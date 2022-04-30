@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import * as constants from '../../data'
+import * as credConstants from '../data'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { fetchBalances, getTokenContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
@@ -9,8 +10,8 @@ import useRefresh from '../../hooks/useRefresh'
 import { FarmDataWrapper } from './useFarmData'
 import { VeCreditDataWrapper } from './useVeCreditData'
 
-const creditumABI = JSON.parse(constants.CONTRACT_CREDITUM_ABI)
-const controllerABI = JSON.parse(constants.CONTRACT_CONTROLLER_ABI)
+const creditumABI = JSON.parse(credConstants.CONTRACT_CREDITUM_ABI)
+const controllerABI = JSON.parse(credConstants.CONTRACT_CONTROLLER_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
 const formatCreditumData = (
@@ -90,11 +91,11 @@ function useCreditumDataInternal() {
     useEffect(() => {
         const fetchData = async () => {
             setRefreshing(true)
-            const assetIds = Object.keys(constants.CONTRACT_CREDITUM[250].cToken)
+            const assetIds = Object.keys(credConstants.CONTRACT_CREDITUM[250].cToken)
 
             let formattedCreditumData = new Object()
             for (let i = 0; i < assetIds.length; i++) {
-                const assetData = constants.CONTRACT_CREDITUM[250].cToken[assetIds[i]]
+                const assetData = credConstants.CONTRACT_CREDITUM[250].cToken[assetIds[i]]
                 const assetCollaterals = Object.values(assetData.collaterals)
                 //creditum
                 const totalMintedCalls = assetCollaterals.map((collateral) => ({

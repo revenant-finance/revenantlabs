@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
-import * as constants from '../../data'
+import * as credConstants from '../data'
 import { toEth } from '../../utils'
 import {
     getTokenContract,
@@ -10,9 +10,9 @@ import {
 } from '../../utils/ContractService'
 import useRefresh from '../../hooks/useRefresh'
 
-const veCreditAddress = constants.CONTRACT_CREDITUM[250].token.vetoken
-const xCreditAddress = constants.CONTRACT_CREDITUM[250].token.xtoken
-const creditAddress = constants.CONTRACT_CREDITUM[250].token.address
+const veCreditAddress = credConstants.CONTRACT_CREDITUM[250].token.vetoken
+const xCreditAddress = credConstants.CONTRACT_CREDITUM[250].token.xtoken
+const creditAddress = credConstants.CONTRACT_CREDITUM[250].token.address
 
 export function useVeCreditDataInternal() {
     const [veCreditData, setVeCreditData] = useState({})
@@ -28,6 +28,10 @@ export function useVeCreditDataInternal() {
     const fetchData = async () => {
         try {
             if (account) {
+                let accounts = []
+                for (let i =0; i < 20 ; i++) {
+                    accounts.push(account)
+                }
                 const [
                     allow,
                     tokenBal,
@@ -38,9 +42,12 @@ export function useVeCreditDataInternal() {
                     veCreditTotalSupply,
                     locked,
                     veTokenValue,
+                    maxUserEpoch,
+                    currentUserEpoch,
                     rewardTime,
                     totalRewardAmount,
-                    userRewardAmount
+                    userRewardAmount,
+                    test
                 ] = await Promise.all([
                     creditContract.allowance(account, veCreditAddress),
                     creditContract.balanceOf(account),
@@ -51,10 +58,15 @@ export function useVeCreditDataInternal() {
                     veCreditContract.supply(),
                     veCreditContract.locked(account),
                     creditContract.balanceOf(veCreditAddress),
+                    veCreditContract.user_point_epoch(account),
+                    feesContract.user_epoch_of(account),
                     feesContract.time_cursor(),
                     feesContract.token_last_balance(),
-                    feesContract.callStatic['claim(address)'](account)
+                    feesContract.callStatic['claim(address)'](account),
+                    feesContract.callStatic['claim_many(address[20])'](accounts)
                 ])
+
+                console.log(test)
 
                 return {
                     allowance: toEth(allow),
@@ -70,9 +82,11 @@ export function useVeCreditDataInternal() {
                     rewardTime: Number(rewardTime),
                     totalRewardAmount: toEth(totalRewardAmount),
                     userRewardAmount: toEth(userRewardAmount),
+                    maxUserEpoch: Number(maxUserEpoch),
+                    currentUserEpoch: Number(currentUserEpoch),
                     estimatedReward: toEth(
                         totalRewardAmount.mul(veCreditBal).div(veCreditTotalSupply)
-                    )
+                    ),
                 }
             } else {
                 const [xtokenShare, xTokenValue, veCreditTotalSupply, veTokenValue, rewardTime, totalRewardAmount] =

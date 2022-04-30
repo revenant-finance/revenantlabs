@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CONTRACT_CREDITUM_FARMS } from '../../data'
+import { CONTRACT_CREDITUM_FARMS } from '../data'
 import useFarm from '../hooks/useFarm'
 import useAlerts from '../../hooks/useAlerts'
 import { commaFormatter } from '../../utils'
@@ -34,7 +34,7 @@ export default function FarmItem({ farm, open }) {
     const hasEarnings = farm.earnings.some((earning) => earning !== '0')
 
     return (
-        <div className="p-6 space-y-6 shadow-2xl bg-neutral-800 bg-opacity-50 border-2 border-neutral-800 rounded-2xl">
+        <div className="p-6 space-y-6 bg-opacity-50 border-2 shadow-2xl bg-neutral-800 border-neutral-800 rounded-2xl">
             <div className="flex">
                 <div className="flex-1 space-y-1">
                     <p className="text-2xl font-medium">{farm.name}</p>

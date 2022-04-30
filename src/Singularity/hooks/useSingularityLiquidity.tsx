@@ -1,14 +1,14 @@
 import { useContext, createContext, useState, useEffect } from 'react'
-import { useActiveWeb3React } from '.'
-import { useSingularityData } from '../Singularity/SingularityAppWrapper'
-import { MAX_UINT256, toEth, toWei } from '../utils'
+import { useActiveWeb3React } from '../../hooks'
+import { useSingularityData } from '../SingularityAppWrapper'
+import { MAX_UINT256, toEth, toWei } from '../../utils'
 import {
     getSingLpContract,
     getSingRouterContract,
     getTokenContract,
     getTestTokenContract
-} from '../utils/ContractService'
-import useAlerts from './useAlerts'
+} from '../../utils/ContractService'
+import useAlerts from '../../hooks/useAlerts'
 
 export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()

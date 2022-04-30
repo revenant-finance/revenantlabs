@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import useSingularityLiquidity from '../../hooks/useSingularityLiquidity'
+import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
 import { commaFormatter, formatter, isNotEmpty, currentEpoch, smartNumberFormatter } from '../../utils'
 import Button from '../../components/Btns/Button'
 import DataPoint from '../../components/DataPoint/DataPoint'

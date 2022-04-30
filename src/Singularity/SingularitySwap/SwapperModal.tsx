@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useSingularitySwapper from '../../hooks/useSingularitySwapper'
+import useSingularitySwapper from '../hooks/useSingularitySwapper'
 import { formatter, isNotEmpty } from '../../utils'
 import Modal from '../../components/Modals/Modal'
 import Portal from '../../components/Modals/Portal'

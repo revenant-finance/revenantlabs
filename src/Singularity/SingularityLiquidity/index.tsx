@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import useSingularityLiquidity from '../../hooks/useSingularityLiquidity'
+import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
 import { formatter, isNotEmpty } from '../../utils'
 import Bar from '../../components/Bar/Bar'
 import DataPoint from '../../components/DataPoint/DataPoint'

@@ -2,8 +2,8 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Button from '../components/Btns/Button'
-import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
-import * as constants from '../data'
+import useSingularityLiquidity from './hooks/useSingularityLiquidity'
+import * as constants from './data'
 
 const tokens = constants.CONTRACT_SINGULARITY[250].traunches.safe.tokens
 

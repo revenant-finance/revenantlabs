@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
+import * as credConstants from '../data'
 import * as constants from '../../data'
 import { EMPTY_ADDRESS, toEth } from '../../utils'
 import { getFarmsContract } from '../../utils/ContractService'
@@ -8,9 +9,10 @@ import multicall from '../../utils/multicall'
 import useRefresh from '../../hooks/useRefresh'
 import usePool from './usePool'
 
-const farmABI = JSON.parse(constants.CONTRACT_FARMS_ABI)
+const farmABI = JSON.parse(credConstants.CONTRACT_FARMS_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
-const farms = constants.CONTRACT_CREDITUM_FARMS[250].tokens
+const farms = credConstants.CONTRACT_CREDITUM_FARMS[250].tokens
+const farmAddress = credConstants.CONTRACT_CREDITUM_FARMS[250].farmAddress
 
 const formatFarmData = (_farmInfo, _userInfo, _depositTokenBalance, _allowance) => {
     return {
@@ -67,7 +69,7 @@ function useFarmDataInternal() {
             const userAddress = account ? account : EMPTY_ADDRESS
 
             const userInfoCalls = farms.map((farm) => ({
-                address: constants.CONTRACT_CREDITUM_FARMS[250].farmAddress,
+                address: farmAddress,
                 name: 'getUserInfo',
                 params: [farm.pid, userAddress]
             }))
@@ -79,7 +81,7 @@ function useFarmDataInternal() {
             const allowanceCalls = farms.map((farm) => ({
                 address: farm.depositToken,
                 name: 'allowance',
-                params: [userAddress, constants.CONTRACT_CREDITUM_FARMS[250].farmAddress]
+                params: [userAddress, farmAddress]
             }))
 
             const [userInfo, depositTokenBalance, allowance] = await Promise.all([

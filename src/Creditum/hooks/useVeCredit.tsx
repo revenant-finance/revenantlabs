@@ -1,5 +1,5 @@
 import { useActiveWeb3React } from '../../hooks'
-import * as constants from '../../data'
+import * as constants from '../data'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
 import {
     getTokenContract,
