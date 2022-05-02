@@ -26,7 +26,7 @@ export default function SingularityLiquidityModal() {
         slippageTolerance,
         setSlippageTolerance,
         withdrawFee,
-        depositFee,
+        depositReward,
         withdrawLp,
         depositLp,
         mintTestToken,
@@ -71,8 +71,8 @@ export default function SingularityLiquidityModal() {
                                 />
 
                                 <DataPoint
-                                    title={`Deposit Fee`}
-                                    value={`${formatter(depositFee)} ${selectedLp?.symbol}`}
+                                    title={`Reward`}
+                                    value={`${formatter(depositReward)} ${selectedLp?.symbol}`}
                                 />
                             </>
                         )}
@@ -221,8 +221,8 @@ export default function SingularityLiquidityModal() {
 
                         {!isWithdraw && (
                             <DataPoint
-                                title={'Deposit Fee'}
-                                value={`${depositFee} ${selectedLp?.symbol}`}
+                                title={'Deposit Reward'}
+                                value={`${depositReward} ${selectedLp?.symbol}`}
                             />
                         )}
 
