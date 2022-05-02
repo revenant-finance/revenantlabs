@@ -13,7 +13,6 @@ import Modal from '../../components/Modals/Modal'
 export default function FarmModal() {
     const { newAlert, clearAlert } = useAlerts()
     const { selectedFarm, setSelectedFarm, mode, setMode } = useFarmData()
-    console.log(selectedFarm)
 
     const { deposit, withdraw } = useFarm()
 
@@ -101,7 +100,7 @@ export default function FarmModal() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">
-                                    Amount of {selectedFarm?.name} to {isDeposit ? 'deposit' : 'withdraw'}.
+                                    Amount of CREDIT to {isDeposit ? 'deposit' : 'withdraw'}.
                                 </p>
                                 <Input
                                     type="number"
