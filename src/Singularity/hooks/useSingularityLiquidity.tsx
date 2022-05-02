@@ -27,7 +27,7 @@ export function useSingularityLiquidityInternal() {
 
     const [slippageTolerance, setSlippageTolerance] = useState(0.1)
     const [withdrawFee, setWithdrawFee] = useState('0')
-    const [depositReward, setDepositReward] = useState('0')
+    const [depositFee, setDepositFee] = useState('0')
 
     const routerContract =
         data?.stable && getSingRouterContract(data.stable.router, account ? library.getSigner() : null)
@@ -54,7 +54,7 @@ export function useSingularityLiquidityInternal() {
             if (!input) {
                 _setLpInput('')
                 setWithdrawFee('0')
-                setDepositReward('0')
+                setDepositFee('0')
                 return
             }
             _setLpInput(input)
@@ -65,11 +65,11 @@ export function useSingularityLiquidityInternal() {
                 lpContract.getDepositFee(formattedLpInput)
             ])
             setWithdrawFee(toEth(_withdrawFee, selectedLp.decimals))
-            setDepositReward(toEth(_depositReward, selectedLp.decimals))
+            setDepositFee(toEth(_depositReward, selectedLp.decimals))
         } catch (error) {
             _setLpInput('')
             setWithdrawFee('0')
-            setDepositReward('0')
+            setDepositFee('0')
             console.log(error)
         }
     }
@@ -219,8 +219,8 @@ export function useSingularityLiquidityInternal() {
         setSlippageTolerance,
         withdrawFee,
         setWithdrawFee,
-        depositReward,
-        setDepositReward,
+        depositFee,
+        setDepositFee,
         withdrawLp,
         depositLp,
         mintTestToken,
