@@ -1,6 +1,12 @@
 import { useEffect } from 'react'
 import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
-import { commaFormatter, formatter, isNotEmpty, currentEpoch, smartNumberFormatter } from '../../utils'
+import {
+    commaFormatter,
+    formatter,
+    isNotEmpty,
+    currentEpoch,
+    smartNumberFormatter
+} from '../../utils'
 import Button from '../../components/Btns/Button'
 import DataPoint from '../../components/DataPoint/DataPoint'
 import LiveTime from '../../components/Countdown/LiveTime'
@@ -107,6 +113,10 @@ export default function SingularityLiquidityModal() {
                             title="Price Per Share"
                             value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
                         />
+                        <DataPoint
+                            title="Deposit Cap"
+                            value={`${smartNumberFormatter(selectedLp?.depositCap)} ${selectedLp?.symbol}`}
+                        />
                     </div>
 
                     <div className="space-y-2">
@@ -209,10 +219,18 @@ export default function SingularityLiquidityModal() {
                             }
                         />
 
-                        {!isWithdraw && <DataPoint title={"Deposit Reward"} value={`${depositReward} ${selectedLp?.symbol}`} />}
+                        {!isWithdraw && (
+                            <DataPoint
+                                title={'Deposit Reward'}
+                                value={`${depositReward} ${selectedLp?.symbol}`}
+                            />
+                        )}
 
                         {isWithdraw && (
-                                <DataPoint title={`Withdraw Fees`} value={`${formatter(withdrawFee)} ${selectedLp?.symbol}`} />
+                            <DataPoint
+                                title={`Withdraw Fees`}
+                                value={`${formatter(withdrawFee)} ${selectedLp?.symbol}`}
+                            />
                         )}
                     </div>
 

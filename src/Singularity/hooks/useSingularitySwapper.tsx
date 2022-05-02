@@ -8,7 +8,6 @@ import { getSingRouterContract, getTokenContract } from '../../utils/ContractSer
 import { useActiveWeb3React } from '../../hooks'
 import { useSingularityData } from '../SingularityAppWrapper'
 import useAlerts from '../../hooks/useAlerts'
-import { BigNumber } from 'ethers'
 
 export function useSingularitySwapperInternal() {
     const router = useRouter()
@@ -48,12 +47,11 @@ export function useSingularitySwapperInternal() {
     )
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken?.id)
 
-    const tokens = data?.safe?.tokens || []
-
-
+    const tokens = data?.stable?.tokens || []
 
     const fromToken = tokens?.find((token) => token.id === _fromTokenId)
     const toToken = tokens?.find((token) => token.id === _toTokenId)
+
 
     useEffect(() => {
         setFromValue(fromValue)
@@ -83,7 +81,7 @@ export function useSingularitySwapperInternal() {
     }
 
     const getAmountOut = async (value, tokenIn, tokenOut) => {
-        const routerContract = getSingRouterContract(data.safe.router)
+        const routerContract = getSingRouterContract(data.stable.router)
         const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
         return amountOut
     }
@@ -160,14 +158,14 @@ export function useSingularitySwapperInternal() {
             if (Number(fromToken?.allowBalance) < Number(fromValue)) {
                 const fromTokenContract = getTokenContract(fromToken.address, library.getSigner())
                 const tx = await fromTokenContract.approve(
-                    data.safe.router,
+                    data.stable.router,
                     MAX_UINT256
                     // toWei(fromValue, fromToken.decimals)
                 )
                 await tx.wait(1)
                 update()
             }
-            const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
+            const routerContract = getSingRouterContract(data.stable.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10

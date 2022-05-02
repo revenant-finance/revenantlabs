@@ -30,7 +30,7 @@ export function useSingularityLiquidityInternal() {
     const [depositReward, setDepositReward] = useState('0')
 
     const routerContract =
-        data?.safe && getSingRouterContract(data.safe.router, account ? library.getSigner() : null)
+        data?.stable && getSingRouterContract(data.stable.router, account ? library.getSigner() : null)
 
     const inverseSlippage = (1 - slippageTolerance) * 100
 
@@ -80,7 +80,7 @@ export function useSingularityLiquidityInternal() {
             if (Number(token?.allowBalance) < Number(amountIn)) {
                 const depositTokenContract = getTokenContract(token.address, library.getSigner())
                 const tx = await depositTokenContract.approve(
-                    data.safe.router,
+                    data.stable.router,
                     MAX_UINT256
                     // toWei(amountIn, token.decimals)
                 )
@@ -133,7 +133,7 @@ export function useSingularityLiquidityInternal() {
             if (Number(token?.lpBalance.allowBalance) < Number(amountIn)) {
                 const fromTokenContract = getTokenContract(token.lpAddress, library.getSigner())
                 const tx = await fromTokenContract.approve(
-                    data.safe.router,
+                    data.stable.router,
                     MAX_UINT256
                     // toWei(amountIn)
                 )

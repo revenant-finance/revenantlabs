@@ -1,6 +1,6 @@
 import { useActiveWeb3React } from '../../hooks'
 import * as constants from '../data'
-import { MAX_UINT256, toEth, toWei } from '../../utils'
+import { toEth, toWei, ZERO_ADDRESS } from '../../utils'
 import {
     getTokenContract,
     getVeTokenContract,
@@ -100,11 +100,23 @@ export default function useVeCredit() {
         }
     }
 
+
     async function claim() {
         if (!account) return
         let tx = null
         try {
-            tx = await feesContract['claim(address)'](account)
+            // const pendingEpochs = Number(veCreditData.maxUserEpoch) - Number(veCreditData.currentUserEpoch)
+            // if (pendingEpochs > 0) {
+            //     let accounts = []
+            //     for (let i =0; i < 20 ; i++) {
+            //         i < pendingEpochs ? accounts.push(account) : accounts.push(ZERO_ADDRESS)
+            //     }
+            //     console.log(accounts)
+            //     console.log(feesContract)
+            //     tx = await feesContract.claim_many(accounts)
+            // } else {
+                tx = await feesContract['claim(address)'](account)
+            // }
             await tx.wait(1)
             console.log(tx)
             update()

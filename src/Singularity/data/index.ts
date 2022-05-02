@@ -6,18 +6,19 @@ export const CONTRACT_SINGULARITY = {
     1: {},
     250: {
         traunches: {
-            safe: {
-                factory: singularityAddress[250].CONTRACT.factorySafe,
-                router: singularityAddress[250].CONTRACT.routerSafe,
+            stable: {
+                factory: singularityAddress[250].CONTRACT.factoryStable,
+                router: singularityAddress[250].CONTRACT.routerStable,
+                oracle: singularityAddress[250].CONTRACT.oracleStable,
                 tokens: {
-                    btc: {
-                        id: 'btc',
-                        symbol: 'BTC',
-                        asset: 'wbtc.png',
-                        name: 'Wrapped Bitcoin',
-                        address: singularityAddress[250].TOKEN.btc,
-                        lpAddress: singularityAddress[250].LPTOKEN.btcSafe,
-                        decimals: 8
+                    dai: {
+                        id: 'dai',
+                        symbol: 'DAI',
+                        asset: 'dai.png',
+                        name: 'DAI',
+                        address: singularityAddress[250].TOKEN.dai,
+                        lpAddress: singularityAddress[250].LPTOKEN.daiStable,
+                        decimals: 18
                     },
                     usdc: {
                         id: 'usdc',
@@ -25,23 +26,24 @@ export const CONTRACT_SINGULARITY = {
                         asset: 'usdc.png',
                         name: 'USDC',
                         address: singularityAddress[250].TOKEN.usdc,
-                        lpAddress: singularityAddress[250].LPTOKEN.usdcSafe,
+                        lpAddress: singularityAddress[250].LPTOKEN.usdcStable,
                         decimals: 6
                     },
-                    eth: {
-                        id: 'eth',
-                        symbol: 'ETH',
-                        asset: 'weth.png',
-                        name: 'Wrapped Ether',
-                        address: singularityAddress[250].TOKEN.eth,
-                        lpAddress: singularityAddress[250].LPTOKEN.ethSafe,
-                        decimals: 18
+                    fusdt: {
+                        id: 'fusdt',
+                        symbol: 'fUSDT',
+                        asset: 'usdt.png',
+                        name: 'fUSDT',
+                        address: singularityAddress[250].TOKEN.fusdt,
+                        lpAddress: singularityAddress[250].LPTOKEN.fusdtStable,
+                        decimals: 6
                     }
                 },
             },
             cusd: {
                 factory: singularityAddress[250].CONTRACT.factoryCUSD,
                 router: singularityAddress[250].CONTRACT.routerCUSD,
+                oracle: singularityAddress[250].CONTRACT.oracleTest,
                 tokens: {
                     btc: {
                         id: 'btc',
@@ -57,7 +59,7 @@ export const CONTRACT_SINGULARITY = {
                         symbol: 'USDC',
                         asset: 'usdc.png',
                         name: 'USDC',
-                        address: singularityAddress[250].TOKEN.usdc,
+                        address: singularityAddress[250].TOKEN.usdcTest,
                         lpAddress: singularityAddress[250].LPTOKEN.usdcCUSD,
                         decimals: 6
                     },
@@ -73,7 +75,6 @@ export const CONTRACT_SINGULARITY = {
                 },
             },
         },
-        oracle: singularityAddress[250].CONTRACT.oracle,
     }
 }
 

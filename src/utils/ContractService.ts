@@ -88,9 +88,9 @@ export const getCrvContract = (address, provider?: ethers.Signer | ethers.provid
 
 //SINGULARITY
 
-export const getSingOracleContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
+export const getSingOracleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
-        singConstants.CONTRACT_SINGULARITY[250].oracle,
+        address,
         JSON.parse(singConstants.CONTRACT_SING_ORACLE_ABI),
         provider
     )

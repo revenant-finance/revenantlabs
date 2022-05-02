@@ -56,6 +56,7 @@ export default function CreditumLocking() {
     }, [veCreditData])
 
     const hasExistingLock = veCreditData?.creditLocked !== '0'
+    const pendingEpochs = Number(veCreditData.maxUserEpoch) - Number(veCreditData.currentUserEpoch)
 
     const {
         approve,
@@ -240,6 +241,9 @@ export default function CreditumLocking() {
                             <p className="text-2xl md:text-3xl font-extended">
                                 {`~${commaFormatter(veCreditData.userRewardAmount)}`} CREDIT
                             </p>
+                            {pendingEpochs > 0 && <div className="opacity-50">
+                                    User is behind on {pendingEpochs} {pendingEpochs === 1 ? 'distribution': 'distributions'}, please claim to catch up to current distribution of rewards.
+                                </div>}
                             {/* <p className="space-x-2 font-medium">
                                 <Countdown date={veCreditData.rewardTime} />
                                 <span className="opacity-50">
@@ -447,7 +451,7 @@ export default function CreditumLocking() {
                             </>
                         )}
 
-                        {veCreditData.userRewardAmount && veCreditData.userRewardAmount !== '0' && (
+                        {hasExistingLock && (
                             <Button
                                 loading={claimStatus === 'loading'}
                                 className="bg-green-500 hover:bg-green-600 text-neutral-900"

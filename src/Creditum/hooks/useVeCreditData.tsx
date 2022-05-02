@@ -18,6 +18,7 @@ export function useVeCreditDataInternal() {
     const [veCreditData, setVeCreditData] = useState({})
     const { slowRefresh } = useRefresh()
     const { account } = useActiveWeb3React()
+    // const account = '0x40fd7b406701e407c85688636318f6315cbc84b3'
     const veCreditContract = getVeTokenContract(veCreditAddress)
     const xCreditContract = getXTokenContract(xCreditAddress)
     const creditContract = getTokenContract(creditAddress)
@@ -32,6 +33,7 @@ export function useVeCreditDataInternal() {
                 for (let i =0; i < 20 ; i++) {
                     accounts.push(account)
                 }
+
                 const [
                     allow,
                     tokenBal,
@@ -66,7 +68,10 @@ export function useVeCreditDataInternal() {
                     feesContract.callStatic['claim_many(address[20])'](accounts)
                 ])
 
-                console.log(test)
+                // if (Number(currentUserEpoch) < Number(maxUserEpoch)) {
+                //     feesContract.callStatic['claim(address)'](account)
+                // }
+
 
                 return {
                     allowance: toEth(allow),
