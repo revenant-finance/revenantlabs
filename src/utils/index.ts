@@ -7,7 +7,7 @@ const commaNumber = require('comma-number')
 
 const format = commaNumber.bindWith(',', '.')
 
-export const currentEpoch = parseInt(+new Date()) / 1000
+export const currentEpoch = Math.floor(parseInt(+new Date()) / 1000)
 
 export const ZERO_ADDRESS = constants.AddressZero
 export const EMPTY_ADDRESS = '0x0Af3F4817dcD3644ca7e0319dDe861932544D0D5'
@@ -16,6 +16,10 @@ export const SECONDS_PER_YEAR = 31536000
 
 export const epochToDate = (epoch) => {
     return dayjs.unix(epoch).format('MMM D, YYYY')
+}
+
+export const multiplier = (decimals = 18) => {
+    return BigNumber.from(10).pow(decimals)
 }
 
 // returns the checksummed address if the address is valid, otherwise returns false

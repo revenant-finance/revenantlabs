@@ -79,7 +79,7 @@ export default function MarketAccordionItem({ market, invert }) {
                                     title="Current Liquidation Price"
                                     value={`$${
                                         Number(market.liquidationPrice) > 9000000
-                                            ? 'None'
+                                            ? '0'
                                             : commaFormatter(market.liquidationPrice * market.priceUsd)
                                     }`}
                                     lineClass="bg-neutral-800"

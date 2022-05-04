@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import * as constants from '../../data'
 import * as credConstants from '../data'
-import { EMPTY_ADDRESS, toEth } from '../../utils'
+import { EMPTY_ADDRESS, toEth, currentEpoch, SECONDS_PER_YEAR, multiplier } from '../../utils'
 import { fetchBalances, getTokenContract } from '../../utils/ContractService'
 import multicall from '../../utils/multicall'
 import usePrice from '../../hooks/usePrice'
@@ -28,11 +28,17 @@ const formatCreditumData = (
     _balances,
     _contractBalance
 ) => {
+    let positionDebt = _userData?.debt
+    if (Number(_userData.lastUpdatedAt) !== 0) {
+        const timeElapsed = currentEpoch - Number(_userData.lastUpdatedAt)
+        const fee = _userData?.debt.mul(_collateralData?.stabilityFee).mul(timeElapsed).div(SECONDS_PER_YEAR).div(multiplier())
+        positionDebt = _userData.debt.add(fee)
+    }
     return {
         ..._assetCollateralData,
         totalMinted: toEth(_totalMinted),
         stabilizerDeposits: toEth(_stabilizerDeposits, _assetCollateralData.decimals),
-        userDebt: toEth(_userData?.debt),
+        userDebt: toEth(positionDebt),
         userDeposits: toEth(_userData?.deposits, _assetCollateralData.decimals),
         collateralAllowed: _collateralData?.allowed,
         collateralStabilityFee: toEth(_collateralData?.stabilityFee),
