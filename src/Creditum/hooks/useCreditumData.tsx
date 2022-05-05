@@ -31,8 +31,8 @@ const formatCreditumData = (
     let positionDebt = _userData?.debt
     if (Number(_userData.lastUpdatedAt) !== 0) {
         const timeElapsed = currentEpoch - Number(_userData.lastUpdatedAt)
-        const fee = _userData?.debt.mul(_collateralData?.stabilityFee).mul(timeElapsed).div(SECONDS_PER_YEAR).div(multiplier())
-        positionDebt = _userData.debt.add(fee)
+        const fee = _userData?.debt?.mul(_collateralData?.stabilityFee).mul(timeElapsed).div(SECONDS_PER_YEAR).div(multiplier())
+        positionDebt = _userData?.debt?.add(fee)
     }
     return {
         ..._assetCollateralData,
