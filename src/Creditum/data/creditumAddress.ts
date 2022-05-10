@@ -23,7 +23,8 @@ export default {
             yvusdc: '0xEF0210eB96c7EB36AF8ed1c20306462764935607',
             yvwftm: '0x0DEC85e74A92c52b7F708c4B10207D9560CEFaf0',
             rvusdc: '0x1B6ecdA7Fd559793c0Def1F1D90A2Df4887B9718',
-            rvdai: '0xd10112521e860bdE82FD34f88113052e434930C4'
+            rvdai: '0xd10112521e860bdE82FD34f88113052e434930C4',
+            sftmx: '0xd7028092c830b5C8FcE061Af2E593413EbbC1fc1'
         },
         CONTRACT: {
             credit: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E',

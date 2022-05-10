@@ -86,6 +86,13 @@ export const CONTRACT_CREDITUM = {
                         asset: 'dai.png',
                         address: creditumAddress[250].TOKEN.rvdai,
                         decimals: 18
+                    },
+                    sftmx : {
+                        id: 'sftmx',
+                        symbol: 'sFTMx',
+                        asset: 'sFTMX.png',
+                        address: creditumAddress[250].TOKEN.sftmx,
+                        decimals: 18
                     }
                 }
             }
