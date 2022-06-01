@@ -100,7 +100,7 @@ export default function FarmModal() {
                         <div className="flex flex-col gap-2 md:flex-row">
                             <div className="flex-1 space-y-1">
                                 <p className="text-xs font-medium">
-                                    Amount of CREDIT to {isDeposit ? 'deposit' : 'withdraw'}.
+                                    Amount of {selectedFarm?.name} to {isDeposit ? 'deposit' : 'withdraw'}.
                                 </p>
                                 <Input
                                     type="number"

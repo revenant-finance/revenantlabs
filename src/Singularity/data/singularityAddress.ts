@@ -2,26 +2,23 @@ export default {
     1: {},
     250: {
         TOKEN: {
-            btc: '0xfe95A6188E2C6FF991600bC43f1B119BC11EE5f6',
-            usdc: '0x69bbAcD89dB2588e8213Be96D4f88888b3D74B0c',
-            eth: '0x512D083d9f03d424ae4FCe15255588C246Beb28B',
-
+            btc: '0x321162Cd933E2Be498Cd2267a90534A804051b11',
+            usdc: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
+            eth: '0x74b23882a30290451A17c44f4F05243b6b58C76d',
+            fusdt: '0x049d68029688eabf473097a2fc38ef61633a3c7a',
+            dai: '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E',
+            wftm: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
         },
         LPTOKEN: {
-            btcSafe: '0x6f5b20cc64fa76da1438c0610dd0083c43581039',
-            ethSafe: '0x28488AdA561128dCe89F2380fACF5888CdB534e7',
-            usdcSafe: '0x5AddbE4199D5E205E77e6A197864EA0CA9F8D2DD',
-            btcCUSD: '0x6f5b20cc64fa76da1438c0610dd0083c43581039',
-            ethCUSD: '0x28488AdA561128dCe89F2380fACF5888CdB534e7',
-            usdcCUSD: '0x5AddbE4199D5E205E77e6A197864EA0CA9F8D2DD'
-
+            fusdt: '0xB8cBbc22e78DD8929f0CfF1440561C536c0b7480',
+            usdc: '0xdC383325E815e8FccBdea659694bbaaD0E58FFb0',
+            dai: '0x3d316e524517c870DDa9C15d26AB642e49f89dBD',
+            wftm: '0xc924F039D28910c7a0dD4d928A9baaF835EBaF4b'
         },
         CONTRACT: {
-            oracle: '0xC659b3879eD5B3079D5B7Fb89801143E6C1fD8Fa',
-            routerSafe: '0xFa1b36125655a294E0a50F4afE60EB438BDB5cF1',
-            factorySafe: '0x4A762D217a88955ed29e330F90b7D155d7C7cd56',
-            routerCUSD: '0xFa1b36125655a294E0a50F4afE60EB438BDB5cF1',
-            factoryCUSD: '0x4A762D217a88955ed29e330F90b7D155d7C7cd56'
+            oracle: '0x6Dd8a12a5B0C03267f61Bdc440A04E9Ef3B92C28',
+            router: '0x2294135E0790ADeA204f237B1004bD9E77E1Ca07',
+            factory: '0x516D569964b61Eb9221aa56E4A9142ac13199a27',
         }
     }
 }

@@ -32,6 +32,7 @@ function useSingularityDataInternal() {
         _token,
         _assetAmount,
         _liabilityAmount,
+        _depositCap,
         _pricePerShare,
         _tradingFeeRate,
         _lpUnderlyingBalance,
@@ -46,6 +47,7 @@ function useSingularityDataInternal() {
             ..._walletBalance,
             assetAmount: toEth(_assetAmount, _token.decimals),
             liabilityAmount: toEth(_liabilityAmount, _token.decimals),
+            depositCap: toEth(_depositCap, _token.decimals),
             pricePerShare: toEth(_pricePerShare),
             tradingFeeRate: String(_tradingFeeRate),
             lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
@@ -95,6 +97,11 @@ function useSingularityDataInternal() {
                     name: 'liabilities'
                 }))
 
+                const depositCapCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'depositCap'
+                }))
+
                 const pricePerShareCalls = tokens.map((value) => ({
                     address: value.lpAddress,
                     name: 'getPricePerShare'
@@ -111,9 +118,11 @@ function useSingularityDataInternal() {
                     params: [value.lpAddress]
                 }))
 
+
                 const traunchCalls = Promise.all([
                     multicall(lpTokenABI, assetsAmountCalls),
                     multicall(lpTokenABI, liabilitiesAmountCalls),
+                    multicall(lpTokenABI, depositCapCalls),
                     multicall(lpTokenABI, pricePerShareCalls),
                     multicall(lpTokenABI, tradingFeeRateCalls),
                     multicall(erc20ABI, lpUnderlyingBalanceCalls),
@@ -136,6 +145,7 @@ function useSingularityDataInternal() {
                 const [
                     assetsAmount,
                     liabilitiesAmount,
+                    depositCaps,
                     pricePerShares,
                     tradingFeeRates,
                     lpUnderlyingBalances,
@@ -151,6 +161,7 @@ function useSingularityDataInternal() {
                             tokens[index],
                             assetsAmount[index][0],
                             liabilitiesAmount[index][0],
+                            depositCaps[index][0],
                             pricePerShares[index][0],
                             tradingFeeRates[index][0],
                             lpUnderlyingBalances[index][0],
@@ -167,14 +178,15 @@ function useSingularityDataInternal() {
 
             console.log('Refreshing data...')
 
+            let finalTraunchData = {}
+            for (let i = 0; i < traunchIds.length; i++) {
+                finalTraunchData[traunchIds[i]] = formattedTraunchData[i]
+            } 
             setData(
-                traunchIds.reduce((a, b, index) => {
-                    return {
-                        [a]: formattedTraunchData[index],
-                        [b]: formattedTraunchData[index]
-                    }
-                })
+                finalTraunchData
             )
+
+            console.log(data)
         }
 
         onLoad()

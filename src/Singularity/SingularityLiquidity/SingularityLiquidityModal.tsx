@@ -1,6 +1,12 @@
 import { useEffect } from 'react'
 import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
-import { commaFormatter, formatter, isNotEmpty, currentEpoch, smartNumberFormatter } from '../../utils'
+import {
+    commaFormatter,
+    formatter,
+    isNotEmpty,
+    currentEpoch,
+    smartNumberFormatter
+} from '../../utils'
 import Button from '../../components/Btns/Button'
 import DataPoint from '../../components/DataPoint/DataPoint'
 import LiveTime from '../../components/Countdown/LiveTime'
@@ -15,12 +21,12 @@ export default function SingularityLiquidityModal() {
         setSelectedLp,
         lpInput,
         setLpInput,
-        isWithdraw,
+        isWithdrawal,
         setIsWithdraw,
         slippageTolerance,
         setSlippageTolerance,
-        withdrawFee,
-        depositReward,
+        withdrawalFee,
+        depositFee,
         withdrawLp,
         depositLp,
         mintTestToken,
@@ -30,7 +36,7 @@ export default function SingularityLiquidityModal() {
         isLpApproved
     } = useSingularityLiquidity()
 
-    const actionVerb = `${isWithdraw ? 'withdraw' : 'deposit'}`
+    const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
 
     return (
         <>
@@ -38,19 +44,19 @@ export default function SingularityLiquidityModal() {
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
-                            {isWithdraw ? 'Withdraw' : 'Deposit'}
+                            {isWithdrawal ? 'Withdraw' : 'Deposit'}
                         </p>
 
                         <button
                             onClick={() => setIsWithdraw((_) => !_)}
                             className="text-sm underline transition-all opacity-50 hover:opacity-100 animate"
                         >
-                            {isWithdraw ? 'Deposit Instead' : 'Withdraw Instead'}
+                            {isWithdrawal ? 'Deposit Instead' : 'Withdraw Instead'}
                         </button>
                     </div>
 
                     <div>
-                        {!isWithdraw && (
+                        {!isWithdrawal && (
                             <>
                                 <DataPoint
                                     title={`Wallet Balance`}
@@ -66,12 +72,12 @@ export default function SingularityLiquidityModal() {
 
                                 <DataPoint
                                     title={`Reward`}
-                                    value={`${formatter(depositReward)} ${selectedLp?.symbol}`}
+                                    value={`${formatter(depositFee)} ${selectedLp?.symbol}`}
                                 />
                             </>
                         )}
 
-                        {isWithdraw && (
+                        {isWithdrawal && (
                             <>
                                 <DataPoint
                                     title={`Wallet LP Balance`}
@@ -107,6 +113,12 @@ export default function SingularityLiquidityModal() {
                             title="Price Per Share"
                             value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
                         />
+                        <DataPoint
+                            title="Deposit Cap"
+                            value={`${smartNumberFormatter(selectedLp?.depositCap)} ${
+                                selectedLp?.symbol
+                            }`}
+                        />
                     </div>
 
                     <div className="space-y-2">
@@ -125,12 +137,12 @@ export default function SingularityLiquidityModal() {
                                     />
                                     <span className="font-medium uppercase">
                                         {selectedLp?.symbol}
-                                        {isWithdraw && '-LP'}
+                                        {isWithdrawal && '-LP'}
                                     </span>
                                 </span>
                             }
                             footerLeft={
-                                isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdraw
+                                isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
                                     ? `${commaFormatter(lpToUnderlying(lpInput, selectedLp))} ${
                                           selectedLp.symbol
                                       }`
@@ -140,13 +152,13 @@ export default function SingularityLiquidityModal() {
                                 <button
                                     className="hover:underline"
                                     onClick={() =>
-                                        isWithdraw
+                                        isWithdrawal
                                             ? setLpInput(selectedLp?.lpBalance.walletBalance)
                                             : setLpInput(selectedLp?.walletBalance)
                                     }
                                 >
                                     Max:{' '}
-                                    {isWithdraw
+                                    {isWithdrawal
                                         ? `${commaFormatter(selectedLp?.lpBalance.walletBalance)} ${
                                               selectedLp?.symbol
                                           }-LP`
@@ -184,7 +196,7 @@ export default function SingularityLiquidityModal() {
 
                                         <span>
                                             {smartNumberFormatter(
-                                                isWithdraw
+                                                isWithdrawal
                                                     ? lpToUnderlying(
                                                           selectedLp?.lpBalance.walletBalance,
                                                           selectedLp
@@ -209,10 +221,18 @@ export default function SingularityLiquidityModal() {
                             }
                         />
 
-                        {!isWithdraw && <DataPoint title={"Deposit Reward"} value={`${depositReward} ${selectedLp?.symbol}`} />}
+                        {!isWithdrawal && (
+                            <DataPoint
+                                title={'Deposit Fee'}
+                                value={`${depositFee ? depositFee : '0'} ${selectedLp?.symbol}`}
+                            />
+                        )}
 
-                        {isWithdraw && (
-                                <DataPoint title={`Withdraw Fees`} value={`${formatter(withdrawFee)} ${selectedLp?.symbol}`} />
+                        {isWithdrawal && (
+                            <DataPoint
+                                title={`Withdrawal Fee`}
+                                value={`${formatter(withdrawalFee)} ${selectedLp?.symbol}`}
+                            />
                         )}
                     </div>
 
@@ -236,19 +256,19 @@ export default function SingularityLiquidityModal() {
                                 loading={status === 'loading'}
                                 className="bg-gradient-to-br from-purple-900 to-blue-900"
                                 onClick={
-                                    isWithdraw
+                                    isWithdrawal
                                         ? () => withdrawLp(lpInput, selectedLp)
                                         : () => depositLp(lpInput, selectedLp)
                                 }
                             >
-                                {isWithdraw
+                                {isWithdrawal
                                     ? isLpApproved
                                         ? 'Withdraw'
                                         : 'Approve'
                                     : isUnderlyingApproved
                                     ? 'Deposit'
                                     : 'Approve'}{' '}
-                                {isWithdraw ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol}
+                                {isWithdrawal ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol}
                             </Button>
                         </ConnectWalletFirstButton>
                     </div>

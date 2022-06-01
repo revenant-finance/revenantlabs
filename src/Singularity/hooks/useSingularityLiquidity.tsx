@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import { useSingularityData } from '../SingularityAppWrapper'
-import { MAX_UINT256, toEth, toWei } from '../../utils'
+import { MAX_UINT256, toEth, toWei, isNotEmpty } from '../../utils'
 import {
     getSingLpContract,
     getSingRouterContract,
@@ -20,14 +20,14 @@ export function useSingularityLiquidityInternal() {
     const [status, setStatus] = useState('idle')
 
     const [lpInput, _setLpInput] = useState('')
-    const [isWithdraw, setIsWithdraw] = useState(false)
+    const [isWithdrawal, setIsWithdrawal] = useState(false)
     const [_selectedLp, setSelectedLp] = useState(null)
 
     const selectedLp = tokens?.find((token) => token.id == _selectedLp)
 
     const [slippageTolerance, setSlippageTolerance] = useState(0.1)
-    const [withdrawFee, setWithdrawFee] = useState('0')
-    const [depositReward, setDepositReward] = useState('0')
+    const [withdrawalFee, setWithdrawalFee] = useState('0')
+    const [depositFee, setDepositFee] = useState('0')
 
     const routerContract =
         data?.safe && getSingRouterContract(data.safe.router, account ? library.getSigner() : null)
@@ -53,23 +53,29 @@ export function useSingularityLiquidityInternal() {
         try {
             if (!input) {
                 _setLpInput('')
-                setWithdrawFee('0')
-                setDepositReward('0')
+                setWithdrawalFee('0')
+                setDepositFee('0')
                 return
             }
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
-            const [_withdrawFee, _depositReward] = await Promise.all([
-                lpContract.getWithdrawFee(formattedLpInput),
-                lpContract.getDepositFee(formattedLpInput)
-            ])
-            setWithdrawFee(toEth(_withdrawFee, selectedLp.decimals))
-            setDepositReward(toEth(_depositReward, selectedLp.decimals))
+            let _withdrawalFee, _depositFee
+            if (selectedLp?.lpBalance.isNotEmpty) {
+                [_withdrawalFee, _depositFee] = await Promise.all([
+                    lpContract.getWithdrawalFee(formattedLpInput),
+                    lpContract.getDepositFee(formattedLpInput)
+                ])
+                setWithdrawalFee(toEth(_withdrawalFee, selectedLp.decimals))
+            } else {
+                setWithdrawalFee('0')
+            }
+            setDepositFee(toEth(_depositFee, selectedLp.decimals))
+
         } catch (error) {
             _setLpInput('')
-            setWithdrawFee('0')
-            setDepositReward('0')
+            setWithdrawalFee('0')
+            setDepositFee('0')
             console.log(error)
         }
     }
@@ -163,7 +169,7 @@ export function useSingularityLiquidityInternal() {
             await update()
             setStatus('complete')
             newAlert({
-                title: 'Withdraw Complete',
+                title: 'Withdrawal Complete',
                 subtitle: 'Your transaction has been successfully confirmed to the network.',
                 type: 'success'
             })
@@ -171,7 +177,7 @@ export function useSingularityLiquidityInternal() {
             setStatus('error')
             setStatusMessage(error.message)
             newAlert({
-                title: 'Withdraw Failed',
+                title: 'Withdrawal Failed',
                 subtitle: 'Your transaction has not been completed.',
                 type: 'fail'
             })
@@ -211,16 +217,16 @@ export function useSingularityLiquidityInternal() {
         setSelectedLp,
         lpInput,
         setLpInput,
-        isWithdraw,
+        isWithdrawal,
         isUnderlyingApproved,
         isLpApproved,
-        setIsWithdraw,
+        setIsWithdrawal,
         slippageTolerance,
         setSlippageTolerance,
-        withdrawFee,
-        setWithdrawFee,
-        depositReward,
-        setDepositReward,
+        withdrawalFee,
+        setWithdrawalFee,
+        depositFee,
+        setDepositFee,
         withdrawLp,
         depositLp,
         mintTestToken,
