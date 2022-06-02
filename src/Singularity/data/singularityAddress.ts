@@ -10,15 +10,15 @@ export default {
             wftm: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
         },
         LPTOKEN: {
-            fusdt: '0xB8cBbc22e78DD8929f0CfF1440561C536c0b7480',
-            usdc: '0xdC383325E815e8FccBdea659694bbaaD0E58FFb0',
-            dai: '0x3d316e524517c870DDa9C15d26AB642e49f89dBD',
-            wftm: '0xc924F039D28910c7a0dD4d928A9baaF835EBaF4b'
+            fusdt: '0x74045484440e244a0D8970497Fc90D4D0e803A2f',
+            usdc: '0x8624A793d5948A6F44431cfE75ac4d9cd1f2D579',
+            dai: '0x6caa7f57DbEEa477619f3117DFd54038F888c57B',
+            wftm: '0x22176b49B955bA320f9D21B15cAF4dbD502b422f'
         },
         CONTRACT: {
             oracle: '0x6Dd8a12a5B0C03267f61Bdc440A04E9Ef3B92C28',
-            router: '0x2294135E0790ADeA204f237B1004bD9E77E1Ca07',
-            factory: '0x516D569964b61Eb9221aa56E4A9142ac13199a27',
+            router: '0xc74D674FCC3444BD103D01bD138E800764fa1637',
+            factory: '0xc27579d5Ad9e3f59b6deF2F2dA559d2F9d7e3a19',
         }
     }
 }

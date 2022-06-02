@@ -28,6 +28,7 @@ export function useSingularityLiquidityInternal() {
     const [slippageTolerance, setSlippageTolerance] = useState(0.1)
     const [withdrawalFee, setWithdrawalFee] = useState('0')
     const [depositFee, setDepositFee] = useState('0')
+    const [withdrawalAmount, setWithdrawalAmount] = useState('0')
 
     const routerContract =
         data?.safe && getSingRouterContract(data.safe.router, account ? library.getSigner() : null)
@@ -35,7 +36,6 @@ export function useSingularityLiquidityInternal() {
     const inverseSlippage = (1 - slippageTolerance) * 100
 
     const isUnderlyingApproved = Number(selectedLp?.allowBalance) >= Number(lpInput)
-    const isLpApproved = Number(selectedLp?.lpBalance.allowBalance) >= Number(lpInput)
 
     const lpToUnderlying = (amount, pool) => {
         const underlyingAmount = amount * pool?.pricePerShare
@@ -49,6 +49,50 @@ export function useSingularityLiquidityInternal() {
         return lpAmount
     }
 
+    const getWithdrawInfo = (amountIn, token) => {
+        const to = account
+        const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
+        const formatAmountIn = toWei(amountIn, token.decimals)
+        const formatPricePerShare = toWei(
+            Number(token.pricePerShare).toFixed(token.decimals),
+            token.decimals
+        )
+        const minAmount = toEth(
+            formatAmountIn.mul(inverseSlippage).mul(formatPricePerShare).div(100),
+            token.decimals
+        )
+        return {
+            tokenAddress: token.address,
+            formatAmountIn,
+            minAmount,
+            to,
+            timestamp
+        }
+    }
+
+    const getDepositInfo = (amountIn, token) => {
+        const to = account
+        const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
+        const formatAmountIn = toWei(amountIn, token.decimals)
+        const formatPricePerShare = toWei(
+            Number(token.pricePerShare).toFixed(token.decimals),
+            token.decimals
+        )
+        const minAmount = String(
+            toWei(String(formatAmountIn), token.decimals)
+                .mul(inverseSlippage)
+                .div(formatPricePerShare)
+                .div(100)
+        )
+        return {
+            tokenAddress: token.address,
+            formatAmountIn,
+            minAmount,
+            to,
+            timestamp
+        }
+    }
+
     const setLpInput = async (input) => {
         try {
             if (!input) {
@@ -60,13 +104,16 @@ export function useSingularityLiquidityInternal() {
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
-            let _withdrawalFee, _depositFee
-            if (selectedLp?.lpBalance.isNotEmpty) {
-                [_withdrawalFee, _depositFee] = await Promise.all([
+            const {tokenAddress, formatAmountIn} = getWithdrawInfo(input, selectedLp)
+            let _withdrawalFee, _depositFee, _withdrawalAmount
+            if (isNotEmpty(selectedLp?.lpBalance?.totalSupply)) {
+                [_withdrawalFee, _depositFee, _withdrawalAmount] = await Promise.all([
                     lpContract.getWithdrawalFee(formattedLpInput),
-                    lpContract.getDepositFee(formattedLpInput)
+                    lpContract.getDepositFee(formattedLpInput),
+                    routerContract.getRemoveLiquidityAmount(tokenAddress, formatAmountIn)
                 ])
                 setWithdrawalFee(toEth(_withdrawalFee, selectedLp.decimals))
+                setWithdrawalAmount(toEth(_withdrawalAmount, selectedLp.decimals))
             } else {
                 setWithdrawalFee('0')
             }
@@ -93,21 +140,11 @@ export function useSingularityLiquidityInternal() {
                 await tx.wait(1)
                 update()
             }
-            const to = account
-            const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
-            const formatAmountIn = toWei(amountIn, token.decimals)
-            const formatPricePerShare = toWei(
-                Number(token.pricePerShare).toFixed(token.decimals),
-                token.decimals
-            )
-            const minAmount = String(
-                toWei(String(formatAmountIn), token.decimals)
-                    .mul(inverseSlippage)
-                    .div(formatPricePerShare)
-                    .div(100)
-            )
+
+            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getDepositInfo(amountIn, token)
+
             const tx = await routerContract.addLiquidity(
-                token.address,
+                tokenAddress,
                 formatAmountIn,
                 minAmount,
                 to,
@@ -136,30 +173,9 @@ export function useSingularityLiquidityInternal() {
     const withdrawLp = async (amountIn, token) => {
         try {
             setStatus('loading')
-            if (Number(token?.lpBalance.allowBalance) < Number(amountIn)) {
-                const fromTokenContract = getTokenContract(token.lpAddress, library.getSigner())
-                const tx = await fromTokenContract.approve(
-                    data.safe.router,
-                    MAX_UINT256
-                    // toWei(amountIn)
-                )
-                await tx.wait(1)
-                update()
-            }
-
-            const to = account
-            const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
-            const formatAmountIn = toWei(amountIn, token.decimals)
-            const formatPricePerShare = toWei(
-                Number(token.pricePerShare).toFixed(token.decimals),
-                token.decimals
-            )
-            const minAmount = toEth(
-                formatAmountIn.mul(inverseSlippage).mul(formatPricePerShare).div(100),
-                token.decimals
-            )
+            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getWithdrawInfo(amountIn, token)
             const tx = await routerContract.removeLiquidity(
-                token.address,
+                tokenAddress,
                 formatAmountIn,
                 Number(minAmount).toFixed(0),
                 to,
@@ -219,7 +235,6 @@ export function useSingularityLiquidityInternal() {
         setLpInput,
         isWithdrawal,
         isUnderlyingApproved,
-        isLpApproved,
         setIsWithdrawal,
         slippageTolerance,
         setSlippageTolerance,
@@ -231,7 +246,8 @@ export function useSingularityLiquidityInternal() {
         depositLp,
         mintTestToken,
         lpToUnderlying,
-        underlyingToLp
+        underlyingToLp,
+        withdrawalAmount
     }
 }
 

@@ -65,11 +65,8 @@ export default function SingularityLiquidity() {
                                                     </p>
                                                     <p className="opacity-50 md:text-xl">
                                                         <span>
-                                                            $
-                                                            {formatter(
-                                                                token.lpUnderlyingBalance *
-                                                                    token.tokenPrice
-                                                            )}
+                                                            {formatter(token.lpUnderlyingBalance)}{' '}
+                                                            {token.symbol}
                                                         </span>
                                                         <span> Deposited in Pool</span>
                                                     </p>

@@ -22,18 +22,16 @@ export default function SingularityLiquidityModal() {
         lpInput,
         setLpInput,
         isWithdrawal,
-        setIsWithdraw,
+        setIsWithdrawal,
         slippageTolerance,
         setSlippageTolerance,
         withdrawalFee,
         depositFee,
         withdrawLp,
         depositLp,
-        mintTestToken,
         lpToUnderlying,
-        underlyingToLp,
         isUnderlyingApproved,
-        isLpApproved
+        withdrawalAmount
     } = useSingularityLiquidity()
 
     const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
@@ -48,7 +46,7 @@ export default function SingularityLiquidityModal() {
                         </p>
 
                         <button
-                            onClick={() => setIsWithdraw((_) => !_)}
+                            onClick={() => setIsWithdrawal((_) => !_)}
                             className="text-sm underline transition-all opacity-50 hover:opacity-100 animate"
                         >
                             {isWithdrawal ? 'Deposit Instead' : 'Withdraw Instead'}
@@ -143,7 +141,7 @@ export default function SingularityLiquidityModal() {
                             }
                             footerLeft={
                                 isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
-                                    ? `${commaFormatter(lpToUnderlying(lpInput, selectedLp))} ${
+                                    ? `${commaFormatter(withdrawalAmount)} ${
                                           selectedLp.symbol
                                       }`
                                     : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
@@ -262,9 +260,7 @@ export default function SingularityLiquidityModal() {
                                 }
                             >
                                 {isWithdrawal
-                                    ? isLpApproved
-                                        ? 'Withdraw'
-                                        : 'Approve'
+                                    ? 'Withdraw'
                                     : isUnderlyingApproved
                                     ? 'Deposit'
                                     : 'Approve'}{' '}
