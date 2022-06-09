@@ -37,7 +37,10 @@ export default function SingularityLiquidityModal() {
 
     return (
         <>
-            <Modal visible={selectedLp} onClose={() => setSelectedLp(null)}>
+            <Modal visible={selectedLp} onClose={() => {
+                setSelectedLp(null)
+                setLpInput(null)
+            }}>
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
@@ -229,8 +232,8 @@ export default function SingularityLiquidityModal() {
                                 className="bg-gradient-to-br from-purple-900 to-blue-900"
                                 onClick={
                                     isWithdrawal
-                                        ? () => withdrawLp(lpInput, selectedLp)
-                                        : () => depositLp(lpInput, selectedLp)
+                                        ? () => withdrawLp(lpInput, selectedLp, setLpInput)
+                                        : () => depositLp(lpInput, selectedLp, setLpInput)
                                 }
                             >
                                 {isWithdrawal

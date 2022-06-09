@@ -34,6 +34,7 @@ export function useSingularitySwapperInternal() {
     const [priceImpact, setPriceImpact] = useState(0)
     const [totalFees, setTotalFees] = useState(0)
     const [minimumReceived, setMinimumReceived] = useState("0")
+    const [error, setError] = useState(null)
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -84,13 +85,21 @@ export function useSingularitySwapperInternal() {
 
     const getAmountOut = async (value, tokenIn, tokenOut) => {
         const routerContract = getSingRouterContract(data.safe.router)
-        const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
-        return amountOut
+        try {
+            const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
+            return amountOut
+        } catch(error) {
+            return null
+        }
     }
 
     const setFromValue = async (balance) => {
         try {
-            if (!balance) return;
+            if (!balance) {
+                _setFromValue("")
+                _setToValue("")
+                return
+            };
             _setFromValue(balance)
             const [amountOutData, amountOut1] = await Promise.all([
                 getAmountOut(
@@ -100,6 +109,10 @@ export function useSingularitySwapperInternal() {
                 ),
                 getAmountOut(toWei('1', fromToken.decimals), fromToken.address, toToken.address)
             ])
+            if (!amountOutData || !amountOut1) {
+                _setToValue("0")
+                return;
+            }
             const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } =
                 amountOutData
             const _toValue = toEth(amountOut, toToken.decimals)
@@ -181,13 +194,15 @@ export function useSingularitySwapperInternal() {
                 timestamp
             )
             await tx.wait(1)
-            await update()
             newAlert({
                 title: 'Swap Complete',
                 subtitle: 'Your transaction has been successfully confirmed to the network.',
                 type: 'success'
             })
+            setFromValue("")
+            setToValue("")
             setStatus('complete')
+            await update()
         } catch (error) {
             setStatus('error')
             setStatusMessage(error.message)

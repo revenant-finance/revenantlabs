@@ -127,7 +127,7 @@ export function useSingularityLiquidityInternal() {
         }
     }
 
-    const depositLp = async (amountIn, token) => {
+    const depositLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
             if (Number(token?.allowBalance) < Number(amountIn)) {
@@ -168,9 +168,10 @@ export function useSingularityLiquidityInternal() {
             })
             console.log(error)
         }
+        setLpInput(null)
     }
 
-    const withdrawLp = async (amountIn, token) => {
+    const withdrawLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
             const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getWithdrawInfo(amountIn, token)
@@ -199,6 +200,7 @@ export function useSingularityLiquidityInternal() {
             })
             console.log(error)
         }
+        setLpInput(null)
     }
 
     const mintTestToken = async (token, amount = '1000') => {

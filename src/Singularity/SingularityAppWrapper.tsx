@@ -57,7 +57,7 @@ function useSingularityDataInternal() {
             lastUpdated: String(_lastUpdated),
             collatRatio: Number(_liabilityAmount)
                 ? String(Number(_assetAmount.mul(1000).div(_liabilityAmount)) / 1000)
-                : '0'
+                : '1'
         }
     }
 

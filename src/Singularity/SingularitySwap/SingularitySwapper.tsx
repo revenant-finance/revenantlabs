@@ -234,12 +234,14 @@ export default function SingularitySwapper() {
                         <ConnectWalletFirstButton type="singularity">
                             <Button
                                 loading={status === 'loading'}
-                                onClick={() => swap()}
+                                onClick={() => toValue > 0 && swap()}
                                 className="shadow bg-gradient-to-br from-purple-900 to-blue-900"
                             >
-                                {isApproved
-                                    ? `Swap ${fromToken?.symbol}`
-                                    : `Approve ${fromToken?.symbol}`}
+                                {toValue > 0 
+                                    ? isApproved
+                                        ? `Swap ${fromToken?.symbol}`
+                                        : `Approve ${fromToken?.symbol}`
+                                    : "Price Impact Too High"}
                             </Button>
                         </ConnectWalletFirstButton>
                     )}
