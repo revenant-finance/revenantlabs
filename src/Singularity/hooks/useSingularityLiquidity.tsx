@@ -241,6 +241,7 @@ export function useSingularityLiquidityInternal() {
 
     return {
         status,
+        setStatus,
         statusMessage,
         selectedLp,
         setSelectedLp,

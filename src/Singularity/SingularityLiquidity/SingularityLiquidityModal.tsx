@@ -17,6 +17,7 @@ import ConnectWalletFirstButton from '../../components/Btns/ConnectWalletFirstBu
 export default function SingularityLiquidityModal() {
     const {
         status,
+        setStatus,
         selectedLp,
         setSelectedLp,
         lpInput,
@@ -37,10 +38,14 @@ export default function SingularityLiquidityModal() {
 
     return (
         <>
-            <Modal visible={selectedLp} onClose={() => {
-                setSelectedLp(null)
-                setLpInput(null)
-            }}>
+            <Modal
+                visible={selectedLp}
+                onClose={() => {
+                    setSelectedLp(null)
+                    setLpInput(null)
+                    setStatus('idle')
+                }}
+            >
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
@@ -71,7 +76,16 @@ export default function SingularityLiquidityModal() {
                                 />
                             </>
                         )} */}
-
+                        {!isWithdrawal && (
+                            <DataPoint
+                                title="Deposits"
+                                value={`${commaFormatter(
+                                    selectedLp?.liabilityAmount
+                                )} / ${smartNumberFormatter(selectedLp?.depositCap)} ${
+                                    selectedLp?.symbol
+                                }`}
+                            />
+                        )}
                         <DataPoint
                             title="Assets"
                             value={`${commaFormatter(selectedLp?.assetAmount)}`}
@@ -81,7 +95,7 @@ export default function SingularityLiquidityModal() {
                             title="Liabilities"
                             value={`${commaFormatter(selectedLp?.liabilityAmount)}`}
                         />
-                        
+
                         <DataPoint
                             title="Collateralization Ratio"
                             value={`${commaFormatter(selectedLp?.collatRatio * 100, 1)}%`}
@@ -91,21 +105,24 @@ export default function SingularityLiquidityModal() {
                             title="Price Per Share"
                             value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
                         />
-                        <DataPoint
-                            title="Deposit Cap"
-                            value={`${smartNumberFormatter(selectedLp?.depositCap)} ${
-                                selectedLp?.symbol
-                            }`}
-                        />
                     </div>
 
                     <div className="space-y-2">
                         <p className="font-medium opacity-50">
-                            How much {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol} would you like to {actionVerb}?
+                            How much{' '}
+                            {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol} would
+                            you like to {actionVerb}?
                         </p>
                         <SwapperInput
                             value={lpInput}
-                            onChange={(e) => setLpInput(e.target.value, isWithdrawal ? selectedLp?.lpBalance.walletBalance : selectedLp?.walletBalance)}
+                            onChange={(e) =>
+                                setLpInput(
+                                    e.target.value,
+                                    isWithdrawal
+                                        ? selectedLp?.lpBalance.walletBalance
+                                        : selectedLp?.walletBalance
+                                )
+                            }
                             buttonContent={
                                 <span className="flex items-center space-x-2">
                                     <img
@@ -145,11 +162,16 @@ export default function SingularityLiquidityModal() {
                             <div>
                                 <DataPoint
                                     title={'Deposit Fee'}
-                                    value={`${formatter(depositFee ? depositFee : '0', 6)} ${selectedLp?.symbol}`}
+                                    value={`${formatter(depositFee ? depositFee : '0', 6)} ${
+                                        selectedLp?.symbol
+                                    }`}
                                 />
                                 <DataPoint
                                     title={`You Will Receive`}
-                                    value={`${formatter(lpInput / selectedLp?.pricePerShare - depositFee, 6)} ${selectedLp?.symbol}-SPT`}
+                                    value={`${formatter(
+                                        lpInput / selectedLp?.pricePerShare - depositFee,
+                                        6
+                                    )} ${selectedLp?.symbol}-SPT`}
                                 />
                             </div>
                         )}
@@ -158,15 +180,19 @@ export default function SingularityLiquidityModal() {
                             <div>
                                 <DataPoint
                                     title={`Withdrawal Fee`}
-                                    value={`${formatter(withdrawalFee ? withdrawalFee : '0', 6)} ${selectedLp?.symbol}`}
+                                    value={`${formatter(withdrawalFee ? withdrawalFee : '0', 6)} ${
+                                        selectedLp?.symbol
+                                    }`}
                                 />
                                 <DataPoint
                                     title={`You Will Receive`}
-                                    value={`${formatter(lpInput * selectedLp?.pricePerShare - withdrawalFee, 6)} ${selectedLp?.symbol}`}
+                                    value={`${formatter(
+                                        lpInput * selectedLp?.pricePerShare - withdrawalFee,
+                                        6
+                                    )} ${selectedLp?.symbol}`}
                                 />
                             </div>
                         )}
-
                     </div>
 
                     <div className="flex space-x-6">
