@@ -65,7 +65,8 @@ function useSingularityDataInternal() {
         const onLoad = async () => {
             const traunchIds = Object.keys(singConstants.CONTRACT_SINGULARITY[250].traunches)
             const allTraunchData = traunchIds.map((traunchId) => {
-                const traunchData = singConstants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
+                const traunchData =
+                    singConstants.CONTRACT_SINGULARITY[250].traunches[`${traunchId}`]
                 const tokens = Object.values(traunchData.tokens)
                 const tokenAddresses = tokens.map((token) => {
                     return token.address
@@ -183,17 +184,11 @@ function useSingularityDataInternal() {
                 }
             })
 
-            console.log('Refreshing data...')
-
             let finalTraunchData = {}
             for (let i = 0; i < traunchIds.length; i++) {
                 finalTraunchData[traunchIds[i]] = formattedTraunchData[i]
-            } 
-            setData(
-                finalTraunchData
-            )
-
-            console.log(data)
+            }
+            setData(finalTraunchData)
         }
 
         onLoad()

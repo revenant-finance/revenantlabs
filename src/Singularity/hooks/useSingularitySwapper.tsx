@@ -161,11 +161,6 @@ export function useSingularitySwapperInternal() {
         setSelectingToken(modalType)
     }
 
-    const formatter = (value: number) => {
-        const number = Number(Number(value).toFixed(2))
-        return number < 1000 ? commaNumber(number) : shortNumber(number)
-    }
-
     const isApproved = Number(fromToken?.allowBalance) >= Number(fromValue)
 
     const swap = async () => {
@@ -272,7 +267,6 @@ export function useSingularitySwapperInternal() {
         swapTokens,
         maxFrom,
         maxTo,
-        formatter,
         totalFees,
         minimumReceived,
         swap,

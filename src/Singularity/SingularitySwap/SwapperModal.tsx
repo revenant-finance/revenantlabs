@@ -7,6 +7,8 @@ import Portal from '../../components/Modals/Portal'
 export default function SwapperModal() {
     const {
         tokens,
+        fromToken,
+        toToken,
         setFromToken,
         setToToken,
         showSelectTokenModal,
@@ -19,12 +21,12 @@ export default function SwapperModal() {
     const tokenList =
         tokens
             ?.filter((token) => {
-                // Don't show selected tokens, if selected.
-                // if (selectingToken === 'to') return fromToken ? token.id !== fromToken.id : true
-                // if (selectingToken === 'from') return toToken ? token.id !== toToken.id : true
-                return true
-            })
-            ?.filter((token) => {
+                if (fromToken) {
+                    if (token.id == fromToken.id) return false
+                }
+                if (toToken) {
+                    if (token.id == toToken.id) return false
+                }
                 const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
                 const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
                 const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
@@ -70,22 +72,19 @@ export default function SwapperModal() {
                                                 </span>
                                             </p>
                                             <p className="space-x-1 text-xs">
-                                                <span className="font-medium">{token.symbol}</span>
                                                 <a
-                                                    href={`https://ftmscan.com/address/${token.address}`}
+                                                    href={`https://ftmscan.com/token/${token.address}`}
                                                     target="_blank"
                                                     className="font-mono underline truncate opacity-50 hover:no-underline"
                                                 >
-                                                    {token.address.slice(0, 3)}...
-                                                    {token.address.slice(-3)}
+                                                    {token.address.slice(0, 6)}...
+                                                    {token.address.slice(-4)}
                                                 </a>
                                             </p>
                                         </div>
-                                        {isNotEmpty(token.walletBalance) && (
-                                            <div className="opacity-50">
-                                                {formatter(token.walletBalance)} {token.symbol}
-                                            </div>
-                                        )}
+                                        <div className="opacity-75">
+                                            {formatter(token.walletBalance)}
+                                        </div>
                                     </div>
                                 </button>
                             )
