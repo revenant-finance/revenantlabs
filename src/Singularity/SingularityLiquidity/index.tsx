@@ -63,37 +63,11 @@ export default function SingularityLiquidity() {
                                                             ${formatter(token.tokenPrice)}
                                                         </span>
                                                     </p>
-                                                    <p className="opacity-50 md:text-xl">
-                                                        <span>
-                                                            {formatter(token.lpUnderlyingBalance)}{' '}
-                                                            {token.symbol}
-                                                        </span>
-                                                        <span> Deposited in Pool</span>
-                                                    </p>
                                                 </div>
 
                                                 <div className="hidden w-32 md:block">
                                                     <Bar value={token.collatRatio * 100} />
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="w-full space-y-2 md:hidden">
-                                            <Bar value={token.collatRatio * 100} />
-                                            <div>
-                                                <DataPoint
-                                                    title="Your Balance"
-                                                    value={`$${formatter(
-                                                        token.pricePerShare * token.walletBalance
-                                                    )}`}
-                                                />
-                                                <DataPoint
-                                                    title="Your Deposits"
-                                                    value={`$${formatter(
-                                                        token.pricePerShare *
-                                                            token.lpBalance.walletBalance
-                                                    )}`}
-                                                />
                                             </div>
                                         </div>
                                         <div className="hidden gap-4 md:flex">
@@ -103,12 +77,10 @@ export default function SingularityLiquidity() {
                                                 )}
                                             >
                                                 <p className="text-2xl">
-                                                    {formatter(
-                                                        token.pricePerShare * token.walletBalance
-                                                    )}{' '}
+                                                    {formatter(token.lpUnderlyingBalance)}{' '}
                                                     {token.symbol}
                                                 </p>
-                                                <p className="text-sm opacity-50">Your Balance</p>
+                                                <p className="text-sm opacity-50">Pool Deposits</p>
                                             </div>
                                             <div
                                                 className={classNames(

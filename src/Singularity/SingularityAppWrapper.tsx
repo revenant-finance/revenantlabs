@@ -35,6 +35,7 @@ function useSingularityDataInternal() {
         _depositCap,
         _pricePerShare,
         _tradingFeeRate,
+        _isStablecoin,
         _lpUnderlyingBalance,
         _walletBalance,
         _lpBalance,
@@ -50,6 +51,7 @@ function useSingularityDataInternal() {
             depositCap: toEth(_depositCap, _token.decimals),
             pricePerShare: toEth(_pricePerShare),
             tradingFeeRate: String(_tradingFeeRate),
+            isStablecoin: _isStablecoin,
             lpUnderlyingBalance: toEth(_lpUnderlyingBalance, _token.decimals),
             tokenPrice: toEth(_tokenPrice),
             lastUpdated: String(_lastUpdated),
@@ -112,12 +114,16 @@ function useSingularityDataInternal() {
                     name: 'getTradingFeeRate'
                 }))
 
+                const isStablecoinCalls = tokens.map((value) => ({
+                    address: value.lpAddress,
+                    name: 'isStablecoin'
+                }))
+
                 const lpUnderlyingBalanceCalls = tokens.map((value) => ({
                     address: value.address,
                     name: 'balanceOf',
                     params: [value.lpAddress]
                 }))
-
 
                 const traunchCalls = Promise.all([
                     multicall(lpTokenABI, assetsAmountCalls),
@@ -125,6 +131,7 @@ function useSingularityDataInternal() {
                     multicall(lpTokenABI, depositCapCalls),
                     multicall(lpTokenABI, pricePerShareCalls),
                     multicall(lpTokenABI, tradingFeeRateCalls),
+                    multicall(lpTokenABI, isStablecoinCalls),
                     multicall(erc20ABI, lpUnderlyingBalanceCalls),
                     balanceCalls,
                     lpBalanceCalls,
@@ -148,12 +155,12 @@ function useSingularityDataInternal() {
                     depositCaps,
                     pricePerShares,
                     tradingFeeRates,
+                    isStablecoins,
                     lpUnderlyingBalances,
                     walletBalances,
                     lpBalances,
                     tokenPrices
                 ] = traunch
-
                 return {
                     router: allTraunchData[index].traunchData.router,
                     tokens: liabilitiesAmount.map((liability, index) => {
@@ -164,13 +171,13 @@ function useSingularityDataInternal() {
                             depositCaps[index][0],
                             pricePerShares[index][0],
                             tradingFeeRates[index][0],
+                            isStablecoins[index][0],
                             lpUnderlyingBalances[index][0],
                             walletBalances[index],
                             lpBalances[index],
                             tokenPrices[0][index],
                             tokenPrices[1][index]
                         )
-
                         return tokenData
                     })
                 }

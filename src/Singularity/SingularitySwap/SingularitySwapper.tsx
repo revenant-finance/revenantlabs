@@ -88,7 +88,7 @@ export default function SingularitySwapper() {
                                     onClick={() => setFromValue(fromToken?.walletBalance)}
                                     className="underline hover:no-underline"
                                 >
-                                    Max: {formatter(fromToken?.walletBalance)} {fromToken?.symbol}
+                                    Balance: {formatter(fromToken?.walletBalance)}
                                 </button>
                             }
                         />
@@ -139,7 +139,7 @@ export default function SingularitySwapper() {
                             }
                             footerRight={
                                 <div>
-                                    Balance: {formatter(toToken?.walletBalance)} {toToken?.symbol}
+                                    Balance: {formatter(toToken?.walletBalance)}
                                 </div>
                             }
                         />
@@ -210,7 +210,7 @@ export default function SingularitySwapper() {
                                     </div>
                                     <div className="space-y-1">
                                     <div className="flex items-center text-xs">
-                                    <p className="flex-1">Slippage</p>
+                                    <p className="flex-1">Slippage %</p>
                                     <Input
                                         type="number"
                                         value={slippageTolerance}

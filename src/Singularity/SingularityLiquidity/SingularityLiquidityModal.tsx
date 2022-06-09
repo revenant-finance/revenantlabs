@@ -33,7 +33,6 @@ export default function SingularityLiquidityModal() {
         isUnderlyingApproved,
         withdrawalAmount
     } = useSingularityLiquidity()
-
     const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
 
     return (
@@ -54,49 +53,18 @@ export default function SingularityLiquidityModal() {
                     </div>
 
                     <div>
-                        {!isWithdrawal && (
+                        {/* {!selectedLp?.isStablecoin && (
                             <>
                                 <DataPoint
-                                    title={`Wallet Balance`}
-                                    value={`${formatter(selectedLp?.walletBalance)} ${
-                                        selectedLp?.symbol
-                                    }`}
-                                />
-
-                                <DataPoint
-                                    title={`${selectedLp?.symbol} Price`}
-                                    value={`$${formatter(selectedLp?.tokenPrice)}`}
-                                />
-
-                                <DataPoint
-                                    title={`Reward`}
-                                    value={`${formatter(depositFee)} ${selectedLp?.symbol}`}
+                                    title="Last Updated"
+                                    value={
+                                        <>
+                                            <LiveTime date={selectedLp?.lastUpdated} /> seconds ago
+                                        </>
+                                    }
                                 />
                             </>
-                        )}
-
-                        {isWithdrawal && (
-                            <>
-                                <DataPoint
-                                    title={`Wallet LP Balance`}
-                                    value={`${formatter(selectedLp?.lpBalance.walletBalance)} LP`}
-                                />
-                            </>
-                        )}
-
-                        <DataPoint
-                            title="Last Updated"
-                            value={
-                                <>
-                                    <LiveTime date={selectedLp?.lastUpdated} /> seconds ago
-                                </>
-                            }
-                        />
-
-                        <DataPoint
-                            title="Collateralization Ratio"
-                            value={`${commaFormatter(selectedLp?.collatRatio)}`}
-                        />
+                        )} */}
 
                         <DataPoint
                             title="Assets"
@@ -107,6 +75,12 @@ export default function SingularityLiquidityModal() {
                             title="Liabilities"
                             value={`${commaFormatter(selectedLp?.liabilityAmount)}`}
                         />
+                        
+                        <DataPoint
+                            title="Collateralization Ratio"
+                            value={`${commaFormatter(selectedLp?.collatRatio * 100, 1)}%`}
+                        />
+
                         <DataPoint
                             title="Price Per Share"
                             value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
@@ -121,7 +95,7 @@ export default function SingularityLiquidityModal() {
 
                     <div className="space-y-2">
                         <p className="font-medium opacity-50">
-                            How much {selectedLp?.symbol} would you like to {actionVerb}?
+                            How much {isWithdrawal ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol} would you like to {actionVerb}?
                         </p>
                         <SwapperInput
                             value={lpInput}
@@ -139,13 +113,13 @@ export default function SingularityLiquidityModal() {
                                     </span>
                                 </span>
                             }
-                            footerLeft={
-                                isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
-                                    ? `${commaFormatter(withdrawalAmount)} ${
-                                          selectedLp.symbol
-                                      }`
-                                    : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
-                            }
+                            // footerLeft={
+                            //     isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
+                            //         ? `${commaFormatter(withdrawalAmount * selectedLp?.pricePerShare)} ${
+                            //               selectedLp.symbol
+                            //           }`
+                            //         : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
+                            // }
                             footerRight={
                                 <button
                                     className="hover:underline"
@@ -155,7 +129,7 @@ export default function SingularityLiquidityModal() {
                                             : setLpInput(selectedLp?.walletBalance)
                                     }
                                 >
-                                    Max:{' '}
+                                    Balance:{' '}
                                     {isWithdrawal
                                         ? `${commaFormatter(selectedLp?.lpBalance.walletBalance)} ${
                                               selectedLp?.symbol
@@ -175,7 +149,7 @@ export default function SingularityLiquidityModal() {
                         </Button> */}
                     </div>
                     <div>
-                        <DataPoint
+                        {/* <DataPoint
                             title={`Your Deposits`}
                             value={
                                 <>
@@ -217,7 +191,7 @@ export default function SingularityLiquidityModal() {
                                     </span>
                                 </>
                             }
-                        />
+                        /> */}
 
                         {!isWithdrawal && (
                             <DataPoint

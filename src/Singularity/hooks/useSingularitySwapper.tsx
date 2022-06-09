@@ -26,7 +26,7 @@ export function useSingularitySwapperInternal() {
     const [toValue, _setToValue] = useState('')
     const [_fromTokenId, _setFromTokenId] = useState()
     const [_toTokenId, _setToTokenId] = useState()
-    const [slippageTolerance, _setSlippageTolerance] = useState(0.1)
+    const [slippageTolerance, _setSlippageTolerance] = useState(0.01)
     const [inFee, setInFee] = useState('0')
     const [outFee, setOutFee] = useState('0')
     const [slippageIn, setSlippageIn] = useState('0')
@@ -90,6 +90,7 @@ export function useSingularitySwapperInternal() {
 
     const setFromValue = async (balance) => {
         try {
+            if (!balance) return;
             _setFromValue(balance)
             const [amountOutData, amountOut1] = await Promise.all([
                 getAmountOut(
