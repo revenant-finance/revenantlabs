@@ -93,7 +93,7 @@ export function useSingularityLiquidityInternal() {
         }
     }
 
-    const setLpInput = async (input) => {
+    const setLpInput = async (input, max) => {
         try {
             if (!input) {
                 _setLpInput('')
@@ -101,6 +101,7 @@ export function useSingularityLiquidityInternal() {
                 setDepositFee('0')
                 return
             }
+            if (Number(input) > Number(max)) input = max;
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
@@ -174,6 +175,16 @@ export function useSingularityLiquidityInternal() {
     const withdrawLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
+            if (Number(token?.lpBalance?.allowBalance) < Number(amountIn)) {
+                const depositTokenContract = getTokenContract(token.lpAddress, library.getSigner())
+                const tx = await depositTokenContract.approve(
+                    data.safe.router,
+                    MAX_UINT256
+                    // toWei(amountIn, token.decimals)
+                )
+                await tx.wait(1)
+                update()
+            }
             const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getWithdrawInfo(amountIn, token)
             const tx = await routerContract.removeLiquidity(
                 tokenAddress,

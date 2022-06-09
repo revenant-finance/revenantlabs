@@ -48,7 +48,10 @@ export default function SingularityLiquidityModal() {
                         </p>
 
                         <button
-                            onClick={() => setIsWithdrawal((_) => !_)}
+                            onClick={() => {
+                                setIsWithdrawal((_) => !_)
+                                setLpInput(null)
+                            }}
                             className="text-sm underline transition-all opacity-50 hover:opacity-100 animate"
                         >
                             {isWithdrawal ? 'Deposit Instead' : 'Withdraw Instead'}
@@ -98,11 +101,11 @@ export default function SingularityLiquidityModal() {
 
                     <div className="space-y-2">
                         <p className="font-medium opacity-50">
-                            How much {isWithdrawal ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol} would you like to {actionVerb}?
+                            How much {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol} would you like to {actionVerb}?
                         </p>
                         <SwapperInput
                             value={lpInput}
-                            onChange={(e) => setLpInput(e.target.value)}
+                            onChange={(e) => setLpInput(e.target.value, isWithdrawal ? selectedLp?.lpBalance.walletBalance : selectedLp?.walletBalance)}
                             buttonContent={
                                 <span className="flex items-center space-x-2">
                                     <img
@@ -112,17 +115,10 @@ export default function SingularityLiquidityModal() {
                                     />
                                     <span className="font-medium uppercase">
                                         {selectedLp?.symbol}
-                                        {isWithdrawal && '-LP'}
+                                        {isWithdrawal && '-SPT'}
                                     </span>
                                 </span>
                             }
-                            // footerLeft={
-                            //     isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
-                            //         ? `${commaFormatter(withdrawalAmount * selectedLp?.pricePerShare)} ${
-                            //               selectedLp.symbol
-                            //           }`
-                            //         : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
-                            // }
                             footerRight={
                                 <button
                                     className="hover:underline"
@@ -136,91 +132,42 @@ export default function SingularityLiquidityModal() {
                                     {isWithdrawal
                                         ? `${commaFormatter(selectedLp?.lpBalance.walletBalance)} ${
                                               selectedLp?.symbol
-                                          }-LP`
+                                          }-SPT`
                                         : `${commaFormatter(selectedLp?.walletBalance)} ${
                                               selectedLp?.symbol
                                           }`}
                                 </button>
                             }
                         />
-
-                        {/* <Button
-                            className="w-full bg-neutral-800"
-                            onClick={() => mintTestToken(selectedLp)}
-                        >
-                            Mint {1000} test{selectedLp?.symbol} Tokens
-                        </Button> */}
                     </div>
                     <div>
-                        {/* <DataPoint
-                            title={`Your Deposits`}
-                            value={
-                                <>
-                                    <span className="space-x-2">
-                                        <span>
-                                            {smartNumberFormatter(
-                                                lpToUnderlying(
-                                                    selectedLp?.lpBalance.walletBalance,
-                                                    selectedLp
-                                                )
-                                            )}
-                                        </span>
-                                        <span>
-                                            <i className="fas fa-caret-right"></i>
-                                        </span>
-
-                                        <span>
-                                            {smartNumberFormatter(
-                                                isWithdrawal
-                                                    ? lpToUnderlying(
-                                                          selectedLp?.lpBalance.walletBalance,
-                                                          selectedLp
-                                                      ) -
-                                                          lpToUnderlying(
-                                                              Number(lpInput),
-                                                              selectedLp
-                                                          )
-                                                    : lpToUnderlying(
-                                                          selectedLp?.lpBalance.walletBalance,
-                                                          selectedLp
-                                                      ) +
-                                                          lpToUnderlying(
-                                                              Number(lpInput),
-                                                              selectedLp
-                                                          )
-                                            )}
-                                        </span>
-                                        <span>{selectedLp?.symbol}</span>
-                                    </span>
-                                </>
-                            }
-                        /> */}
-
                         {!isWithdrawal && (
-                            <DataPoint
-                                title={'Deposit Fee'}
-                                value={`${depositFee ? depositFee : '0'} ${selectedLp?.symbol}`}
-                            />
+                            <div>
+                                <DataPoint
+                                    title={'Deposit Fee'}
+                                    value={`${formatter(depositFee ? depositFee : '0', 6)} ${selectedLp?.symbol}`}
+                                />
+                                <DataPoint
+                                    title={`You Will Receive`}
+                                    value={`${formatter(lpInput / selectedLp?.pricePerShare - depositFee, 6)} ${selectedLp?.symbol}-SPT`}
+                                />
+                            </div>
                         )}
 
                         {isWithdrawal && (
-                            <DataPoint
-                                title={`Withdrawal Fee`}
-                                value={`${formatter(withdrawalFee)} ${selectedLp?.symbol}`}
-                            />
+                            <div>
+                                <DataPoint
+                                    title={`Withdrawal Fee`}
+                                    value={`${formatter(withdrawalFee ? withdrawalFee : '0', 6)} ${selectedLp?.symbol}`}
+                                />
+                                <DataPoint
+                                    title={`You Will Receive`}
+                                    value={`${formatter(lpInput * selectedLp?.pricePerShare - withdrawalFee, 6)} ${selectedLp?.symbol}`}
+                                />
+                            </div>
                         )}
-                    </div>
 
-                    {/* <div className="space-y-2">
-                        <p>
-                            How much {selectedLp?.symbol} would you like to {actionVerb}?
-                        </p>
-                        <Input
-                            type="number"
-                            value={lpInput}
-                            onChange={(e) => setLpInput(e.target.value)}
-                        />
-                    </div> */}
+                    </div>
 
                     <div className="flex space-x-6">
                         <Button onClick={() => setSelectedLp(null)} className="w-auto">
@@ -241,7 +188,7 @@ export default function SingularityLiquidityModal() {
                                     : isUnderlyingApproved
                                     ? 'Deposit'
                                     : 'Approve'}{' '}
-                                {isWithdrawal ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol}
+                                {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol}
                             </Button>
                         </ConnectWalletFirstButton>
                     </div>
