@@ -13,27 +13,27 @@ export default function SwapperModal() {
         setToToken,
         showSelectTokenModal,
         setShowSelectTokenModal,
-        selectingToken
+        selectingToken,
+        addToken
     } = useSingularitySwapper()
 
     const [filter, setFilter] = useState('')
 
     const tokenList =
-        tokens
-            ?.filter((token) => {
-                if (fromToken) {
-                    if (token.id == fromToken.id) return false
-                }
-                if (toToken) {
-                    if (token.id == toToken.id) return false
-                }
-                const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
-                const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
-                const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
+        tokens?.filter((token) => {
+            if (fromToken) {
+                if (token.id == fromToken.id) return false
+            }
+            if (toToken) {
+                if (token.id == toToken.id) return false
+            }
+            const matchesName = token.name.toLowerCase().startsWith(filter.toLowerCase())
+            const matchesSymbol = token.symbol.toLowerCase().startsWith(filter.toLowerCase())
+            const matchesAddress = token.address.toLowerCase().startsWith(filter.toLowerCase())
 
-                if (matchesName || matchesSymbol || matchesAddress) return true
-                return false
-            }) || []
+            if (matchesName || matchesSymbol || matchesAddress) return true
+            return false
+        }) || []
 
     const setToken = (token) => {
         if (selectingToken === 'from') setFromToken(token)
@@ -55,7 +55,11 @@ export default function SwapperModal() {
                             return (
                                 <button
                                     key={token.id}
-                                    onClick={() => setToken(token)}
+                                    onClick={(e) => {
+                                        if (!e.target.toString().includes("HTMLImageElement")) {
+                                            setToken(token)
+                                        }
+                                    }}
                                     className="flex items-center w-full p-2 px-4 space-x-2 text-left hover:bg-neutral-800 transition-all rounded-xl"
                                 >
                                     <img
@@ -71,7 +75,7 @@ export default function SwapperModal() {
                                                     ${formatter(token.tokenPrice)}
                                                 </span>
                                             </p>
-                                            <p className="space-x-1 text-xs">
+                                            <p className="space-x-1 text-xs flex">
                                                 <a
                                                     href={`https://ftmscan.com/token/${token.address}`}
                                                     target="_blank"
@@ -80,6 +84,11 @@ export default function SwapperModal() {
                                                     {token.address.slice(0, 6)}...
                                                     {token.address.slice(-4)}
                                                 </a>
+                                                <img
+                                                    src={`/img/add.svg`}
+                                                    alt=""
+                                                    onClick={() => addToken(token)}
+                                                />
                                             </p>
                                         </div>
                                         <div className="opacity-75">

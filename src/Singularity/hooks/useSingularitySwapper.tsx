@@ -70,6 +70,26 @@ export function useSingularitySwapperInternal() {
         _setFromValue(toValue)
     }
 
+    const addToken = (token) => {
+        library.provider.sendAsync(
+            {
+                method: 'metamask_watchAsset',
+                params: {
+                    type: 'ERC20',
+                    options: {
+                        address: token.address,
+                        symbol: token.symbol.slice(0, 6),
+                        decimals: token.decimals
+                    }
+                },
+                id: Math.round(Math.random() * 100000)
+            },
+            (err, added) => {
+                return
+            }
+        )
+    }
+
     const setSlippageTolerance = (tolerance) => {
         const inverseSlippage = ((1 - slippageTolerance) * 100).toFixed(0)
         const _minimumReceived = toEth(
@@ -282,7 +302,8 @@ export function useSingularitySwapperInternal() {
         inFee,
         outFee,
         slippageIn,
-        slippageOut
+        slippageOut,
+        addToken
     }
 }
 
