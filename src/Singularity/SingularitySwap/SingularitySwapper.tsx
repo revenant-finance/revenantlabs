@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../hooks/useSingularitySwapper'
-import { commaFormatter, currentEpoch, isNotEmpty, smartNumberFormatter, formatter } from '../../utils'
+import {
+    commaFormatter,
+    currentEpoch,
+    isNotEmpty,
+    smartNumberFormatter,
+    formatter
+} from '../../utils'
 import Button from '../../components/Btns/Button'
 import LiveTime from '../../components/Countdown/LiveTime'
 import SwapperInput from './SwapperInput'
@@ -36,7 +42,9 @@ export default function SingularitySwapper() {
         inFee,
         outFee,
         slippageIn,
-        slippageOut
+        slippageOut,
+        native,
+        setNative
     } = useSingularitySwapper()
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue

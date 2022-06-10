@@ -101,14 +101,14 @@ export function useSingularityLiquidityInternal() {
                 setDepositFee('0')
                 return
             }
-            if (max && Number(input) > Number(max)) input = max;
+            if (max && Number(input) > Number(max)) input = max
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
-            const {tokenAddress, formatAmountIn} = getWithdrawInfo(input, selectedLp)
+            const { tokenAddress, formatAmountIn } = getWithdrawInfo(input, selectedLp)
             let _withdrawalFee, _depositFee, _withdrawalAmount
             if (isNotEmpty(selectedLp?.lpBalance?.totalSupply)) {
-                [_withdrawalFee, _depositFee, _withdrawalAmount] = await Promise.all([
+                ;[_withdrawalFee, _depositFee, _withdrawalAmount] = await Promise.all([
                     lpContract.getWithdrawalFee(formattedLpInput),
                     lpContract.getDepositFee(formattedLpInput),
                     routerContract.getRemoveLiquidityAmount(tokenAddress, formatAmountIn)
@@ -119,7 +119,6 @@ export function useSingularityLiquidityInternal() {
                 setWithdrawalFee('0')
             }
             setDepositFee(toEth(_depositFee, selectedLp.decimals))
-
         } catch (error) {
             _setLpInput('')
             setWithdrawalFee('0')
@@ -139,10 +138,20 @@ export function useSingularityLiquidityInternal() {
                     // toWei(amountIn, token.decimals)
                 )
                 await tx.wait(1)
-                update()
+                newAlert({
+                    title: 'Approval Complete',
+                    subtitle: 'Your transaction has been successfully confirmed to the network.',
+                    type: 'success'
+                })
+                setStatus('complete')
+                await update()
+                return
             }
 
-            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getDepositInfo(amountIn, token)
+            const { tokenAddress, formatAmountIn, minAmount, to, timestamp } = getDepositInfo(
+                amountIn,
+                token
+            )
 
             const tx = await routerContract.addLiquidity(
                 tokenAddress,
@@ -183,9 +192,19 @@ export function useSingularityLiquidityInternal() {
                     // toWei(amountIn, token.decimals)
                 )
                 await tx.wait(1)
-                update()
+                newAlert({
+                    title: 'Approval Complete',
+                    subtitle: 'Your transaction has been successfully confirmed to the network.',
+                    type: 'success'
+                })
+                setStatus('complete')
+                await update()
+                return
             }
-            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getWithdrawInfo(amountIn, token)
+            const { tokenAddress, formatAmountIn, minAmount, to, timestamp } = getWithdrawInfo(
+                amountIn,
+                token
+            )
             const tx = await routerContract.removeLiquidity(
                 tokenAddress,
                 formatAmountIn,

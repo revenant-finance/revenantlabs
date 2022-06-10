@@ -33,8 +33,7 @@ export function useSingularitySwapperInternal() {
     const [slippageOut, setSlippageOut] = useState('0')
     const [priceImpact, setPriceImpact] = useState(0)
     const [totalFees, setTotalFees] = useState(0)
-    const [minimumReceived, setMinimumReceived] = useState("0")
-    const [error, setError] = useState(null)
+    const [minimumReceived, setMinimumReceived] = useState('0')
 
     // URL params `from` and `to`. Matches a token id.
     const [fromTokenUrlParam, setFromTokenUrlParam] = useState()
@@ -50,8 +49,6 @@ export function useSingularitySwapperInternal() {
     const [toTokenCache, setToTokenCache] = useCookieState('singularity-to-token', toToken?.id)
 
     const tokens = data?.safe?.tokens || []
-
-
 
     const fromToken = tokens?.find((token) => token.id === _fromTokenId)
     const toToken = tokens?.find((token) => token.id === _toTokenId)
@@ -78,7 +75,10 @@ export function useSingularitySwapperInternal() {
 
     const setSlippageTolerance = (tolerance) => {
         const inverseSlippage = ((1 - slippageTolerance) * 100).toFixed(0)
-        const _minimumReceived = toEth(toWei(toValue, toToken.decimals).mul(inverseSlippage).div(100), toToken.decimals)
+        const _minimumReceived = toEth(
+            toWei(toValue, toToken.decimals).mul(inverseSlippage).div(100),
+            toToken.decimals
+        )
         setMinimumReceived(_minimumReceived)
         _setSlippageTolerance(tolerance)
     }
@@ -88,7 +88,7 @@ export function useSingularitySwapperInternal() {
         try {
             const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
             return amountOut
-        } catch(error) {
+        } catch (error) {
             return null
         }
     }
@@ -96,10 +96,10 @@ export function useSingularitySwapperInternal() {
     const setFromValue = async (balance) => {
         try {
             if (!balance) {
-                _setFromValue("")
-                _setToValue("")
+                _setFromValue('')
+                _setToValue('')
                 return
-            };
+            }
             _setFromValue(balance)
             const [amountOutData, amountOut1] = await Promise.all([
                 getAmountOut(
@@ -110,8 +110,8 @@ export function useSingularitySwapperInternal() {
                 getAmountOut(toWei('1', fromToken.decimals), fromToken.address, toToken.address)
             ])
             if (!amountOutData || !amountOut1) {
-                _setToValue("0")
-                return;
+                _setToValue('0')
+                return
             }
             const { amountOut, slippageIn, slippageOut, tradingFeeIn, tradingFeeOut } =
                 amountOutData
@@ -134,7 +134,10 @@ export function useSingularitySwapperInternal() {
                 Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
             setTotalFees(_totalFees)
             const inverseSlippage = ((1 - slippageTolerance) * 100).toFixed(0)
-            const _minimumReceived = toEth(amountOut.mul(inverseSlippage).div(100), toToken.decimals)
+            const _minimumReceived = toEth(
+                amountOut.mul(inverseSlippage).div(100),
+                toToken.decimals
+            )
             setMinimumReceived(_minimumReceived)
         } catch (error) {
             _setFromValue('')
@@ -174,7 +177,14 @@ export function useSingularitySwapperInternal() {
                     // toWei(fromValue, fromToken.decimals)
                 )
                 await tx.wait(1)
-                update()
+                newAlert({
+                    title: 'Approval Complete',
+                    subtitle: 'Your transaction has been successfully confirmed to the network.',
+                    type: 'success'
+                })
+                setStatus('complete')
+                await update()
+                return
             }
             const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
@@ -189,14 +199,14 @@ export function useSingularitySwapperInternal() {
                 timestamp
             )
             await tx.wait(1)
+            setStatus('complete')
             newAlert({
                 title: 'Swap Complete',
                 subtitle: 'Your transaction has been successfully confirmed to the network.',
                 type: 'success'
             })
-            setFromValue("")
-            setToValue("")
-            setStatus('complete')
+            setFromValue('')
+            setToValue('')
             await update()
         } catch (error) {
             setStatus('error')
