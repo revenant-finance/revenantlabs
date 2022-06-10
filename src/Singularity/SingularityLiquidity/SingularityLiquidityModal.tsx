@@ -32,6 +32,7 @@ export default function SingularityLiquidityModal() {
         depositLp,
         lpToUnderlying,
         isUnderlyingApproved,
+        isLpApproved,
         withdrawalAmount
     } = useSingularityLiquidity()
     const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
@@ -118,9 +119,7 @@ export default function SingularityLiquidityModal() {
                             onChange={(e) =>
                                 setLpInput(
                                     e.target.value,
-                                    isWithdrawal
-                                        ? selectedLp?.lpBalance.walletBalance
-                                        : null
+                                    isWithdrawal ? selectedLp?.lpBalance.walletBalance : null
                                 )
                             }
                             buttonContent={
@@ -210,7 +209,9 @@ export default function SingularityLiquidityModal() {
                                 }
                             >
                                 {isWithdrawal
-                                    ? 'Withdraw'
+                                    ? isLpApproved
+                                        ? 'Withdraw'
+                                        : 'Approve'
                                     : isUnderlyingApproved
                                     ? 'Deposit'
                                     : 'Approve'}{' '}

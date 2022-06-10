@@ -8,7 +8,6 @@ import { getSingRouterContract, getTokenContract } from '../../utils/ContractSer
 import { useActiveWeb3React } from '../../hooks'
 import { useSingularityData } from '../SingularityAppWrapper'
 import useAlerts from '../../hooks/useAlerts'
-import { BigNumber } from 'ethers'
 
 export function useSingularitySwapperInternal() {
     const router = useRouter()

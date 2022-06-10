@@ -9,6 +9,7 @@ import {
     getTestTokenContract
 } from '../../utils/ContractService'
 import useAlerts from '../../hooks/useAlerts'
+import { ethers } from 'ethers'
 
 export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
@@ -36,6 +37,7 @@ export function useSingularityLiquidityInternal() {
     const inverseSlippage = (1 - slippageTolerance) * 100
 
     const isUnderlyingApproved = Number(selectedLp?.allowBalance) >= Number(lpInput)
+    const isLpApproved = Number(selectedLp?.lpBalance?.allowBalance) >= Number(lpInput)
 
     const lpToUnderlying = (amount, pool) => {
         const underlyingAmount = amount * pool?.pricePerShare
@@ -181,10 +183,63 @@ export function useSingularityLiquidityInternal() {
         setLpInput(null)
     }
 
+    const permit = async (token) => {
+        try {
+            const lpContract = getTokenContract(token.lpAddress, library.getSigner())
+            const [nonce, name] = await Promise.all([lpContract.nonces(account), lpContract.name()])
+            const message = {
+                owner: account,
+                spender: data.safe.router,
+                value: MAX_UINT256.toString(),
+                nonce: nonce.toNumber(),
+                deadline: MAX_UINT256.toString()
+            }
+            const eip712Struct = {
+                types: {
+                    EIP712Domain: [
+                        { name: 'name', type: 'string' },
+                        { name: 'version', type: 'string' },
+                        { name: 'chainId', type: 'uint256' },
+                        { name: 'verifyingContract', type: 'address' }
+                    ],
+                    Permit: [
+                        { name: 'owner', type: 'address' },
+                        { name: 'spender', type: 'address' },
+                        { name: 'value', type: 'uint256' },
+                        { name: 'nonce', type: 'uint256' },
+                        { name: 'deadline', type: 'uint256' }
+                    ]
+                },
+                domain: {
+                    name,
+                    version: '1',
+                    chainId: '250',
+                    verifyingContract: token.lpAddress
+                },
+                primaryType: 'Permit'
+            }
+            const eip712Message = JSON.stringify({
+                ...eip712Struct,
+                message
+            })
+            const signedMessage = await library.send('eth_signTypedData_v4', [
+                account,
+                eip712Message
+            ])
+            const sig = ethers.utils.splitSignature(signedMessage)
+            return [sig.v, sig.r, sig.s]
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const withdrawLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
+            // let sig
+            console.log(token)
             if (Number(token?.lpBalance?.allowBalance) < Number(amountIn)) {
+                // sig = await permit(token)
                 const depositTokenContract = getTokenContract(token.lpAddress, library.getSigner())
                 const tx = await depositTokenContract.approve(
                     data.safe.router,
@@ -205,13 +260,25 @@ export function useSingularityLiquidityInternal() {
                 amountIn,
                 token
             )
-            const tx = await routerContract.removeLiquidity(
-                tokenAddress,
-                formatAmountIn,
-                Number(minAmount).toFixed(0),
-                to,
-                timestamp
-            )
+            const tx = sig
+                ? await routerContract.removeLiquidityWithPermit(
+                      tokenAddress,
+                      formatAmountIn,
+                      Number(minAmount).toFixed(0),
+                      to,
+                      timestamp,
+                      true,
+                      sig[0],
+                      sig[1],
+                      sig[2]
+                  )
+                : await routerContract.removeLiquidity(
+                      tokenAddress,
+                      formatAmountIn,
+                      Number(minAmount).toFixed(0),
+                      to,
+                      timestamp
+                  )
             await tx.wait(1)
             await update()
             setStatus('complete')
@@ -268,6 +335,7 @@ export function useSingularityLiquidityInternal() {
         setLpInput,
         isWithdrawal,
         isUnderlyingApproved,
+        isLpApproved,
         setIsWithdrawal,
         slippageTolerance,
         setSlippageTolerance,
