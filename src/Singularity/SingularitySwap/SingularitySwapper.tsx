@@ -181,9 +181,25 @@ export default function SingularitySwapper() {
                                         {fromToken?.symbol} / {toToken?.symbol}
                                     </p>
                                 </div>
-                                <div className="flex items-center font-mono text-sm opacity-50">
-                                    <p className="flex-1">Price Impact</p>
-                                    <p className="">{formatter(priceImpact, 2)}%</p>
+                                <div className="flex items-center font-mono text-sm">
+                                    <p className="flex-1 opacity-50">Price Impact</p>
+                                    <p
+                                        className=""
+                                        style={{
+                                            color:
+                                                priceImpact > 10 || toValue == 0
+                                                    ? 'red'
+                                                    : priceImpact > 5
+                                                    ? 'yellow'
+                                                    : 'springgreen'
+                                        }}
+                                    >
+                                        <b>
+                                            {toValue > 0
+                                                ? `${formatter(priceImpact, 2)}%`
+                                                : 'Infinity'}
+                                        </b>
+                                    </p>
                                 </div>
                                 {/* <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">In Fee</p>
@@ -201,31 +217,32 @@ export default function SingularitySwapper() {
                                         <p className="flex-1">Out Slippage</p>
                                         <p className="">${smartNumberFormatter(slippageOut)} {toToken?.symbol}</p>
                                     </div> */}
-                                <div className="flex items-center font-mono text-sm opacity-50">
-                                    <p className="flex-1">Swap Fee</p>
-                                    <p className="">${smartNumberFormatter(totalFees)}</p>
-                                </div>
-                                <div className="flex items-center font-mono text-sm opacity-50">
-                                    <p className="flex-1 flex">
-                                        Slippage
-                                        {/* <img src="/img/pencil.svg" alt="" /> */}
-                                    </p>
-                                    <p className="">{smartNumberFormatter(slippageTolerance)}%</p>
-                                    {/* <Input
-                                        type="number"
-                                        value={slippageTolerance}
-                                        onChange={(e) => setSlippageTolerance(e.target.value)}
-                                    /> */}
-                                </div>
-                                <div className="space-y-1">
-                                    <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
-                                        <p className="flex-1">Minimum Received</p>
-                                        <p className="">
-                                            ~{smartNumberFormatter(minimumReceived)}{' '}
-                                            {toToken.symbol}
-                                        </p>
+                                {toValue > 0 && (
+                                    <div className="flex items-center font-mono text-sm opacity-50">
+                                        <p className="flex-1">Swap Fee</p>
+                                        <p className="">${smartNumberFormatter(totalFees)}</p>
                                     </div>
-                                </div>
+                                )}
+                                {toValue > 0 && (
+                                    <div>
+                                        <div className="flex items-center font-mono text-sm opacity-50">
+                                            <p className="flex-1 flex">Slippage</p>
+                                            <p className="flex">
+                                                {`${smartNumberFormatter(slippageTolerance)}%`}
+                                                <img src="/img/pencil.svg" alt="" />
+                                            </p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
+                                                <p className="flex-1">Minimum Received</p>
+                                                <p className="">
+                                                    ~{smartNumberFormatter(minimumReceived)}{' '}
+                                                    {toToken.symbol}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </>
                     )}

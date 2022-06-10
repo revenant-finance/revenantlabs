@@ -1,7 +1,5 @@
-import commaNumber from 'comma-number'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
-import shortNumber from 'short-number'
 import { useCookieState } from 'use-cookie-state'
 import { MAX_UINT256, toEth, toWei } from '../../utils'
 import { getSingRouterContract, getTokenContract } from '../../utils/ContractService'
@@ -128,7 +126,7 @@ export function useSingularitySwapperInternal() {
             const _priceImpact =
                 (normalizedPrice * 100) / Number(toEth(amountOut1.amountOut, toToken.decimals)) -
                 100
-            setPriceImpact(_priceImpact)
+            setPriceImpact(Math.abs(_priceImpact))
             const _totalFees =
                 Number(_inFee) * fromToken?.tokenPrice + Number(_outFee) * toToken?.tokenPrice
             setTotalFees(_totalFees)

@@ -211,7 +211,7 @@ export function useSingularityLiquidityInternal() {
                     ]
                 },
                 domain: {
-                    name,
+                    name: name,
                     version: '1',
                     chainId: '250',
                     verifyingContract: token.lpAddress
@@ -227,7 +227,14 @@ export function useSingularityLiquidityInternal() {
                 eip712Message
             ])
             const sig = ethers.utils.splitSignature(signedMessage)
-            return [sig.v, sig.r, sig.s]
+            const { v, r, s } = sig
+            let rec = ethers.utils.verifyMessage(signedMessage, sig)
+            console.log(rec)
+            return {
+                v,
+                r,
+                s
+            }
         } catch (error) {
             console.log(error)
         }
@@ -236,8 +243,7 @@ export function useSingularityLiquidityInternal() {
     const withdrawLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
-            // let sig
-            console.log(token)
+            let sig
             if (Number(token?.lpBalance?.allowBalance) < Number(amountIn)) {
                 // sig = await permit(token)
                 const depositTokenContract = getTokenContract(token.lpAddress, library.getSigner())
@@ -268,9 +274,9 @@ export function useSingularityLiquidityInternal() {
                       to,
                       timestamp,
                       true,
-                      sig[0],
-                      sig[1],
-                      sig[2]
+                      sig.v,
+                      sig.r,
+                      sig.s
                   )
                 : await routerContract.removeLiquidity(
                       tokenAddress,
