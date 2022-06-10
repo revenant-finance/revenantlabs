@@ -101,7 +101,7 @@ export function useSingularityLiquidityInternal() {
                 setDepositFee('0')
                 return
             }
-            if (Number(input) > Number(max)) input = max;
+            if (max && Number(input) > Number(max)) input = max;
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)

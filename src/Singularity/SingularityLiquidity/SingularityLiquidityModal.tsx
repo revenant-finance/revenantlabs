@@ -120,7 +120,7 @@ export default function SingularityLiquidityModal() {
                                     e.target.value,
                                     isWithdrawal
                                         ? selectedLp?.lpBalance.walletBalance
-                                        : selectedLp?.walletBalance
+                                        : null
                                 )
                             }
                             buttonContent={
