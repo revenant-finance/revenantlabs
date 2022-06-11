@@ -56,26 +56,26 @@ export default function SwapperModal() {
                                 <button
                                     key={token.id}
                                     onClick={(e) => {
-                                        if (!e.target.toString().includes("HTMLImageElement")) {
+                                        if (e.target.toString().includes("HTMLParagraphElement")) {
                                             setToken(token)
                                         }
                                     }}
-                                    className="flex items-center w-full p-2 px-4 space-x-2 text-left hover:bg-neutral-800 transition-all rounded-xl"
+                                    className="flex items-center w-full p-2 px-4 space-x-2 text-left transition-all hover:bg-neutral-800 rounded-xl"
                                 >
                                     <img
-                                        className="h-8 w-8 rounded-xl full"
+                                        className="w-8 h-8 rounded-xl full"
                                         src={`/img/tokens/${token.asset}`}
                                         alt=""
                                     />
-                                    <div className="flex w-full items-center">
+                                    <div className="flex items-center w-full">
                                         <div className="flex-1 overflow-hidden">
-                                            <p className="text-xl space-x-2 font-medium">
+                                            <p className="space-x-2 text-xl font-medium">
                                                 <span>{token.name}</span>
                                                 <span className="text-sm opacity-25">
                                                     ${formatter(token.tokenPrice)}
                                                 </span>
                                             </p>
-                                            <p className="space-x-1 text-xs flex">
+                                            <p className="flex space-x-1 text-xs">
                                                 <a
                                                     href={`https://ftmscan.com/token/${token.address}`}
                                                     target="_blank"
@@ -84,6 +84,7 @@ export default function SwapperModal() {
                                                     {token.address.slice(0, 6)}...
                                                     {token.address.slice(-4)}
                                                 </a>
+                                                
                                                 <img
                                                     src={`/img/add.svg`}
                                                     alt=""
