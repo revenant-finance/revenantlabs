@@ -14,7 +14,8 @@ export default function SwapperModal() {
         showSelectTokenModal,
         setShowSelectTokenModal,
         selectingToken,
-        addToken
+        addToken,
+        setFromValue
     } = useSingularitySwapper()
 
     const [filter, setFilter] = useState('')
@@ -39,6 +40,7 @@ export default function SwapperModal() {
         if (selectingToken === 'from') setFromToken(token)
         if (selectingToken === 'to') setToToken(token)
         setShowSelectTokenModal(false)
+        setFromValue("")
     }
 
     return (
