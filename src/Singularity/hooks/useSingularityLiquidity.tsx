@@ -9,6 +9,7 @@ import {
     getTestTokenContract
 } from '../../utils/ContractService'
 import useAlerts from '../../hooks/useAlerts'
+import { ethers } from 'ethers'
 
 export function useSingularityLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
@@ -36,6 +37,7 @@ export function useSingularityLiquidityInternal() {
     const inverseSlippage = (1 - slippageTolerance) * 100
 
     const isUnderlyingApproved = Number(selectedLp?.allowBalance) >= Number(lpInput)
+    const isLpApproved = Number(selectedLp?.lpBalance?.allowBalance) >= Number(lpInput)
 
     const lpToUnderlying = (amount, pool) => {
         const underlyingAmount = amount * pool?.pricePerShare
@@ -93,7 +95,7 @@ export function useSingularityLiquidityInternal() {
         }
     }
 
-    const setLpInput = async (input) => {
+    const setLpInput = async (input, max) => {
         try {
             if (!input) {
                 _setLpInput('')
@@ -101,13 +103,14 @@ export function useSingularityLiquidityInternal() {
                 setDepositFee('0')
                 return
             }
+            if (max && Number(input) > Number(max)) input = max
             _setLpInput(input)
             const lpContract = getSingLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
-            const {tokenAddress, formatAmountIn} = getWithdrawInfo(input, selectedLp)
+            const { tokenAddress, formatAmountIn } = getWithdrawInfo(input, selectedLp)
             let _withdrawalFee, _depositFee, _withdrawalAmount
             if (isNotEmpty(selectedLp?.lpBalance?.totalSupply)) {
-                [_withdrawalFee, _depositFee, _withdrawalAmount] = await Promise.all([
+                ;[_withdrawalFee, _depositFee, _withdrawalAmount] = await Promise.all([
                     lpContract.getWithdrawalFee(formattedLpInput),
                     lpContract.getDepositFee(formattedLpInput),
                     routerContract.getRemoveLiquidityAmount(tokenAddress, formatAmountIn)
@@ -118,7 +121,6 @@ export function useSingularityLiquidityInternal() {
                 setWithdrawalFee('0')
             }
             setDepositFee(toEth(_depositFee, selectedLp.decimals))
-
         } catch (error) {
             _setLpInput('')
             setWithdrawalFee('0')
@@ -127,7 +129,7 @@ export function useSingularityLiquidityInternal() {
         }
     }
 
-    const depositLp = async (amountIn, token) => {
+    const depositLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
             if (Number(token?.allowBalance) < Number(amountIn)) {
@@ -138,10 +140,20 @@ export function useSingularityLiquidityInternal() {
                     // toWei(amountIn, token.decimals)
                 )
                 await tx.wait(1)
-                update()
+                newAlert({
+                    title: 'Approval Complete',
+                    subtitle: 'Your transaction has been successfully confirmed to the network.',
+                    type: 'success'
+                })
+                setStatus('complete')
+                await update()
+                return
             }
 
-            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getDepositInfo(amountIn, token)
+            const { tokenAddress, formatAmountIn, minAmount, to, timestamp } = getDepositInfo(
+                amountIn,
+                token
+            )
 
             const tx = await routerContract.addLiquidity(
                 tokenAddress,
@@ -168,19 +180,111 @@ export function useSingularityLiquidityInternal() {
             })
             console.log(error)
         }
+        setLpInput(null)
     }
 
-    const withdrawLp = async (amountIn, token) => {
+    const permit = async (token) => {
+        try {
+            const lpContract = getTokenContract(token.lpAddress, library.getSigner())
+            const [nonce, name] = await Promise.all([lpContract.nonces(account), lpContract.name()])
+            const message = {
+                owner: account,
+                spender: data.safe.router,
+                value: MAX_UINT256.toString(),
+                nonce: nonce.toNumber(),
+                deadline: MAX_UINT256.toString()
+            }
+            const eip712Struct = {
+                types: {
+                    EIP712Domain: [
+                        { name: 'name', type: 'string' },
+                        { name: 'version', type: 'string' },
+                        { name: 'chainId', type: 'uint256' },
+                        { name: 'verifyingContract', type: 'address' }
+                    ],
+                    Permit: [
+                        { name: 'owner', type: 'address' },
+                        { name: 'spender', type: 'address' },
+                        { name: 'value', type: 'uint256' },
+                        { name: 'nonce', type: 'uint256' },
+                        { name: 'deadline', type: 'uint256' }
+                    ]
+                },
+                domain: {
+                    name: name,
+                    version: '1',
+                    chainId: '250',
+                    verifyingContract: token.lpAddress
+                },
+                primaryType: 'Permit'
+            }
+            const eip712Message = JSON.stringify({
+                ...eip712Struct,
+                message
+            })
+            const signedMessage = await library.send('eth_signTypedData_v4', [
+                account,
+                eip712Message
+            ])
+            const sig = ethers.utils.splitSignature(signedMessage)
+            const { v, r, s } = sig
+            let rec = ethers.utils.verifyMessage(signedMessage, sig)
+            console.log(rec)
+            return {
+                v,
+                r,
+                s
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const withdrawLp = async (amountIn, token, setLpInput) => {
         try {
             setStatus('loading')
-            const {tokenAddress, formatAmountIn, minAmount, to, timestamp} = getWithdrawInfo(amountIn, token)
-            const tx = await routerContract.removeLiquidity(
-                tokenAddress,
-                formatAmountIn,
-                Number(minAmount).toFixed(0),
-                to,
-                timestamp
+            let sig
+            if (Number(token?.lpBalance?.allowBalance) < Number(amountIn)) {
+                // sig = await permit(token)
+                const depositTokenContract = getTokenContract(token.lpAddress, library.getSigner())
+                const tx = await depositTokenContract.approve(
+                    data.safe.router,
+                    MAX_UINT256
+                    // toWei(amountIn, token.decimals)
+                )
+                await tx.wait(1)
+                newAlert({
+                    title: 'Approval Complete',
+                    subtitle: 'Your transaction has been successfully confirmed to the network.',
+                    type: 'success'
+                })
+                setStatus('complete')
+                await update()
+                return
+            }
+            const { tokenAddress, formatAmountIn, minAmount, to, timestamp } = getWithdrawInfo(
+                amountIn,
+                token
             )
+            const tx = sig
+                ? await routerContract.removeLiquidityWithPermit(
+                      tokenAddress,
+                      formatAmountIn,
+                      Number(minAmount).toFixed(0),
+                      to,
+                      timestamp,
+                      true,
+                      sig.v,
+                      sig.r,
+                      sig.s
+                  )
+                : await routerContract.removeLiquidity(
+                      tokenAddress,
+                      formatAmountIn,
+                      Number(minAmount).toFixed(0),
+                      to,
+                      timestamp
+                  )
             await tx.wait(1)
             await update()
             setStatus('complete')
@@ -199,6 +303,7 @@ export function useSingularityLiquidityInternal() {
             })
             console.log(error)
         }
+        setLpInput(null)
     }
 
     const mintTestToken = async (token, amount = '1000') => {
@@ -228,6 +333,7 @@ export function useSingularityLiquidityInternal() {
 
     return {
         status,
+        setStatus,
         statusMessage,
         selectedLp,
         setSelectedLp,
@@ -235,6 +341,7 @@ export function useSingularityLiquidityInternal() {
         setLpInput,
         isWithdrawal,
         isUnderlyingApproved,
+        isLpApproved,
         setIsWithdrawal,
         slippageTolerance,
         setSlippageTolerance,

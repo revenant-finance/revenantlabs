@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
 import useAuth from '../../hooks/useAuth'
 import useSingularitySwapper from '../hooks/useSingularitySwapper'
-import { commaFormatter, currentEpoch, isNotEmpty, smartNumberFormatter } from '../../utils'
+import {
+    commaFormatter,
+    currentEpoch,
+    isNotEmpty,
+    smartNumberFormatter,
+    formatter
+} from '../../utils'
 import Button from '../../components/Btns/Button'
 import LiveTime from '../../components/Countdown/LiveTime'
 import SwapperInput from './SwapperInput'
@@ -28,7 +34,6 @@ export default function SingularitySwapper() {
         setSlippageTolerance,
         swapTokens,
         maxFrom,
-        formatter,
         totalFees,
         minimumReceived,
         swap,
@@ -37,7 +42,9 @@ export default function SingularitySwapper() {
         inFee,
         outFee,
         slippageIn,
-        slippageOut
+        slippageOut,
+        native,
+        setNative
     } = useSingularitySwapper()
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
@@ -81,14 +88,14 @@ export default function SingularitySwapper() {
                             footerLeft={
                                 isNotEmpty(fromValue) &&
                                 fromToken?.tokenPrice &&
-                                `$${formatter(fromValue * fromToken?.tokenPrice)}`
+                                `$${formatter(fromValue * fromToken?.tokenPrice, 2)}`
                             }
                             footerRight={
                                 <button
                                     onClick={() => setFromValue(fromToken?.walletBalance)}
                                     className="underline hover:no-underline"
                                 >
-                                    Max: {formatter(fromToken?.walletBalance)} {fromToken?.symbol}
+                                    Balance: {formatter(fromToken?.walletBalance, 6)}
                                 </button>
                             }
                         />
@@ -135,13 +142,9 @@ export default function SingularitySwapper() {
                             footerLeft={
                                 isNotEmpty(toValue) &&
                                 toToken?.tokenPrice &&
-                                `$${formatter(toValue * toToken?.tokenPrice)}`
+                                `$${formatter(toValue * toToken?.tokenPrice, 2)}`
                             }
-                            footerRight={
-                                <div>
-                                    Balance: {formatter(toToken?.walletBalance)} {toToken?.symbol}
-                                </div>
-                            }
+                            footerRight={<div>Balance: {formatter(toToken?.walletBalance, 6)}</div>}
                         />
                     </div>
 
@@ -164,31 +167,41 @@ export default function SingularitySwapper() {
                         <>
                             {/* ======= FEE SUMMARY =======  */}
                             <div className="w-full p-4 space-y-2 text-left bg-opacity-75 border-2 border-neutral-800 bg-neutral-900 rounded-xl">
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Price per {fromToken?.symbol}</p>
-                                        <p className="">
-                                            {smartNumberFormatter(toValue / fromValue)}{' '}
-                                            {toToken?.symbol} / {fromToken?.symbol}{' '}
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Price per {toToken?.symbol}</p>
-                                        <p className="">
-                                            {smartNumberFormatter(fromValue / toValue)}{' '}
-                                            {fromToken?.symbol} / {toToken?.symbol}
-                                        </p>
-                                    </div>
-                                    {/* <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Last Updated</p>
-                                        <p className="">
-                                            <LiveTime date={fromToken?.lastUpdated} /> seconds ago
-                                        </p>
-                                    </div> */}
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Price Impact</p>
-                                        <p className="">{smartNumberFormatter(priceImpact)}%</p>
-                                    </div>
-                                    {/* <div className="flex items-center font-mono text-sm opacity-50">
+                                <div className="flex items-center font-mono text-sm opacity-50">
+                                    <p className="flex-1">Price per {fromToken?.symbol}</p>
+                                    <p className="">
+                                        {smartNumberFormatter(toValue / fromValue)}{' '}
+                                        {toToken?.symbol} / {fromToken?.symbol}{' '}
+                                    </p>
+                                </div>
+                                <div className="flex items-center font-mono text-sm opacity-50">
+                                    <p className="flex-1">Price per {toToken?.symbol}</p>
+                                    <p className="">
+                                        {smartNumberFormatter(fromValue / toValue)}{' '}
+                                        {fromToken?.symbol} / {toToken?.symbol}
+                                    </p>
+                                </div>
+                                <div className="flex items-center font-mono text-sm">
+                                    <p className="flex-1 opacity-50">Price Impact</p>
+                                    <p
+                                        className=""
+                                        style={{
+                                            color:
+                                                priceImpact > 10 || toValue == 0
+                                                    ? 'red'
+                                                    : priceImpact > 5
+                                                    ? 'yellow'
+                                                    : 'springgreen'
+                                        }}
+                                    >
+                                        <b>
+                                            {toValue > 0
+                                                ? `${formatter(priceImpact, 2)}%`
+                                                : 'Infinity'}
+                                        </b>
+                                    </p>
+                                </div>
+                                {/* <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">In Fee</p>
                                         <p className="">${smartNumberFormatter(inFee)} {fromToken?.symbol}</p>
                                     </div>
@@ -204,28 +217,32 @@ export default function SingularitySwapper() {
                                         <p className="flex-1">Out Slippage</p>
                                         <p className="">${smartNumberFormatter(slippageOut)} {toToken?.symbol}</p>
                                     </div> */}
+                                {toValue > 0 && (
                                     <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Total Fees</p>
-                                        <p className="">${smartNumberFormatter(totalFees)} USD</p>
+                                        <p className="flex-1">Swap Fee</p>
+                                        <p className="">${smartNumberFormatter(totalFees)}</p>
                                     </div>
-                                    <div className="space-y-1">
-                                    <div className="flex items-center text-xs">
-                                    <p className="flex-1">Slippage</p>
-                                    <Input
-                                        type="number"
-                                        value={slippageTolerance}
-                                        onChange={(e) => setSlippageTolerance(e.target.value)}
-                                        onMax={() => setSlippageTolerance(0.1)}
-                                    />
-                                </div>
-                                    <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
-                                        <p className="flex-1">Minimum Received</p>
-                                        <p className="">
-                                            ~{smartNumberFormatter(minimumReceived)}{' '}
-                                            {toToken.symbol}
-                                        </p>
+                                )}
+                                {toValue > 0 && (
+                                    <div>
+                                        <div className="flex items-center font-mono text-sm opacity-50">
+                                            <p className="flex-1 flex">Slippage</p>
+                                            <p className="flex">
+                                                {`${smartNumberFormatter(slippageTolerance)}%`}
+                                                <img src="/img/pencil.svg" alt="" />
+                                            </p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center text-lg font-medium text-transparent bg-gradient-to-br from-purple-400 to-blue-400 bg-clip-text">
+                                                <p className="flex-1">Minimum Received</p>
+                                                <p className="">
+                                                    ~{smartNumberFormatter(minimumReceived)}{' '}
+                                                    {toToken.symbol}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </>
                     )}
@@ -234,12 +251,14 @@ export default function SingularitySwapper() {
                         <ConnectWalletFirstButton type="singularity">
                             <Button
                                 loading={status === 'loading'}
-                                onClick={() => swap()}
+                                onClick={() => toValue > 0 && swap()}
                                 className="shadow bg-gradient-to-br from-purple-900 to-blue-900"
                             >
-                                {isApproved
-                                    ? `Swap ${fromToken?.symbol}`
-                                    : `Approve ${fromToken?.symbol}`}
+                                {toValue > 0
+                                    ? isApproved
+                                        ? `Swap ${fromToken?.symbol} for ${toToken?.symbol}`
+                                        : `Approve ${fromToken?.symbol}`
+                                    : 'Price Impact Too High'}
                             </Button>
                         </ConnectWalletFirstButton>
                     )}

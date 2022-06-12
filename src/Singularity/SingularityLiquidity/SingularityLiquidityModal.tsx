@@ -17,6 +17,7 @@ import ConnectWalletFirstButton from '../../components/Btns/ConnectWalletFirstBu
 export default function SingularityLiquidityModal() {
     const {
         status,
+        setStatus,
         selectedLp,
         setSelectedLp,
         lpInput,
@@ -31,14 +32,21 @@ export default function SingularityLiquidityModal() {
         depositLp,
         lpToUnderlying,
         isUnderlyingApproved,
+        isLpApproved,
         withdrawalAmount
     } = useSingularityLiquidity()
-
     const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
 
     return (
         <>
-            <Modal visible={selectedLp} onClose={() => setSelectedLp(null)}>
+            <Modal
+                visible={selectedLp}
+                onClose={() => {
+                    setSelectedLp(null)
+                    setLpInput(null)
+                    setStatus('idle')
+                }}
+            >
                 <div className="space-y-6">
                     <div className="flex items-center">
                         <p className="flex-1 text-2xl font-medium">
@@ -46,7 +54,10 @@ export default function SingularityLiquidityModal() {
                         </p>
 
                         <button
-                            onClick={() => setIsWithdrawal((_) => !_)}
+                            onClick={() => {
+                                setIsWithdrawal((_) => !_)
+                                setLpInput(null)
+                            }}
                             className="text-sm underline transition-all opacity-50 hover:opacity-100 animate"
                         >
                             {isWithdrawal ? 'Deposit Instead' : 'Withdraw Instead'}
@@ -54,50 +65,28 @@ export default function SingularityLiquidityModal() {
                     </div>
 
                     <div>
+                        {/* {!selectedLp?.isStablecoin && (
+                            <>
+                                <DataPoint
+                                    title="Last Updated"
+                                    value={
+                                        <>
+                                            <LiveTime date={selectedLp?.lastUpdated} /> seconds ago
+                                        </>
+                                    }
+                                />
+                            </>
+                        )} */}
                         {!isWithdrawal && (
-                            <>
-                                <DataPoint
-                                    title={`Wallet Balance`}
-                                    value={`${formatter(selectedLp?.walletBalance)} ${
-                                        selectedLp?.symbol
-                                    }`}
-                                />
-
-                                <DataPoint
-                                    title={`${selectedLp?.symbol} Price`}
-                                    value={`$${formatter(selectedLp?.tokenPrice)}`}
-                                />
-
-                                <DataPoint
-                                    title={`Reward`}
-                                    value={`${formatter(depositFee)} ${selectedLp?.symbol}`}
-                                />
-                            </>
+                            <DataPoint
+                                title="Deposits"
+                                value={`${commaFormatter(
+                                    selectedLp?.liabilityAmount
+                                )} / ${smartNumberFormatter(selectedLp?.depositCap)} ${
+                                    selectedLp?.symbol
+                                }`}
+                            />
                         )}
-
-                        {isWithdrawal && (
-                            <>
-                                <DataPoint
-                                    title={`Wallet LP Balance`}
-                                    value={`${formatter(selectedLp?.lpBalance.walletBalance)} LP`}
-                                />
-                            </>
-                        )}
-
-                        <DataPoint
-                            title="Last Updated"
-                            value={
-                                <>
-                                    <LiveTime date={selectedLp?.lastUpdated} /> seconds ago
-                                </>
-                            }
-                        />
-
-                        <DataPoint
-                            title="Collateralization Ratio"
-                            value={`${commaFormatter(selectedLp?.collatRatio)}`}
-                        />
-
                         <DataPoint
                             title="Assets"
                             value={`${commaFormatter(selectedLp?.assetAmount)}`}
@@ -107,25 +96,32 @@ export default function SingularityLiquidityModal() {
                             title="Liabilities"
                             value={`${commaFormatter(selectedLp?.liabilityAmount)}`}
                         />
+
+                        <DataPoint
+                            title="Collateralization Ratio"
+                            value={`${commaFormatter(selectedLp?.collatRatio * 100, 1)}%`}
+                        />
+
                         <DataPoint
                             title="Price Per Share"
                             value={`${smartNumberFormatter(selectedLp?.pricePerShare)}`}
-                        />
-                        <DataPoint
-                            title="Deposit Cap"
-                            value={`${smartNumberFormatter(selectedLp?.depositCap)} ${
-                                selectedLp?.symbol
-                            }`}
                         />
                     </div>
 
                     <div className="space-y-2">
                         <p className="font-medium opacity-50">
-                            How much {selectedLp?.symbol} would you like to {actionVerb}?
+                            How much{' '}
+                            {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol} would
+                            you like to {actionVerb}?
                         </p>
                         <SwapperInput
                             value={lpInput}
-                            onChange={(e) => setLpInput(e.target.value)}
+                            onChange={(e) =>
+                                setLpInput(
+                                    e.target.value,
+                                    isWithdrawal ? selectedLp?.lpBalance.walletBalance : null
+                                )
+                            }
                             buttonContent={
                                 <span className="flex items-center space-x-2">
                                     <img
@@ -135,16 +131,9 @@ export default function SingularityLiquidityModal() {
                                     />
                                     <span className="font-medium uppercase">
                                         {selectedLp?.symbol}
-                                        {isWithdrawal && '-LP'}
+                                        {isWithdrawal && '-SPT'}
                                     </span>
                                 </span>
-                            }
-                            footerLeft={
-                                isNotEmpty(lpInput) && selectedLp?.tokenPrice && isWithdrawal
-                                    ? `${commaFormatter(withdrawalAmount)} ${
-                                          selectedLp.symbol
-                                      }`
-                                    : `$${commaFormatter(lpInput * selectedLp?.tokenPrice)}`
                             }
                             footerRight={
                                 <button
@@ -155,95 +144,55 @@ export default function SingularityLiquidityModal() {
                                             : setLpInput(selectedLp?.walletBalance)
                                     }
                                 >
-                                    Max:{' '}
+                                    Balance:{' '}
                                     {isWithdrawal
                                         ? `${commaFormatter(selectedLp?.lpBalance.walletBalance)} ${
                                               selectedLp?.symbol
-                                          }-LP`
+                                          }-SPT`
                                         : `${commaFormatter(selectedLp?.walletBalance)} ${
                                               selectedLp?.symbol
                                           }`}
                                 </button>
                             }
                         />
-
-                        {/* <Button
-                            className="w-full bg-neutral-800"
-                            onClick={() => mintTestToken(selectedLp)}
-                        >
-                            Mint {1000} test{selectedLp?.symbol} Tokens
-                        </Button> */}
                     </div>
                     <div>
-                        <DataPoint
-                            title={`Your Deposits`}
-                            value={
-                                <>
-                                    <span className="space-x-2">
-                                        <span>
-                                            {smartNumberFormatter(
-                                                lpToUnderlying(
-                                                    selectedLp?.lpBalance.walletBalance,
-                                                    selectedLp
-                                                )
-                                            )}
-                                        </span>
-                                        <span>
-                                            <i className="fas fa-caret-right"></i>
-                                        </span>
-
-                                        <span>
-                                            {smartNumberFormatter(
-                                                isWithdrawal
-                                                    ? lpToUnderlying(
-                                                          selectedLp?.lpBalance.walletBalance,
-                                                          selectedLp
-                                                      ) -
-                                                          lpToUnderlying(
-                                                              Number(lpInput),
-                                                              selectedLp
-                                                          )
-                                                    : lpToUnderlying(
-                                                          selectedLp?.lpBalance.walletBalance,
-                                                          selectedLp
-                                                      ) +
-                                                          lpToUnderlying(
-                                                              Number(lpInput),
-                                                              selectedLp
-                                                          )
-                                            )}
-                                        </span>
-                                        <span>{selectedLp?.symbol}</span>
-                                    </span>
-                                </>
-                            }
-                        />
-
                         {!isWithdrawal && (
-                            <DataPoint
-                                title={'Deposit Fee'}
-                                value={`${depositFee ? depositFee : '0'} ${selectedLp?.symbol}`}
-                            />
+                            <div>
+                                <DataPoint
+                                    title={'Deposit Fee'}
+                                    value={`${formatter(depositFee ? depositFee : '0', 6)} ${
+                                        selectedLp?.symbol
+                                    }`}
+                                />
+                                <DataPoint
+                                    title={`You Will Receive`}
+                                    value={`${formatter(
+                                        lpInput / selectedLp?.pricePerShare - depositFee,
+                                        6
+                                    )} ${selectedLp?.symbol}-SPT`}
+                                />
+                            </div>
                         )}
 
                         {isWithdrawal && (
-                            <DataPoint
-                                title={`Withdrawal Fee`}
-                                value={`${formatter(withdrawalFee)} ${selectedLp?.symbol}`}
-                            />
+                            <div>
+                                <DataPoint
+                                    title={`Withdrawal Fee`}
+                                    value={`${formatter(withdrawalFee ? withdrawalFee : '0', 6)} ${
+                                        selectedLp?.symbol
+                                    }`}
+                                />
+                                <DataPoint
+                                    title={`You Will Receive`}
+                                    value={`${formatter(
+                                        lpInput * selectedLp?.pricePerShare - withdrawalFee,
+                                        6
+                                    )} ${selectedLp?.symbol}`}
+                                />
+                            </div>
                         )}
                     </div>
-
-                    {/* <div className="space-y-2">
-                        <p>
-                            How much {selectedLp?.symbol} would you like to {actionVerb}?
-                        </p>
-                        <Input
-                            type="number"
-                            value={lpInput}
-                            onChange={(e) => setLpInput(e.target.value)}
-                        />
-                    </div> */}
 
                     <div className="flex space-x-6">
                         <Button onClick={() => setSelectedLp(null)} className="w-auto">
@@ -255,16 +204,18 @@ export default function SingularityLiquidityModal() {
                                 className="bg-gradient-to-br from-purple-900 to-blue-900"
                                 onClick={
                                     isWithdrawal
-                                        ? () => withdrawLp(lpInput, selectedLp)
-                                        : () => depositLp(lpInput, selectedLp)
+                                        ? () => withdrawLp(lpInput, selectedLp, setLpInput)
+                                        : () => depositLp(lpInput, selectedLp, setLpInput)
                                 }
                             >
                                 {isWithdrawal
-                                    ? 'Withdraw'
+                                    ? isLpApproved
+                                        ? 'Withdraw'
+                                        : 'Approve'
                                     : isUnderlyingApproved
                                     ? 'Deposit'
                                     : 'Approve'}{' '}
-                                {isWithdrawal ? `${selectedLp?.symbol}-LP` : selectedLp?.symbol}
+                                {isWithdrawal ? `${selectedLp?.symbol}-SPT` : selectedLp?.symbol}
                             </Button>
                         </ConnectWalletFirstButton>
                     </div>
