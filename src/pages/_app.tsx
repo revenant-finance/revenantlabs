@@ -7,7 +7,6 @@ import smoothscroll from 'smoothscroll-polyfill'
 import Meta from '../../public/img/Meta'
 import Navigation from '../components/Nav/Navigation'
 import Web3ReactManager from '../components/Wallet/Web3ReactManager'
-import { CreditumDataWrapper } from '../Creditum/hooks/useCreditumData'
 import { UseAlertsWrapper } from '../hooks/useAlerts'
 import '../styles/global.css'
 import getLibrary from '../utils/getLibrary'
@@ -29,10 +28,8 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Web3ReactProviderDefault getLibrary={getLibrary}>
                     <Web3ReactManager>
                         <UseAlertsWrapper>
-                            <CreditumDataWrapper>
                                 <Navigation />
                                 <Component {...pageProps} />
-                            </CreditumDataWrapper>
                         </UseAlertsWrapper>
                     </Web3ReactManager>
                 </Web3ReactProviderDefault>

@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { toEth } from '.'
 import * as constants from '../data'
 import multicall from './multicall'
-import * as credConstants from '../Creditum/data'
 import * as revConstants from '../Revenant/data'
 import * as singConstants from '../Singularity/data'
 
@@ -35,12 +34,6 @@ export const getXTokenContract = (address, provider?: ethers.Signer | ethers.pro
 export const getVeTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_VETOKEN_ABI), provider)
 
-export const getVeTokenFeesContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(
-        credConstants.CONTRACT_CREDITUM[250].token.vecreditfees,
-        JSON.parse(constants.CONTRACT_VETOKENFEES_ABI),
-        provider
-    )
 
 export const getMulticallContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
@@ -64,27 +57,6 @@ export const getRevenantContract = (
 
 export const getMerkleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(revConstants.CONTRACT_MERKLE_ABI), provider)
-
-//CREDITUM
-export const getUnitrollerContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(credConstants.CONTRACT_CONTROLLER_ABI), provider)
-
-export const getCreditumContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(credConstants.CONTRACT_CREDITUM_ABI), provider)
-
-export const getFarmsContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(
-        credConstants.CONTRACT_CREDITUM_FARMS[250].farmAddress,
-        JSON.parse(credConstants.CONTRACT_FARMS_ABI),
-        provider
-    )
-
-export const getCrvContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(credConstants.CONTRACT_CRV_ABI), provider)
 
 //SINGULARITY
 

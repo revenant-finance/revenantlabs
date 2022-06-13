@@ -15,6 +15,7 @@ import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 import ConnectWalletFirstButton from '../../components/Btns/ConnectWalletFirstButton'
 import Input from '../../components/Inputs/Input'
+import SlippageModal from './SlippageModal'
 
 export default function SingularitySwapper() {
     const { account } = useActiveWeb3React()
@@ -226,7 +227,7 @@ export default function SingularitySwapper() {
                                 {toValue > 0 && (
                                     <div>
                                         <div className="flex items-center font-mono text-sm opacity-50">
-                                            <p className="flex-1 flex">Slippage</p>
+                                            <p className="flex flex-1">Slippage</p>
                                             <p className="flex">
                                                 {`${smartNumberFormatter(slippageTolerance)}%`}
                                                 <img src="/img/pencil.svg" alt="" />
