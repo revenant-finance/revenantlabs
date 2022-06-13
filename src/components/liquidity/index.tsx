@@ -1,9 +1,8 @@
 import classNames from 'classnames'
-import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
+import Bar from '../Bar/Bar'
 import { formatter, isNotEmpty } from '../../utils'
-import Bar from '../../components/Bar/Bar'
-import DataPoint from '../../components/DataPoint/DataPoint'
-import { useSingularityData } from '../SingularityAppWrapper'
+import useSingularityLiquidity from '../../hooks/useLiquidity'
+import { useSingularityData } from '../../Singularity/SingularityAppWrapper'
 import SingularityLiquidityModal from './SingularityLiquidityModal'
 
 export default function SingularityLiquidity() {
@@ -105,70 +104,6 @@ export default function SingularityLiquidity() {
                         })}
                     </>
                 )}
-
-                {/* <div className="overflow-auto bg-opacity-75 border-2 shadow-2xl bg-neutral-900 border-neutral-800 rounded-xl whitespace-nowrap">
-                    {!isLoading && (
-                        <table className="w-full table-auto bg-neutral-900">
-                            <thead className="text-left">
-                                <tr className="opacity-25">
-                                    <th className="p-2">Asset</th>
-                                    <th>Your Balance</th>
-                                    <th>Pool Size</th>
-                                    <th>Collateralization Ratio</th>
-                                    <th>Assets</th>
-                                    <th>Liabilities</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {orderedTokens?.map((token, index) => {
-                                    const isOdd = index % 2 === 0
-                                    return (
-                                        <tr className={isOdd ? 'bg-neutral-800' : 'bg-neutral-900'}>
-                                            <td className="p-2">
-                                                <p>
-                                                    <img
-                                                        className="inline w-6 h-6 mr-2"
-                                                        src={`/img/tokens/${token.asset}`}
-                                                        alt=""
-                                                    />
-                                                    <span>{token.name}</span>
-                                                </p>
-                                            </td>
-                                            <td>
-                                                $
-                                                {commaFormatter(
-                                                    token.pricePerShare *
-                                                        token.lpBalance.walletBalance
-                                                )}
-                                            </td>
-                                            <td>
-                                                $
-                                                {commaFormatter(
-                                                    token.lpUnderlyingBalance * token.tokenPrice
-                                                )}
-                                            </td>
-                                            <td>{commaFormatter(token.collatRatio)}</td>
-                                            <td>
-                                                {commaFormatter(token.assetAmount)} {token.symbol}
-                                            </td>
-                                            <td>{commaFormatter(token.liabilityAmount)}</td>
-                                            <td className="p-2">
-                                                <button
-                                                    onClick={() => setSelectedLp(token)}
-                                                    className="font-medium text-transparent bg-gradient-to-br from-purple-500 to-blue-500 bg-clip-text"
-                                                >
-                                                    Manage
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    )}
-                </div> */}
             </div>
         </>
     )

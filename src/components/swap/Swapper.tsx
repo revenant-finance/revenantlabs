@@ -1,25 +1,14 @@
-import { useState } from 'react'
-import { useActiveWeb3React } from '../../hooks'
-import useAuth from '../../hooks/useAuth'
-import useSingularitySwapper from '../hooks/useSingularitySwapper'
+import Button from '../Btns/Button'
+import ConnectWalletFirstButton from '../Btns/ConnectWalletFirstButton'
 import {
-    commaFormatter,
-    currentEpoch,
-    isNotEmpty,
-    smartNumberFormatter,
-    formatter
+    formatter, isNotEmpty,
+    smartNumberFormatter
 } from '../../utils'
-import Button from '../../components/Btns/Button'
-import LiveTime from '../../components/Countdown/LiveTime'
+import useSingularitySwapper from '../../hooks/useSwapper'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
-import ConnectWalletFirstButton from '../../components/Btns/ConnectWalletFirstButton'
-import Input from '../../components/Inputs/Input'
-import SlippageModal from './SlippageModal'
 
 export default function SingularitySwapper() {
-    const { account } = useActiveWeb3React()
-    const { login } = useAuth()
     const {
         status,
         showDetails,
@@ -202,22 +191,6 @@ export default function SingularitySwapper() {
                                         </b>
                                     </p>
                                 </div>
-                                {/* <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">In Fee</p>
-                                        <p className="">${smartNumberFormatter(inFee)} {fromToken?.symbol}</p>
-                                    </div>
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">In Slippage</p>
-                                        <p className="">${smartNumberFormatter(slippageIn)} {fromToken?.symbol}</p>
-                                    </div>
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Out Fees</p>
-                                        <p className="">${smartNumberFormatter(outFee)} {toToken?.symbol}</p>
-                                    </div>
-                                    <div className="flex items-center font-mono text-sm opacity-50">
-                                        <p className="flex-1">Out Slippage</p>
-                                        <p className="">${smartNumberFormatter(slippageOut)} {toToken?.symbol}</p>
-                                    </div> */}
                                 {toValue > 0 && (
                                     <div className="flex items-center font-mono text-sm opacity-50">
                                         <p className="flex-1">Swap Fee</p>

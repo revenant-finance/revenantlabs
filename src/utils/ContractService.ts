@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { toEth } from '.'
 import * as constants from '../data'
 import multicall from './multicall'
-import * as revConstants from '../Revenant/data'
 import * as singConstants from '../Singularity/data'
 
 export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(
@@ -28,35 +27,12 @@ export const getTestTokenContract = (
 export const getTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI), provider)
 
-export const getXTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_XTOKEN_ABI), provider)
-
-export const getVeTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(constants.CONTRACT_VETOKEN_ABI), provider)
-
-
 export const getMulticallContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
         constants.UTIL_CONTRACT_ADDRESS[250].multicall,
         JSON.parse(constants.CONTRACT_MULTICALL_ABI),
         provider
     )
-
-export const getRouterContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(
-        constants.UTIL_CONTRACT_ADDRESS[250].spookyRouter,
-        JSON.parse(constants.CONTRACT_SPOOKY_ROUTER_ABI),
-        provider
-    )
-
-//REVNENANT
-export const getRevenantContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(revConstants.CONTRACT_REVENANT_ABI), provider)
-
-export const getMerkleContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(revConstants.CONTRACT_MERKLE_ABI), provider)
 
 //SINGULARITY
 

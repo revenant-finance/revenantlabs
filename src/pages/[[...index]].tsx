@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import { SingularityAppWrapper } from '../../Singularity/SingularityAppWrapper'
-import SingularityLiquidity from '../../Singularity/SingularityLiquidity'
-import SingularitySwapper from '../../Singularity/SingularitySwap/SingularitySwapper'
+import { SingularityAppWrapper } from '../Singularity/SingularityAppWrapper'
+import SingularityLiquidity from '../components/liquidity'
+import SingularitySwapper from '../components/swap/Swapper'
 
 export function getServerSideProps(ctx) {
     return { props: { query: ctx.query } }

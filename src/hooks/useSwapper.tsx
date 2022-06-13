@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useCookieState } from 'use-cookie-state'
-import { MAX_UINT256, toEth, toWei } from '../../utils'
-import { getSingRouterContract, getTokenContract } from '../../utils/ContractService'
-import { useActiveWeb3React } from '../../hooks'
-import { useSingularityData } from '../SingularityAppWrapper'
-import useAlerts from '../../hooks/useAlerts'
+import { MAX_UINT256, toEth, toWei } from '../utils'
+import { getSingRouterContract, getTokenContract } from '../utils/ContractService'
+import { useActiveWeb3React } from '.'
+import { useSingularityData } from '../Singularity/SingularityAppWrapper'
+import useAlerts from './useAlerts'
 
 export function useSingularitySwapperInternal() {
     const router = useRouter()
@@ -256,18 +256,14 @@ export function useSingularitySwapperInternal() {
     // Updates the URL when a new token is selected.
     useEffect(() => {
         if (!fromToken || !toToken) return
-        const paths = router.asPath.split('/')
+        const paths = router.asPath
         const pathSuffix = paths[paths.length - 1]
-        if (!pathSuffix.startsWith('singularity')) return
-
+        if (!pathSuffix.startsWith('/')) return
         const url = new URL(`${window.location}`)
         url.searchParams.set('from', fromToken.id)
         url.searchParams.set('to', toToken.id)
         window.history.replaceState('', '', url.toString())
 
-        // router.replace(`/singularity`, `/singularity?from=${fromToken.id}&to=${toToken.id}`, {
-        //     shallow: true
-        // })
     }, [fromToken, toToken])
 
     return {

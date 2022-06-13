@@ -1,18 +1,13 @@
-import { useEffect } from 'react'
-import useSingularityLiquidity from '../hooks/useSingularityLiquidity'
+import Button from '../Btns/Button'
+import ConnectWalletFirstButton from '../Btns/ConnectWalletFirstButton'
+import DataPoint from '../DataPoint/DataPoint'
+import Modal from '../Modals/Modal'
 import {
     commaFormatter,
-    formatter,
-    isNotEmpty,
-    currentEpoch,
-    smartNumberFormatter
+    formatter, smartNumberFormatter
 } from '../../utils'
-import Button from '../../components/Btns/Button'
-import DataPoint from '../../components/DataPoint/DataPoint'
-import LiveTime from '../../components/Countdown/LiveTime'
-import Modal from '../../components/Modals/Modal'
-import SwapperInput from '../SingularitySwap/SwapperInput'
-import ConnectWalletFirstButton from '../../components/Btns/ConnectWalletFirstButton'
+import useSingularityLiquidity from '../../hooks/useLiquidity'
+import SwapperInput from '../swap/SwapperInput'
 
 export default function SingularityLiquidityModal() {
     const {

@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { useActiveWeb3React } from '../../hooks'
-import Button from './Button'
 import useAuth from '../../hooks/useAuth'
 import ConnectWalletModal from '../Wallet/WalletConnect/ConnectWalletModal'
-import classNames from 'classnames'
+import Button from './Button'
 
 
 const ConnectWalletFirstButton = ({ children, type = "creditum" }) => {
-    const { account, library } = useActiveWeb3React()
+    const { account } = useActiveWeb3React()
     const [connectModalOpen, setConnectModalOpen] = useState(false)
     const { login } = useAuth()
     const singularity = 'shadow bg-gradient-to-br from-purple-900 to-blue-900'

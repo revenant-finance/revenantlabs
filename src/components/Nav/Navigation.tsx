@@ -54,22 +54,9 @@ export default function Navigation() {
                                         <span>Home</span>
                                     </a>
                                 </Link>
-                                {/* <Link href={'/singularity?from=wftm&to=credit'} passHref>
-                                    <a className="text-3xl font-extrabold uppercase transition ease-in-out opacity-75 font-montserrat hover:opacity-100">
-                                        Get Tokens
-                                    </a>
-                                </Link> */}
                             </div>
 
                             <div className="space-y-2">
-                                <Link href="/creditum">
-                                    <a
-                                        className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-tr from-blue-600 to-yellow-300"
-                                        href=""
-                                    >
-                                        Open <b>Creditum</b>
-                                    </a>
-                                </Link>
                                 <Link href="/singularity">
                                     <a
                                         className="block p-2 font-medium text-center rounded text-neutral-900 bg-gradient-to-br from-purple-500 to-blue-500"
