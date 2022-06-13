@@ -1,21 +1,20 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { useActiveWeb3React } from '.'
-import { useSingularityData } from '../Singularity/SingularityAppWrapper'
+import { useData } from '../components/AppWrapper'
 import { MAX_UINT256, toEth, toWei, isNotEmpty } from '../utils'
 import {
-    getSingLpContract,
-    getSingRouterContract,
+    getLpContract,
+    getRouterContract,
     getTokenContract,
-    getTestTokenContract
 } from '../utils/ContractService'
 import useAlerts from './useAlerts'
 import { ethers } from 'ethers'
 
-export function useSingularityLiquidityInternal() {
+export function useLiquidityInternal() {
     const { account, library } = useActiveWeb3React()
 
     const { newAlert } = useAlerts()
-    const { tokens, data, update } = useSingularityData()
+    const { tokens, data, update } = useData()
 
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState('idle')
@@ -32,7 +31,7 @@ export function useSingularityLiquidityInternal() {
     const [withdrawalAmount, setWithdrawalAmount] = useState('0')
 
     const routerContract =
-        data?.safe && getSingRouterContract(data.safe.router, account ? library.getSigner() : null)
+        data?.safe && getRouterContract(data.safe.router, account ? library.getSigner() : null)
 
     const inverseSlippage = (1 - slippageTolerance) * 100
 
@@ -105,7 +104,7 @@ export function useSingularityLiquidityInternal() {
             }
             if (max && Number(input) > Number(max)) input = max
             _setLpInput(input)
-            const lpContract = getSingLpContract(selectedLp.lpAddress)
+            const lpContract = getLpContract(selectedLp.lpAddress)
             const formattedLpInput = toWei(input ? input : '0', selectedLp.decimals)
             const { tokenAddress, formatAmountIn } = getWithdrawInfo(input, selectedLp)
             let _withdrawalFee, _depositFee, _withdrawalAmount
@@ -306,30 +305,6 @@ export function useSingularityLiquidityInternal() {
         setLpInput(null)
     }
 
-    const mintTestToken = async (token, amount = '1000') => {
-        try {
-            setStatus('idle')
-            const fromTokenContract = getTestTokenContract(token.address, library.getSigner())
-            const tx = await fromTokenContract.mint(account, toWei(amount, token.decimals))
-            await tx.wait(1)
-            await update()
-            setStatus('complete')
-            newAlert({
-                title: 'Minting Complete',
-                subtitle: 'Your transaction has been successfully confirmed to the network.',
-                type: 'success'
-            })
-        } catch (error) {
-            setStatus('error')
-            setStatusMessage(error.message)
-            newAlert({
-                title: 'Minting Failed',
-                subtitle: 'Your transaction has not been completed.',
-                type: 'fail'
-            })
-            console.log(error)
-        }
-    }
 
     return {
         status,
@@ -351,27 +326,26 @@ export function useSingularityLiquidityInternal() {
         setDepositFee,
         withdrawLp,
         depositLp,
-        mintTestToken,
         lpToUnderlying,
         underlyingToLp,
         withdrawalAmount
     }
 }
 
-export const SingularityLiquidityContext = createContext({})
+export const LiquidityContext = createContext({})
 
-export function SingularityLiquidityWrapper({ children }: any) {
-    const hook = useSingularityLiquidityInternal()
+export function LiquidityWrapper({ children }: any) {
+    const hook = useLiquidityInternal()
 
     return (
         <>
-            <SingularityLiquidityContext.Provider value={{ ...hook }}>
+            <LiquidityContext.Provider value={{ ...hook }}>
                 <>{children}</>
-            </SingularityLiquidityContext.Provider>
+            </LiquidityContext.Provider>
         </>
     )
 }
 
-export default function useSingularityLiquidity() {
-    return useContext<any>(SingularityLiquidityContext)
+export default function useLiquidity() {
+    return useContext<any>(LiquidityContext)
 }

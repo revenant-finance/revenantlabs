@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { toEth } from '.'
 import * as constants from '../data'
 import multicall from './multicall'
-import * as singConstants from '../Singularity/data'
 
 export const simpleRpcProvider = new ethers.providers.JsonRpcProvider(
     process.env.NEXT_PUBLIC_NETWORK_URL
@@ -19,11 +18,6 @@ export const getContract = (
     return new ethers.Contract(address, abi, signerOrProvider)
 }
 
-export const getTestTokenContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(singConstants.CONTRACT_TEST_ERC20_ABI), provider)
-
 export const getTokenContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(address, JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI), provider)
 
@@ -36,25 +30,20 @@ export const getMulticallContract = (provider?: ethers.Signer | ethers.providers
 
 //SINGULARITY
 
-export const getSingOracleContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
+export const getOracleContract = (provider?: ethers.Signer | ethers.providers.Provider) =>
     getContract(
-        singConstants.CONTRACT_SINGULARITY[250].oracle,
-        JSON.parse(singConstants.CONTRACT_SING_ORACLE_ABI),
+        constants.CONTRACT_SINGULARITY[250].oracle,
+        JSON.parse(constants.CONTRACT_SING_ORACLE_ABI),
         provider
     )
 
-export const getSingRouterContract = (
+export const getRouterContract = (
     address,
     provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(singConstants.CONTRACT_SING_ROUTER_ABI), provider)
+) => getContract(address, JSON.parse(constants.CONTRACT_SING_ROUTER_ABI), provider)
 
-export const getSingFactoryContract = (
-    address,
-    provider?: ethers.Signer | ethers.providers.Provider
-) => getContract(address, JSON.parse(singConstants.CONTRACT_SING_FACTORY_ABI), provider)
-
-export const getSingLpContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
-    getContract(address, JSON.parse(singConstants.CONTRACT_SING_LP_ABI), provider)
+export const getLpContract = (address, provider?: ethers.Signer | ethers.providers.Provider) =>
+    getContract(address, JSON.parse(constants.CONTRACT_SING_LP_ABI), provider)
 
 //UTILS
 

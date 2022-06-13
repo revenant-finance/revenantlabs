@@ -2,17 +2,17 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useCookieState } from 'use-cookie-state'
 import { MAX_UINT256, toEth, toWei } from '../utils'
-import { getSingRouterContract, getTokenContract } from '../utils/ContractService'
+import { getRouterContract, getTokenContract } from '../utils/ContractService'
 import { useActiveWeb3React } from '.'
-import { useSingularityData } from '../Singularity/SingularityAppWrapper'
+import { useData } from '../components/AppWrapper'
 import useAlerts from './useAlerts'
 
-export function useSingularitySwapperInternal() {
+export function useSwapperInternal() {
     const router = useRouter()
     const { account, library } = useActiveWeb3React()
 
     const { newAlert } = useAlerts()
-    const { data, update } = useSingularityData()
+    const { data, update } = useData()
 
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState('idle')
@@ -101,7 +101,7 @@ export function useSingularitySwapperInternal() {
     }
 
     const getAmountOut = async (value, tokenIn, tokenOut) => {
-        const routerContract = getSingRouterContract(data.safe.router)
+        const routerContract = getRouterContract(data.safe.router)
         try {
             const amountOut = await routerContract.getAmountOut(value, tokenIn, tokenOut)
             return amountOut
@@ -203,7 +203,7 @@ export function useSingularitySwapperInternal() {
                 await update()
                 return
             }
-            const routerContract = getSingRouterContract(data.safe.router, library.getSigner())
+            const routerContract = getRouterContract(data.safe.router, library.getSigner())
             const amountIn = toWei(fromValue, fromToken.decimals)
             const to = account
             const timestamp = Math.floor(Date.now() / 1000) + 60 * 10
@@ -303,20 +303,20 @@ export function useSingularitySwapperInternal() {
     }
 }
 
-export const SingularitySwapperContext = createContext({})
+export const SwapperContext = createContext({})
 
-export function SingularitySwapperWrapper({ children }: any) {
-    const swapper = useSingularitySwapperInternal()
+export function SwapperWrapper({ children }: any) {
+    const swapper = useSwapperInternal()
 
     return (
         <>
-            <SingularitySwapperContext.Provider value={{ ...swapper }}>
+            <SwapperContext.Provider value={{ ...swapper }}>
                 <>{children}</>
-            </SingularitySwapperContext.Provider>
+            </SwapperContext.Provider>
         </>
     )
 }
 
 export default function useSingularitySwapper() {
-    return useContext<any>(SingularitySwapperContext)
+    return useContext<any>(SwapperContext)
 }

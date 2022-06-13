@@ -1,25 +1,24 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import MeshBackground from './Backgrounds/MeshBackground'
 import * as constants from '../data'
-import * as singConstants from './data'
 import { useActiveWeb3React } from '../hooks'
-import useRefresh from '../hooks/useRefresh'
-import { SingularityLiquidityWrapper } from '../hooks/useLiquidity'
-import { SingularitySwapperWrapper } from '../hooks/useSwapper'
+import { LiquidityWrapper } from '../hooks/useLiquidity'
+import { SwapperWrapper } from '../hooks/useSwapper'
 import { EMPTY_ADDRESS, toEth } from '../utils'
-import { fetchBalances, getSingOracleContract } from '../utils/ContractService'
+import { fetchBalances, getOracleContract } from '../utils/ContractService'
 import multicall from '../utils/multicall'
-import MeshBackground from '../components/Backgrounds/MeshBackground'
-import SingularityFooter from './SingularityFooter'
-import SingularityHeader from './SingularityHeader'
+import * as singConstants from '../data'
+import Footer from './Footer'
+import Header from './Header'
 
 const lpTokenABI = JSON.parse(singConstants.CONTRACT_SING_LP_ABI)
 const erc20ABI = JSON.parse(constants.CONTRACT_ERC20_TOKEN_ABI)
 
-export const SingularityDataContext = createContext({})
+export const DataContext = createContext({})
 
-function useSingularityDataInternal() {
+function useDataInternal() {
     const { account } = useActiveWeb3React()
-    const oracleContract = getSingOracleContract()
+    const oracleContract = getOracleContract()
 
     const [data, setData] = useState({})
     const [refresh, setRefresh] = useState(0)
@@ -204,27 +203,27 @@ function useSingularityDataInternal() {
     return { tokens, data, update }
 }
 
-export function SingularityAppWrapper({ children }) {
-    const hook = useSingularityDataInternal()
+export function AppWrapper({ children }) {
+    const hook = useDataInternal()
 
     return (
-        <SingularityDataContext.Provider value={{ ...hook }}>
-            <SingularitySwapperWrapper>
-                <SingularityLiquidityWrapper>
+        <DataContext.Provider value={{ ...hook }}>
+            <SwapperWrapper>
+                <LiquidityWrapper>
                     {/* <NotReadyModal /> */}
-                    <SingularityHeader />
+                    <Header />
                     <div className="w-full h-full p-6 py-24 bg-center bg-cover">
                         <MeshBackground id="singularity-gradient-colors" />
                         <div className="fixed inset-0 bg-black bg-opacity-50" />
                         <div className="relative z-10">{children}</div>
-                        <SingularityFooter />
+                        <Footer />
                     </div>
-                </SingularityLiquidityWrapper>
-            </SingularitySwapperWrapper>
-        </SingularityDataContext.Provider>
+                </LiquidityWrapper>
+            </SwapperWrapper>
+        </DataContext.Provider>
     )
 }
 
-export function useSingularityData() {
-    return useContext<any>(SingularityDataContext)
+export function useData() {
+    return useContext<any>(DataContext)
 }

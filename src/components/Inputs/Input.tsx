@@ -16,27 +16,20 @@ export default function Input(props: Input) {
 
     return (
         <div>
-            {label && <p className="text-xs font-medium mb-1">{label}</p>}
-            <div className="w-full bg-white rounded bg-opacity-10 overflow-hidden flex items-stretch">
+            {label && <p className="mb-1 text-xs font-medium">{label}</p>}
+            <div className="flex items-stretch w-full overflow-hidden bg-white rounded bg-opacity-10">
                 <input
                     {...props}
                     type={props.type || 'text'}
-                    className="w-full px-4 py-2 h-full outline-none bg-transparent"
+                    className="w-full h-full px-4 py-2 bg-transparent outline-none"
                 />
                 {onMax && (
-                    <button onClick={onMax} className="text-xs font-medium px-2">
+                    <button onClick={onMax} className="px-2 text-xs font-medium">
                         Max
                     </button>
                 )}
             </div>
         </div>
-        // <button {...props} className={classNames(className, 'w-full relative px-4 py-2 font-medium rounded', disabled && 'cursor-not-allowed opacity-50')}>
-        //     {loading && (
-        //         <div className="absolute inset-0 text-0 flex items-center justify-center w-full h-full">
-        //             <i className="fas fa-circle-notch fa-spin" />
-        //         </div>
-        //     )}
-        //     <div className={classNames(loading && 'opacity-10')}>{children}</div>
-        // </button>
+
     )
 }

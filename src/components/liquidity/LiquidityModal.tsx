@@ -6,10 +6,10 @@ import {
     commaFormatter,
     formatter, smartNumberFormatter
 } from '../../utils'
-import useSingularityLiquidity from '../../hooks/useLiquidity'
+import useLiquidity from '../../hooks/useLiquidity'
 import SwapperInput from '../swap/SwapperInput'
 
-export default function SingularityLiquidityModal() {
+export default function LiquidityModal() {
     const {
         status,
         setStatus,
@@ -29,7 +29,7 @@ export default function SingularityLiquidityModal() {
         isUnderlyingApproved,
         isLpApproved,
         withdrawalAmount
-    } = useSingularityLiquidity()
+    } = useLiquidity()
     const actionVerb = `${isWithdrawal ? 'withdraw' : 'deposit'}`
 
     return (

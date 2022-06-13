@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import { SingularityAppWrapper } from '../Singularity/SingularityAppWrapper'
+import { AppWrapper } from '../components/AppWrapper'
 import SingularityLiquidity from '../components/liquidity'
-import SingularitySwapper from '../components/swap/Swapper'
+import Swapper from '../components/swap/Swapper'
 
 export function getServerSideProps(ctx) {
     return { props: { query: ctx.query } }
@@ -14,7 +14,7 @@ export default function SingularityPages({ query }) {
     const Component = () => {
         switch (pageName) {
             case 'swapper':
-                return <SingularitySwapper />
+                return <Swapper />
             case 'liquidity':
                 return <SingularityLiquidity />
             default:
@@ -24,8 +24,8 @@ export default function SingularityPages({ query }) {
     }
 
     return (
-        <SingularityAppWrapper>
+        <AppWrapper>
             <Component />
-        </SingularityAppWrapper>
+        </AppWrapper>
     )
 }

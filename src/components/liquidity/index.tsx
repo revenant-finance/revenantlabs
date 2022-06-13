@@ -2,11 +2,11 @@ import classNames from 'classnames'
 import Bar from '../Bar/Bar'
 import { formatter, isNotEmpty } from '../../utils'
 import useSingularityLiquidity from '../../hooks/useLiquidity'
-import { useSingularityData } from '../../Singularity/SingularityAppWrapper'
-import SingularityLiquidityModal from './SingularityLiquidityModal'
+import { useData } from '../AppWrapper'
+import LiquidityModal from './LiquidityModal'
 
 export default function SingularityLiquidity() {
-    const { tokens } = useSingularityData()
+    const { tokens } = useData()
     const { setSelectedLp } = useSingularityLiquidity()
 
     const orderedTokens = tokens
@@ -23,7 +23,7 @@ export default function SingularityLiquidity() {
 
     return (
         <>
-            <SingularityLiquidityModal />
+            <LiquidityModal />
 
             <div className="max-w-5xl mx-auto space-y-4">
                 {isLoading && (

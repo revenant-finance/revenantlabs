@@ -4,11 +4,11 @@ import {
     formatter, isNotEmpty,
     smartNumberFormatter
 } from '../../utils'
-import useSingularitySwapper from '../../hooks/useSwapper'
+import useSwapper from '../../hooks/useSwapper'
 import SwapperInput from './SwapperInput'
 import SwapperModal from './SwapperModal'
 
-export default function SingularitySwapper() {
+export default function Swapper() {
     const {
         status,
         showDetails,
@@ -19,7 +19,6 @@ export default function SingularitySwapper() {
         fromValue,
         setFromValue,
         toValue,
-        setToValue,
         slippageTolerance,
         setSlippageTolerance,
         swapTokens,
@@ -29,13 +28,7 @@ export default function SingularitySwapper() {
         swap,
         priceImpact,
         isApproved,
-        inFee,
-        outFee,
-        slippageIn,
-        slippageOut,
-        native,
-        setNative
-    } = useSingularitySwapper()
+    } = useSwapper()
 
     const isReady = !!fromToken && !!toToken && !!fromValue && !!toValue
 
