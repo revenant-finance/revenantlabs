@@ -10,10 +10,13 @@ export default function CredtiumHeader() {
                         <img className="w-24 md:w-16" src="/img/creditum.png" alt="" />
                     </a>
                 </Link>
-                <div className="hidden md:block flex-1" />
+                <div className="flex-1 hidden md:block" />
                 <div className="flex space-x-2 font-medium whitespace-nowrap no-scrollbar">
                     <HeaderLink href="/creditum" icon="fa-solid fa-magnifying-glass-dollar">
                         Market
+                    </HeaderLink>
+                    <HeaderLink href="/creditum/stabilizer" icon="fa-solid fa-tractor">
+                        Stabilizer
                     </HeaderLink>
                     <HeaderLink href="/creditum/farms" icon="fa-solid fa-tractor">
                         Farms
