@@ -165,12 +165,12 @@ export const CONTRACT_CREDITUM_FARMS = {
         earnTokens: [
             {
                 name: 'CREDIT',
-                rps: 0.2314814815,
+                rps: 0,
                 address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E'
             },
             {
                 name: 'ANGLE',
-                rps: 0.09920634921,
+                rps: 0,
                 address: '0x3b9e3b5c616A1A038fDc190758Bbe9BAB6C7A857'
             },
             { name: 'CREDIT', rps: 0, address: '0x77128DFdD0ac859B33F44050c6fa272F34872B5E' },
