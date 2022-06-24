@@ -93,12 +93,12 @@ export default function FarmItem({ farm, open }) {
 
             <div className="space-y-2">
                 <div className="flex gap-2">
-                    <Button
+                    {/* <Button
                         className="bg-yellow-400 text-neutral-800 hover:bg-yellow-500"
                         onClick={() => open('deposit')}
                     >
                         Deposit
-                    </Button>
+                    </Button> */}
                     <Button
                         className="bg-yellow-400 text-neutral-800 hover:bg-yellow-500"
                         onClick={() => open('withdraw')}
