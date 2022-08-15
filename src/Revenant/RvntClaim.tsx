@@ -39,7 +39,7 @@ export default function RvntClaim() {
             <Modal visible={showModal} onClose={() => setShowModal(false)}>
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <p className="text-xs text-center font-medium">Claim Tokens</p>
+                        <p className="text-xs font-medium text-center">Claim Tokens</p>
                         <div className="grid grid-cols-2 text-center">
                             <div>
                                 <p className="font-medium">{formatter(claimRVNT)} $RVNT</p>
@@ -61,15 +61,15 @@ export default function RvntClaim() {
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        <div className="h-1 w-full bg-neutral-800"></div>
-                        <p className="text-neutral-800 font-medium uppercase text-xs">Or</p>
-                        <div className="h-1 w-full bg-neutral-800"></div>
+                        <div className="w-full h-1 bg-neutral-800"></div>
+                        <p className="text-xs font-medium uppercase text-neutral-800">Or</p>
+                        <div className="w-full h-1 bg-neutral-800"></div>
                     </div>
 
                     <div className="space-y-4">
-                        <p className="text-xs text-center font-medium">Burn Tokens</p>
-                        <p className="opacity-50 text-sm font-medium">
-                            Burn your RVNT to get CREDIT. You will receive 10 CREDIT for every RVNT
+                        <p className="text-xs font-medium text-center">Burn Tokens</p>
+                        <p className="text-sm font-medium opacity-50">
+                            Burn your RVNT to get CREDIT. You will receive 20 CREDIT for every RVNT
                             burnt. Disclaimer: Burned RVNT are lost forever and will miss out on
                             future tokens.
                         </p>
@@ -86,7 +86,7 @@ export default function RvntClaim() {
                             onClick={() => onBurn(burnAmount)}
                             className="bg-purp text-neutral-900"
                         >
-                            Burn {formatter(burnAmount)} RVNT for {formatter(burnAmount * 10)}{' '}
+                            Burn {formatter(burnAmount)} RVNT for {formatter(burnAmount * 20)}{' '}
                             CREDIT.
                         </Button>
                     </div>
@@ -96,7 +96,7 @@ export default function RvntClaim() {
             <button
                 onClick={() => setShowModal(true)}
                 className="underline opacity-50 hover:underline-none hover:opacity-75"
-                // className="px-4 py-2 bg-gradient-to-br text-white from-salmon to-purp rounded-full font-medium md:text-xl shadow-2xl"
+                // className="px-4 py-2 font-medium text-white rounded-full shadow-2xl bg-gradient-to-br from-salmon to-purp md:text-xl"
             >
                 Claim RVNT
             </button>
